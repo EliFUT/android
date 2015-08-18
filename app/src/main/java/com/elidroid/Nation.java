@@ -21,4 +21,13 @@ final class Nation {
   public String image() {
     return null;
   }
+
+  public static Nation fromId(int id) {
+    for (Nation nation : ALL_NATIONS) {
+      if (nation.id == id) {
+        return nation;
+      }
+    }
+    return null;
+  }
 }

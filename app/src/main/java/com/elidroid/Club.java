@@ -16,4 +16,8 @@ final class Club {
   public String image() {
     return null;
   }
+
+  public static Club fromId(int anInt) {
+    return null;
+  }
 }

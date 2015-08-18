@@ -8,4 +8,8 @@ final class League {
     this.name = name;
     this.nation = nation;
   }
+
+  public static League fromId(int id) {
+    return null;
+  }
 }

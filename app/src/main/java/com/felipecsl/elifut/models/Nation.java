@@ -1,15 +1,8 @@
-package com.elidroid;
+package com.felipecsl.elifut.models;
 
 import android.support.annotation.StringRes;
 
-import java.util.Arrays;
-import java.util.List;
-
 final class Nation {
-  private static final List<Nation> ALL_NATIONS = Arrays.asList(
-      new Nation(1, R.string.albania),
-      new Nation(27, R.string.italy)
-  );
   private final int id;
   private final int nameId;
 
@@ -23,11 +16,6 @@ final class Nation {
   }
 
   public static Nation fromId(int id) {
-    for (Nation nation : ALL_NATIONS) {
-      if (nation.id == id) {
-        return nation;
-      }
-    }
     return null;
   }
 }

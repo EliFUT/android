@@ -1,7 +1,6 @@
-package com.elidroid;
+package com.felipecsl.elifut.models;
 
-
-final class Player {
+public final class Player {
   private final int id;
   private final int baseId;
   private final int resourceId;

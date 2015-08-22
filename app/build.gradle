@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "23.0.0"
 
     defaultConfig {
-        applicationId "com.elidroid"
+        applicationId "com.felipecsl.elifut"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
@@ -20,8 +20,19 @@ android {
 }
 
 dependencies {
+    compile 'com.android.support:design:23.0.0'
     compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:cardview-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
     compile 'org.apache.commons:commons-io:1.3.2'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-SNAPSHOT'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.moshi:moshi:0.9.0'
+//    compile 'io.reactivex:rxjava:1.0.14'
+    compile files('libs/rxjava-1.0.14.jar')
+//    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-SNAPSHOT'
+    compile files('libs/adapter-rxjava-2.0.0-SNAPSHOT.jar')
+    compile files('libs/butterknife-7.0.1.jar')
 
     testCompile 'junit:junit:4.12'
 }

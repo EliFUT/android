@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.elidroid" >
+    package="com.felipecsl.elifut" >
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:name=".ElifutApplication"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity

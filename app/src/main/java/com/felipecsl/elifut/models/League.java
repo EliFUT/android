@@ -1,4 +1,4 @@
-package com.elidroid;
+package com.felipecsl.elifut.models;
 
 final class League {
   private final String name;

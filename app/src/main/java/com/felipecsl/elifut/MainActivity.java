@@ -18,6 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit.Response;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     ElifutApplication application = (ElifutApplication) getApplication();
     application.service()
         .nations()
-        .observeOn(ElifutApplication.MAIN_THREAD_SCHEDULER)
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Observer<Response<List<Nation>>>() {
           @Override public void onCompleted() {
           }

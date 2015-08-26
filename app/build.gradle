@@ -17,6 +17,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'LICENSE.txt'
+    }
 }
 
 dependencies {
@@ -28,11 +43,13 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:2.0.0-SNAPSHOT'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.moshi:moshi:0.9.0'
-//    compile 'io.reactivex:rxjava:1.0.14'
-    compile files('libs/rxjava-1.0.14.jar')
-//    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-SNAPSHOT'
-    compile files('libs/adapter-rxjava-2.0.0-SNAPSHOT.jar')
-    compile files('libs/butterknife-7.0.1.jar')
+    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-SNAPSHOT'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.squareup.retrofit:converter-jackson:2.0.0-SNAPSHOT'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.5.4'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.5.4'
 
     testCompile 'junit:junit:4.12'
 }

@@ -44,7 +44,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter your name to get started"/>
+            android:text="Enter your name below to get started"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -56,7 +56,18 @@
                 android:id="@+id/input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
         </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose your country"/>
+
+        <Spinner
+            android:id="@+id/countries_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

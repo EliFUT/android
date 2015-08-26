@@ -1,21 +1,35 @@
 package com.felipecsl.elifut.models;
 
-import android.support.annotation.StringRes;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-final class Nation {
-  private final int id;
-  private final int nameId;
+public final class Nation extends Model {
+  @JsonProperty private final int id;
+  @JsonProperty private final int baseId;
+  @JsonProperty private final String name;
 
-  Nation(int id, @StringRes int nameId) {
+  Nation(int id, int baseId, String name) {
     this.id = id;
-    this.nameId = nameId;
+    this.baseId = baseId;
+    this.name = name;
+  }
+
+  Nation() {
+    this(0, 0, null);
   }
 
   public String image() {
     return null;
   }
 
+  public int id() {
+    return id;
+  }
+
   public static Nation fromId(int id) {
     return null;
+  }
+
+  @Override public String toString() {
+    return name;
   }
 }

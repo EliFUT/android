@@ -52,7 +52,10 @@ public final class CountriesSpinnerAdapter extends BaseAdapter {
     Nation country = (Nation) getItem(position);
     v.setText(country.toString());
 
-    Picasso.with(context).load(country.image()).into(new Target() {
+    Picasso.with(context)
+        .load(country.image().replace("localhost", "10.0.3.2"))
+        .placeholder(android.R.color.darker_gray)
+        .into(new Target() {
       @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
         v.setCompoundDrawablesWithIntrinsicBounds(
             new BitmapDrawable(context.getResources(), bitmap), null, null, null);

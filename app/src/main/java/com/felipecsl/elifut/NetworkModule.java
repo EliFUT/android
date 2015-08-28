@@ -2,9 +2,6 @@ package com.felipecsl.elifut;
 
 import android.content.Context;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.felipecsl.elifut.services.ElifutService;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.HttpUrl;
@@ -19,7 +16,6 @@ import dagger.Module;
 import dagger.Provides;
 import retrofit.CallAdapter;
 import retrofit.Converter;
-import retrofit.JacksonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 
@@ -56,17 +52,6 @@ public class NetworkModule {
 
   @Provides @Singleton HttpUrl provideBaseUrl() {
     return HttpUrl.parse("http://10.0.3.2:3000/");
-  }
-
-  @Provides @Singleton Converter.Factory provideConverterFactory(ObjectMapper objectMapper) {
-    return JacksonConverterFactory.create(objectMapper);
-  }
-
-  @Provides @Singleton ObjectMapper provideObjectMapper() {
-    return new ObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
-        .registerModules(new ServiceModule());
   }
 
   @Provides @Singleton Cache provideCache() {

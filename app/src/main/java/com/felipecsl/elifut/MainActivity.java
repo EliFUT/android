@@ -11,8 +11,11 @@ import android.widget.Toast;
 
 import com.felipecsl.elifut.adapter.CountriesSpinnerAdapter;
 import com.felipecsl.elifut.models.Nation;
+import com.felipecsl.elifut.services.ElifutService;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
   @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
   @Bind(R.id.countries_spinner) Spinner countriesSpinner;
 
+  @Inject ElifutService service;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -39,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
     collapsingToolbar.setTitle(getTitle());
 
     ElifutApplication application = (ElifutApplication) getApplication();
-    application.service()
-        .nations()
+    application.component().inject(this);
+    service.nations()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Observer<Response<List<Nation>>>() {
           @Override public void onCompleted() {

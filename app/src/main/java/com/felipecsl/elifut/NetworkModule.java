@@ -13,49 +13,69 @@ import com.squareup.okhttp.OkHttpClient;
 import java.io.File;
 import java.util.concurrent.Executor;
 
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+import retrofit.CallAdapter;
 import retrofit.Converter;
 import retrofit.JacksonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 
-final class NetworkModule {
-  ElifutService provideService(Retrofit retrofit) {
+@Module
+public class NetworkModule {
+  private final Context context;
+
+  public NetworkModule(Context context) {
+    this.context = context;
+  }
+
+  @Provides @Singleton ElifutService provideService(Retrofit retrofit) {
     return retrofit.create(ElifutService.class);
   }
 
-  Retrofit provideRetrofit(OkHttpClient client, HttpUrl baseUrl, Executor callbackExecutor,
-      Converter.Factory converterFactory) {
+  @Provides @Singleton Retrofit provideRetrofit(OkHttpClient client, HttpUrl baseUrl,
+      Executor callbackExecutor, Converter.Factory converterFactory, CallAdapter.Factory factory) {
     return new Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(client)
         .callbackExecutor(callbackExecutor)
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .addCallAdapterFactory(factory)
         .addConverterFactory(converterFactory)
         .build();
   }
 
-  HttpUrl provideBaseUrl() {
+  @Provides @Singleton Executor provideExecutor() {
+    return new ConcurrentUtil.MainThreadExecutor();
+  }
+
+  @Provides @Singleton CallAdapter.Factory provideCallAdapterFactory() {
+    return RxJavaCallAdapterFactory.create();
+  }
+
+  @Provides @Singleton HttpUrl provideBaseUrl() {
     return HttpUrl.parse("http://10.0.3.2:3000/");
   }
 
-  Converter.Factory provideConverterFactory(ObjectMapper objectMapper) {
+  @Provides @Singleton Converter.Factory provideConverterFactory(ObjectMapper objectMapper) {
     return JacksonConverterFactory.create(objectMapper);
   }
 
-  ObjectMapper provideObjectMapper() {
+  @Provides @Singleton ObjectMapper provideObjectMapper() {
     return new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
         .registerModules(new ServiceModule());
   }
 
-  Cache provideCache(Context context) {
+  @Provides @Singleton Cache provideCache() {
     File cacheDir = new File(context.getCacheDir(), "okhttp");
     long maxSize = 20L * 1024 * 1024;
     return new Cache(cacheDir, maxSize);
   }
 
-  OkHttpClient provideOkHttpClient(Cache cache) {
+  @Provides @Singleton OkHttpClient provideOkHttpClient(Cache cache) {
     return new OkHttpClient().setCache(cache);
   }
 }

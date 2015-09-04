@@ -41,42 +41,39 @@
         android:padding="24dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter your name below to get started"/>
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="What's your name?"
             app:hintAnimationEnabled="true">
 
             <EditText
                 android:id="@+id/input_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:hint="What's your name?"/>
 
         </android.support.design.widget.TextInputLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose your country"/>
 
         <Spinner
             android:id="@+id/countries_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_next"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:text="Next"/>
+        android:layout_gravity="bottom">
+
+        <Button
+            android:id="@+id/btn_next"
+            style="?android:attr/buttonBarPositiveButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Next"/>
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

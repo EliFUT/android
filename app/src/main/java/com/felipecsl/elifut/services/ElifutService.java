@@ -11,6 +11,5 @@ import rx.Observable;
 
 public interface ElifutService {
   @GET("/players/{id}.json") Observable<Response<Player>> player(int id);
-
   @GET("/nations.json") Observable<Response<List<Nation>>> nations();
 }

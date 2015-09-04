@@ -1,19 +1,15 @@
 package com.felipecsl.elifut.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Nation;
+import com.felipecsl.elifut.widget.NationTextView;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -41,12 +37,12 @@ public final class CountriesSpinnerAdapter extends BaseAdapter {
   }
 
   @Override public View getView(int position, View convertView, ViewGroup parent) {
-    final TextView v;
+    final NationTextView v;
     if (convertView == null) {
-      v = (TextView) layoutInflater.inflate(R.layout.layout_spinner_country, parent,
+      v = (NationTextView) layoutInflater.inflate(R.layout.layout_spinner_country, parent,
           false);
     } else {
-      v = (TextView) convertView;
+      v = (NationTextView) convertView;
     }
 
     Nation country = (Nation) getItem(position);
@@ -54,19 +50,8 @@ public final class CountriesSpinnerAdapter extends BaseAdapter {
 
     Picasso.with(context)
         .load(country.image().replace("localhost", "10.0.3.2"))
-        .placeholder(android.R.color.darker_gray)
-        .into(new Target() {
-      @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-        v.setCompoundDrawablesWithIntrinsicBounds(
-            new BitmapDrawable(context.getResources(), bitmap), null, null, null);
-      }
-
-      @Override public void onBitmapFailed(Drawable errorDrawable) {
-      }
-
-      @Override public void onPrepareLoad(Drawable placeHolderDrawable) {
-      }
-    });
+        .placeholder(R.drawable.image_placeholder)
+        .into(v);
 
     return v;
   }

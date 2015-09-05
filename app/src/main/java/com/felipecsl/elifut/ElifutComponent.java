@@ -2,6 +2,9 @@ package com.felipecsl.elifut;
 
 import android.content.Context;
 
+import com.felipecsl.elifut.activitiy.MainActivity;
+import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -10,6 +13,7 @@ import dagger.Component;
 @Component(modules = { NetworkModule.class, DataModule.class })
 public interface ElifutComponent {
   void inject(MainActivity mainActivity);
+  void inject(TeamDetailsActivity teamDetailsActivity);
 
   final class Initializer {
     private Initializer() {

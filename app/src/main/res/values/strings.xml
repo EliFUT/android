@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Elifoot Android</string>
+    <string name="app_name">EliFUT Android</string>
     <string name="title_activity_main">EliFUT</string>
+    <string name="title_activity_team_details">TeamDetailsActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

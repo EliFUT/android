@@ -1,5 +1,6 @@
 package com.felipecsl.elifut;
 
+import com.felipecsl.elifut.models.Nation;
 import com.squareup.moshi.Moshi;
 
 import javax.inject.Singleton;
@@ -18,7 +19,8 @@ public class DataModule {
 
   @Provides @Singleton Moshi provideMoshi() {
     return new Moshi.Builder()
-        .add(new NationsAdapterFactory())
+        .add(new NationListAdapterFactory())
+        .add(Nation.typeAdapterFactory())
         .build();
   }
 }

@@ -1,23 +1,24 @@
 package com.felipecsl.elifut.models;
 
+import android.os.Parcelable;
+
+import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+
 import java.util.List;
 
-final class Club {
-  private final String name;
-  private final List<Player> players;
-  private final League league;
+@AutoValue
+public abstract class Club extends Model implements Parcelable {
+  public abstract String name();
+  public abstract League league();
 
-  Club(String name, List<Player> players, League league) {
-    this.name = name;
-    this.players = players;
-    this.league = league;
+
+  public static JsonAdapter.Factory typeAdapterFactory() {
+    return AutoValue_Club.typeAdapterFactory();
   }
 
-  public String image() {
-    return null;
-  }
-
-  public static Club fromId(int anInt) {
-    return null;
+  // needed workaround for now.
+  @Override public int describeContents() {
+    return 0;
   }
 }

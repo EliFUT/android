@@ -1,15 +1,16 @@
 package com.felipecsl.elifut.models;
 
-final class League {
-  private final String name;
-  private final Nation nation;
+import android.os.Parcelable;
 
-  League(String name, Nation nation) {
-    this.name = name;
-    this.nation = nation;
-  }
+import com.google.auto.value.AutoValue;
 
-  public static League fromId(int id) {
-    return null;
+@AutoValue
+public abstract class League implements Parcelable {
+  public abstract String name();
+  public abstract Nation nation();
+
+  // needed workaround for now.
+  @Override public int describeContents() {
+    return 0;
   }
 }

@@ -1,35 +1,26 @@
 package com.felipecsl.elifut.models;
 
-public final class Nation extends Model {
-  private final int id;
-  private final int base_id;
-  private final String name;
-  private final String image;
+import android.os.Parcelable;
 
-  Nation(int id, int base_id, String name, String image) {
-    this.id = id;
-    this.base_id = base_id;
-    this.name = name;
-    this.image = image;
+import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+
+@AutoValue
+public abstract class Nation extends Model implements Parcelable {
+
+  public abstract String name();
+  public abstract String image();
+
+  public static JsonAdapter.Factory typeAdapterFactory() {
+    return AutoValue_Nation.typeAdapterFactory();
   }
 
-  Nation() {
-    this(0, 0, null, null);
-  }
-
-  public String image() {
-    return image;
-  }
-
-  public int id() {
-    return id;
-  }
-
-  public static Nation fromId(int id) {
-    return null;
+  // needed workaround for now.
+  @Override public int describeContents() {
+    return 0;
   }
 
   @Override public String toString() {
-    return name;
+    return name();
   }
 }

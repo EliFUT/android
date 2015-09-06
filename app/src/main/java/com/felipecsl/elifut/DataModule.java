@@ -1,5 +1,6 @@
 package com.felipecsl.elifut;
 
+import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Nation;
 import com.squareup.moshi.Moshi;
 
@@ -21,6 +22,7 @@ public class DataModule {
     return new Moshi.Builder()
         .add(new NationListAdapterFactory())
         .add(Nation.typeAdapterFactory())
+        .add(Club.typeAdapterFactory())
         .build();
   }
 }

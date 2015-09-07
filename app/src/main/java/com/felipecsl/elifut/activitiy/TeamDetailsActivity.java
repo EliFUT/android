@@ -3,7 +3,6 @@ package com.felipecsl.elifut.activitiy;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +18,6 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.services.ElifutService;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import javax.inject.Inject;
 
@@ -28,7 +26,6 @@ import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
 import retrofit.Response;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class TeamDetailsActivity extends AppCompatActivity {
@@ -66,10 +63,7 @@ public class TeamDetailsActivity extends AppCompatActivity {
 
     service.randomClub(nation.id())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<Response<Club>>() {
-          @Override public void onCompleted() {
-          }
-
+        .subscribe(new SimpleResponseObserver<Club>() {
           @Override public void onError(Throwable e) {
             Toast.makeText(TeamDetailsActivity.this, "Failed to load a club", Toast.LENGTH_SHORT)
                 .show();
@@ -79,29 +73,31 @@ public class TeamDetailsActivity extends AppCompatActivity {
           @Override public void onNext(Response<Club> response) {
             Club club = response.body();
             collapsingToolbar.setTitle(club.name());
-            Picasso.with(TeamDetailsActivity.this)
-                .load(club.remoteImage())
-                .into(new Target() {
-                  @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    backdrop.setImageBitmap(bitmap);
-                    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                      public void onGenerated(Palette palette) {
-                        int defaultColor = getResources().getColor(R.color.color_primary);
-                        int color = palette.getMutedColor(defaultColor);
-                        collapsingToolbar.setContentScrimColor(color);
-                        collapsingToolbar.setBackgroundColor(color);
-                      }
-                    });
-                  }
-
-                  @Override public void onBitmapFailed(Drawable errorDrawable) {
-                  }
-
-                  @Override public void onPrepareLoad(Drawable placeHolderDrawable) {
-                  }
-                });
+            loadBackdrop(club);
           }
         });
+  }
+
+  private void loadBackdrop(Club club) {
+    Picasso.with(TeamDetailsActivity.this)
+        .load(club.remoteImage())
+        .into(new SimpleTarget() {
+          @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            backdrop.setImageBitmap(bitmap);
+            loadPalette(bitmap);
+          }
+        });
+  }
+
+  private void loadPalette(Bitmap bitmap) {
+    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+      public void onGenerated(Palette palette) {
+        int defaultColor = getResources().getColor(R.color.color_primary);
+        int color = palette.getMutedColor(defaultColor);
+        collapsingToolbar.setContentScrimColor(color);
+        collapsingToolbar.setBackgroundColor(color);
+      }
+    });
   }
 
   @Override public void onSaveInstanceState(Bundle outState) {

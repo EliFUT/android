@@ -23,7 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Response;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,10 +50,7 @@ public class MainActivity extends AppCompatActivity {
     application.component().inject(this);
     service.nations()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<Response<List<Nation>>>() {
-          @Override public void onCompleted() {
-          }
-
+        .subscribe(new SimpleResponseObserver<List<Nation>>() {
           @Override public void onError(Throwable throwable) {
             Toast.makeText(MainActivity.this, "Failed to load list of countries",
                 Toast.LENGTH_SHORT).show();

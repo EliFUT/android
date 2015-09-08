@@ -60,35 +60,49 @@
                 android:layout_marginLeft="@dimen/card_margin"
                 android:layout_marginRight="@dimen/card_margin">
 
-            <LinearLayout
-                style="@style/Widget.CardContent"
+                <LinearLayout
+                    style="@style/Widget.CardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Info"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="4th division"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Brazil"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Manager: Felipão"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <FrameLayout
+                style="?android:attr/buttonBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btn_next"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Info"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="4th division" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Brazil" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Manager: Felipão" />
-
-            </LinearLayout>
-
-            </android.support.v7.widget.CardView>
+                    android:layout_gravity="end"
+                    android:text="Next"/>
+            </FrameLayout>
 
         </LinearLayout>
 

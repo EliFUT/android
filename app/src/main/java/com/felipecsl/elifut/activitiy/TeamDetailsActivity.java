@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
 import retrofit.Response;
@@ -65,8 +66,8 @@ public class TeamDetailsActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new SimpleResponseObserver<Club>() {
           @Override public void onError(Throwable e) {
-            Toast.makeText(TeamDetailsActivity.this, "Failed to load a club", Toast.LENGTH_SHORT)
-                .show();
+            Toast.makeText(
+                TeamDetailsActivity.this, "Failed to load a club", Toast.LENGTH_SHORT).show();
             Log.w(TAG, e);
           }
 
@@ -109,5 +110,9 @@ public class TeamDetailsActivity extends AppCompatActivity {
     return new Intent(context, TeamDetailsActivity.class)
         .putExtra(EXTRA_COUNTRY, nation)
         .putExtra(EXTRA_NAME, name);
+  }
+
+  @OnClick(R.id.btn_next) public void onClickNext() {
+
   }
 }

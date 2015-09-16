@@ -32,4 +32,8 @@ public abstract class Player extends Model {
   public static JsonAdapter.Factory typeAdapterFactory() {
     return AutoValue_Player.typeAdapterFactory();
   }
+
+  @Override public int describeContents() {
+    return 0;
+  }
 }

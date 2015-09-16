@@ -15,4 +15,8 @@ public abstract class Club extends Model {
   public static JsonAdapter.Factory typeAdapterFactory() {
     return AutoValue_Club.typeAdapterFactory();
   }
+
+  @Override public int describeContents() {
+    return 0;
+  }
 }

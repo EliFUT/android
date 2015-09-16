@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
   @Inject ElifutService service;
   private CountriesSpinnerAdapter nationsAdapter;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);

@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">EliFUT Android</string>
     <string name="title_activity_main">EliFUT</string>
-    <string name="title_activity_team_details">TeamDetailsActivity</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="fourth_division">4th Division</string>
+    <string name="info">Info</string>
+    <string name="manager_name">Manager: %1$s</string>
 </resources>

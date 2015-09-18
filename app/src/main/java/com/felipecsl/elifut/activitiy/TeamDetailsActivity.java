@@ -10,6 +10,7 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.felipecsl.elifut.ElifutApplication;
@@ -37,6 +38,9 @@ public class TeamDetailsActivity extends AppCompatActivity {
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
   @Bind(R.id.backdrop) ImageView backdrop;
+  @Bind(R.id.txt_club) TextView txtClub;
+  @Bind(R.id.txt_nation) TextView txtNation;
+  @Bind(R.id.txt_manager) TextView txtManager;
 
   @State Nation nation;
   @State String coachName;
@@ -47,6 +51,8 @@ public class TeamDetailsActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_team_details);
 
+    ButterKnife.bind(this);
+
     Icepick.restoreInstanceState(this, savedInstanceState);
 
     if (savedInstanceState == null) {
@@ -54,6 +60,9 @@ public class TeamDetailsActivity extends AppCompatActivity {
       coachName = intent.getStringExtra(EXTRA_NAME);
       nation = intent.getParcelableExtra(EXTRA_COUNTRY);
     }
+
+    txtNation.setText(nation.name());
+    txtManager.setText(getString(R.string.manager_name, coachName));
 
     ButterKnife.bind(this);
 
@@ -73,7 +82,8 @@ public class TeamDetailsActivity extends AppCompatActivity {
 
           @Override public void onNext(Response<Club> response) {
             Club club = response.body();
-            collapsingToolbar.setTitle(club.name());
+            collapsingToolbar.setTitle(club.shortName());
+            txtClub.setText(club.name());
             loadBackdrop(club);
           }
         });

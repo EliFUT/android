@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingBottom="10dp"
+  android:paddingTop="10dp">
+
+  <FrameLayout
+    android:id="@+id/player_layout"
+    android:layout_width="121dp"
+    android:layout_height="182dp"
+    android:layout_gravity="center">
+
+    <ImageView
+      android:id="@+id/img_player_quality"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:src="@drawable/gold"/>
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="20dp"
+      android:layout_marginTop="5dp"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/player_rating"
+        style="@style/AppTheme.TextAppearance.PlayerCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="75"/>
+
+      <TextView
+        android:id="@+id/player_position"
+        style="@style/AppTheme.TextAppearance.PlayerCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="-4dp"
+        android:textStyle="bold"
+        tools:text="CDM"/>
+
+      <ImageView
+        android:id="@+id/img_player_club"
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:layout_gravity="center"/>
+
+      <ImageView
+        android:id="@+id/img_player_nation"
+        android:layout_width="25dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+    <ImageView
+      android:id="@+id/player_image"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      android:layout_gravity="end"
+      android:layout_marginRight="5dp"
+      android:layout_marginTop="29.5dp"/>
+
+    <TextView
+      android:id="@+id/player_name"
+      style="@style/AppTheme.TextAppearance.PlayerCard"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="88dp"
+      android:singleLine="true"
+      android:textStyle="bold"
+      tools:text="AGUERO"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_marginTop="105dp"
+      android:paddingLeft="15dp"
+      android:paddingRight="15dp">
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:orientation="vertical"
+        android:baselineAligned="false">
+
+        <TextView
+          android:id="@+id/attribute_1"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="14.5dp"
+          android:textSize="12sp"
+          android:translationY="-1.5dp"
+          android:text="PAC"/>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="#aaaaaa"/>
+
+        <TextView
+          android:id="@+id/attribute_2"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="14.5dp"
+          android:textSize="12sp"
+          android:translationY="-1.5dp"
+          android:text="SHO"/>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="#aaaaaa"/>
+
+        <TextView
+          android:id="@+id/attribute_3"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="14.5dp"
+          android:textSize="12sp"
+          android:translationY="-1.5dp"
+          android:text="PAS"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:baselineAligned="false">
+
+        <TextView
+          android:id="@+id/attribute_4"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="14.5dp"
+          android:textSize="12sp"
+          android:translationY="-1.5dp"
+          android:text="DRI"/>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="#aaaaaa"/>
+
+        <TextView
+          android:id="@+id/attribute_5"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="14.5dp"
+          android:textSize="12sp"
+          android:translationY="-1.5dp"
+          android:text="DEF"/>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="#aaaaaa"/>
+
+        <TextView
+          android:id="@+id/attribute_6"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="14.5dp"
+          android:textSize="12sp"
+          android:translationY="-1.5dp"
+          android:text="PHY"/>
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </FrameLayout>
+
+</FrameLayout>

@@ -2,6 +2,7 @@ package com.felipecsl.elifut;
 
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Nation;
+import com.felipecsl.elifut.models.Player;
 import com.squareup.moshi.Moshi;
 
 import javax.inject.Singleton;
@@ -20,9 +21,12 @@ public class DataModule {
 
   @Provides @Singleton Moshi provideMoshi() {
     return new Moshi.Builder()
-        .add(new NationListAdapterFactory())
+        .add(new ModelListAdapterFactory<>(Nation.class))
+        .add(new ModelListAdapterFactory<>(Club.class))
+        .add(new ModelListAdapterFactory<>(Player.class))
         .add(Nation.typeAdapterFactory())
         .add(Club.typeAdapterFactory())
+        .add(Player.typeAdapterFactory())
         .build();
   }
 }

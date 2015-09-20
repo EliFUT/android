@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.felipecsl.elifut.activitiy.MainActivity;
 import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
+import com.felipecsl.elifut.fragment.TeamPlayersFragment;
 
 import javax.inject.Singleton;
 
@@ -14,6 +15,7 @@ import dagger.Component;
 public interface ElifutComponent {
   void inject(MainActivity mainActivity);
   void inject(TeamDetailsActivity teamDetailsActivity);
+  void inject(TeamPlayersFragment teamPlayersFragment);
 
   final class Initializer {
     private Initializer() {

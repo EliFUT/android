@@ -9,14 +9,19 @@ import com.squareup.moshi.JsonAdapter;
 public abstract class Club extends Model {
   public abstract String name();
   @Nullable public abstract String abbrev_name();
-  public abstract String image();
+  public abstract String small_image();
+  public abstract String large_image();
 
   public String shortName() {
     return abbrev_name() != null ? abbrev_name() : name();
   }
 
-  public String remoteImage() {
-    return image().replace("localhost", "10.0.3.2");
+  public String remoteImageLarge() {
+    return large_image().replace("localhost", "10.0.3.2");
+  }
+
+  public String remoteImageSmall() {
+    return small_image().replace("localhost", "10.0.3.2");
   }
 
   public static JsonAdapter.Factory typeAdapterFactory() {

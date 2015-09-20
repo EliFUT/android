@@ -1,32 +1,41 @@
 package com.felipecsl.elifut.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 
 @AutoValue
 public abstract class Player extends Model {
-  public abstract int id();
-  public abstract int baseId();
-  public abstract int resourceId();
+  public abstract String first_name();
+  public abstract String last_name();
+  public abstract String name();
+  @Nullable public abstract String common_name();
+  public abstract String position();
+  public abstract String image();
+  public abstract String nation_image();
   public abstract int rating();
-  public abstract int height();
-  public abstract int attribute1();
-  public abstract int attribute2();
-  public abstract int attribute3();
-  public abstract int attribute4();
-  public abstract int attribute5();
-  public abstract int attribute6();
-  public abstract boolean rare();
-  public abstract String firstName();
-  public abstract String lastName();
-  public abstract String commonName();
-  public abstract String dateOfBirth();
-  public abstract Foot foot();
-  public abstract Club club();
-  public abstract Nation nation();
+  public abstract String player_type();
+  public abstract int attribute_1();
+  public abstract int attribute_2();
+  public abstract int attribute_3();
+  public abstract int attribute_4();
+  public abstract int attribute_5();
+  public abstract int attribute_6();
+  public abstract String quality();
+  public abstract String color();
+
+  public String nationRemoteImageSmall() {
+    return nation_image().replace("localhost", "10.0.3.2");
+  }
 
   enum Foot {
     Left, Right
+  }
+
+  public String remoteImage() {
+    // TODO: fix this
+    return image().replace("localhost", "10.0.3.2");
   }
 
   public static JsonAdapter.Factory typeAdapterFactory() {

@@ -6,7 +6,4 @@ import rx.Observer;
 public abstract class SimpleResponseObserver<T> implements Observer<Response<T>> {
   @Override public void onCompleted() {
   }
-
-  @Override public void onNext(Response<T> response) {
-  }
 }

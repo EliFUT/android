@@ -14,10 +14,12 @@ import com.felipecsl.elifut.adapter.ViewPagerAdapter;
 import com.felipecsl.elifut.fragment.TeamDetailsFragment;
 import com.felipecsl.elifut.fragment.TeamPlayersFragment;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
 import retrofit.Response;
@@ -35,6 +37,7 @@ public class TeamDetailsActivity extends ElifutActivity {
   @State Nation nation;
   @State String coachName;
   @State Club club;
+  @State League league;
 
   public static Intent newIntent(Context context, Nation nation, String name) {
     return new Intent(context, TeamDetailsActivity.class)
@@ -59,14 +62,15 @@ public class TeamDetailsActivity extends ElifutActivity {
     if (savedInstanceState == null) {
       loadClub();
     } else {
-      onClubLoaded();
+      loadLeague();
     }
   }
 
   private void setupViewPager() {
     ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-    adapter.addFragment(TeamDetailsFragment.newInstance(club, coachName, nation), "Info");
-    adapter.addFragment(TeamPlayersFragment.newInstance(club), "Players");
+    adapter.addFragment(TeamDetailsFragment.newInstance(club, coachName, nation, league),
+        getString(R.string.infos));
+    adapter.addFragment(TeamPlayersFragment.newInstance(club), getString(R.string.players));
     viewPager.setAdapter(adapter);
     tabLayout.setupWithViewPager(viewPager);
   }
@@ -84,7 +88,7 @@ public class TeamDetailsActivity extends ElifutActivity {
           @Override public void onNext(Response<Club> response) {
             if (response.isSuccess()) {
               club = response.body();
-              onClubLoaded();
+              loadLeague();
             } else {
               Log.w(TAG, "Failed to load club");
             }
@@ -92,9 +96,26 @@ public class TeamDetailsActivity extends ElifutActivity {
         });
   }
 
-  private void onClubLoaded() {
-    toolbar.setTitle(club.shortName());
-    setupViewPager();
+  private void loadLeague() {
+    service.league(club.league_id())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new SimpleResponseObserver<League>() {
+          @Override public void onError(Throwable e) {
+            Toast.makeText(TeamDetailsActivity.this, "Failed to load league infos",
+                Toast.LENGTH_SHORT).show();
+            Log.w(TAG, e);
+          }
+
+          @Override public void onNext(Response<League> response) {
+            if (response.isSuccess()) {
+              league = response.body();
+              toolbar.setTitle(club.shortName());
+              setupViewPager();
+            } else {
+              Log.w(TAG, "Failed to load league infos");
+            }
+          }
+        });
   }
 
   public void setToolbarColor(int primaryColor, int secondaryColor) {
@@ -102,5 +123,13 @@ public class TeamDetailsActivity extends ElifutActivity {
     tabLayout.setBackgroundColor(primaryColor);
     tabLayout.setSelectedTabIndicatorColor(secondaryColor);
     getWindow().setStatusBarColor(primaryColor);
+  }
+
+  @OnClick(R.id.fab) public void onClickNext() {
+    if (league == null) {
+      // League not loaded yet...
+      return;
+    }
+    startActivity(LeagueDetailsActivity.newIntent(this, league, club));
   }
 }

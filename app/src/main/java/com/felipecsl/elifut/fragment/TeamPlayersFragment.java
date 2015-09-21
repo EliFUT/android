@@ -18,6 +18,7 @@ import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.models.Player;
 import com.felipecsl.elifut.util.FragmentBundler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,11 +33,13 @@ public final class TeamPlayersFragment extends ElifutFragment {
   private static final String TAG = TeamPlayersFragment.class.getSimpleName();
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
 
+  @Bind(R.id.progress_bar_layout) ViewGroup progressBarLayout;
   @Bind(R.id.recycler_players) RecyclerView playersList;
   @BindDimen(R.dimen.player_spacing) int playerSpacing;
 
   @State Club club;
   @State Nation nation;
+  @State ArrayList<Player> players;
 
   public static TeamPlayersFragment newInstance(Club club) {
     return FragmentBundler.make(new TeamPlayersFragment())
@@ -54,18 +57,25 @@ public final class TeamPlayersFragment extends ElifutFragment {
 
     GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
     playersList.setLayoutManager(layoutManager);
+    playersList.setHasFixedSize(true);
 
     if (savedInstanceState == null) {
       club = getArguments().getParcelable(EXTRA_CLUB);
+      loadPlayers();
+    } else {
+      onPlayersLoaded();
     }
-
-    loadPlayers();
 
     return v;
   }
 
+  private void onPlayersLoaded() {
+    progressBarLayout.setVisibility(View.GONE);
+    playersList.setAdapter(new PlayersAdapter(players, club));
+  }
+
   private void loadPlayers() {
-    service.clubPlayers(club.base_id())
+    service.playersByClub(club.id())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new SimpleResponseObserver<List<Player>>() {
           @Override public void onError(Throwable e) {
@@ -75,13 +85,13 @@ public final class TeamPlayersFragment extends ElifutFragment {
 
           @Override public void onNext(Response<List<Player>> response) {
             if (response.isSuccess()) {
-              List<Player> players = response.body();
-              playersList.setAdapter(new PlayersAdapter(players, club));
+              players = new ArrayList<>(response.body());
+              onPlayersLoaded();
             } else {
+              progressBarLayout.setVisibility(View.GONE);
               Log.w(TAG, "Failed to load club players");
             }
           }
         });
   }
-
 }

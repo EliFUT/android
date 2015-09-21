@@ -7,4 +7,9 @@
     <string name="team_info">Team Info</string>
     <string name="manager_name">Manager: %1$s</string>
     <string name="league">League</string>
+    <string name="select_country">Select your country</string>
+    <string name="whats_your_name">What\'s your name?</string>
+  <string name="title_activity_match_progress">MatchProgressActivity</string>
+    <string name="infos">Info</string>
+    <string name="players">Players</string>
 </resources>

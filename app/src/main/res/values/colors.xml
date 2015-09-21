@@ -5,4 +5,5 @@
   <color name="window_background">#FFF5F5F5</color>
   <color name="club_table_header_bg">#2d2a2a</color>
   <color name="club_table_header_text_color">#e1e1e1</color>
+  <color name="white">#ffffff</color>
 </resources>

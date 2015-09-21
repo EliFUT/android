@@ -20,11 +20,13 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
 import retrofit.Response;
@@ -38,7 +40,9 @@ public class LeagueDetailsActivity extends ElifutActivity {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
       Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
         public void onGenerated(Palette palette) {
-          toolbar.setBackgroundColor(palette.getDarkVibrantColor(colorPrimary));
+          int color = palette.getDarkVibrantColor(colorPrimary);
+          toolbar.setBackgroundColor(color);
+          getWindow().setStatusBarColor(color);
         }
       });
     }
@@ -49,6 +53,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
   @BindColor(R.color.color_primary) int colorPrimary;
 
   @State League league;
+  @State ArrayList<Club> allClubs;
   @State Club currentClub;
 
   public static Intent newIntent(Context context, League league, Club currentClub) {
@@ -66,12 +71,14 @@ public class LeagueDetailsActivity extends ElifutActivity {
     setSupportActionBar(toolbar);
 
     if (savedInstanceState == null) {
-      league = getIntent().getParcelableExtra(EXTRA_LEAGUE);
-      currentClub = getIntent().getParcelableExtra(EXTRA_CURRENT_CLUB);
+      Intent intent = getIntent();
+      league = intent.getParcelableExtra(EXTRA_LEAGUE);
+      currentClub = intent.getParcelableExtra(EXTRA_CURRENT_CLUB);
     }
 
     LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
     recyclerView.setLayoutManager(layout);
+    recyclerView.setHasFixedSize(true);
     recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
 
     loadClubs();
@@ -94,10 +101,11 @@ public class LeagueDetailsActivity extends ElifutActivity {
             Log.w(TAG, e);
           }
 
-          @Override public void onNext(Response<List<Club>> listResponse) {
+          @Override public void onNext(Response<List<Club>> response) {
             toolbar.setTitle(league.name());
-            if (listResponse.isSuccess()) {
-              ClubsAdapter adapter = new ClubsAdapter(listResponse.body(), currentClub);
+            if (response.isSuccess()) {
+              allClubs = new ArrayList<>(response.body());
+              ClubsAdapter adapter = new ClubsAdapter(allClubs, currentClub);
               recyclerView.setAdapter(adapter);
               recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
             } else {
@@ -105,5 +113,9 @@ public class LeagueDetailsActivity extends ElifutActivity {
             }
           }
         });
+  }
+
+  @OnClick(R.id.fab) public void onClickNext() {
+    startActivity(MatchProgressActivity.newIntent(this, currentClub, allClubs.get(0)));
   }
 }

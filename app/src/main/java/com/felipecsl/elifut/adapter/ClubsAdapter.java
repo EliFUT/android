@@ -70,9 +70,14 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
     }
 
     void bind(int pos, Club club) {
+      int typeface = selectedClub.equals(club) ? Typeface.BOLD : Typeface.NORMAL;
       position.setText(String.valueOf(pos + 1));
       clubName.setText(club.abbrev_name());
-      clubName.setTypeface(null, selectedClub.equals(club) ? Typeface.BOLD : Typeface.NORMAL);
+      clubName.setTypeface(null, typeface);
+      wins.setTypeface(null, typeface);
+      draws.setTypeface(null, typeface);
+      losses.setTypeface(null, typeface);
+      goalsDifference.setTypeface(null, typeface);
     }
   }
 

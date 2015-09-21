@@ -50,9 +50,18 @@
         android:id="@+id/input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="What's your name?"/>
+        android:hint="@string/whats_your_name"/>
 
     </android.support.design.widget.TextInputLayout>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/select_country"
+      android:textSize="12sp"
+      android:textColor="#333333"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="30dp"/>
 
     <Spinner
       android:id="@+id/countries_spinner"

@@ -4,6 +4,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="fourth_division">4th Division</string>
-    <string name="info">Info</string>
+    <string name="team_info">Team Info</string>
     <string name="manager_name">Manager: %1$s</string>
+    <string name="league">League</string>
 </resources>

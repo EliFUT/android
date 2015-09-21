@@ -5,17 +5,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.activitiy.LeagueDetailsActivity;
+import com.felipecsl.elifut.activitiy.SimpleResponseObserver;
 import com.felipecsl.elifut.activitiy.SimpleTarget;
 import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
+import com.felipecsl.elifut.util.FragmentBundler;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -24,12 +30,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
+import retrofit.Response;
+import rx.android.schedulers.AndroidSchedulers;
 
-public final class TeamDetailsFragment extends Fragment {
+public final class TeamDetailsFragment extends ElifutFragment {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
   private static final String EXTRA_COACH_NAME = "COACH_NAME";
   private static final String EXTRA_NATION = "NATION";
-  private final SimpleTarget target = new SimpleTarget() {
+  private static final String TAG = TeamDetailsFragment.class.getSimpleName();
+  private final SimpleTarget clubLogoTarget = new SimpleTarget() {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
       imgClubLogo.setImageBitmap(bitmap);
       loadPalette(bitmap);
@@ -37,9 +46,11 @@ public final class TeamDetailsFragment extends Fragment {
   };
 
   @Bind(R.id.img_club_logo) ImageView imgClubLogo;
+  @Bind(R.id.img_league_logo) ImageView imgLeagueLogo;
   @Bind(R.id.txt_club) TextView txtClub;
   @Bind(R.id.txt_nation) TextView txtNation;
   @Bind(R.id.txt_manager) TextView txtManager;
+  @Bind(R.id.txt_league) TextView txtLeague;
   @BindColor(R.color.color_primary) int colorPrimary;
   @BindColor(R.color.color_secondary) int colorSecondary;
 
@@ -47,14 +58,14 @@ public final class TeamDetailsFragment extends Fragment {
   @State Nation nation;
   @State String coachName;
 
+  private League league;
+
   public static Fragment newInstance(Club club, String coachName, Nation nation) {
-    TeamDetailsFragment fragment = new TeamDetailsFragment();
-    Bundle bundle = new Bundle();
-    bundle.putParcelable(EXTRA_CLUB, club);
-    bundle.putParcelable(EXTRA_NATION, nation);
-    bundle.putString(EXTRA_COACH_NAME, coachName);
-    fragment.setArguments(bundle);
-    return fragment;
+    return FragmentBundler.make(new TeamDetailsFragment())
+        .putParcelable(EXTRA_CLUB, club)
+        .putParcelable(EXTRA_NATION, nation)
+        .putString(EXTRA_COACH_NAME, coachName)
+        .build();
   }
 
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +74,7 @@ public final class TeamDetailsFragment extends Fragment {
 
     ButterKnife.bind(this, v);
     Icepick.restoreInstanceState(this, savedInstanceState);
+    daggerComponent().inject(this);
 
     if (savedInstanceState == null) {
       Bundle arguments = getArguments();
@@ -76,14 +88,38 @@ public final class TeamDetailsFragment extends Fragment {
     txtManager.setText(getString(R.string.manager_name, coachName));
 
     loadTeamLogo();
+    loadLeague();
 
     return v;
+  }
+
+  private void loadLeague() {
+    service.league(club.league_id())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new SimpleResponseObserver<League>() {
+          @Override public void onError(Throwable e) {
+            Toast.makeText(getActivity(), "Failed to load league infos", Toast.LENGTH_SHORT).show();
+            Log.w(TAG, e);
+          }
+
+          @Override public void onNext(Response<League> response) {
+            if (response.isSuccess()) {
+              league = response.body();
+              txtLeague.setText(league.name());
+              Picasso.with(getActivity())
+                  .load(league.remoteImage())
+                  .into(imgLeagueLogo);
+            } else {
+              Log.w(TAG, "Failed to load league infos");
+            }
+          }
+        });
   }
 
   private void loadTeamLogo() {
     Picasso.with(getActivity())
         .load(club.remoteImageLarge())
-        .into(target);
+        .into(clubLogoTarget);
   }
 
   private void loadPalette(Bitmap bitmap) {
@@ -91,12 +127,16 @@ public final class TeamDetailsFragment extends Fragment {
       public void onGenerated(Palette palette) {
         TeamDetailsActivity activity = (TeamDetailsActivity) getActivity();
         activity.setToolbarColor(
-            palette.getDarkMutedColor(colorPrimary), palette.getVibrantColor(colorSecondary));
+            palette.getDarkVibrantColor(colorPrimary), palette.getLightMutedColor(colorSecondary));
       }
     });
   }
 
   @OnClick(R.id.fab) public void onClickNext() {
-
+    if (league == null) {
+      // League not loaded yet...
+      return;
+    }
+    startActivity(LeagueDetailsActivity.newIntent(getActivity(), league, club));
   }
 }

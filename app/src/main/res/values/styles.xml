@@ -17,6 +17,18 @@
   </style>
 
   <style name="AppTheme.TextAppearance.PlayerCard" parent="TextAppearance.AppCompat.Subhead">
+    <item name="android:textColor">#36221B</item>
+    <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="AppTheme.League">
+  </style>
+
+  <style name="AppTheme.League.Standings">
+  </style>
+
+  <style name="AppTheme.League.Standings.ClubRow">
+    <item name="android:textColor">#615d5d</item>
     <item name="android:textSize">13sp</item>
   </style>
 </resources>

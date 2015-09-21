@@ -55,6 +55,7 @@ dependencies {
   compile 'frankiesardo:icepick:3.1.0'
   compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
   compile 'com.facebook.stetho:stetho-js-rhino:1.2.0'
+  compile 'com.timehop.stickyheadersrecyclerview:library:0.4.2'
   provided 'frankiesardo:icepick-processor:3.1.0'
   compile 'com.google.auto.value:auto-value:1.2-SNAPSHOT'
   apt 'com.google.dagger:dagger-compiler:2.0.1'

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.widget.NationTextView;
+import com.google.common.base.Preconditions;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,8 +20,8 @@ public final class CountriesSpinnerAdapter extends BaseAdapter {
   private final LayoutInflater layoutInflater;
 
   public CountriesSpinnerAdapter(Context context, List<Nation> countries) {
-    this.context = context;
-    this.countries = countries;
+    this.context = Preconditions.checkNotNull(context);
+    this.countries = Preconditions.checkNotNull(countries);
     layoutInflater = LayoutInflater.from(context);
   }
 

@@ -1,4 +1,4 @@
-package com.felipecsl.elifut.widget;
+package com.felipecsl.elifut.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

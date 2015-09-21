@@ -66,7 +66,7 @@
       android:layout_height="60dp"
       android:layout_gravity="end"
       android:layout_marginRight="5dp"
-      android:layout_marginTop="29.5dp"/>
+      android:layout_marginTop="31dp"/>
 
     <TextView
       android:id="@+id/player_name"
@@ -74,7 +74,9 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center_horizontal"
-      android:layout_marginTop="88dp"
+      android:paddingLeft="7dp"
+      android:paddingRight="7dp"
+      android:layout_marginTop="89dp"
       android:singleLine="true"
       android:textStyle="bold"
       tools:text="AGUERO"/>
@@ -84,8 +86,8 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal"
       android:layout_marginTop="105dp"
-      android:paddingLeft="15dp"
-      android:paddingRight="15dp">
+      android:paddingLeft="18dp"
+      android:paddingRight="12dp">
 
       <LinearLayout
         android:layout_width="0dp"

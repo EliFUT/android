@@ -11,6 +11,7 @@ public abstract class Club extends Model {
   @Nullable public abstract String abbrev_name();
   public abstract String small_image();
   public abstract String large_image();
+  public abstract int league_id();
 
   public String shortName() {
     return abbrev_name() != null ? abbrev_name() : name();

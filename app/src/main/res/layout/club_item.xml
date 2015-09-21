@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="horizontal"
+  android:paddingLeft="10dp">
+
+  <TextView
+    style="@style/AppTheme.League.Standings.ClubRow"
+    android:id="@+id/txt_position"
+    android:layout_width="25dp"
+    android:layout_height="wrap_content"
+    tools:text="1"/>
+
+  <TextView
+    style="@style/AppTheme.League.Standings.ClubRow"
+    android:id="@+id/txt_club_name"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    tools:text="Grêmio"/>
+
+  <TextView
+    style="@style/AppTheme.League.Standings.ClubRow"
+    android:id="@+id/txt_points"
+    android:layout_width="40dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:textStyle="bold"
+    android:background="#eeeeee"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:text="0"/>
+
+  <TextView
+    style="@style/AppTheme.League.Standings.ClubRow"
+    android:id="@+id/txt_wins"
+    android:layout_width="40dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="0" />
+
+  <TextView
+    style="@style/AppTheme.League.Standings.ClubRow"
+    android:id="@+id/txt_draws"
+    android:layout_width="40dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="#eeeeee"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:text="0"/>
+
+  <TextView
+    style="@style/AppTheme.League.Standings.ClubRow"
+    android:id="@+id/txt_losses"
+    android:layout_width="40dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="0"/>
+
+  <TextView
+    style="@style/AppTheme.League.Standings.ClubRow"
+    android:id="@+id/txt_goals_difference"
+    android:layout_width="40dp"
+    android:layout_height="wrap_content"
+    android:background="#eeeeee"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:gravity="center"
+    android:text="0"/>
+
+</LinearLayout>

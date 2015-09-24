@@ -60,7 +60,7 @@ public class MainActivity extends ElifutActivity {
         });
   }
 
-  @OnClick(R.id.btn_next) public void onClickNext() {
+  @OnClick(R.id.fab) public void onClickNext() {
     Nation nation = (Nation) nationsAdapter.getItem(countriesSpinner.getSelectedItemPosition());
     startActivity(TeamDetailsActivity.newIntent(this, nation, inputName.getText().toString()));
   }

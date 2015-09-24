@@ -17,14 +17,6 @@ public abstract class Club extends Model {
     return abbrev_name() != null ? abbrev_name() : name();
   }
 
-  public String remoteImageLarge() {
-    return large_image().replace("localhost", "10.0.3.2");
-  }
-
-  public String remoteImageSmall() {
-    return small_image().replace("localhost", "10.0.3.2");
-  }
-
   public static JsonAdapter.Factory typeAdapterFactory() {
     return AutoValue_Club.typeAdapterFactory();
   }

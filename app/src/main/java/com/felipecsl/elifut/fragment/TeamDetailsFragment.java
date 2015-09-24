@@ -91,13 +91,13 @@ public final class TeamDetailsFragment extends ElifutFragment {
   private void loadLeague() {
     txtLeague.setText(league.name());
     Picasso.with(getActivity())
-        .load(league.remoteImage())
+        .load(league.image())
         .into(imgLeagueLogo);
   }
 
   private void loadTeamLogo() {
     Picasso.with(getActivity())
-        .load(club.remoteImageLarge())
+        .load(club.large_image())
         .into(clubLogoTarget);
   }
 

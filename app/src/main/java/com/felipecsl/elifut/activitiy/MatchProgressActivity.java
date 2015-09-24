@@ -92,7 +92,7 @@ public class MatchProgressActivity extends ElifutActivity {
       txtView = txtTeamAway;
     }
     Picasso.with(MatchProgressActivity.this)
-        .load(club.remoteImageLarge())
+        .load(club.large_image())
         .into(imgView);
 
     txtView.setText(club.name().substring(0, 3).toUpperCase());

@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.felipecsl.elifut.R;
@@ -50,6 +52,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
 
   @Bind(R.id.recycler_clubs) RecyclerView recyclerView;
   @Bind(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.progress_bar_layout) ViewGroup progressBarLayout;
   @BindColor(R.color.color_primary) int colorPrimary;
 
   @State League league;
@@ -87,7 +90,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
 
   private void loadLeagueImage() {
     Picasso.with(this)
-        .load(league.remoteImage())
+        .load(league.image())
         .into(leagueLogoTarget);
   }
 
@@ -96,12 +99,14 @@ public class LeagueDetailsActivity extends ElifutActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new SimpleResponseObserver<List<Club>>() {
           @Override public void onError(Throwable e) {
+            progressBarLayout.setVisibility(View.GONE);
             Toast.makeText(LeagueDetailsActivity.this, "Failed to load list of clubs",
                 Toast.LENGTH_SHORT).show();
             Log.w(TAG, e);
           }
 
           @Override public void onNext(Response<List<Club>> response) {
+            progressBarLayout.setVisibility(View.GONE);
             toolbar.setTitle(league.name());
             if (response.isSuccess()) {
               allClubs = new ArrayList<>(response.body());

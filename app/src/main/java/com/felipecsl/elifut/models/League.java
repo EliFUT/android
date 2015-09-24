@@ -11,10 +11,6 @@ public abstract class League extends Model {
   @Nullable public abstract String abbrev_name();
   public abstract String image();
 
-  public String remoteImage() {
-    return image().replace("localhost", "10.0.3.2");
-  }
-
   public static JsonAdapter.Factory typeAdapterFactory() {
     return AutoValue_League.typeAdapterFactory();
   }

@@ -25,17 +25,8 @@ public abstract class Player extends Model {
   public abstract String quality();
   public abstract String color();
 
-  public String nationRemoteImageSmall() {
-    return nation_image().replace("localhost", "10.0.3.2");
-  }
-
   enum Foot {
     Left, Right
-  }
-
-  public String remoteImage() {
-    // TODO: fix this
-    return image().replace("localhost", "10.0.3.2");
   }
 
   public static JsonAdapter.Factory typeAdapterFactory() {

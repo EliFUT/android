@@ -85,15 +85,15 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
       attribute6.setText(createAttributeSpan(player.attribute_6(), "PHY"));
 
       Picasso.with(context)
-          .load(player.remoteImage())
+          .load(player.image())
           .into(imgPlayer);
 
       Picasso.with(context)
-          .load(club.remoteImageSmall())
+          .load(club.small_image())
           .into(imgClub);
 
       Picasso.with(context)
-          .load(player.nationRemoteImageSmall())
+          .load(player.nation_image())
           .into(imgNation);
     }
   }

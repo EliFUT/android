@@ -46,27 +46,25 @@ dependencies {
   compile 'com.squareup.picasso:picasso:2.5.2'
   compile 'io.reactivex:rxjava:1.0.14'
   compile 'io.reactivex:rxandroid:1.0.1'
-  compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
-  compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta1'
-  compile 'com.squareup.retrofit:converter-moshi:2.0.0-beta1'
-  compile 'com.squareup.moshi:moshi:1.0.0-SNAPSHOT'
+  compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+  compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+  compile 'com.squareup.retrofit:converter-moshi:2.0.0-beta2'
+  compile 'com.squareup.moshi:moshi:1.0.0'
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'com.google.dagger:dagger:2.0.1'
   compile 'frankiesardo:icepick:3.1.0'
   compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
   compile 'com.facebook.stetho:stetho-js-rhino:1.2.0'
   compile 'com.timehop.stickyheadersrecyclerview:library:0.4.2'
-  provided 'frankiesardo:icepick-processor:3.1.0'
+  compile 'com.google.guava:guava:18.0'
   compile 'com.google.auto.value:auto-value:1.2-SNAPSHOT'
-  apt 'com.google.dagger:dagger-compiler:2.0.1'
 
-  compile 'com.ryanharter.auto.value:auto-value-parcel:0.2-SNAPSHOT'
+  provided 'frankiesardo:icepick-processor:3.1.0'
   provided 'org.glassfish:javax.annotation:10.0-b28'
 
-  // remove-me once this is fixed for Java 7
-//     compile 'com.ryanharter.auto.value:auto-value-moshi:0.1-SNAPSHOT'
-  compile files('libs/auto-value-moshi-0.1-SNAPSHOT.jar')
-  // end
+  apt 'com.google.dagger:dagger-compiler:2.0.1'
+  apt 'com.ryanharter.auto.value:auto-value-parcel:0.2-SNAPSHOT'
+  apt 'com.ryanharter.auto.value:auto-value-moshi:0.1-SNAPSHOT'
 
   testCompile 'junit:junit:4.12'
 }

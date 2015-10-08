@@ -22,8 +22,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
-import retrofit.Response;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class TeamDetailsActivity extends ElifutActivity {
   private static final String EXTRA_COUNTRY = "EXTRA_COUNTRY";
@@ -77,7 +75,7 @@ public class TeamDetailsActivity extends ElifutActivity {
 
   private void loadClub() {
     service.randomClub(nation.id())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(this.<Club>applyTransformations())
         .subscribe(new SimpleResponseObserver<Club>() {
           @Override public void onError(Throwable e) {
             Toast.makeText(
@@ -85,20 +83,16 @@ public class TeamDetailsActivity extends ElifutActivity {
             Log.w(TAG, e);
           }
 
-          @Override public void onNext(Response<Club> response) {
-            if (response.isSuccess()) {
-              club = response.body();
-              loadLeague();
-            } else {
-              Log.w(TAG, "Failed to load club");
-            }
+          @Override public void onNext(Club response) {
+            club = response;
+            loadLeague();
           }
         });
   }
 
   private void loadLeague() {
     service.league(club.league_id())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(this.<League>applyTransformations())
         .subscribe(new SimpleResponseObserver<League>() {
           @Override public void onError(Throwable e) {
             Toast.makeText(TeamDetailsActivity.this, "Failed to load league infos",
@@ -106,14 +100,10 @@ public class TeamDetailsActivity extends ElifutActivity {
             Log.w(TAG, e);
           }
 
-          @Override public void onNext(Response<League> response) {
-            if (response.isSuccess()) {
-              league = response.body();
-              toolbar.setTitle(club.shortName());
-              setupViewPager();
-            } else {
-              Log.w(TAG, "Failed to load league infos");
-            }
+          @Override public void onNext(League response) {
+            league = response;
+            toolbar.setTitle(club.shortName());
+            setupViewPager();
           }
         });
   }

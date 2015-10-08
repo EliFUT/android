@@ -18,8 +18,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
-import retrofit.Response;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class MatchProgressActivity extends ElifutActivity {
   private static final String EXTRA_CLUB_HOME = "EXTRA_CLUB_HOME";
@@ -62,7 +60,7 @@ public class MatchProgressActivity extends ElifutActivity {
 
   private void loadClub(int id) {
     service.club(id)
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(this.<Club>applyTransformations())
         .subscribe(new SimpleResponseObserver<Club>() {
           @Override public void onError(Throwable e) {
             Toast.makeText(MatchProgressActivity.this, "Failed to load club",
@@ -70,13 +68,8 @@ public class MatchProgressActivity extends ElifutActivity {
             Log.w(TAG, e);
           }
 
-          @Override public void onNext(Response<Club> response) {
-            if (response.isSuccess()) {
-              fillClubInfos(response.body());
-            } else {
-              Toast.makeText(MatchProgressActivity.this, "Failed to load club",
-                  Toast.LENGTH_SHORT).show();
-            }
+          @Override public void onNext(Club response) {
+            fillClubInfos(response);
           }
         });
   }

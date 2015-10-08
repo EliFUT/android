@@ -17,8 +17,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit.Response;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends ElifutActivity {
   private static final String TAG = "MainActivity";
@@ -41,7 +39,7 @@ public class MainActivity extends ElifutActivity {
     collapsingToolbar.setTitle(getTitle());
 
     service.nations()
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(this.<List<Nation>>applyTransformations())
         .subscribe(new SimpleResponseObserver<List<Nation>>() {
           @Override public void onError(Throwable throwable) {
             Toast.makeText(MainActivity.this, "Failed to load list of countries",
@@ -49,13 +47,9 @@ public class MainActivity extends ElifutActivity {
             Log.w(TAG, throwable);
           }
 
-          @Override public void onNext(Response<List<Nation>> response) {
-            if (response.isSuccess()) {
-              nationsAdapter = new CountriesSpinnerAdapter(MainActivity.this, response.body());
-              countriesSpinner.setAdapter(nationsAdapter);
-            } else {
-              Log.w(TAG, "Failed to load list of countries");
-            }
+          @Override public void onNext(List<Nation> response) {
+            nationsAdapter = new CountriesSpinnerAdapter(MainActivity.this, response);
+            countriesSpinner.setAdapter(nationsAdapter);
           }
         });
   }

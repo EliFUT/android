@@ -15,8 +15,10 @@
   tools:context="com.felipecsl.elifut.activitiy.MatchProgressActivity">
 
   <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center">
 
     <TextView
       android:id="@+id/txt_team_home"

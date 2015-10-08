@@ -26,8 +26,6 @@ import butterknife.BindDimen;
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
-import retrofit.Response;
-import rx.android.schedulers.AndroidSchedulers;
 
 public final class TeamPlayersFragment extends ElifutFragment {
   private static final String TAG = TeamPlayersFragment.class.getSimpleName();
@@ -76,21 +74,16 @@ public final class TeamPlayersFragment extends ElifutFragment {
 
   private void loadPlayers() {
     service.playersByClub(club.id())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(this.<List<Player>>applyTransformations())
         .subscribe(new SimpleResponseObserver<List<Player>>() {
           @Override public void onError(Throwable e) {
             Toast.makeText(getActivity(), "Failed to load club players", Toast.LENGTH_SHORT).show();
             Log.w(TAG, e);
           }
 
-          @Override public void onNext(Response<List<Player>> response) {
-            if (response.isSuccess()) {
-              players = new ArrayList<>(response.body());
-              onPlayersLoaded();
-            } else {
-              progressBarLayout.setVisibility(View.GONE);
-              Log.w(TAG, "Failed to load club players");
-            }
+          @Override public void onNext(List<Player> response) {
+            players = new ArrayList<>(response);
+            onPlayersLoaded();
           }
         });
   }

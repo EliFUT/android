@@ -31,8 +31,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
-import retrofit.Response;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class LeagueDetailsActivity extends ElifutActivity {
   private static final String EXTRA_LEAGUE = "EXTRA_LEAGUE";
@@ -96,7 +94,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
 
   private void loadClubs() {
     service.clubsByLeague(league.id())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(this.<List<Club>>applyTransformations())
         .subscribe(new SimpleResponseObserver<List<Club>>() {
           @Override public void onError(Throwable e) {
             progressBarLayout.setVisibility(View.GONE);
@@ -105,17 +103,13 @@ public class LeagueDetailsActivity extends ElifutActivity {
             Log.w(TAG, e);
           }
 
-          @Override public void onNext(Response<List<Club>> response) {
+          @Override public void onNext(List<Club> response) {
             progressBarLayout.setVisibility(View.GONE);
             toolbar.setTitle(league.name());
-            if (response.isSuccess()) {
-              allClubs = new ArrayList<>(response.body());
-              ClubsAdapter adapter = new ClubsAdapter(allClubs, currentClub);
-              recyclerView.setAdapter(adapter);
-              recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
-            } else {
-              Log.w(TAG, "Failed to load list of clubs");
-            }
+            allClubs = new ArrayList<>(response);
+            ClubsAdapter adapter = new ClubsAdapter(allClubs, currentClub);
+            recyclerView.setAdapter(adapter);
+            recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
           }
         });
   }

@@ -21,11 +21,7 @@
         </activity>
         <activity android:name=".activitiy.TeamDetailsActivity" />
         <activity android:name=".activitiy.LeagueDetailsActivity" />
-        <activity
-            android:name=".activitiy.MatchProgressActivity"
-            android:label="@string/title_activity_match_progress"
-            android:theme="@style/AppTheme" >
-        </activity>
+        <activity android:name=".activitiy.MatchProgressActivity" />
     </application>
 
 </manifest>

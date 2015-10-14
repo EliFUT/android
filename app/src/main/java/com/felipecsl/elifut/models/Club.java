@@ -13,6 +13,11 @@ public abstract class Club extends Model {
   public abstract String large_image();
   public abstract int league_id();
 
+  public static Club create(
+      int id, String name, String smallImage, String largeImage, int leagueId) {
+    return new AutoValue_Club(id, id, name, null, smallImage, largeImage, leagueId);
+  }
+
   public String shortName() {
     return abbrev_name() != null ? abbrev_name() : name();
   }

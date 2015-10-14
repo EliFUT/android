@@ -1,4 +1,4 @@
-package com.felipecsl.elifoot_android;
+package com.felipecsl.elifut;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

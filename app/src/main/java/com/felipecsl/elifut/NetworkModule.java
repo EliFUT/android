@@ -2,7 +2,6 @@ package com.felipecsl.elifut;
 
 import android.content.Context;
 
-import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.felipecsl.elifut.services.ElifutService;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.HttpUrl;
@@ -63,7 +62,7 @@ public class NetworkModule {
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Cache cache) {
     OkHttpClient client = new OkHttpClient();
-    client.networkInterceptors().add(new StethoInterceptor());
+    StethoInitializer.addInterceptor(client.networkInterceptors());
     return client.setCache(cache);
   }
 }

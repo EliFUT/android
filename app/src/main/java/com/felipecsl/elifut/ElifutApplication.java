@@ -1,16 +1,14 @@
 package com.felipecsl.elifut;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
-import com.facebook.stetho.Stetho;
-
-public class ElifutApplication extends Application {
+public class ElifutApplication extends MultiDexApplication {
   private ElifutComponent component;
 
   @Override public void onCreate() {
     super.onCreate();
     component = ElifutComponent.Initializer.init(this);
-    Stetho.initializeWithDefaults(this);
+    StethoInitializer.initialize(this);
   }
 
   public ElifutComponent component() {

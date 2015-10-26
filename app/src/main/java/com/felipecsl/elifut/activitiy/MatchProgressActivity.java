@@ -9,9 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.felipecsl.elifut.DefaultMatchStatistics;
+import com.felipecsl.elifut.MatchStatistics;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.widget.FractionView;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.math3.random.Well19937c;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,14 +29,28 @@ public class MatchProgressActivity extends ElifutActivity {
   private static final String EXTRA_CLUB_AWAY = "EXTRA_CLUB_AWAY";
   private static final String TAG = MatchProgressActivity.class.getSimpleName();
 
+  @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.img_team_home) ImageView imgTeamHome;
   @Bind(R.id.img_team_away) ImageView imgTeamAway;
   @Bind(R.id.txt_team_home) TextView txtTeamHome;
   @Bind(R.id.txt_team_away) TextView txtTeamAway;
-  @Bind(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.fractionView) FractionView fractionView;
 
   @State Club home;
   @State Club away;
+
+  private int elapsedMinutes = 0;
+
+  private final Runnable timerRunnable = new Runnable() {
+    @Override public void run() {
+      if (elapsedMinutes < 45) {
+        fractionView.setFraction(++elapsedMinutes, 60);
+        if (!isFinishing()) {
+          fractionView.postDelayed(this, 1000);
+        }
+      }
+    }
+  };
 
   public static Intent newIntent(Context context, Club home, Club away) {
     return new Intent(context, MatchProgressActivity.class)
@@ -54,13 +73,18 @@ public class MatchProgressActivity extends ElifutActivity {
       away = intent.getParcelableExtra(EXTRA_CLUB_AWAY);
     }
 
-    loadClub(home.id());
-    loadClub(away.id());
+    loadClubs(home.id(), away.id());
   }
 
-  private void loadClub(int id) {
-    service.club(id)
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    fractionView.removeCallbacks(timerRunnable);
+  }
+
+  private void loadClubs(int homeId, int awayId) {
+    service.club(homeId)
         .compose(this.<Club>applyTransformations())
+        .mergeWith(service.club(awayId).compose(this.<Club>applyTransformations()))
         .subscribe(new SimpleResponseObserver<Club>() {
           @Override public void onError(Throwable e) {
             Toast.makeText(MatchProgressActivity.this, "Failed to load club",
@@ -70,6 +94,13 @@ public class MatchProgressActivity extends ElifutActivity {
 
           @Override public void onNext(Club response) {
             fillClubInfos(response);
+          }
+
+          @Override public void onCompleted() {
+            DefaultMatchStatistics statistics = new DefaultMatchStatistics(home, away,
+                new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
+
+            fractionView.postDelayed(timerRunnable, 1000);
           }
         });
   }

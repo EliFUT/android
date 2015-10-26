@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:paddingBottom="@dimen/activity_vertical_margin"
   android:paddingLeft="@dimen/activity_horizontal_margin"
   android:paddingRight="@dimen/activity_horizontal_margin"
   android:paddingTop="@dimen/activity_vertical_margin"
-  android:paddingBottom="@dimen/activity_vertical_margin"
-  android:orientation="vertical"
   app:layout_behavior="@string/appbar_scrolling_view_behavior"
-  tools:showIn="@layout/activity_match_progress"
-  tools:context="com.felipecsl.elifut.activitiy.MatchProgressActivity">
+  tools:context="com.felipecsl.elifut.activitiy.MatchProgressActivity"
+  tools:showIn="@layout/activity_match_progress">
+
+  <com.felipecsl.elifut.widget.FractionView
+    android:id="@+id/fractionView"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_gravity="end"
+    android:layout_marginBottom="20dp"/>
 
   <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:orientation="horizontal">
 
     <TextView
       android:id="@+id/txt_team_home"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginRight="10dp"
       android:layout_gravity="center_vertical"
+      android:layout_marginRight="10dp"
       tools:text="GRE"/>
 
     <ImageView
@@ -37,29 +44,29 @@
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:layout_marginRight="10dp"
+      android:text="0"
       android:textSize="25sp"
       android:textStyle="bold"
-      android:layout_marginRight="10dp"
-      tools:text="3"
-      android:layout_gravity="center_vertical"
-      android:text="0"/>
+      tools:text="3"/>
 
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginRight="10dp"
       android:layout_gravity="center_vertical"
+      android:layout_marginRight="10dp"
       android:text="✕"/>
 
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:layout_marginRight="10dp"
+      android:text="0"
       android:textSize="25sp"
       android:textStyle="bold"
-      android:layout_marginRight="10dp"
-      tools:text="0"
-      android:layout_gravity="center_vertical"
-      android:text="0"/>
+      tools:text="0"/>
 
     <ImageView
       android:id="@+id/img_team_away"
@@ -71,8 +78,8 @@
       android:id="@+id/txt_team_away"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginRight="10dp"
       android:layout_gravity="center_vertical"
+      android:layout_marginRight="10dp"
       tools:text="INT"/>
 
   </LinearLayout>

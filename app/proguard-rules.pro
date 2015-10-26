@@ -20,6 +20,7 @@
 -dontoptimize
 -dontpreverify
 -dontobfuscate
+-dontpreverify
 -dontwarn com.google.common.**
 -dontwarn com.google.auto.**
 -dontwarn sun.misc.**
@@ -37,7 +38,6 @@
 -dontwarn rx.internal.util.unsafe.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn autovalue.shaded.com.google.common$.auto.service.processor.$AutoServiceProcessor
--dontwarn butterknife.internal.ButterKnifeProcessor
 -keep class **$$Icepick { *; }
 -keep public class * extends android.view.View
 -dontnote com.google.vending.licensing.ILicensingService
@@ -65,6 +65,13 @@
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
 -keep class * implements android.os.Parcelable {
     *;
 }
@@ -86,3 +93,19 @@
 -keepclassmembers class ** { ** actionIntent; }
 -keepclassmembers class ** { ** SDK_INT; }
 -dontwarn retrofit.**
+-dontwarn android.support.v7.**
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
+
+# ButterKnife
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}

@@ -14,10 +14,21 @@ android {
     versionName "1.0"
     multiDexEnabled true
   }
+  signingConfigs {
+    release {
+      storeFile file("elifut.keystore")
+      storeFile file(ELIFUT_CERT_PATH)
+      storePassword ELIFUT_CERT_PASSWORD
+      keyAlias "elifut"
+      keyPassword ELIFUT_CERT_PASSWORD
+    }
+  }
+
   buildTypes {
     release {
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.release
     }
   }
 

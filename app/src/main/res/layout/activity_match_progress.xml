@@ -30,6 +30,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
-    android:src="@android:drawable/ic_media_pause"/>
+    android:src="@drawable/ic_pause_white_48dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

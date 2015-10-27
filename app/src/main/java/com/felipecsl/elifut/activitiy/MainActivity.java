@@ -8,11 +8,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.felipecsl.elifut.ElifutPreferences;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.CountriesSpinnerAdapter;
 import com.felipecsl.elifut.models.Nation;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,6 +29,8 @@ public class MainActivity extends ElifutActivity {
   @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
   @Bind(R.id.countries_spinner) Spinner countriesSpinner;
 
+  @Inject ElifutPreferences preferences;
+
   private CountriesSpinnerAdapter nationsAdapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,13 @@ public class MainActivity extends ElifutActivity {
     setSupportActionBar(toolbar);
 
     collapsingToolbar.setTitle(getTitle());
+
+    Nation nation = preferences.retrieveUserNation();
+
+    if (nation != null) {
+      onNationSelected(nation);
+      return;
+    }
 
     service.nations()
         .compose(this.<List<Nation>>applyTransformations())
@@ -55,7 +67,14 @@ public class MainActivity extends ElifutActivity {
   }
 
   @OnClick(R.id.fab) public void onClickNext() {
-    Nation nation = (Nation) nationsAdapter.getItem(countriesSpinner.getSelectedItemPosition());
-    startActivity(TeamDetailsActivity.newIntent(this, nation, inputName.getText().toString()));
+    onNationSelected((Nation) nationsAdapter.getItem(countriesSpinner.getSelectedItemPosition()));
+  }
+
+  private void onNationSelected(Nation nation) {
+    String coachName = inputName.getText().toString();
+    preferences.storeUserNation(nation);
+    preferences.storeCoachName(coachName);
+    startActivity(TeamDetailsActivity.newIntent(this, nation, coachName));
+    finish();
   }
 }

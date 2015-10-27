@@ -30,7 +30,7 @@ public interface ElifutComponent {
     static ElifutComponent init(Context context) {
       return DaggerElifutComponent.builder()
           .networkModule(new NetworkModule(context))
-          .dataModule(new DataModule())
+          .dataModule(new DataModule(context))
           .build();
     }
   }

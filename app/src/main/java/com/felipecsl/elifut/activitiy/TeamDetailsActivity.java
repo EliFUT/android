@@ -3,12 +3,15 @@ package com.felipecsl.elifut.activitiy;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.felipecsl.elifut.ElifutPreferences;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.ViewPagerAdapter;
 import com.felipecsl.elifut.fragment.TeamDetailsFragment;
@@ -16,6 +19,8 @@ import com.felipecsl.elifut.fragment.TeamPlayersFragment;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,6 +36,9 @@ public class TeamDetailsActivity extends ElifutActivity {
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.viewpager) ViewPager viewPager;
   @Bind(R.id.tabs) TabLayout tabLayout;
+  @Bind(R.id.fab) FloatingActionButton fab;
+
+  @Inject ElifutPreferences preferences;
 
   @State Nation nation;
   @State String coachName;
@@ -50,6 +58,14 @@ public class TeamDetailsActivity extends ElifutActivity {
     daggerComponent().inject(this);
     Icepick.restoreInstanceState(this, savedInstanceState);
     setSupportActionBar(toolbar);
+
+    league = preferences.retrieveUserLeague();
+    club = preferences.retrieveUserClub();
+
+    if (league != null && club != null) {
+      goNext();
+      return;
+    }
 
     if (savedInstanceState == null) {
       Intent intent = getIntent();
@@ -104,6 +120,7 @@ public class TeamDetailsActivity extends ElifutActivity {
             league = response;
             toolbar.setTitle(club.shortName());
             setupViewPager();
+            fab.setVisibility(View.VISIBLE);
           }
         });
   }
@@ -116,10 +133,13 @@ public class TeamDetailsActivity extends ElifutActivity {
   }
 
   @OnClick(R.id.fab) public void onClickNext() {
-    if (league == null) {
-      // League not loaded yet...
-      return;
-    }
+    preferences.storeUserClub(club);
+    preferences.storeUserLeague(league);
+    goNext();
+  }
+
+  private void goNext() {
     startActivity(LeagueDetailsActivity.newIntent(this, league, club));
+    finish();
   }
 }

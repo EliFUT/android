@@ -9,6 +9,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.io.File;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -63,6 +64,7 @@ public class NetworkModule {
   @Provides @Singleton OkHttpClient provideOkHttpClient(Cache cache) {
     OkHttpClient client = new OkHttpClient();
     StethoInitializer.addInterceptor(client.networkInterceptors());
+    client.setReadTimeout(15, TimeUnit.SECONDS);
     return client.setCache(cache);
   }
 }

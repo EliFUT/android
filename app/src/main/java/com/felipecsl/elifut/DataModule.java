@@ -1,5 +1,7 @@
 package com.felipecsl.elifut;
 
+import android.content.Context;
+
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
@@ -15,6 +17,11 @@ import retrofit.MoshiConverterFactory;
 
 @Module
 public class DataModule {
+  private final Context context;
+
+  public DataModule(Context context) {
+    this.context = context;
+  }
 
   @Provides @Singleton Converter.Factory provideConverterFactory(Moshi moshi) {
     return MoshiConverterFactory.create(moshi);
@@ -30,5 +37,10 @@ public class DataModule {
         .add(Player.typeAdapterFactory())
         .add(League.typeAdapterFactory())
         .build();
+  }
+
+  @Provides @Singleton ElifutPreferences providePreferences(Moshi moshi) {
+    return new ElifutPreferences(
+        context.getSharedPreferences("ELIFUT_DATA", Context.MODE_PRIVATE), moshi);
   }
 }

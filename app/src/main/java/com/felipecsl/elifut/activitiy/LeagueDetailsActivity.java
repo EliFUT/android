@@ -24,6 +24,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -115,6 +116,8 @@ public class LeagueDetailsActivity extends ElifutActivity {
   }
 
   @OnClick(R.id.fab) public void onClickNext() {
-    startActivity(MatchProgressActivity.newIntent(this, currentClub, allClubs.get(0)));
+    Club randomClub = allClubs.get(new Random().nextInt(allClubs.size()));
+    startActivity(MatchProgressActivity.newIntent(this, currentClub, randomClub));
+    finish();
   }
 }

@@ -11,4 +11,7 @@
   <string name="whats_your_name">What\'s your name?</string>
   <string name="infos">Info</string>
   <string name="players">Players</string>
+  <string name="match_paused">Match paused.</string>
+  <string name="match_resumed">Match resumed.</string>
+  <string name="end_first_half">End of first half.</string>
 </resources>

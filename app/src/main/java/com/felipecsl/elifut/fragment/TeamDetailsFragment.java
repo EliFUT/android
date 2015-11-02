@@ -23,7 +23,6 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
-import icepick.Icepick;
 import icepick.State;
 
 public final class TeamDetailsFragment extends ElifutFragment {
@@ -67,7 +66,6 @@ public final class TeamDetailsFragment extends ElifutFragment {
     View v = inflater.inflate(R.layout.fragment_team_details, container, false);
 
     ButterKnife.bind(this, v);
-    Icepick.restoreInstanceState(this, savedInstanceState);
     daggerComponent().inject(this);
 
     if (savedInstanceState == null) {

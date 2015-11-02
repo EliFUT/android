@@ -1,12 +1,13 @@
 package com.felipecsl.elifut.models;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 
 @AutoValue
-public abstract class Club extends Model {
+public abstract class Club extends Model implements Parcelable {
   public abstract String name();
   @Nullable public abstract String abbrev_name();
   public abstract String small_image();

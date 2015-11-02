@@ -25,7 +25,6 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import icepick.Icepick;
 import icepick.State;
 
 public class TeamDetailsActivity extends ElifutActivity {
@@ -51,12 +50,11 @@ public class TeamDetailsActivity extends ElifutActivity {
         .putExtra(EXTRA_NAME, name);
   }
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_team_details);
     ButterKnife.bind(this);
     daggerComponent().inject(this);
-    Icepick.restoreInstanceState(this, savedInstanceState);
     setSupportActionBar(toolbar);
 
     league = preferences.retrieveUserLeague();

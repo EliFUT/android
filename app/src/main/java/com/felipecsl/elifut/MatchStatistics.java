@@ -3,8 +3,11 @@ package com.felipecsl.elifut;
 import android.support.annotation.Nullable;
 
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Goal;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
+
+import java.util.List;
 
 public interface MatchStatistics {
   public static final float HOME_WIN_PROBABILITY = .465f;
@@ -18,8 +21,8 @@ public interface MatchStatistics {
   boolean isDraw();
   boolean isHomeWin();
   boolean isAwayWin();
-  int homeGoals();
-  int awayGoals();
+  List<Goal> homeGoals();
+  List<Goal> awayGoals();
   String finalScore();
   String refereeName();
   ClubStatistics homeStatistics();

@@ -3,7 +3,9 @@ package com.felipecsl.elifut.activitiy;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,15 +15,18 @@ import com.felipecsl.elifut.DefaultMatchStatistics;
 import com.felipecsl.elifut.MatchStatistics;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Goal;
+import com.felipecsl.elifut.models.MatchEvent;
 import com.felipecsl.elifut.widget.FractionView;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.math3.random.Well19937c;
 
+import java.util.Set;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import icepick.Icepick;
 import icepick.State;
 
 public class MatchProgressActivity extends ElifutActivity {
@@ -34,20 +39,31 @@ public class MatchProgressActivity extends ElifutActivity {
   @Bind(R.id.img_team_away) ImageView imgTeamAway;
   @Bind(R.id.txt_team_home) TextView txtTeamHome;
   @Bind(R.id.txt_team_away) TextView txtTeamAway;
+  @Bind(R.id.txt_team_home_goals) TextView txtTeamHomeGoals;
+  @Bind(R.id.txt_team_away_goals) TextView txtTeamAwayGoals;
   @Bind(R.id.fractionView) FractionView fractionView;
+  @Bind(R.id.fab) FloatingActionButton playPauseButton;
 
   @State Club home;
   @State Club away;
-
-  private int elapsedMinutes = 0;
+  @State boolean isRunning;
+  @State int elapsedMinutes;
+  @State boolean isSecondHalf;
+  @State DefaultMatchStatistics statistics;
 
   private final Runnable timerRunnable = new Runnable() {
     @Override public void run() {
+      if (isFinishing())
+        return;
+
       if (elapsedMinutes < 45) {
-        fractionView.setFraction(++elapsedMinutes, 60);
-        if (!isFinishing()) {
-          fractionView.postDelayed(this, 1000);
-        }
+        advanceTimer();
+      } else if (!isSecondHalf) {
+        Toast.makeText(MatchProgressActivity.this,
+            getString(R.string.end_first_half), Toast.LENGTH_SHORT).show();
+        isSecondHalf = true;
+        elapsedMinutes = 0;
+        advanceTimer();
       }
     }
   };
@@ -58,12 +74,10 @@ public class MatchProgressActivity extends ElifutActivity {
         .putExtra(EXTRA_CLUB_AWAY, away);
   }
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_match_progress);
     ButterKnife.bind(this);
-    Icepick.restoreInstanceState(this, savedInstanceState);
     daggerComponent().inject(this);
     setSupportActionBar(toolbar);
 
@@ -78,7 +92,7 @@ public class MatchProgressActivity extends ElifutActivity {
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    fractionView.removeCallbacks(timerRunnable);
+    stopTimer();
   }
 
   private void loadClubs(int homeId, int awayId) {
@@ -97,10 +111,10 @@ public class MatchProgressActivity extends ElifutActivity {
           }
 
           @Override public void onCompleted() {
-            DefaultMatchStatistics statistics = new DefaultMatchStatistics(home, away,
+            statistics = new DefaultMatchStatistics(home, away,
                 new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
 
-            fractionView.postDelayed(timerRunnable, 1000);
+            startTimer();
           }
         });
   }
@@ -122,7 +136,41 @@ public class MatchProgressActivity extends ElifutActivity {
     txtView.setText(club.name().substring(0, 3).toUpperCase());
   }
 
-  @OnClick(R.id.fab) public void onClickPause() {
+  private void stopTimer() {
+    fractionView.removeCallbacks(timerRunnable);
+    isRunning = false;
+  }
 
+  private void startTimer() {
+    fractionView.postDelayed(timerRunnable, DateUtils.SECOND_IN_MILLIS);
+    isRunning = true;
+  }
+
+  private void advanceTimer() {
+    Set<MatchEvent> events = statistics.eventsAtTime(elapsedMinutes);
+    for (MatchEvent event : events) {
+      if (event instanceof Goal) {
+        addGoal(((Goal) event).club().equals(home) ? txtTeamHomeGoals : txtTeamAwayGoals);
+      }
+    }
+    fractionView.setFraction(++elapsedMinutes, 60);
+    fractionView.postDelayed(timerRunnable, DateUtils.SECOND_IN_MILLIS);
+  }
+
+  private void addGoal(TextView txtScore) {
+    int currGoals = Integer.parseInt(txtScore.getText().toString());
+    txtScore.setText(String.valueOf(++currGoals));
+  }
+
+  @OnClick(R.id.fab) public void onClickPause() {
+    if (isRunning) {
+      stopTimer();
+      Toast.makeText(this, R.string.match_paused, Toast.LENGTH_SHORT).show();
+      playPauseButton.setImageResource(R.drawable.ic_play_arrow_white_48dp);
+    } else {
+      startTimer();
+      Toast.makeText(this, R.string.match_resumed, Toast.LENGTH_SHORT).show();
+      playPauseButton.setImageResource(R.drawable.ic_pause_white_48dp);
+    }
   }
 }

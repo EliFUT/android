@@ -30,7 +30,6 @@ import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import icepick.Icepick;
 import icepick.State;
 
 public class LeagueDetailsActivity extends ElifutActivity {
@@ -64,11 +63,10 @@ public class LeagueDetailsActivity extends ElifutActivity {
         .putExtra(EXTRA_CURRENT_CLUB, currentClub);
   }
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_league_details);
     ButterKnife.bind(this);
-    Icepick.restoreInstanceState(this, savedInstanceState);
     daggerComponent().inject(this);
     setSupportActionBar(toolbar);
 

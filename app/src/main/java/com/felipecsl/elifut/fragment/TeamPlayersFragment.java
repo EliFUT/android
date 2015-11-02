@@ -24,7 +24,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.BindDimen;
 import butterknife.ButterKnife;
-import icepick.Icepick;
 import icepick.State;
 
 public final class TeamPlayersFragment extends ElifutFragment {
@@ -50,7 +49,6 @@ public final class TeamPlayersFragment extends ElifutFragment {
     View v = inflater.inflate(R.layout.fragment_team_players, container, false);
 
     ButterKnife.bind(this, v);
-    Icepick.restoreInstanceState(this, savedInstanceState);
     daggerComponent().inject(this);
 
     GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);

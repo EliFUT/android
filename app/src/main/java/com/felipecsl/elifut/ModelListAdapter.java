@@ -33,11 +33,14 @@ final class ModelListAdapter<T extends Model> extends JsonAdapter<List<T>> {
   }
 
   @Override public void toJson(JsonWriter writer, List<T> value) throws IOException {
+    writer.beginObject();
+    writer.name(type.getSimpleName().toLowerCase());
     writer.beginArray();
     JsonAdapter<T> adapter = moshi.adapter(type);
     for (T n : value) {
       adapter.toJson(writer, n);
     }
     writer.endArray();
+    writer.endObject();
   }
 }

@@ -12,10 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.felipecsl.elifut.DefaultMatchStatistics;
+import com.felipecsl.elifut.ElifutPreferences;
 import com.felipecsl.elifut.MatchStatistics;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
+import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.MatchEvent;
 import com.felipecsl.elifut.widget.FractionView;
 import com.squareup.picasso.Picasso;
@@ -23,6 +25,8 @@ import com.squareup.picasso.Picasso;
 import org.apache.commons.math3.random.Well19937c;
 
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.BindString;
@@ -49,9 +53,12 @@ public class MatchProgressActivity extends ElifutActivity {
   @Bind(R.id.txt_team_home_goals) TextView txtTeamHomeGoals;
   @Bind(R.id.txt_team_away_goals) TextView txtTeamAwayGoals;
   @Bind(R.id.fractionView) FractionView fractionView;
-  @Bind(R.id.fab) FloatingActionButton playPauseButton;
+  @Bind(R.id.fab_play_pause) FloatingActionButton playPauseButton;
+  @Bind(R.id.fab_done) FloatingActionButton doneButton;
   @BindString(R.string.end_first_half) String strEndOfFirstHalf;
   @BindString(R.string.end_match) String strEndOfMatch;
+
+  @Inject ElifutPreferences preferences;
 
   @State Club home;
   @State Club away;
@@ -108,10 +115,9 @@ public class MatchProgressActivity extends ElifutActivity {
             statistics = new DefaultMatchStatistics(home, away,
                 new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
 
-            String winner = !statistics.isDraw()
-                ? statistics.winner().abbrev_name() + " win" : "draw";
+            String winner = !statistics.isDraw() ? statistics.winner().abbrev_name() : "draw";
             finalScoreMessage =
-                "Game result is " + winner + ". Final score " + statistics.finalScore();
+                winner + " is the winner. Final score " + statistics.finalScore() + ".";
             Log.d(TAG, finalScoreMessage);
 
             startTimer();
@@ -171,6 +177,8 @@ public class MatchProgressActivity extends ElifutActivity {
               appendEvent(strEndOfMatch);
               appendEvent(finalScoreMessage);
               playPauseButton.setVisibility(View.GONE);
+              doneButton.setVisibility(View.VISIBLE);
+              fractionView.setFraction(45, 60);
             }
           }
         }));
@@ -181,7 +189,7 @@ public class MatchProgressActivity extends ElifutActivity {
     txtMatchEvents.setText(text + "\n" + txtMatchEvents.getText());
   }
 
-  @OnClick(R.id.fab) public void onClickPause() {
+  @OnClick(R.id.fab_play_pause) public void onClickPause() {
     if (isRunning) {
       stopTimer();
       Toast.makeText(this, R.string.match_paused, Toast.LENGTH_SHORT).show();
@@ -191,5 +199,11 @@ public class MatchProgressActivity extends ElifutActivity {
       Toast.makeText(this, R.string.match_resumed, Toast.LENGTH_SHORT).show();
       playPauseButton.setImageResource(R.drawable.ic_pause_white_48dp);
     }
+  }
+
+  @OnClick(R.id.fab_done) public void onClickDone() {
+    League league = preferences.retrieveUserLeague();
+    Club club = preferences.retrieveUserClub();
+    startActivity(LeagueDetailsActivity.newIntent(this, league, club));
   }
 }

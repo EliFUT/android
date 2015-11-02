@@ -32,6 +32,10 @@ android {
     }
   }
 
+  testOptions {
+    unitTests.returnDefaultValues = true
+  }
+
   productFlavors {
     fastL {
       minSdkVersion 21

@@ -27,7 +27,7 @@ public class DefaultMatchStatisticsTest {
     assertThat(stats.away()).isEqualTo(away);
     assertThat(stats.winner()).isEqualTo(home);
     assertThat(stats.loser()).isEqualTo(away);
-    assertThat(stats.finalScore()).isEqualTo("1x0");
+    assertThat(stats.finalScore()).isEqualTo("4x0");
     assertThat(stats.isDraw()).isEqualTo(false);
     assertThat(stats.homeGoals().size()).isEqualTo(4);
     assertThat(stats.awayGoals().size()).isEqualTo(0);

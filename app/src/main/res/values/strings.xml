@@ -15,4 +15,5 @@
   <string name="match_resumed">Match resumed.</string>
   <string name="end_first_half">End of first half.</string>
   <string name="end_match">End of match.</string>
+  <string name="match_progress">Match progress</string>
 </resources>

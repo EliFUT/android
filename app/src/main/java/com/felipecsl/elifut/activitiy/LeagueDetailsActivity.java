@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.felipecsl.elifut.ElifutPreferences;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.ClubsAdapter;
 import com.felipecsl.elifut.models.Club;
@@ -25,6 +26,8 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -53,6 +56,8 @@ public class LeagueDetailsActivity extends ElifutActivity {
   @Bind(R.id.progress_bar_layout) ViewGroup progressBarLayout;
   @BindColor(R.color.color_primary) int colorPrimary;
 
+  @Inject ElifutPreferences preferences;
+
   @State League league;
   @State ArrayList<Club> allClubs;
   @State Club currentClub;
@@ -70,19 +75,24 @@ public class LeagueDetailsActivity extends ElifutActivity {
     daggerComponent().inject(this);
     setSupportActionBar(toolbar);
 
-    if (savedInstanceState == null) {
-      Intent intent = getIntent();
-      league = intent.getParcelableExtra(EXTRA_LEAGUE);
-      currentClub = intent.getParcelableExtra(EXTRA_CURRENT_CLUB);
-    }
-
     LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
     recyclerView.setLayoutManager(layout);
     recyclerView.setHasFixedSize(true);
     recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
 
-    loadClubs();
-    loadLeagueImage();
+    if (savedInstanceState == null) {
+      Intent intent = getIntent();
+      league = intent.getParcelableExtra(EXTRA_LEAGUE);
+      currentClub = intent.getParcelableExtra(EXTRA_CURRENT_CLUB);
+      allClubs = new ArrayList<>(preferences.retrieveLeagueClubs());
+    }
+
+    if (allClubs == null || allClubs.isEmpty()) {
+      loadClubs();
+      loadLeagueImage();
+    } else {
+      onClubsRetrieved();
+    }
   }
 
   private void loadLeagueImage() {
@@ -103,17 +113,25 @@ public class LeagueDetailsActivity extends ElifutActivity {
           }
 
           @Override public void onNext(List<Club> response) {
-            progressBarLayout.setVisibility(View.GONE);
-            toolbar.setTitle(league.name());
             allClubs = new ArrayList<>(response);
-            ClubsAdapter adapter = new ClubsAdapter(allClubs, currentClub);
-            recyclerView.setAdapter(adapter);
-            recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
+            preferences.storeLeagueClubs(allClubs);
+            onClubsRetrieved();
           }
         });
   }
 
+  private void onClubsRetrieved() {
+    progressBarLayout.setVisibility(View.GONE);
+    toolbar.setTitle(league.name());
+    ClubsAdapter adapter = new ClubsAdapter(allClubs, currentClub);
+    recyclerView.setAdapter(adapter);
+    recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
+  }
+
   @OnClick(R.id.fab) public void onClickNext() {
+    if (allClubs == null) {
+      return;
+    }
     Club randomClub = allClubs.get(new Random().nextInt(allClubs.size()));
     startActivity(MatchProgressActivity.newIntent(this, currentClub, randomClub));
     finish();

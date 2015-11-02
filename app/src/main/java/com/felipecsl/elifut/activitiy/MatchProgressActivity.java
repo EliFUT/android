@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,12 +22,18 @@ import com.squareup.picasso.Picasso;
 
 import org.apache.commons.math3.random.Well19937c;
 
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
+import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.State;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.subscriptions.CompositeSubscription;
 
 public class MatchProgressActivity extends ElifutActivity {
   private static final String EXTRA_CLUB_HOME = "EXTRA_CLUB_HOME";
@@ -39,34 +45,22 @@ public class MatchProgressActivity extends ElifutActivity {
   @Bind(R.id.img_team_away) ImageView imgTeamAway;
   @Bind(R.id.txt_team_home) TextView txtTeamHome;
   @Bind(R.id.txt_team_away) TextView txtTeamAway;
+  @Bind(R.id.txt_match_events) TextView txtMatchEvents;
   @Bind(R.id.txt_team_home_goals) TextView txtTeamHomeGoals;
   @Bind(R.id.txt_team_away_goals) TextView txtTeamAwayGoals;
   @Bind(R.id.fractionView) FractionView fractionView;
   @Bind(R.id.fab) FloatingActionButton playPauseButton;
+  @BindString(R.string.end_first_half) String strEndOfFirstHalf;
+  @BindString(R.string.end_match) String strEndOfMatch;
 
   @State Club home;
   @State Club away;
   @State boolean isRunning;
   @State int elapsedMinutes;
-  @State boolean isSecondHalf;
   @State DefaultMatchStatistics statistics;
 
-  private final Runnable timerRunnable = new Runnable() {
-    @Override public void run() {
-      if (isFinishing())
-        return;
-
-      if (elapsedMinutes < 45) {
-        advanceTimer();
-      } else if (!isSecondHalf) {
-        Toast.makeText(MatchProgressActivity.this,
-            getString(R.string.end_first_half), Toast.LENGTH_SHORT).show();
-        isSecondHalf = true;
-        elapsedMinutes = 0;
-        advanceTimer();
-      }
-    }
-  };
+  private CompositeSubscription subscriptions = new CompositeSubscription();
+  private String finalScoreMessage;
 
   public static Intent newIntent(Context context, Club home, Club away) {
     return new Intent(context, MatchProgressActivity.class)
@@ -114,6 +108,12 @@ public class MatchProgressActivity extends ElifutActivity {
             statistics = new DefaultMatchStatistics(home, away,
                 new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
 
+            String winner = !statistics.isDraw()
+                ? statistics.winner().abbrev_name() + " win" : "draw";
+            finalScoreMessage =
+                "Game result is " + winner + ". Final score " + statistics.finalScore();
+            Log.d(TAG, finalScoreMessage);
+
             startTimer();
           }
         });
@@ -133,33 +133,52 @@ public class MatchProgressActivity extends ElifutActivity {
         .load(club.large_image())
         .into(imgView);
 
-    txtView.setText(club.name().substring(0, 3).toUpperCase());
+    txtView.setText(club.abbrev_name().substring(0, 3).toUpperCase());
   }
 
   private void stopTimer() {
-    fractionView.removeCallbacks(timerRunnable);
+    subscriptions.clear();
     isRunning = false;
   }
 
   private void startTimer() {
-    fractionView.postDelayed(timerRunnable, DateUtils.SECOND_IN_MILLIS);
+    subscriptions.add(statistics.eventsObservable(elapsedMinutes)
+        .map(new Func1<MatchEvent, Goal>() {
+          @Override public Goal call(MatchEvent matchEvent) {
+            return (Goal) matchEvent;
+          }
+        })
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Goal>() {
+          @Override public void call(Goal goal) {
+            TextView txtScore = goal.club().equals(home) ? txtTeamHomeGoals : txtTeamAwayGoals;
+            int currGoals = Integer.parseInt(txtScore.getText().toString());
+            txtScore.setText(String.valueOf(++currGoals));
+            appendEvent(goal.time() + "' " + goal.club().abbrev_name() + " goal.");
+          }
+        }));
+
+    subscriptions.add(Observable.interval(0, 1, TimeUnit.SECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Long>() {
+          @Override public void call(Long _) {
+            elapsedMinutes++;
+            fractionView.setFraction(elapsedMinutes % 45, 60);
+            if (elapsedMinutes == 45) {
+              appendEvent(strEndOfFirstHalf);
+            } else if (elapsedMinutes == 90) {
+              stopTimer();
+              appendEvent(strEndOfMatch);
+              appendEvent(finalScoreMessage);
+              playPauseButton.setVisibility(View.GONE);
+            }
+          }
+        }));
     isRunning = true;
   }
 
-  private void advanceTimer() {
-    Set<MatchEvent> events = statistics.eventsAtTime(elapsedMinutes);
-    for (MatchEvent event : events) {
-      if (event instanceof Goal) {
-        addGoal(((Goal) event).club().equals(home) ? txtTeamHomeGoals : txtTeamAwayGoals);
-      }
-    }
-    fractionView.setFraction(++elapsedMinutes, 60);
-    fractionView.postDelayed(timerRunnable, DateUtils.SECOND_IN_MILLIS);
-  }
-
-  private void addGoal(TextView txtScore) {
-    int currGoals = Integer.parseInt(txtScore.getText().toString());
-    txtScore.setText(String.valueOf(++currGoals));
+  private void appendEvent(String text) {
+    txtMatchEvents.setText(text + "\n" + txtMatchEvents.getText());
   }
 
   @OnClick(R.id.fab) public void onClickPause() {

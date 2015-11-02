@@ -3,6 +3,7 @@ package com.felipecsl.elifut;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
@@ -14,11 +15,15 @@ import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.Well19937c;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
+  private static final String TAG = DefaultMatchStatistics.class.getSimpleName();
   private final Club home;
   private final Club away;
 
@@ -45,6 +50,7 @@ public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
     this.away = away;
 
     float result = random.nextFloat();
+    Log.d(TAG, "winner result was " + result);
     if (result <= MatchStatistics.HOME_WIN_PROBABILITY) {
       winner = home;
     } else if (result <= MatchStatistics.DRAW_PROBABILITY) {
@@ -52,20 +58,20 @@ public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
     } else {
       winner = away;
     }
-    int totalGoals = (int) Math.round(goalsDistribution.sample());
+    int totalGoals = Math.max((int) Math.round(goalsDistribution.sample()), 0);
     if (!isDraw()) {
       if (totalGoals <= 2) {
-        winnerGoals = Goals.create(random, totalGoals, winner());
+        winnerGoals = Goals.create(random, Math.max(totalGoals, 1), winner());
         loserGoals = Collections.emptyList();
       } else {
         // 3+ goals
-        loserGoals = Goals.create(random, random.nextInt(totalGoals), loser());
+        loserGoals = Goals.create(random, random.nextInt((totalGoals / 2) - 1), loser());
         winnerGoals = Goals.create(random, totalGoals - loserGoals.size(), winner());
       }
     } else {
       int evenGoals = (totalGoals % 2 == 0) ? totalGoals : totalGoals + 1;
-      winnerGoals = Goals.create(random, evenGoals / 2, winner());
-      loserGoals = Goals.create(random, evenGoals / 2, loser());
+      winnerGoals = Goals.create(random, evenGoals / 2, home);
+      loserGoals = Goals.create(random, evenGoals / 2, away);
     }
   }
 
@@ -154,19 +160,21 @@ public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
     }
   };
 
-  public Set<MatchEvent> eventsAtTime(int time) {
-    Set<MatchEvent> events = new HashSet<>();
-    for (Goal winnerGoal : winnerGoals) {
-      if (winnerGoal.time() == time) {
-        events.add(winnerGoal);
-      }
-    }
+  public Observable<MatchEvent> eventsObservable() {
+    return eventsObservable(0);
+  }
 
-    for (Goal loserGoal : loserGoals) {
-      if (loserGoal.time() == time) {
-        events.add(loserGoal);
-      }
-    }
-    return events;
+  public Observable<MatchEvent> eventsObservable(final int elapsedTime) {
+    Observable<Goal> winnersGoalsObservable = Observable.from(winnerGoals);
+    Observable<Goal> loserGoalsObservable = Observable.from(loserGoals);
+
+    return Observable.merge(winnersGoalsObservable, loserGoalsObservable)
+        .observeOn(Schedulers.io())
+        .flatMap(new Func1<Goal, Observable<MatchEvent>>() {
+          @Override public Observable<MatchEvent> call(Goal goal) {
+            return Observable.<MatchEvent>just(goal)
+                .delay(goal.time() - elapsedTime, TimeUnit.SECONDS);
+          }
+        }).skip(elapsedTime, TimeUnit.SECONDS);
   }
 }

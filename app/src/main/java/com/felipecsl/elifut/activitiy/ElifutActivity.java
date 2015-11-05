@@ -40,13 +40,10 @@ public abstract class ElifutActivity extends AppCompatActivity {
   }
 
   public <T> Observable.Transformer<Response<T>, T> applyTransformations() {
-    return new Observable.Transformer<Response<T>, T>() {
-      @Override public Observable<T> call(Observable<Response<T>> observable) {
-        return observable.subscribeOn(Schedulers.io())
-            .flatMap(ResponseMapper.<T>instance())
-            .map(ResponseBodyMapper.<T>instance())
-            .observeOn(AndroidSchedulers.mainThread());
-      }
-    };
+    return (Observable<Response<T>> observable) ->
+      observable.subscribeOn(Schedulers.io())
+        .flatMap(ResponseMapper.<T>instance())
+        .map(ResponseBodyMapper.<T>instance())
+        .observeOn(AndroidSchedulers.mainThread());
   }
 }

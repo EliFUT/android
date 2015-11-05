@@ -15,8 +15,7 @@ public final class ResponseBodyMapper<T> implements Func1<Response<T>, T> {
     return INSTANCE;
   }
 
-  @Override
-  public T call(Response<T> response) {
+  @Override public T call(Response<T> response) {
     return response.body();
   }
 }

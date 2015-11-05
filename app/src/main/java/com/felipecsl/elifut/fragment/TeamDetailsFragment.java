@@ -100,12 +100,10 @@ public final class TeamDetailsFragment extends ElifutFragment {
   }
 
   private void loadPalette(Bitmap bitmap) {
-    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-      public void onGenerated(Palette palette) {
-        TeamDetailsActivity activity = (TeamDetailsActivity) getActivity();
-        activity.setToolbarColor(
-            palette.getDarkVibrantColor(colorPrimary), palette.getLightMutedColor(colorSecondary));
-      }
+    Palette.from(bitmap).generate(palette -> {
+      TeamDetailsActivity activity = (TeamDetailsActivity) getActivity();
+      activity.setToolbarColor(
+          palette.getDarkVibrantColor(colorPrimary), palette.getLightMutedColor(colorSecondary));
     });
   }
 }

@@ -18,7 +18,6 @@ import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.League;
-import com.felipecsl.elifut.models.MatchEvent;
 import com.felipecsl.elifut.widget.FractionView;
 import com.squareup.picasso.Picasso;
 
@@ -35,8 +34,6 @@ import butterknife.OnClick;
 import icepick.State;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
 public class MatchProgressActivity extends ElifutActivity {
@@ -149,37 +146,29 @@ public class MatchProgressActivity extends ElifutActivity {
 
   private void startTimer() {
     subscriptions.add(statistics.eventsObservable(elapsedMinutes)
-        .map(new Func1<MatchEvent, Goal>() {
-          @Override public Goal call(MatchEvent matchEvent) {
-            return (Goal) matchEvent;
-          }
-        })
+        .map(matchEvent -> (Goal) matchEvent)
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Goal>() {
-          @Override public void call(Goal goal) {
-            TextView txtScore = goal.club().equals(home) ? txtTeamHomeGoals : txtTeamAwayGoals;
-            int currGoals = Integer.parseInt(txtScore.getText().toString());
-            txtScore.setText(String.valueOf(++currGoals));
-            appendEvent(goal.time() + "' " + goal.club().abbrev_name() + " goal.");
-          }
+        .subscribe(goal -> {
+          TextView txtScore = goal.club().equals(home) ? txtTeamHomeGoals : txtTeamAwayGoals;
+          int currGoals = Integer.parseInt(txtScore.getText().toString());
+          txtScore.setText(String.valueOf(++currGoals));
+          appendEvent(goal.time() + "' " + goal.club().abbrev_name() + " goal.");
         }));
 
     subscriptions.add(Observable.interval(0, 1, TimeUnit.SECONDS)
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Long>() {
-          @Override public void call(Long _) {
-            elapsedMinutes++;
-            fractionView.setFraction(elapsedMinutes % 45, 60);
-            if (elapsedMinutes == 45) {
-              appendEvent(strEndOfFirstHalf);
-            } else if (elapsedMinutes == 90) {
-              stopTimer();
-              appendEvent(strEndOfMatch);
-              appendEvent(finalScoreMessage);
-              playPauseButton.setVisibility(View.GONE);
-              doneButton.setVisibility(View.VISIBLE);
-              fractionView.setFraction(45, 60);
-            }
+        .subscribe(l -> {
+          elapsedMinutes++;
+          fractionView.setFraction(elapsedMinutes % 45, 60);
+          if (elapsedMinutes == 45) {
+            appendEvent(strEndOfFirstHalf);
+          } else if (elapsedMinutes == 90) {
+            stopTimer();
+            appendEvent(strEndOfMatch);
+            appendEvent(finalScoreMessage);
+            playPauseButton.setVisibility(View.GONE);
+            doneButton.setVisibility(View.VISIBLE);
+            fractionView.setFraction(45, 60);
           }
         }));
     isRunning = true;

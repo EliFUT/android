@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
   compileSdkVersion 23
-  buildToolsVersion "23.0.1"
+  buildToolsVersion "23.0.2"
 
   defaultConfig {
     applicationId "com.felipecsl.elifut"
@@ -22,6 +23,11 @@ android {
       keyAlias "elifut"
       keyPassword ELIFUT_CERT_PASSWORD
     }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
   }
 
   buildTypes {
@@ -61,6 +67,8 @@ android {
     exclude 'META-INF/dependencies.txt'
     exclude 'META-INF/services/javax.annotation.processing.Processor'
     exclude 'META-INF/services/com.google.auto.value.extension.AutoValueExtension'
+    exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
+    exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
     exclude 'LICENSE.txt'
   }
 }
@@ -80,7 +88,7 @@ dependencies {
   compile 'com.squareup.retrofit:converter-moshi:2.0.0-beta2'
   compile 'com.squareup.moshi:moshi:1.0.0'
   compile 'com.jakewharton:butterknife:7.0.1'
-  compile 'com.google.dagger:dagger:2.0.1'
+  compile 'com.google.dagger:dagger:2.0.2'
   compile 'frankiesardo:icepick:3.1.0'
   debugCompile 'com.facebook.stetho:stetho-okhttp:1.2.0'
   debugCompile 'com.facebook.stetho:stetho-js-rhino:1.2.0'
@@ -94,7 +102,7 @@ dependencies {
   provided 'frankiesardo:icepick-processor:3.1.0'
   provided 'org.glassfish:javax.annotation:10.0-b28'
 
-  apt 'com.google.dagger:dagger-compiler:2.0.1'
+  apt 'com.google.dagger:dagger-compiler:2.0.2'
 //  apt 'com.ryanharter.auto.value:auto-value-parcel:0.2-SNAPSHOT'
 //  apt 'com.ryanharter.auto.value:auto-value-moshi:0.1-SNAPSHOT'
   apt(files('libs/auto-parcel-0.2-SNAPSHOT.jar'))

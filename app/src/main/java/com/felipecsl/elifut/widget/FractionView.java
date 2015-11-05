@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.felipecsl.elifut.util.BundleBuilder;
+
 public class FractionView extends View {
   private Paint circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private Paint sectorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -124,11 +126,11 @@ public class FractionView extends View {
   }
 
   public Parcelable onSaveInstanceState() {
-    Bundle bundle = new Bundle();
-    bundle.putParcelable("superState", super.onSaveInstanceState());
-    bundle.putInt("numerator", numerator);
-    bundle.putInt("denominator", denominator);
-    return bundle;
+    return new BundleBuilder()
+        .putParcelable("superState", super.onSaveInstanceState())
+        .putInt("numerator", numerator)
+        .putInt("denominator", denominator)
+        .toBundle();
   }
 
   public void onRestoreInstanceState(Parcelable state) {

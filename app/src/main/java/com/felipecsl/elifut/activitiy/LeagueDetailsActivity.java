@@ -41,12 +41,10 @@ public class LeagueDetailsActivity extends ElifutActivity {
   private static final String EXTRA_CURRENT_CLUB = "EXTRA_CURRENT_CLUB";
   private final Target leagueLogoTarget = new SimpleTarget() {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-      Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-        public void onGenerated(Palette palette) {
-          int color = palette.getDarkVibrantColor(colorPrimary);
-          toolbar.setBackgroundColor(color);
-          getWindow().setStatusBarColor(color);
-        }
+      Palette.from(bitmap).generate(palette -> {
+        int color = palette.getDarkVibrantColor(colorPrimary);
+        toolbar.setBackgroundColor(color);
+        getWindow().setStatusBarColor(color);
       });
     }
   };
@@ -87,9 +85,10 @@ public class LeagueDetailsActivity extends ElifutActivity {
       allClubs = new ArrayList<>(preferences.retrieveLeagueClubs());
     }
 
+    loadLeagueImage();
+
     if (allClubs == null || allClubs.isEmpty()) {
       loadClubs();
-      loadLeagueImage();
     } else {
       onClubsRetrieved();
     }
@@ -122,7 +121,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
 
   private void onClubsRetrieved() {
     progressBarLayout.setVisibility(View.GONE);
-    toolbar.setTitle(league.name());
+    getSupportActionBar().setTitle(league.name());
     ClubsAdapter adapter = new ClubsAdapter(allClubs, currentClub);
     recyclerView.setAdapter(adapter);
     recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));

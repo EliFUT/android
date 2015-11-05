@@ -116,7 +116,7 @@ public class TeamDetailsActivity extends ElifutActivity {
 
           @Override public void onNext(League response) {
             league = response;
-            toolbar.setTitle(club.shortName());
+            getSupportActionBar().setTitle(club.shortName());
             setupViewPager();
             fab.setVisibility(View.VISIBLE);
           }

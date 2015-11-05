@@ -97,6 +97,9 @@
 -keep class android.support.v7.** { *; }
 -keep interface android.support.v7.** { *; }
 
+# Retrolambda
+-dontwarn java.lang.invoke.*
+
 # ButterKnife
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**

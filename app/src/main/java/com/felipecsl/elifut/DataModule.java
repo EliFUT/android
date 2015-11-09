@@ -34,10 +34,10 @@ public class DataModule {
         .add(new ModelListAdapterFactory<>(Club.class))
         .add(new ModelListAdapterFactory<>(Player.class))
         .add(Nation.typeAdapterFactory())
-        .add(Club.typeAdapterFactory())
         .add(Player.typeAdapterFactory())
         .add(League.typeAdapterFactory())
         .add(ClubStats.typeAdapterFactory())
+        .add(Club.typeAdapterFactory())
         .build();
   }
 

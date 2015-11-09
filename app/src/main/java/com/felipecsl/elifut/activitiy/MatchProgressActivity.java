@@ -3,6 +3,7 @@ package com.felipecsl.elifut.activitiy;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,12 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.DefaultMatchStatistics;
 import com.felipecsl.elifut.ElifutPreferences;
+import com.felipecsl.elifut.MatchResultsController;
 import com.felipecsl.elifut.MatchStatistics;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
+import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.widget.FractionView;
 import com.squareup.picasso.Picasso;
 
@@ -80,9 +84,15 @@ public class MatchProgressActivity extends ElifutActivity {
       statistics = new DefaultMatchStatistics(
           home, away, new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
 
-      String winner = !statistics.isDraw() ? statistics.winner().abbrev_name() : "draw";
-      finalScoreMessage = winner + " is the winner. Final score " + statistics.finalScore() + ".";
-      Log.d(TAG, finalScoreMessage);
+      if (!statistics.isDraw()) {
+        finalScoreMessage = statistics.winner().abbrev_name() + " is the winner. Final score "
+            + statistics.finalScore() + ".";
+      } else {
+        finalScoreMessage = "Game draw. Final score " + statistics.finalScore() + ".";
+      }
+      if (BuildConfig.DEBUG) {
+        Log.d(TAG, finalScoreMessage);
+      }
 
       startTimer();
     }
@@ -130,7 +140,7 @@ public class MatchProgressActivity extends ElifutActivity {
   private void fillClubInfos(Club club) {
     ImageView imgView;
     TextView txtView;
-    if (club.equals(home)) {
+    if (club.nameEquals(home)) {
       imgView = imgTeamHome;
       txtView = txtTeamHome;
     } else {
@@ -154,13 +164,13 @@ public class MatchProgressActivity extends ElifutActivity {
         .map(matchEvent -> (Goal) matchEvent)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(goal -> {
-          TextView txtScore = goal.club().equals(home) ? txtTeamHomeGoals : txtTeamAwayGoals;
+          TextView txtScore = goal.club().nameEquals(home) ? txtTeamHomeGoals : txtTeamAwayGoals;
           int currGoals = Integer.parseInt(txtScore.getText().toString());
           txtScore.setText(String.valueOf(++currGoals));
           appendEvent(goal.time() + "' " + goal.club().abbrev_name() + " goal.");
         }));
 
-    subscriptions.add(Observable.interval(0, 1, TimeUnit.SECONDS)
+    subscriptions.add(timerObservable()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(l -> {
           elapsedMinutes++;
@@ -177,6 +187,11 @@ public class MatchProgressActivity extends ElifutActivity {
           }
         }));
     isRunning = true;
+  }
+
+  @NonNull private Observable<Long> timerObservable() {
+    return BuildConfig.DEBUG ? Observable.interval(0, 100, TimeUnit.MILLISECONDS)
+        : Observable.interval(0, 1, TimeUnit.SECONDS);
   }
 
   private void appendEvent(String text) {
@@ -196,6 +211,11 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   @OnClick(R.id.fab_done) public void onClickDone() {
-//    startActivity(LeagueDetailsActivity.newIntent(this, league, userClub));
+    MatchResultsController controller = new MatchResultsController(preferences);
+    controller.updateByMatchStatistics(statistics);
+    League league = preferences.retrieveUserLeague();
+    Club userClub = preferences.retrieveUserClub();
+    startActivity(LeagueDetailsActivity.newIntent(this, league, userClub));
+    finish();
   }
 }

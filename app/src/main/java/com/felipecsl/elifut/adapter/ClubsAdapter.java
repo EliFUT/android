@@ -8,9 +8,11 @@ import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.ClubStats;
 import com.google.common.base.Preconditions;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -25,6 +27,8 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
   public ClubsAdapter(List<Club> clubs, Club selectedClub) {
     this.selectedClub = selectedClub;
     this.clubs = Preconditions.checkNotNull(clubs);
+    Collections.sort(clubs, (lhs, rhs) ->
+        rhs.nonNullStats().points() - lhs.nonNullStats().points());
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -70,14 +74,21 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
     }
 
     void bind(int pos, Club club) {
+      ClubStats stats = club.nonNullStats();
       int typeface = selectedClub.equals(club) ? Typeface.BOLD : Typeface.NORMAL;
       position.setText(String.valueOf(pos + 1));
+      points.setTypeface(null, typeface);
+      points.setText(String.valueOf(stats.points()));
       clubName.setText(club.abbrev_name());
       clubName.setTypeface(null, typeface);
       wins.setTypeface(null, typeface);
+      wins.setText(String.valueOf(stats.wins()));
       draws.setTypeface(null, typeface);
+      draws.setText(String.valueOf(stats.draws()));
       losses.setTypeface(null, typeface);
+      losses.setText(String.valueOf(stats.losses()));
       goalsDifference.setTypeface(null, typeface);
+      goalsDifference.setText(String.valueOf(stats.goals()));
     }
   }
 

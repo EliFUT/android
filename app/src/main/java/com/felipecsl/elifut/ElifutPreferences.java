@@ -33,15 +33,15 @@ public class ElifutPreferences {
   }
 
   public void storeUserNation(Nation nation) {
-    storeObject(nation, "UserNation");
+    storeObject(nation, Nation.class, "UserNation");
   }
 
   public void storeUserClub(Club club) {
-    storeObject(club, "UserClub");
+    storeObject(club, Club.class, "UserClub");
   }
 
   public void storeUserLeague(League league) {
-    storeObject(league, "UserLeague");
+    storeObject(league, League.class, "UserLeague");
   }
 
   public void storeLeagueClubs(Observable<Club> observable) {
@@ -66,15 +66,14 @@ public class ElifutPreferences {
     JsonAdapter<?> adapter = moshi.adapter(Types.newParameterizedType(List.class, Club.class));
     List<Club> clubs = retrieveObject(adapter, "LC");
 
-    if (clubs == null) {
+    if (clubs == null || clubs.isEmpty()) {
       return Observable.empty();
     }
     return Observable.from(clubs);
   }
 
-  private <T> void storeObject(T object, String key) {
-    Class<T> klass = (Class<T>) object.getClass();
-    storeObject(moshi.adapter(klass), object, key);
+  private <T> void storeObject(T object, Type type, String key) {
+    storeObject(moshi.adapter(type), object, key);
   }
 
   private <T> void storeObject(JsonAdapter<T> adapter, T object, String key) {

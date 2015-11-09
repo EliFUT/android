@@ -1,5 +1,6 @@
 package com.felipecsl.elifut.models;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -8,11 +9,11 @@ import com.squareup.moshi.JsonAdapter;
 @AutoValue
 public abstract class Club extends Model {
   public abstract String name();
-  @Nullable public abstract String abbrev_name();
   public abstract String small_image();
   public abstract String large_image();
   public abstract int league_id();
-  public abstract ClubStats stats();
+  @Nullable public abstract String abbrev_name();
+  @Nullable public abstract ClubStats stats();
 
   public static Builder builder() {
     return new AutoValue_Club.Builder()
@@ -42,15 +43,25 @@ public abstract class Club extends Model {
   }
 
   public Club newWithWin() {
-    return toBuilder().stats(stats().newWithWin()).build();
+    return toBuilder()
+        .stats(nonNullStats().newWithWin())
+        .build();
+  }
+
+  public boolean nameEquals(Club otherTeam) {
+    return name().equals(otherTeam.name());
   }
 
   public Club newWithDraw() {
-    return toBuilder().stats(stats().newWithDraw()).build();
+    return toBuilder().stats(nonNullStats().newWithDraw()).build();
   }
 
   public Club newWithLoss() {
-    return toBuilder().stats(stats().newWithLoss()).build();
+    return toBuilder().stats(nonNullStats().newWithLoss()).build();
+  }
+
+  @NonNull public ClubStats nonNullStats() {
+    return stats() == null ? ClubStats.create() : stats();
   }
 
   public String shortName() {

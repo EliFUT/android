@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -36,6 +37,7 @@ import butterknife.ButterKnife;
 import icepick.State;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 public class LeagueDetailsActivity extends ElifutActivity {
@@ -62,6 +64,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
 
   @State League league;
   @State Club currentClub;
+  @State ArrayList<Club> clubs;
 
   private final CompositeSubscription subscriptions = new CompositeSubscription();
   private final Observer<List<Club>> observer = new SimpleResponseObserver<List<Club>>() {
@@ -73,6 +76,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
     }
 
     @Override public void onNext(List<Club> response) {
+      clubs = new ArrayList<>(response);
       preferences.storeLeagueClubs(Observable.from(response));
       progressBarLayout.setVisibility(View.GONE);
       getSupportActionBar().setTitle(league.name());
@@ -80,12 +84,13 @@ public class LeagueDetailsActivity extends ElifutActivity {
       recyclerView.setAdapter(adapter);
       recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
 
-      RxView.clicks(nextButton).subscribe((v) -> {
+      Subscription subscription = RxView.clicks(nextButton).subscribe((v) -> {
         Club randomClub = response.get(new Random().nextInt(response.size()));
         startActivity(MatchProgressActivity.newIntent(
             LeagueDetailsActivity.this, currentClub, randomClub));
         finish();
       });
+      subscriptions.add(subscription);
     }
   };
 
@@ -111,10 +116,13 @@ public class LeagueDetailsActivity extends ElifutActivity {
       Intent intent = getIntent();
       league = intent.getParcelableExtra(EXTRA_LEAGUE);
       currentClub = intent.getParcelableExtra(EXTRA_CURRENT_CLUB);
-      preferences.retrieveLeagueClubs()
-          .toList()
+      Subscription subscription = preferences.retrieveLeagueClubs()
           .switchIfEmpty(clubsObservable())
+          .toList()
           .subscribe(observer);
+      subscriptions.add(subscription);
+    } else {
+      observer.onNext(clubs);
     }
 
     loadLeagueImage();
@@ -131,8 +139,9 @@ public class LeagueDetailsActivity extends ElifutActivity {
         .into(leagueLogoTarget);
   }
 
-  private Observable<List<Club>> clubsObservable() {
+  private Observable<Club> clubsObservable() {
     return service.clubsByLeague(league.id())
-        .compose(this.<List<Club>>applyTransformations());
+        .compose(this.<List<Club>>applyTransformations())
+        .flatMap(Observable::from);
   }
 }

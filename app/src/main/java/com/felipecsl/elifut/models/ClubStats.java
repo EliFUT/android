@@ -13,6 +13,10 @@ public abstract class ClubStats implements Parcelable {
   public abstract int losses();
   public abstract int goals();
 
+  public static ClubStats create() {
+    return new AutoValue_ClubStats(0, 0, 0, 0, 0);
+  }
+
   public static Builder builder() {
     return new AutoValue_ClubStats.Builder()
         .points(0)

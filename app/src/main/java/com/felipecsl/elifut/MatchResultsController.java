@@ -4,7 +4,7 @@ import com.felipecsl.elifut.models.Club;
 
 import rx.Observable;
 
-final class MatchResultsController {
+public final class MatchResultsController {
   private final ElifutPreferences preferences;
   private final Club userClub;
   private final Observable<Club> allClubs;
@@ -19,7 +19,7 @@ final class MatchResultsController {
     if (!statistics.isDraw()) {
       Club winner = statistics.winner();
 
-      if (userClub.name().equals(winner.name())) {
+      if (userClub.nameEquals(winner)) {
         // user is winner
         Club winnerClub = userClub.newWithWin();
         preferences.storeUserClub(winnerClub);
@@ -36,7 +36,7 @@ final class MatchResultsController {
       }
     } else {
       // match result is draw
-      Club nonUserClub = userClub.name().equals(statistics.home().name())
+      Club nonUserClub = userClub.nameEquals(statistics.home())
           ? statistics.away() : statistics.home();
       Club drawClub = userClub.newWithDraw();
       preferences.storeUserClub(drawClub);
@@ -48,8 +48,8 @@ final class MatchResultsController {
 
   private Observable.Transformer<Club, Club> transform(Club clubA, Club clubB) {
     return (Observable<Club> observable) -> allClubs
-        .filter((club) -> !club.name().equals(clubB.name()))
-        .filter((club) -> !club.name().equals(clubA.name()))
+        .filter((club) -> !club.nameEquals(clubB))
+        .filter((club) -> !club.nameEquals(clubA))
         .mergeWith(Observable.just(clubA))
         .mergeWith(Observable.just(clubB));
   }

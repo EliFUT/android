@@ -11,8 +11,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class DefaultMatchStatisticsTest {
-  private Club home = Club.create(0, "Gremio", "", "", 0);
-  private Club away = Club.create(1, "Internacional", "", "", 0);
+  private Club home = Club.builder().id(0).name("Gremio").build();
+  private Club away = Club.builder().id(1).name("Internacional").build();
   private RandomGenerator randomMock = mock(RandomGenerator.class);
   private RealDistribution goalsDistribution = mock(RealDistribution.class);
 

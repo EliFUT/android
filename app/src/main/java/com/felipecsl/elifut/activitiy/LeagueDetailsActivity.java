@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +20,11 @@ import com.felipecsl.elifut.adapter.ClubsAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.widget.DividerItemDecoration;
+import com.jakewharton.rxbinding.view.RxView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -32,8 +33,10 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import icepick.State;
+import rx.Observable;
+import rx.Observer;
+import rx.subscriptions.CompositeSubscription;
 
 public class LeagueDetailsActivity extends ElifutActivity {
   private static final String EXTRA_LEAGUE = "EXTRA_LEAGUE";
@@ -52,13 +55,39 @@ public class LeagueDetailsActivity extends ElifutActivity {
   @Bind(R.id.recycler_clubs) RecyclerView recyclerView;
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.progress_bar_layout) ViewGroup progressBarLayout;
+  @Bind(R.id.fab) FloatingActionButton nextButton;
   @BindColor(R.color.color_primary) int colorPrimary;
 
   @Inject ElifutPreferences preferences;
 
   @State League league;
-  @State ArrayList<Club> allClubs;
   @State Club currentClub;
+
+  private final CompositeSubscription subscriptions = new CompositeSubscription();
+  private final Observer<List<Club>> observer = new SimpleResponseObserver<List<Club>>() {
+    @Override public void onError(Throwable e) {
+      progressBarLayout.setVisibility(View.GONE);
+      Toast.makeText(LeagueDetailsActivity.this, "Failed to load list of clubs",
+          Toast.LENGTH_SHORT).show();
+      Log.w(TAG, e);
+    }
+
+    @Override public void onNext(List<Club> response) {
+      preferences.storeLeagueClubs(Observable.from(response));
+      progressBarLayout.setVisibility(View.GONE);
+      getSupportActionBar().setTitle(league.name());
+      ClubsAdapter adapter = new ClubsAdapter(response, currentClub);
+      recyclerView.setAdapter(adapter);
+      recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
+
+      RxView.clicks(nextButton).subscribe((v) -> {
+        Club randomClub = response.get(new Random().nextInt(response.size()));
+        startActivity(MatchProgressActivity.newIntent(
+            LeagueDetailsActivity.this, currentClub, randomClub));
+        finish();
+      });
+    }
+  };
 
   public static Intent newIntent(Context context, League league, Club currentClub) {
     return new Intent(context, LeagueDetailsActivity.class)
@@ -82,16 +111,18 @@ public class LeagueDetailsActivity extends ElifutActivity {
       Intent intent = getIntent();
       league = intent.getParcelableExtra(EXTRA_LEAGUE);
       currentClub = intent.getParcelableExtra(EXTRA_CURRENT_CLUB);
-      allClubs = new ArrayList<>(preferences.retrieveLeagueClubs());
+      preferences.retrieveLeagueClubs()
+          .toList()
+          .switchIfEmpty(clubsObservable())
+          .subscribe(observer);
     }
 
     loadLeagueImage();
+  }
 
-    if (allClubs == null || allClubs.isEmpty()) {
-      loadClubs();
-    } else {
-      onClubsRetrieved();
-    }
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    subscriptions.clear();
   }
 
   private void loadLeagueImage() {
@@ -100,39 +131,8 @@ public class LeagueDetailsActivity extends ElifutActivity {
         .into(leagueLogoTarget);
   }
 
-  private void loadClubs() {
-    service.clubsByLeague(league.id())
-        .compose(this.<List<Club>>applyTransformations())
-        .subscribe(new SimpleResponseObserver<List<Club>>() {
-          @Override public void onError(Throwable e) {
-            progressBarLayout.setVisibility(View.GONE);
-            Toast.makeText(LeagueDetailsActivity.this, "Failed to load list of clubs",
-                Toast.LENGTH_SHORT).show();
-            Log.w(TAG, e);
-          }
-
-          @Override public void onNext(List<Club> response) {
-            allClubs = new ArrayList<>(response);
-            preferences.storeLeagueClubs(allClubs);
-            onClubsRetrieved();
-          }
-        });
-  }
-
-  private void onClubsRetrieved() {
-    progressBarLayout.setVisibility(View.GONE);
-    getSupportActionBar().setTitle(league.name());
-    ClubsAdapter adapter = new ClubsAdapter(allClubs, currentClub);
-    recyclerView.setAdapter(adapter);
-    recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
-  }
-
-  @OnClick(R.id.fab) public void onClickNext() {
-    if (allClubs == null) {
-      return;
-    }
-    Club randomClub = allClubs.get(new Random().nextInt(allClubs.size()));
-    startActivity(MatchProgressActivity.newIntent(this, currentClub, randomClub));
-    finish();
+  private Observable<List<Club>> clubsObservable() {
+    return service.clubsByLeague(league.id())
+        .compose(this.<List<Club>>applyTransformations());
   }
 }

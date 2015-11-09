@@ -3,6 +3,7 @@ package com.felipecsl.elifut;
 import android.content.Context;
 
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.ClubStats;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.models.Player;
@@ -36,6 +37,7 @@ public class DataModule {
         .add(Club.typeAdapterFactory())
         .add(Player.typeAdapterFactory())
         .add(League.typeAdapterFactory())
+        .add(ClubStats.typeAdapterFactory())
         .build();
   }
 

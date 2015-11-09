@@ -17,7 +17,6 @@ import com.felipecsl.elifut.MatchStatistics;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
-import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.widget.FractionView;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +32,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.State;
 import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -63,8 +64,29 @@ public class MatchProgressActivity extends ElifutActivity {
   @State int elapsedMinutes;
   @State DefaultMatchStatistics statistics;
 
-  private CompositeSubscription subscriptions = new CompositeSubscription();
+  private final CompositeSubscription subscriptions = new CompositeSubscription();
   private String finalScoreMessage;
+  private final Observer<Club> observer = new SimpleResponseObserver<Club>() {
+    @Override public void onError(Throwable e) {
+      Toast.makeText(MatchProgressActivity.this, "Failed to load club", Toast.LENGTH_SHORT).show();
+      Log.w(TAG, e);
+    }
+
+    @Override public void onNext(Club response) {
+      fillClubInfos(response);
+    }
+
+    @Override public void onCompleted() {
+      statistics = new DefaultMatchStatistics(
+          home, away, new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
+
+      String winner = !statistics.isDraw() ? statistics.winner().abbrev_name() : "draw";
+      finalScoreMessage = winner + " is the winner. Final score " + statistics.finalScore() + ".";
+      Log.d(TAG, finalScoreMessage);
+
+      startTimer();
+    }
+  };
 
   public static Intent newIntent(Context context, Club home, Club away) {
     return new Intent(context, MatchProgressActivity.class)
@@ -94,32 +116,15 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   private void loadClubs(int homeId, int awayId) {
-    service.club(homeId)
-        .compose(this.<Club>applyTransformations())
-        .mergeWith(service.club(awayId).compose(this.<Club>applyTransformations()))
-        .subscribe(new SimpleResponseObserver<Club>() {
-          @Override public void onError(Throwable e) {
-            Toast.makeText(MatchProgressActivity.this, "Failed to load club",
-                Toast.LENGTH_SHORT).show();
-            Log.w(TAG, e);
-          }
+    Subscription subscription = clubObservable(homeId)
+        .mergeWith(clubObservable(awayId))
+        .subscribe(observer);
 
-          @Override public void onNext(Club response) {
-            fillClubInfos(response);
-          }
+    subscriptions.add(subscription);
+  }
 
-          @Override public void onCompleted() {
-            statistics = new DefaultMatchStatistics(home, away,
-                new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
-
-            String winner = !statistics.isDraw() ? statistics.winner().abbrev_name() : "draw";
-            finalScoreMessage =
-                winner + " is the winner. Final score " + statistics.finalScore() + ".";
-            Log.d(TAG, finalScoreMessage);
-
-            startTimer();
-          }
-        });
+  private Observable<Club> clubObservable(int id) {
+    return service.club(id).compose(this.<Club>applyTransformations());
   }
 
   private void fillClubInfos(Club club) {
@@ -191,8 +196,6 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   @OnClick(R.id.fab_done) public void onClickDone() {
-    League league = preferences.retrieveUserLeague();
-    Club club = preferences.retrieveUserClub();
-    startActivity(LeagueDetailsActivity.newIntent(this, league, club));
+//    startActivity(LeagueDetailsActivity.newIntent(this, league, userClub));
   }
 }

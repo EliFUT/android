@@ -12,10 +12,11 @@ import com.squareup.moshi.Types;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.List;
 
-public final class ElifutPreferences {
+import rx.Observable;
+
+public class ElifutPreferences {
   private static final String TAG = "ElifutPreferences";
   private final Moshi moshi;
   private final SharedPreferences sharedPreferences;
@@ -43,10 +44,10 @@ public final class ElifutPreferences {
     storeObject(league, "UserLeague");
   }
 
-  public void storeLeagueClubs(List<Club> clubs) {
+  public void storeLeagueClubs(Observable<Club> observable) {
     JsonAdapter<List<Club>> adapter =
         moshi.adapter(Types.newParameterizedType(List.class, Club.class));
-    storeObject(adapter, clubs, "LC");
+    storeObject(adapter, observable.toList().toBlocking().first(), "LC");
   }
 
   public Club retrieveUserClub() {
@@ -61,14 +62,14 @@ public final class ElifutPreferences {
     return retrieveObject(League.class, "UserLeague");
   }
 
-  public List<Club> retrieveLeagueClubs() {
+  public Observable<Club> retrieveLeagueClubs() {
     JsonAdapter<?> adapter = moshi.adapter(Types.newParameterizedType(List.class, Club.class));
     List<Club> clubs = retrieveObject(adapter, "LC");
 
     if (clubs == null) {
-      return Collections.emptyList();
+      return Observable.empty();
     }
-    return clubs;
+    return Observable.from(clubs);
   }
 
   private <T> void storeObject(T object, String key) {

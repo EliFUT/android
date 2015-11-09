@@ -3,7 +3,7 @@ package com.felipecsl.elifut;
 import android.support.multidex.MultiDexApplication;
 
 public class ElifutApplication extends MultiDexApplication {
-  private ElifutComponent component;
+  protected ElifutComponent component;
 
   @Override public void onCreate() {
     super.onCreate();

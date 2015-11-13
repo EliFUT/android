@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.felipecsl.elifut.ElifutPreferences;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.ViewPagerAdapter;
 import com.felipecsl.elifut.fragment.TeamDetailsFragment;
@@ -19,6 +18,7 @@ import com.felipecsl.elifut.fragment.TeamPlayersFragment;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
+import com.felipecsl.elifut.preferences.UserPreferences;
 
 import javax.inject.Inject;
 
@@ -37,7 +37,7 @@ public class TeamDetailsActivity extends ElifutActivity {
   @Bind(R.id.tabs) TabLayout tabLayout;
   @Bind(R.id.fab) FloatingActionButton fab;
 
-  @Inject ElifutPreferences preferences;
+  @Inject UserPreferences preferences;
 
   @State Nation nation;
   @State String coachName;
@@ -57,8 +57,8 @@ public class TeamDetailsActivity extends ElifutActivity {
     daggerComponent().inject(this);
     setSupportActionBar(toolbar);
 
-    league = preferences.retrieveUserLeague();
-    club = preferences.retrieveUserClub();
+    league = preferences.getUserLeague();
+    club = preferences.getUserClub();
 
     if (league != null && club != null) {
       goNext();
@@ -131,13 +131,13 @@ public class TeamDetailsActivity extends ElifutActivity {
   }
 
   @OnClick(R.id.fab) public void onClickNext() {
-    preferences.storeUserClub(club);
+    preferences.putUserClub(club);
     preferences.storeUserLeague(league);
     goNext();
   }
 
   private void goNext() {
-    startActivity(LeagueDetailsActivity.newIntent(this, league, club));
+    startActivity(LeagueStandingsActivity.newIntent(this, league, club));
     finish();
   }
 }

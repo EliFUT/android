@@ -1,4 +1,4 @@
-package com.felipecsl.elifut;
+package com.felipecsl.elifut.adapter;
 
 import com.felipecsl.elifut.models.Model;
 import com.squareup.moshi.JsonAdapter;

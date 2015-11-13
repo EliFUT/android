@@ -1,18 +1,23 @@
-package com.felipecsl.elifut;
+package com.felipecsl.elifut.match;
 
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.UserPreferences;
 
 import rx.Observable;
 
 public final class MatchResultsController {
-  private final ElifutPreferences preferences;
+  private final UserPreferences userPreferences;
+  private final LeaguePreferences leaguePreferences;
   private final Club userClub;
   private final Observable<Club> allClubs;
 
-  public MatchResultsController(ElifutPreferences preferences) {
-    this.preferences = preferences;
-    userClub = preferences.retrieveUserClub();
-    allClubs = preferences.retrieveLeagueClubs();
+  public MatchResultsController(
+      UserPreferences userPreferences, LeaguePreferences leaguePreferences) {
+    this.userPreferences = userPreferences;
+    this.leaguePreferences = leaguePreferences;
+    userClub = userPreferences.getUserClub();
+    allClubs = leaguePreferences.getLeagueClubs();
   }
 
   public void updateByMatchStatistics(MatchStatistics statistics) {
@@ -22,27 +27,27 @@ public final class MatchResultsController {
       if (userClub.nameEquals(winner)) {
         // user is winner
         Club winnerClub = userClub.newWithWin();
-        preferences.storeUserClub(winnerClub);
+        userPreferences.putUserClub(winnerClub);
         Observable<Club> observable = allClubs.compose(
             transform(winnerClub, statistics.loser().newWithLoss()));
-        preferences.storeLeagueClubs(observable);
+        leaguePreferences.putLeagueClubs(observable);
       } else {
         // computer is winner
         Club loserClub = userClub.newWithLoss();
-        preferences.storeUserClub(loserClub);
+        userPreferences.putUserClub(loserClub);
         Observable<Club> observable = allClubs.compose(
             transform(statistics.winner().newWithWin(), loserClub));
-        preferences.storeLeagueClubs(observable);
+        leaguePreferences.putLeagueClubs(observable);
       }
     } else {
       // match result is draw
       Club nonUserClub = userClub.nameEquals(statistics.home())
           ? statistics.away() : statistics.home();
       Club drawClub = userClub.newWithDraw();
-      preferences.storeUserClub(drawClub);
+      userPreferences.putUserClub(drawClub);
       Observable<Club> observable = allClubs.compose(
           transform(drawClub, nonUserClub.newWithDraw()));
-      preferences.storeLeagueClubs(observable);
+      leaguePreferences.putLeagueClubs(observable);
     }
   }
 

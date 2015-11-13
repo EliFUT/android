@@ -1,5 +1,7 @@
 package com.felipecsl.elifut;
 
+import com.felipecsl.elifut.match.DefaultMatchStatistics;
+import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
 
 import org.apache.commons.math3.distribution.RealDistribution;

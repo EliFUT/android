@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.felipecsl.elifut.ElifutApplication;
 import com.felipecsl.elifut.ElifutComponent;
-import com.felipecsl.elifut.ResponseBodyMapper;
-import com.felipecsl.elifut.ResponseMapper;
+import com.felipecsl.elifut.services.ResponseBodyMapper;
+import com.felipecsl.elifut.services.ResponseMapper;
 import com.felipecsl.elifut.services.ElifutService;
 
 import javax.inject.Inject;

@@ -2,7 +2,9 @@ package com.felipecsl.elifut;
 
 import android.support.annotation.Nullable;
 
+import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.ClubStatistics;
 import com.felipecsl.elifut.models.Goal;
 
 import java.util.List;

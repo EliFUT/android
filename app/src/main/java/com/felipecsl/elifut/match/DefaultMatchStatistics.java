@@ -1,10 +1,12 @@
-package com.felipecsl.elifut;
+package com.felipecsl.elifut.match;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.felipecsl.elifut.BuildConfig;
+import com.felipecsl.elifut.models.ClubStatistics;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Goals;
@@ -19,7 +21,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
@@ -170,11 +171,12 @@ public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
 
     return Observable.merge(winnersGoalsObservable, loserGoalsObservable)
         .observeOn(Schedulers.io())
-        .flatMap(new Func1<Goal, Observable<MatchEvent>>() {
-          @Override public Observable<MatchEvent> call(Goal goal) {
-            return Observable.<MatchEvent>just(goal)
-                .delay(goal.time() - elapsedTime, TimeUnit.SECONDS);
+        .flatMap((goal) -> {
+          int delay = goal.time() - elapsedTime;
+          if (BuildConfig.DEBUG) {
+            delay /= 10;
           }
+          return Observable.<MatchEvent>just(goal).delay(delay, TimeUnit.SECONDS);
         }).skip(elapsedTime, TimeUnit.SECONDS);
   }
 }

@@ -8,10 +8,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.felipecsl.elifut.ElifutPreferences;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.CountriesSpinnerAdapter;
 import com.felipecsl.elifut.models.Nation;
+import com.felipecsl.elifut.preferences.UserPreferences;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class MainActivity extends ElifutActivity {
   @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
   @Bind(R.id.countries_spinner) Spinner countriesSpinner;
 
-  @Inject ElifutPreferences preferences;
+  @Inject UserPreferences preferences;
 
   private CountriesSpinnerAdapter nationsAdapter;
 
@@ -43,7 +43,7 @@ public class MainActivity extends ElifutActivity {
 
     collapsingToolbar.setTitle(getTitle());
 
-    Nation nation = preferences.retrieveUserNation();
+    Nation nation = preferences.getUserNation();
 
     if (nation != null) {
       onNationSelected(nation);
@@ -72,8 +72,8 @@ public class MainActivity extends ElifutActivity {
 
   private void onNationSelected(Nation nation) {
     String coachName = inputName.getText().toString();
-    preferences.storeUserNation(nation);
-    preferences.storeCoachName(coachName);
+    preferences.putUserNation(nation);
+    preferences.putCoachName(coachName);
     startActivity(TeamDetailsActivity.newIntent(this, nation, coachName));
     finish();
   }

@@ -1,4 +1,4 @@
-package com.felipecsl.elifut;
+package com.felipecsl.elifut.models;
 
 import com.google.auto.value.AutoValue;
 

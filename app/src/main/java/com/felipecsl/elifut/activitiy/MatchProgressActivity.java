@@ -13,14 +13,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.felipecsl.elifut.BuildConfig;
-import com.felipecsl.elifut.DefaultMatchStatistics;
-import com.felipecsl.elifut.ElifutPreferences;
-import com.felipecsl.elifut.MatchResultsController;
-import com.felipecsl.elifut.MatchStatistics;
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.match.DefaultMatchStatistics;
+import com.felipecsl.elifut.match.MatchResultsController;
+import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.League;
+import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.widget.FractionView;
 import com.squareup.picasso.Picasso;
 
@@ -60,7 +61,8 @@ public class MatchProgressActivity extends ElifutActivity {
   @BindString(R.string.end_first_half) String strEndOfFirstHalf;
   @BindString(R.string.end_match) String strEndOfMatch;
 
-  @Inject ElifutPreferences preferences;
+  @Inject UserPreferences userPreferences;
+  @Inject LeaguePreferences leaguePreferences;
 
   @State Club home;
   @State Club away;
@@ -211,11 +213,12 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   @OnClick(R.id.fab_done) public void onClickDone() {
-    MatchResultsController controller = new MatchResultsController(preferences);
+    MatchResultsController controller = new MatchResultsController(
+        userPreferences, leaguePreferences);
     controller.updateByMatchStatistics(statistics);
-    League league = preferences.retrieveUserLeague();
-    Club userClub = preferences.retrieveUserClub();
-    startActivity(LeagueDetailsActivity.newIntent(this, league, userClub));
+    League league = userPreferences.getUserLeague();
+    Club userClub = userPreferences.getUserClub();
+    startActivity(LeagueStandingsActivity.newIntent(this, league, userClub));
     finish();
   }
 }

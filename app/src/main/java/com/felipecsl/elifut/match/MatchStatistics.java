@@ -1,7 +1,8 @@
-package com.felipecsl.elifut;
+package com.felipecsl.elifut.match;
 
 import android.support.annotation.Nullable;
 
+import com.felipecsl.elifut.models.ClubStatistics;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 

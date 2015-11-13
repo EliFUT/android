@@ -1,4 +1,4 @@
-package com.felipecsl.elifut;
+package com.felipecsl.elifut.services;
 
 import retrofit.Response;
 import rx.functions.Func1;

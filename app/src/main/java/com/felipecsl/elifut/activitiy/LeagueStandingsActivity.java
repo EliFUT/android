@@ -14,11 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.felipecsl.elifut.ElifutPreferences;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.ClubsAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
+import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.widget.DividerItemDecoration;
 import com.jakewharton.rxbinding.view.RxView;
 import com.squareup.picasso.Picasso;
@@ -27,7 +27,6 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -40,9 +39,9 @@ import rx.Observer;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public class LeagueDetailsActivity extends ElifutActivity {
+public class LeagueStandingsActivity extends ElifutActivity {
   private static final String EXTRA_LEAGUE = "EXTRA_LEAGUE";
-  private static final String TAG = LeagueDetailsActivity.class.getSimpleName();
+  private static final String TAG = LeagueStandingsActivity.class.getSimpleName();
   private static final String EXTRA_CURRENT_CLUB = "EXTRA_CURRENT_CLUB";
   private final Target leagueLogoTarget = new SimpleTarget() {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -60,7 +59,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
   @Bind(R.id.fab) FloatingActionButton nextButton;
   @BindColor(R.color.color_primary) int colorPrimary;
 
-  @Inject ElifutPreferences preferences;
+  @Inject LeaguePreferences preferences;
 
   @State League league;
   @State Club currentClub;
@@ -70,14 +69,14 @@ public class LeagueDetailsActivity extends ElifutActivity {
   private final Observer<List<Club>> observer = new SimpleResponseObserver<List<Club>>() {
     @Override public void onError(Throwable e) {
       progressBarLayout.setVisibility(View.GONE);
-      Toast.makeText(LeagueDetailsActivity.this, "Failed to load list of clubs",
+      Toast.makeText(LeagueStandingsActivity.this, "Failed to load list of clubs",
           Toast.LENGTH_SHORT).show();
       Log.w(TAG, e);
     }
 
     @Override public void onNext(List<Club> response) {
       clubs = new ArrayList<>(response);
-      preferences.storeLeagueClubs(Observable.from(response));
+      preferences.putClubsAndInitOpponentsIfNeeded(currentClub, Observable.from(response));
       progressBarLayout.setVisibility(View.GONE);
       getSupportActionBar().setTitle(league.name());
       ClubsAdapter adapter = new ClubsAdapter(response, currentClub);
@@ -85,9 +84,9 @@ public class LeagueDetailsActivity extends ElifutActivity {
       recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
 
       Subscription subscription = RxView.clicks(nextButton).subscribe((v) -> {
-        Club randomClub = response.get(new Random().nextInt(response.size()));
-        startActivity(MatchProgressActivity.newIntent(
-            LeagueDetailsActivity.this, currentClub, randomClub));
+        List<Club> nextOpponents = preferences.getNextOpponents();
+        startActivity(LeagueProgressActivity.newIntent(
+            LeagueStandingsActivity.this, currentClub, league, nextOpponents));
         finish();
       });
       subscriptions.add(subscription);
@@ -95,7 +94,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
   };
 
   public static Intent newIntent(Context context, League league, Club currentClub) {
-    return new Intent(context, LeagueDetailsActivity.class)
+    return new Intent(context, LeagueStandingsActivity.class)
         .putExtra(EXTRA_LEAGUE, league)
         .putExtra(EXTRA_CURRENT_CLUB, currentClub);
   }
@@ -116,7 +115,7 @@ public class LeagueDetailsActivity extends ElifutActivity {
       Intent intent = getIntent();
       league = intent.getParcelableExtra(EXTRA_LEAGUE);
       currentClub = intent.getParcelableExtra(EXTRA_CURRENT_CLUB);
-      Subscription subscription = preferences.retrieveLeagueClubs()
+      Subscription subscription = preferences.getLeagueClubs()
           .switchIfEmpty(clubsObservable())
           .toList()
           .subscribe(observer);

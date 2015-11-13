@@ -2,7 +2,8 @@ package com.felipecsl.elifut;
 
 import android.content.Context;
 
-import com.felipecsl.elifut.activitiy.LeagueDetailsActivity;
+import com.felipecsl.elifut.activitiy.LeagueProgressActivity;
+import com.felipecsl.elifut.activitiy.LeagueStandingsActivity;
 import com.felipecsl.elifut.activitiy.MainActivity;
 import com.felipecsl.elifut.activitiy.MatchProgressActivity;
 import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
@@ -20,8 +21,9 @@ public interface ElifutComponent {
   void inject(TeamDetailsActivity teamDetailsActivity);
   void inject(TeamPlayersFragment teamPlayersFragment);
   void inject(TeamDetailsFragment teamDetailsFragment);
-  void inject(LeagueDetailsActivity leagueDetailsActivity);
+  void inject(LeagueStandingsActivity leagueStandingsActivity);
   void inject(MatchProgressActivity matchProgressActivity);
+  void inject(LeagueProgressActivity leagueProgressActivity);
 
   final class Initializer {
     private Initializer() {

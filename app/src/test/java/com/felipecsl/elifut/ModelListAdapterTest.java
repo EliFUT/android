@@ -1,5 +1,6 @@
 package com.felipecsl.elifut;
 
+import com.felipecsl.elifut.adapter.ModelListAdapterFactory;
 import com.felipecsl.elifut.models.Nation;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonReader;

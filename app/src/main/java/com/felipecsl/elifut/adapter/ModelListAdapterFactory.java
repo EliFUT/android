@@ -1,4 +1,4 @@
-package com.felipecsl.elifut;
+package com.felipecsl.elifut.adapter;
 
 import com.felipecsl.elifut.models.Model;
 import com.squareup.moshi.JsonAdapter;
@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
-final class ModelListAdapterFactory<T extends Model> implements JsonAdapter.Factory {
+public final class ModelListAdapterFactory<T extends Model> implements JsonAdapter.Factory {
   private final Class<T> type;
 
   public ModelListAdapterFactory(Class<T> type) {

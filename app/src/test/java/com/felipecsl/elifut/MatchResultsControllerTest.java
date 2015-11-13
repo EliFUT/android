@@ -3,7 +3,11 @@ package com.felipecsl.elifut;
 import android.os.Build;
 import android.support.annotation.Nullable;
 
+import com.felipecsl.elifut.match.MatchResultsController;
+import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.UserPreferences;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,18 +31,20 @@ public class MatchResultsControllerTest {
   private final Club nonUserClub = Club.builder().id(2).name("Club B").build();
   private final Observable<Club> leagueClubs = Observable.just(userClub, nonUserClub);
 
-  @Inject ElifutPreferences preferences;
+  @Inject UserPreferences userPreferences;
+  @Inject LeaguePreferences leaguePreferences;
 
   @Before public void setUp() {
     TestElifutApplication application = (TestElifutApplication) RuntimeEnvironment.application;
     application.testComponent().inject(this);
 
-    preferences.storeUserClub(userClub);
-    preferences.storeLeagueClubs(leagueClubs);
+    userPreferences.putUserClub(userClub);
+    leaguePreferences.putLeagueClubs(leagueClubs);
   }
 
   @Test public void testUserWinner() throws Exception {
-    MatchResultsController controller = new MatchResultsController(preferences);
+    MatchResultsController controller =
+        new MatchResultsController(userPreferences, leaguePreferences);
     MatchStatistics statistics = new TestMatchStatistics() {
       @Nullable @Override public Club winner() {
         return userClub;
@@ -55,13 +61,14 @@ public class MatchResultsControllerTest {
     controller.updateByMatchStatistics(statistics);
 
     Club newUserClub = userClub.newWithWin();
-    assertThat(preferences.retrieveUserClub()).isEqualTo(newUserClub);
-    assertThat(preferences.retrieveLeagueClubs().toList().toBlocking().first())
+    assertThat(userPreferences.getUserClub()).isEqualTo(newUserClub);
+    assertThat(leaguePreferences.getLeagueClubs().toList().toBlocking().first())
         .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithLoss()));
   }
 
   @Test public void testUserLoss() {
-    MatchResultsController controller = new MatchResultsController(preferences);
+    MatchResultsController controller =
+        new MatchResultsController(userPreferences, leaguePreferences);
     MatchStatistics statistics = new TestMatchStatistics() {
       @Nullable @Override public Club winner() {
         return nonUserClub;
@@ -79,13 +86,14 @@ public class MatchResultsControllerTest {
     controller.updateByMatchStatistics(statistics);
 
     Club newUserClub = userClub.newWithLoss();
-    assertThat(preferences.retrieveUserClub()).isEqualTo(newUserClub);
-    assertThat(preferences.retrieveLeagueClubs().toList().toBlocking().first())
+    assertThat(userPreferences.getUserClub()).isEqualTo(newUserClub);
+    assertThat(leaguePreferences.getLeagueClubs().toList().toBlocking().first())
         .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithWin()));
   }
 
   @Test public void testDraw() {
-    MatchResultsController controller = new MatchResultsController(preferences);
+    MatchResultsController controller =
+        new MatchResultsController(userPreferences, leaguePreferences);
     MatchStatistics statistics = new TestMatchStatistics() {
       @Override public Club home() {
         return userClub;
@@ -103,8 +111,8 @@ public class MatchResultsControllerTest {
     controller.updateByMatchStatistics(statistics);
 
     Club newUserClub = userClub.newWithDraw();
-    assertThat(preferences.retrieveUserClub()).isEqualTo(newUserClub);
-    assertThat(preferences.retrieveLeagueClubs().toList().toBlocking().first())
+    assertThat(userPreferences.getUserClub()).isEqualTo(newUserClub);
+    assertThat(leaguePreferences.getLeagueClubs().toList().toBlocking().first())
         .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithDraw()));
   }
 }

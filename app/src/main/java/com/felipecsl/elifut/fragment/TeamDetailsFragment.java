@@ -30,7 +30,6 @@ public final class TeamDetailsFragment extends ElifutFragment {
   private static final String EXTRA_COACH_NAME = "COACH_NAME";
   private static final String EXTRA_NATION = "NATION";
   private static final java.lang.String EXTRA_LEAGUE = "EXTRA_LEAGUE";
-  private static final String TAG = TeamDetailsFragment.class.getSimpleName();
   private final SimpleTarget clubLogoTarget = new SimpleTarget() {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
       imgClubLogo.setImageBitmap(bitmap);

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-  package="com.felipecsl.elifut"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="com.felipecsl.elifut"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
   <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -21,11 +20,11 @@
       </intent-filter>
     </activity>
     <activity android:name=".activitiy.TeamDetailsActivity"/>
-    <activity android:name=".activitiy.LeagueStandingsActivity"/>
+    <activity android:name=".activitiy.LeagueDetailsActivity"/>
     <activity
       android:name=".activitiy.MatchProgressActivity"
       android:label="@string/match_progress"/>
-    <activity android:name=".activitiy.LeagueProgressActivity"/>
+    <activity android:name=".fragment.LeagueProgressFragment"/>
   </application>
 
 </manifest>

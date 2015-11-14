@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.felipecsl.elifut.R;
-import com.felipecsl.elifut.activitiy.SimpleResponseObserver;
+import com.felipecsl.elifut.ResponseObserver;
 import com.felipecsl.elifut.adapter.PlayersAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Nation;
@@ -73,12 +71,7 @@ public final class TeamPlayersFragment extends ElifutFragment {
   private void loadPlayers() {
     service.playersByClub(club.id())
         .compose(this.<List<Player>>applyTransformations())
-        .subscribe(new SimpleResponseObserver<List<Player>>() {
-          @Override public void onError(Throwable e) {
-            Toast.makeText(getActivity(), "Failed to load club players", Toast.LENGTH_SHORT).show();
-            Log.w(TAG, e);
-          }
-
+        .subscribe(new ResponseObserver<List<Player>>(getActivity(), TAG, "Failed to load club players") {
           @Override public void onNext(List<Player> response) {
             players = new ArrayList<>(response);
             onPlayersLoaded();

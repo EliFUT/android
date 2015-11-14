@@ -8,37 +8,42 @@ public final class UserPreferences {
   private static final String KEY_USER_CLUB = "UserClub";
   private static final String KEY_USER_NATION = "UserNation";
   private static final String KEY_USER_LEAGUE = "UserLeague";
+  private static final String KEY_COACH_NAME = "COACH_NAME";
   private final ElifutPreferences preferences;
 
   public UserPreferences(ElifutPreferences preferences) {
     this.preferences = preferences;
   }
 
-  public void putUserNation(Nation nation) {
+  public void putNation(Nation nation) {
     preferences.putObject(nation, Nation.class, KEY_USER_NATION);
   }
 
-  public void putUserClub(Club club) {
+  public void putClub(Club club) {
     preferences.putObject(club, Club.class, KEY_USER_CLUB);
   }
 
-  public Club getUserClub() {
+  public Club club() {
     return preferences.getObject(Club.class, KEY_USER_CLUB);
   }
 
-  public Nation getUserNation() {
+  public Nation nation() {
     return preferences.getObject(Nation.class, KEY_USER_NATION);
   }
 
-  public void storeUserLeague(League league) {
+  public void putLeague(League league) {
     preferences.putObject(league, League.class, KEY_USER_LEAGUE);
   }
 
-  public League getUserLeague() {
+  public League league() {
     return preferences.getObject(League.class, KEY_USER_LEAGUE);
   }
 
   public void putCoachName(String name) {
-    preferences.putString("COACH_NAME", name);
+    preferences.putString(KEY_COACH_NAME, name);
+  }
+
+  public String coachName() {
+    return preferences.getString(KEY_COACH_NAME);
   }
 }

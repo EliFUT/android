@@ -21,3 +21,7 @@ allprojects {
     }
   }
 }
+
+ext {
+  supportLibVersion = '23.1.1'
+}

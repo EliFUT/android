@@ -1,56 +1,18 @@
-<android.support.design.widget.CoordinatorLayout
-  android:id="@+id/main_content"
+<android.support.v4.widget.DrawerLayout
+  android:id="@+id/drawer_layout"
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:fitsSystemWindows="true">
+  android:fitsSystemWindows="true"
+  tools:openDrawer="start">
 
-  <android.support.design.widget.AppBarLayout
-    android:id="@+id/appbar"
+  <include
+    layout="@layout/app_bar_league_details"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    android:layout_height="match_parent"/>
 
-    <android.support.v7.widget.Toolbar
-      android:id="@+id/toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="?attr/actionBarSize"
-      android:background="?attr/colorPrimary"
-      app:layout_scrollFlags="scroll|enterAlways"
-      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+  <include layout="@layout/navigation_view" />
 
-  </android.support.design.widget.AppBarLayout>
-
-  <android.support.v7.widget.RecyclerView
-    android:id="@+id/recycler_clubs"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-  <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="end|bottom"
-    android:layout_margin="@dimen/fab_margin"
-    android:src="@drawable/ic_done"/>
-
-  <FrameLayout
-    android:id="@+id/progress_bar_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <ProgressBar
-      android:id="@+id/progress_bar"
-      style="@style/Widget.AppCompat.ProgressBar"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
-      android:layout_marginTop="100dp"
-      android:indeterminate="true"/>
-
-  </FrameLayout>
-
-</android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.DrawerLayout>

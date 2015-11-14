@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.ResponseObserver;
 import com.felipecsl.elifut.match.DefaultMatchStatistics;
 import com.felipecsl.elifut.match.MatchResultsController;
 import com.felipecsl.elifut.match.MatchStatistics;
@@ -72,12 +73,7 @@ public class MatchProgressActivity extends ElifutActivity {
 
   private final CompositeSubscription subscriptions = new CompositeSubscription();
   private String finalScoreMessage;
-  private final Observer<Club> observer = new SimpleResponseObserver<Club>() {
-    @Override public void onError(Throwable e) {
-      Toast.makeText(MatchProgressActivity.this, "Failed to load club", Toast.LENGTH_SHORT).show();
-      Log.w(TAG, e);
-    }
-
+  private final Observer<Club> observer = new ResponseObserver<Club>(this, TAG, "Failed to load club") {
     @Override public void onNext(Club response) {
       fillClubInfos(response);
     }
@@ -216,9 +212,9 @@ public class MatchProgressActivity extends ElifutActivity {
     MatchResultsController controller = new MatchResultsController(
         userPreferences, leaguePreferences);
     controller.updateByMatchStatistics(statistics);
-    League league = userPreferences.getUserLeague();
-    Club userClub = userPreferences.getUserClub();
-    startActivity(LeagueStandingsActivity.newIntent(this, league, userClub));
+    League league = userPreferences.league();
+    Club userClub = userPreferences.club();
+    startActivity(LeagueDetailsActivity.newIntent(this));
     finish();
   }
 }

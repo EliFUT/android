@@ -35,7 +35,7 @@ public class ElifutPreferences {
   }
 
   <T> T getObject(JsonAdapter<?> adapter, String key) {
-    String objectJson = sharedPreferences.getString(key, null);
+    String objectJson = getString(key);
     if (objectJson == null) {
       return null;
     }
@@ -51,5 +51,9 @@ public class ElifutPreferences {
     sharedPreferences.edit()
         .putString(key, value)
         .apply();
+  }
+
+  String getString(String key) {
+    return sharedPreferences.getString(key, null);
   }
 }

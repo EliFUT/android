@@ -16,4 +16,12 @@
   <string name="end_first_half">End of first half.</string>
   <string name="end_match">End of match.</string>
   <string name="match_progress">Match progress</string>
+  <string name="title_activity_home">HomeActivity</string>
+
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+  <string name="my_team">My team</string>
+  <string name="current_league">Current league</string>
+  <string name="schedule">Schedule</string>
+  <string name="standings">Standings</string>
 </resources>

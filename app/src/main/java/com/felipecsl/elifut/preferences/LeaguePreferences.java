@@ -22,7 +22,7 @@ public final class LeaguePreferences {
     this.moshi = moshi;
   }
 
-  public void putClubsAndInitOpponentsIfNeeded(Club userClub, Observable<Club> observable) {
+  public void putClubsAndInitOpponents(Club userClub, Observable<Club> observable) {
     putLeagueClubs(observable.toList().toBlocking().first());
     List<Club> otherClubs = observable.filter((c) -> !c.equals(userClub))
         .toList()
@@ -31,12 +31,12 @@ public final class LeaguePreferences {
 
     Collections.shuffle(otherClubs);
 
-    if (getNextOpponents() == null) {
+    if (nextOpponents() == null) {
       putNextOpponents(otherClubs);
     }
   }
 
-  public Observable<Club> getLeagueClubs() {
+  public Observable<Club> clubs() {
     List<Club> clubs = getClubsByKey(KEY_CLUBS);
 
     if (clubs == null || clubs.isEmpty()) {
@@ -45,7 +45,7 @@ public final class LeaguePreferences {
     return Observable.from(clubs);
   }
 
-  public List<Club> getNextOpponents() {
+  public List<Club> nextOpponents() {
     return getClubsByKey(KEY_OPPONENTS);
   }
 

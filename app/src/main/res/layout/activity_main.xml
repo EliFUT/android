@@ -34,41 +34,65 @@
 
   </android.support.design.widget.AppBarLayout>
 
-  <LinearLayout
+  <FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp"
+    android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:hintAnimationEnabled="true">
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:padding="24dp">
 
-      <EditText
-        android:id="@+id/input_name"
+      <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/whats_your_name"/>
+        app:hintAnimationEnabled="true">
 
-    </android.support.design.widget.TextInputLayout>
+        <EditText
+          android:id="@+id/input_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/whats_your_name"/>
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/select_country"
-      android:textSize="12sp"
-      android:textColor="#333333"
-      android:layout_marginLeft="10dp"
-      android:layout_marginTop="30dp"/>
+      </android.support.design.widget.TextInputLayout>
 
-    <Spinner
-      android:id="@+id/countries_spinner"
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/select_country"
+        android:textColor="#333333"
+        android:textSize="12sp"/>
+
+      <Spinner
+        android:id="@+id/countries_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+      android:id="@+id/loading_frame"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+      android:layout_height="match_parent"
+      android:background="@color/white"
+      android:visibility="gone">
 
-  </LinearLayout>
+      <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:indeterminate="true"/>
+
+    </FrameLayout>
+
+  </FrameLayout>
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/fab"

@@ -5,9 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.felipecsl.elifut.ElifutApplication;
 import com.felipecsl.elifut.ElifutComponent;
+import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.UserPreferences;
+import com.felipecsl.elifut.services.ElifutService;
 import com.felipecsl.elifut.services.ResponseBodyMapper;
 import com.felipecsl.elifut.services.ResponseMapper;
-import com.felipecsl.elifut.services.ElifutService;
 
 import javax.inject.Inject;
 
@@ -20,6 +22,8 @@ import rx.schedulers.Schedulers;
 public abstract class ElifutActivity extends AppCompatActivity {
 
   @Inject ElifutService service;
+  @Inject UserPreferences userPreferences;
+  @Inject LeaguePreferences leaguePreferences;
 
   protected ElifutApplication getElifutApp() {
     return (ElifutApplication) getApplication();

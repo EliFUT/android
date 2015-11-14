@@ -2,24 +2,29 @@ package com.felipecsl.elifut.activitiy;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.felipecsl.elifut.CompletionObserver;
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.ResponseObserver;
 import com.felipecsl.elifut.adapter.CountriesSpinnerAdapter;
+import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
-import com.felipecsl.elifut.preferences.UserPreferences;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Observer;
+import rx.subscriptions.CompositeSubscription;
 
 public class MainActivity extends ElifutActivity {
   private static final String TAG = "MainActivity";
@@ -28,53 +33,76 @@ public class MainActivity extends ElifutActivity {
   @Bind(R.id.input_name) EditText inputName;
   @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
   @Bind(R.id.countries_spinner) Spinner countriesSpinner;
+  @Bind(R.id.loading_frame) FrameLayout loadingFrame;
+  @Bind(R.id.fab) FloatingActionButton okButton;
 
-  @Inject UserPreferences preferences;
-
+  private Club userClub;
   private CountriesSpinnerAdapter nationsAdapter;
+  private final CompositeSubscription subscriptions = new CompositeSubscription();
+  private final Observer<List<Nation>> nationObserver =
+      new ResponseObserver<List<Nation>>(this, TAG, "Failed to load list of countries.") {
+        @Override public void onNext(List<Nation> response) {
+          nationsAdapter = new CountriesSpinnerAdapter(MainActivity.this, response);
+          countriesSpinner.setAdapter(nationsAdapter);
+        }
+      };
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
     daggerComponent().inject(this);
-
     setSupportActionBar(toolbar);
 
-    collapsingToolbar.setTitle(getTitle());
-
-    Nation nation = preferences.getUserNation();
+    Nation nation = userPreferences.nation();
 
     if (nation != null) {
-      onNationSelected(nation);
-      return;
+      launchHomeScreen();
+    } else {
+      subscriptions.add(service.nations()
+          .compose(this.<List<Nation>>applyTransformations())
+          .subscribe(nationObserver));
     }
+  }
 
-    service.nations()
-        .compose(this.<List<Nation>>applyTransformations())
-        .subscribe(new SimpleResponseObserver<List<Nation>>() {
-          @Override public void onError(Throwable throwable) {
-            Toast.makeText(MainActivity.this, "Failed to load list of countries",
-                Toast.LENGTH_SHORT).show();
-            Log.w(TAG, throwable);
-          }
-
-          @Override public void onNext(List<Nation> response) {
-            nationsAdapter = new CountriesSpinnerAdapter(MainActivity.this, response);
-            countriesSpinner.setAdapter(nationsAdapter);
-          }
-        });
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    subscriptions.unsubscribe();
   }
 
   @OnClick(R.id.fab) public void onClickNext() {
-    onNationSelected((Nation) nationsAdapter.getItem(countriesSpinner.getSelectedItemPosition()));
+    loadingFrame.setVisibility(View.VISIBLE);
+    okButton.setVisibility(View.GONE);
+    Nation nation = (Nation) nationsAdapter.getItem(countriesSpinner.getSelectedItemPosition());
+    userPreferences.putNation(nation);
+    userPreferences.putCoachName(inputName.getText().toString());
+
+    subscriptions.add(service.randomClub(nation.id())
+        .compose(this.<Club>applyTransformations())
+        .flatMap(club -> {
+          userClub = club;
+          userPreferences.putClub(club);
+          return service.league(club.league_id())
+              .compose(this.<League>applyTransformations());
+        })
+        .flatMap(league -> {
+          userPreferences.putLeague(league);
+          return service.clubsByLeague(league.id())
+              .compose(applyTransformations());
+        })
+        .flatMap(clubs -> {
+          leaguePreferences.putClubsAndInitOpponents(userClub, Observable.from(clubs));
+          return Observable.empty();
+        })
+        .subscribe(new CompletionObserver<Object>(this, TAG, "Failed to load game data.") {
+          @Override public void onCompleted() {
+            launchHomeScreen();
+          }
+        }));
   }
 
-  private void onNationSelected(Nation nation) {
-    String coachName = inputName.getText().toString();
-    preferences.putUserNation(nation);
-    preferences.putCoachName(coachName);
-    startActivity(TeamDetailsActivity.newIntent(this, nation, coachName));
+  private void launchHomeScreen() {
+    startActivity(TeamDetailsActivity.newIntent(MainActivity.this, userPreferences.club()));
     finish();
   }
 }

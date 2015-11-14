@@ -15,13 +15,16 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class LeagueNextMatchesAdapter extends RecyclerView.Adapter<LeagueNextMatchesAdapter.ViewHolder> {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public final class LeagueNextMatchesAdapter extends
+    RecyclerView.Adapter<LeagueNextMatchesAdapter.ViewHolder> {
   private final List<Club> nextOpponents;
   private final Club currentClub;
 
   public LeagueNextMatchesAdapter(List<Club> nextOpponents, Club currentClub) {
-    this.nextOpponents = nextOpponents;
-    this.currentClub = currentClub;
+    this.nextOpponents = checkNotNull(nextOpponents);
+    this.currentClub = checkNotNull(currentClub);
   }
 
   @Override

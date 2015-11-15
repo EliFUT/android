@@ -2,6 +2,14 @@ package com.felipecsl.elifut.activitiy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
@@ -10,10 +18,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
@@ -37,12 +47,38 @@ public abstract class NavigationActivity extends ElifutActivity
   @Bind(R.id.nav_view) NavigationView navigationView;
   @Bind(R.id.toolbar) Toolbar toolbar;
 
+  private final SimpleTarget clubLogoTarget = new SimpleTarget() {
+    @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+      headerViewHolder.imgClubLogo.setImageBitmap(bitmap);
+      loadPalette(bitmap);
+    }
+  };
+
+  private void loadPalette(Bitmap bitmap) {
+    Palette.from(bitmap).generate(palette -> {
+      ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
+        @Override public Shader resize(int width, int height) {
+          return new LinearGradient(0, 0, width, height, new int[] {
+              palette.getMutedColor(0x81C784),
+              palette.getLightMutedColor(0x2E7D32)
+          }, new float[] { 0, 1 }, Shader.TileMode.CLAMP);
+        }
+      };
+      PaintDrawable paintDrawable = new PaintDrawable();
+      paintDrawable.setShape(new RectShape());
+      paintDrawable.setShaderFactory(shaderFactory);
+      LayerDrawable background = new LayerDrawable(new Drawable[] { paintDrawable });
+      headerViewHolder.navHeaderLayout.setBackground(background);
+    });
+  }
+
   private final NavigationHeaderViewHolder headerViewHolder = new NavigationHeaderViewHolder();
 
   static class NavigationHeaderViewHolder {
     @Bind(R.id.text_coach_name) TextView txtCoachName;
     @Bind(R.id.text_team_name) TextView txtTeamName;
     @Bind(R.id.img_club_logo) ImageView imgClubLogo;
+    @Bind(R.id.nav_header_layout) LinearLayout navHeaderLayout;
   }
 
   public static Intent newIntent(Context context) {
@@ -80,7 +116,7 @@ public abstract class NavigationActivity extends ElifutActivity
 
     Picasso.with(this)
         .load(club.large_image())
-        .into(headerViewHolder.imgClubLogo);
+        .into(clubLogoTarget);
   }
 
   @Override public void onBackPressed() {
@@ -116,7 +152,7 @@ public abstract class NavigationActivity extends ElifutActivity
     int id = item.getItemId();
 
     if (id == R.id.nav_team) {
-      startActivity(TeamDetailsActivity.newIntent(this, userPreferences.club()));
+      startActivity(CurrentTeamDetailsActivity.newIntent(this, userPreferences.club()));
     } else if (id == R.id.nav_league) {
       startActivity(LeagueDetailsActivity.newIntent(this));
     }

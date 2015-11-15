@@ -1,5 +1,6 @@
 package com.felipecsl.elifut.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
 import com.felipecsl.elifut.models.Club;
 import com.squareup.picasso.Picasso;
 
@@ -67,6 +69,11 @@ public final class LeagueNextMatchesAdapter extends
 
       txtTeamHome.setText(home.abbrev_name().substring(0, 3).toUpperCase());
       txtTeamAway.setText(away.abbrev_name().substring(0, 3).toUpperCase());
+      Context context = itemView.getContext();
+      imgTeamAway.setOnClickListener(view -> context.startActivity(
+          TeamDetailsActivity.newIntent(context, away)));
+      imgTeamHome.setOnClickListener(view -> context.startActivity(
+          TeamDetailsActivity.newIntent(context, home)));
     }
   }
 }

@@ -19,12 +19,13 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".activitiy.TeamDetailsActivity"/>
+    <activity android:name=".activitiy.CurrentTeamDetailsActivity"/>
     <activity android:name=".activitiy.LeagueDetailsActivity"/>
     <activity
       android:name=".activitiy.MatchProgressActivity"
       android:label="@string/match_progress"/>
-    <activity android:name=".fragment.LeagueProgressFragment"/>
+    <activity android:name=".activitiy.TeamDetailsActivity">
+    </activity>
   </application>
 
 </manifest>

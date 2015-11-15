@@ -35,6 +35,7 @@ public abstract class ElifutActivity extends AppCompatActivity {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    daggerComponent().inject(this);
     Icepick.restoreInstanceState(this, savedInstanceState);
   }
 

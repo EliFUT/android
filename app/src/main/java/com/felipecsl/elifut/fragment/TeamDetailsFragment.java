@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.activitiy.SimpleTarget;
-import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
+import com.felipecsl.elifut.activitiy.TabbedActivity;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
@@ -100,7 +100,7 @@ public final class TeamDetailsFragment extends ElifutFragment {
 
   private void loadPalette(Bitmap bitmap) {
     Palette.from(bitmap).generate(palette -> {
-      TeamDetailsActivity activity = (TeamDetailsActivity) getActivity();
+      TabbedActivity activity = (TabbedActivity) getActivity();
       activity.setToolbarColor(
           palette.getDarkVibrantColor(colorPrimary), palette.getLightMutedColor(colorSecondary));
     });

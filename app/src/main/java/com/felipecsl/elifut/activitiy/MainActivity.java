@@ -102,7 +102,7 @@ public class MainActivity extends ElifutActivity {
   }
 
   private void launchHomeScreen() {
-    startActivity(TeamDetailsActivity.newIntent(MainActivity.this, userPreferences.club()));
+    startActivity(CurrentTeamDetailsActivity.newIntent(MainActivity.this, userPreferences.club()));
     finish();
   }
 }

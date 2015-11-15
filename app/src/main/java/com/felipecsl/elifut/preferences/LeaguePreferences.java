@@ -53,6 +53,16 @@ public final class LeaguePreferences {
     putClubsByKey(clubs, KEY_OPPONENTS);
   }
 
+  public Club popAndUpdateNextOpponents() {
+    List<Club> nextOpponents = nextOpponents();
+    if (nextOpponents.isEmpty()) {
+      throw new IllegalStateException("no opponents");
+    }
+    Club club = nextOpponents.remove(0);
+    putNextOpponents(nextOpponents);
+    return club;
+  }
+
   public void putLeagueClubs(Observable<Club> clubs) {
     putLeagueClubs(clubs.toList().toBlocking().first());
   }

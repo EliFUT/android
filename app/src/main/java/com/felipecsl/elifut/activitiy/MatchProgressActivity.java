@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +21,6 @@ import com.felipecsl.elifut.match.MatchResultsController;
 import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
-import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.widget.FractionView;
@@ -121,6 +121,9 @@ public class MatchProgressActivity extends ElifutActivity {
   @Override protected void onDestroy() {
     super.onDestroy();
     stopTimer();
+    MatchResultsController controller = new MatchResultsController(
+        userPreferences, leaguePreferences);
+    controller.updateByMatchStatistics(statistics);
   }
 
   private void loadClubs(int homeId, int awayId) {
@@ -199,22 +202,16 @@ public class MatchProgressActivity extends ElifutActivity {
   @OnClick(R.id.fab_play_pause) public void onClickPause() {
     if (isRunning) {
       stopTimer();
-      Toast.makeText(this, R.string.match_paused, Toast.LENGTH_SHORT).show();
+      Snackbar.make(playPauseButton, R.string.match_paused, Toast.LENGTH_SHORT).show();
       playPauseButton.setImageResource(R.drawable.ic_play_arrow_white_48dp);
     } else {
       startTimer();
-      Toast.makeText(this, R.string.match_resumed, Toast.LENGTH_SHORT).show();
+      Snackbar.make(playPauseButton, R.string.match_resumed, Snackbar.LENGTH_SHORT).show();
       playPauseButton.setImageResource(R.drawable.ic_pause_white_48dp);
     }
   }
 
   @OnClick(R.id.fab_done) public void onClickDone() {
-    MatchResultsController controller = new MatchResultsController(
-        userPreferences, leaguePreferences);
-    controller.updateByMatchStatistics(statistics);
-    League league = userPreferences.league();
-    Club userClub = userPreferences.club();
-    startActivity(LeagueDetailsActivity.newIntent(this));
     finish();
   }
 }

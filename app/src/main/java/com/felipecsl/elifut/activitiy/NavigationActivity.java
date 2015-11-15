@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -36,6 +35,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public abstract class NavigationActivity extends ElifutActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,6 +46,7 @@ public abstract class NavigationActivity extends ElifutActivity
   @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
   @Bind(R.id.nav_view) NavigationView navigationView;
   @Bind(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.fab) FloatingActionButton fab;
 
   private final SimpleTarget clubLogoTarget = new SimpleTarget() {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -96,12 +97,6 @@ public abstract class NavigationActivity extends ElifutActivity
 
     Club club = userPreferences.club();
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener((view) -> {
-      Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-          .setAction("Action", null).show();
-    });
-
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     drawerLayout.setDrawerListener(toggle);
@@ -139,7 +134,7 @@ public abstract class NavigationActivity extends ElifutActivity
     // as you specify a parent activity in AndroidManifest.xml.
     int id = item.getItemId();
 
-    switch (item.getItemId()) {
+    switch (id) {
       case android.R.id.home:
         drawerLayout.openDrawer(GravityCompat.START);
         return true;
@@ -159,5 +154,12 @@ public abstract class NavigationActivity extends ElifutActivity
 
     drawerLayout.closeDrawer(GravityCompat.START);
     return true;
+  }
+
+  @OnClick(R.id.fab) public void onClickFab() {
+    // TODO: Determine who's home and who's away
+    Club club = userPreferences.club();
+    Club opponent = leaguePreferences.popAndUpdateNextOpponents();
+    startActivity(MatchProgressActivity.newIntent(this, club, opponent));
   }
 }

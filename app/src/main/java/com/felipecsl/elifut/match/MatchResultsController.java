@@ -1,23 +1,26 @@
 package com.felipecsl.elifut.match;
 
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.preferences.JsonPreference;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
+
+import java.util.List;
 
 import rx.Observable;
 
 public final class MatchResultsController {
   private final UserPreferences userPreferences;
-  private final LeaguePreferences leaguePreferences;
   private final Club userClub;
   private final Observable<Club> allClubs;
+  private final JsonPreference<List<Club>> clubsPreference;
 
   public MatchResultsController(
       UserPreferences userPreferences, LeaguePreferences leaguePreferences) {
     this.userPreferences = userPreferences;
-    this.leaguePreferences = leaguePreferences;
     userClub = userPreferences.clubPreference().get();
-    allClubs = Observable.from(leaguePreferences.clubs());
+    clubsPreference = leaguePreferences.clubsPreference();
+    allClubs = Observable.from(clubsPreference.get());
   }
 
   public void updateByMatchStatistics(MatchStatistics statistics) {
@@ -30,14 +33,14 @@ public final class MatchResultsController {
         userPreferences.clubPreference().set(winnerClub);
         Observable<Club> observable = allClubs.compose(
             transform(winnerClub, statistics.loser().newWithLoss()));
-        leaguePreferences.putLeagueClubs(observable);
+        clubsPreference.set(toList(observable));
       } else {
         // computer is winner
         Club loserClub = userClub.newWithLoss();
         userPreferences.clubPreference().set(loserClub);
         Observable<Club> observable = allClubs.compose(
             transform(statistics.winner().newWithWin(), loserClub));
-        leaguePreferences.putLeagueClubs(observable);
+        clubsPreference.set(toList(observable));
       }
     } else {
       // match result is draw
@@ -47,8 +50,12 @@ public final class MatchResultsController {
       userPreferences.clubPreference().set(drawClub);
       Observable<Club> observable = allClubs.compose(
           transform(drawClub, nonUserClub.newWithDraw()));
-      leaguePreferences.putLeagueClubs(observable);
+      clubsPreference.set(toList(observable));
     }
+  }
+
+  private List<Club> toList(Observable<Club> observable) {
+    return observable.toList().toBlocking().first();
   }
 
   private Observable.Transformer<Club, Club> transform(Club clubA, Club clubB) {

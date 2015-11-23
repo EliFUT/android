@@ -37,7 +37,7 @@ public class LeagueProgressFragment extends ElifutFragment {
     if (savedInstanceState == null) {
       league = userPreferences.leaguePreference().get();
       currentClub = userPreferences.clubPreference().get();
-      nextOpponents = new ArrayList<>(leaguePreferences.nextOpponentsPreference().get());
+      nextOpponents = new ArrayList<>(leaguePreferences.opponentsPreference().get());
     }
 
     LinearLayoutManager layout = new LinearLayoutManager(

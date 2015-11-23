@@ -29,7 +29,7 @@ public final class LeaguePreferences {
   }
 
   public void putClubsAndInitOpponents(Club userClub, Observable<Club> observable) {
-    putLeagueClubs(observable.toList().toBlocking().first());
+    clubsPreference.set(observable.toList().toBlocking().first());
     List<Club> otherClubs = observable.filter((c) -> !c.equals(userClub))
         .toList()
         .toBlocking()
@@ -42,18 +42,6 @@ public final class LeaguePreferences {
     }
   }
 
-  public Observable<List<Club>> clubsObservable() {
-    return clubsPreference.asObservable();
-  }
-
-  public List<Club> clubs() {
-    return clubsPreference.get();
-  }
-
-  public JsonPreference<List<Club>> nextOpponentsPreference() {
-    return opponentsPreference;
-  }
-
   public Club popAndUpdateNextOpponents() {
     List<Club> nextOpponents = opponentsPreference.get();
     if (nextOpponents == null || nextOpponents.isEmpty()) {
@@ -64,11 +52,11 @@ public final class LeaguePreferences {
     return club;
   }
 
-  public void putLeagueClubs(Observable<Club> clubs) {
-    putLeagueClubs(clubs.toList().toBlocking().first());
+  public JsonPreference<List<Club>> clubsPreference() {
+    return clubsPreference;
   }
 
-  public void putLeagueClubs(List<Club> clubs) {
-    clubsPreference.set(clubs);
+  public JsonPreference<List<Club>> opponentsPreference() {
+    return opponentsPreference;
   }
 }

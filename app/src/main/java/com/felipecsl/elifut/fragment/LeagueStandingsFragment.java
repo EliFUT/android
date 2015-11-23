@@ -80,7 +80,7 @@ public class LeagueStandingsFragment extends ElifutFragment {
     if (savedInstanceState == null) {
       league = userPreferences.leaguePreference().get();
       currentClub = userPreferences.clubPreference().get();
-      subscription.add(leaguePreferences.clubsObservable().subscribe(observer));
+      subscription.add(leaguePreferences.clubsPreference().asObservable().subscribe(observer));
     } else {
       observer.call(clubs);
     }

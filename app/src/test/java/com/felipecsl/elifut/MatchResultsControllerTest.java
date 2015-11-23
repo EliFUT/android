@@ -39,7 +39,7 @@ public class MatchResultsControllerTest {
     application.testComponent().inject(this);
 
     userPreferences.clubPreference().set(userClub);
-    leaguePreferences.putLeagueClubs(leagueClubs);
+    leaguePreferences.clubsPreference().set(leagueClubs.toList().toBlocking().first());
   }
 
   @Test public void testUserWinner() throws Exception {
@@ -62,7 +62,7 @@ public class MatchResultsControllerTest {
 
     Club newUserClub = userClub.newWithWin();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
-    assertThat(leaguePreferences.clubsObservable().toBlocking().first())
+    assertThat(leaguePreferences.clubsPreference().get())
         .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithLoss()));
   }
 
@@ -87,7 +87,7 @@ public class MatchResultsControllerTest {
 
     Club newUserClub = userClub.newWithLoss();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
-    assertThat(leaguePreferences.clubsObservable().toBlocking().first())
+    assertThat(leaguePreferences.clubsPreference().get())
         .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithWin()));
   }
 
@@ -112,7 +112,7 @@ public class MatchResultsControllerTest {
 
     Club newUserClub = userClub.newWithDraw();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
-    assertThat(leaguePreferences.clubsObservable().toBlocking().first())
+    assertThat(leaguePreferences.clubsPreference().get())
         .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithDraw()));
   }
 }

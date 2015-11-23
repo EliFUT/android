@@ -38,7 +38,7 @@ public class MatchResultsControllerTest {
     TestElifutApplication application = (TestElifutApplication) RuntimeEnvironment.application;
     application.testComponent().inject(this);
 
-    userPreferences.putClub(userClub);
+    userPreferences.clubPreference().set(userClub);
     leaguePreferences.putLeagueClubs(leagueClubs);
   }
 
@@ -61,8 +61,8 @@ public class MatchResultsControllerTest {
     controller.updateByMatchStatistics(statistics);
 
     Club newUserClub = userClub.newWithWin();
-    assertThat(userPreferences.club()).isEqualTo(newUserClub);
-    assertThat(leaguePreferences.clubs().toList().toBlocking().first())
+    assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
+    assertThat(leaguePreferences.clubsObservable().toBlocking().first())
         .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithLoss()));
   }
 
@@ -86,8 +86,8 @@ public class MatchResultsControllerTest {
     controller.updateByMatchStatistics(statistics);
 
     Club newUserClub = userClub.newWithLoss();
-    assertThat(userPreferences.club()).isEqualTo(newUserClub);
-    assertThat(leaguePreferences.clubs().toList().toBlocking().first())
+    assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
+    assertThat(leaguePreferences.clubsObservable().toBlocking().first())
         .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithWin()));
   }
 
@@ -111,8 +111,8 @@ public class MatchResultsControllerTest {
     controller.updateByMatchStatistics(statistics);
 
     Club newUserClub = userClub.newWithDraw();
-    assertThat(userPreferences.club()).isEqualTo(newUserClub);
-    assertThat(leaguePreferences.clubs().toList().toBlocking().first())
+    assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
+    assertThat(leaguePreferences.clubsObservable().toBlocking().first())
         .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithDraw()));
   }
 }

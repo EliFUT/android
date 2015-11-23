@@ -39,7 +39,6 @@ import butterknife.OnClick;
 
 public abstract class NavigationActivity extends ElifutActivity
     implements NavigationView.OnNavigationItemSelectedListener {
-
   @Inject UserPreferences userPreferences;
   @Inject LeaguePreferences leaguePreferences;
 
@@ -95,7 +94,7 @@ public abstract class NavigationActivity extends ElifutActivity
     setSupportActionBar(toolbar);
     daggerComponent().inject(this);
 
-    Club club = userPreferences.club();
+    Club club = userPreferences.clubPreference().get();
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -106,7 +105,7 @@ public abstract class NavigationActivity extends ElifutActivity
 
     ButterKnife.bind(headerViewHolder, navigationView.getHeaderView(0));
 
-    headerViewHolder.txtCoachName.setText(userPreferences.coachName());
+    headerViewHolder.txtCoachName.setText(userPreferences.coachPreference().get());
     headerViewHolder.txtTeamName.setText(club.name());
 
     Picasso.with(this)
@@ -147,9 +146,12 @@ public abstract class NavigationActivity extends ElifutActivity
     int id = item.getItemId();
 
     if (id == R.id.nav_team) {
-      startActivity(CurrentTeamDetailsActivity.newIntent(this, userPreferences.club()));
+      Club club = userPreferences.clubPreference().get();
+      startActivity(CurrentTeamDetailsActivity.newIntent(this, club));
+      finish();
     } else if (id == R.id.nav_league) {
       startActivity(LeagueDetailsActivity.newIntent(this));
+      finish();
     }
 
     drawerLayout.closeDrawer(GravityCompat.START);
@@ -158,7 +160,7 @@ public abstract class NavigationActivity extends ElifutActivity
 
   @OnClick(R.id.fab) public void onClickFab() {
     // TODO: Determine who's home and who's away
-    Club club = userPreferences.club();
+    Club club = userPreferences.clubPreference().get();
     Club opponent = leaguePreferences.popAndUpdateNextOpponents();
     startActivity(MatchProgressActivity.newIntent(this, club, opponent));
   }

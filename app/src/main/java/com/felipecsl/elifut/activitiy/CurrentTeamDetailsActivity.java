@@ -45,9 +45,9 @@ public class CurrentTeamDetailsActivity extends NavigationActivity implements Ta
 
     if (savedInstanceState == null) {
       club = getIntent().getParcelableExtra(EXTRA_CLUB);
-      coachName = userPreferences.coachName();
-      nation = userPreferences.nation();
-      league = userPreferences.league();
+      coachName = userPreferences.coachPreference().get();
+      nation = userPreferences.nationPreference().get();
+      league = userPreferences.leaguePreference().get();
     }
 
     navigationView.setCheckedItem(R.id.nav_team);

@@ -3,7 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.5.0-beta1'
+    classpath 'com.android.tools.build:gradle:1.5.0'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
     classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
     classpath 'me.tatarka:gradle-retrolambda:3.2.3'
@@ -24,4 +24,6 @@ allprojects {
 
 ext {
   supportLibVersion = '23.1.1'
+  devApiEndpoint = "http://10.0.3.2:3000/"
+  prodApiEndpoint = "http://104.131.134.208/"
 }

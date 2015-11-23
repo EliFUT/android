@@ -1,6 +1,7 @@
 package com.felipecsl.elifut;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.felipecsl.elifut.adapter.ModelListAdapterFactory;
 import com.felipecsl.elifut.models.Club;
@@ -8,7 +9,6 @@ import com.felipecsl.elifut.models.ClubStats;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.models.Player;
-import com.felipecsl.elifut.preferences.ElifutPreferences;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.squareup.moshi.Moshi;
@@ -45,17 +45,17 @@ public class DataModule {
         .build();
   }
 
-  @Provides @Singleton ElifutPreferences providePreferences(Moshi moshi) {
-    return new ElifutPreferences(
-        context.getSharedPreferences("ELIFUT_DATA", Context.MODE_PRIVATE), moshi);
-  }
-
-  @Provides @Singleton UserPreferences provideUserPreferences(ElifutPreferences preferences) {
-    return new UserPreferences(preferences);
+  @Provides @Singleton SharedPreferences provideSharedPreferences() {
+    return context.getSharedPreferences("ELIFUT_DATA", Context.MODE_PRIVATE);
   }
 
   @Provides @Singleton
-  LeaguePreferences provideLeaguePreferences(ElifutPreferences preferences, Moshi moshi) {
+  UserPreferences provideUserPreferences(SharedPreferences preferences, Moshi moshi) {
+    return new UserPreferences(preferences, moshi);
+  }
+
+  @Provides @Singleton
+  LeaguePreferences provideLeaguePreferences(SharedPreferences preferences, Moshi moshi) {
     return new LeaguePreferences(preferences, moshi);
   }
 }

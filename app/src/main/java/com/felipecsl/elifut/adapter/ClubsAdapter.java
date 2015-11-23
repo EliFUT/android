@@ -26,9 +26,7 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
 
   public ClubsAdapter(List<Club> clubs, Club selectedClub) {
     this.selectedClub = selectedClub;
-    this.clubs = Preconditions.checkNotNull(clubs);
-    Collections.sort(clubs, (lhs, rhs) ->
-        rhs.nonNullStats().points() - lhs.nonNullStats().points());
+    this.clubs = Preconditions.checkNotNull(sort(clubs));
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,6 +41,10 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
     return 0;
   }
 
+  @Override public long getItemId(int position) {
+    return clubs.get(position).hashCode();
+  }
+
   @Override public ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
     return new HeaderViewHolder(parent);
   }
@@ -53,6 +55,17 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
 
   @Override public int getItemCount() {
     return clubs.size();
+  }
+
+  public void setItems(List<Club> newItems) {
+    clubs.clear();
+    clubs.addAll(sort(newItems));
+    notifyDataSetChanged();
+  }
+
+  private static List<Club> sort(List<Club> clubs) {
+    Collections.sort(clubs, (c1, c2) -> c2.nonNullStats().points() - c1.nonNullStats().points());
+    return clubs;
   }
 
   class ViewHolder extends RecyclerView.ViewHolder {
@@ -99,7 +112,7 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
 
     void bind() {
       layout.setBackgroundColor(headerBg);
-      clubName.setText("Team");
+      clubName.setText(R.string.team);
       clubName.setTextColor(headerTextColor);
       clubName.setBackgroundColor(transparent);
       points.setText("P");

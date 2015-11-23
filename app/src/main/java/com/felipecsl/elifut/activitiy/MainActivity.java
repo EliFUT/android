@@ -54,7 +54,7 @@ public class MainActivity extends ElifutActivity {
     daggerComponent().inject(this);
     setSupportActionBar(toolbar);
 
-    Nation nation = userPreferences.nation();
+    Nation nation = userPreferences.nationPreference().get();
 
     if (nation != null) {
       launchHomeScreen();
@@ -74,19 +74,19 @@ public class MainActivity extends ElifutActivity {
     loadingFrame.setVisibility(View.VISIBLE);
     okButton.setVisibility(View.GONE);
     Nation nation = (Nation) nationsAdapter.getItem(countriesSpinner.getSelectedItemPosition());
-    userPreferences.putNation(nation);
-    userPreferences.putCoachName(inputName.getText().toString());
+    userPreferences.nationPreference().set(nation);
+    userPreferences.coachPreference().set(inputName.getText().toString());
 
     subscriptions.add(service.randomClub(nation.id())
         .compose(this.<Club>applyTransformations())
         .flatMap(club -> {
           userClub = club;
-          userPreferences.putClub(club);
+          userPreferences.clubPreference().set(club);
           return service.league(club.league_id())
               .compose(this.<League>applyTransformations());
         })
         .flatMap(league -> {
-          userPreferences.putLeague(league);
+          userPreferences.leaguePreference().set(league);
           return service.clubsByLeague(league.id())
               .compose(applyTransformations());
         })
@@ -102,7 +102,8 @@ public class MainActivity extends ElifutActivity {
   }
 
   private void launchHomeScreen() {
-    startActivity(CurrentTeamDetailsActivity.newIntent(MainActivity.this, userPreferences.club()));
+    Club club = userPreferences.clubPreference().get();
+    startActivity(CurrentTeamDetailsActivity.newIntent(MainActivity.this, club));
     finish();
   }
 }

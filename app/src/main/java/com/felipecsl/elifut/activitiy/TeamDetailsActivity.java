@@ -48,8 +48,8 @@ public class TeamDetailsActivity extends ElifutActivity implements TabbedActivit
 
     if (savedInstanceState == null) {
       club = getIntent().getParcelableExtra(EXTRA_CLUB);
-      nation = userPreferences.nation();
-      league = userPreferences.league();
+      nation = userPreferences.nationPreference().get();
+      league = userPreferences.leaguePreference().get();
     }
 
     ActionBar actionBar = checkNotNull(getSupportActionBar());

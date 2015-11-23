@@ -52,7 +52,7 @@ public class NetworkModule {
   }
 
   @Provides @Singleton HttpUrl provideBaseUrl() {
-    return HttpUrl.parse("http://10.0.3.2:3000/");
+    return HttpUrl.parse(BuildConfig.API_ENDPOINT);
   }
 
   @Provides @Singleton Cache provideCache() {

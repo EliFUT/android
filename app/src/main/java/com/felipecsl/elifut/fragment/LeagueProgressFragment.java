@@ -35,9 +35,9 @@ public class LeagueProgressFragment extends ElifutFragment {
     View view = inflater.inflate(R.layout.fragment_league_progress, container, false);
     ButterKnife.bind(this, view);
     if (savedInstanceState == null) {
-      league = userPreferences.league();
-      currentClub = userPreferences.club();
-      nextOpponents = new ArrayList<>(leaguePreferences.nextOpponents());
+      league = userPreferences.leaguePreference().get();
+      currentClub = userPreferences.clubPreference().get();
+      nextOpponents = new ArrayList<>(leaguePreferences.nextOpponentsPreference().get());
     }
 
     LinearLayoutManager layout = new LinearLayoutManager(

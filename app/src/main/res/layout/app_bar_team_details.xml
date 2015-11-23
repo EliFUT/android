@@ -16,6 +16,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
+    android:alpha="0.7"
     android:src="@drawable/ic_fast_forward_white_48dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

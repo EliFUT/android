@@ -16,8 +16,8 @@ public final class MatchResultsController {
       UserPreferences userPreferences, LeaguePreferences leaguePreferences) {
     this.userPreferences = userPreferences;
     this.leaguePreferences = leaguePreferences;
-    userClub = userPreferences.club();
-    allClubs = leaguePreferences.clubs();
+    userClub = userPreferences.clubPreference().get();
+    allClubs = Observable.from(leaguePreferences.clubs());
   }
 
   public void updateByMatchStatistics(MatchStatistics statistics) {
@@ -27,14 +27,14 @@ public final class MatchResultsController {
       if (userClub.nameEquals(winner)) {
         // user is winner
         Club winnerClub = userClub.newWithWin();
-        userPreferences.putClub(winnerClub);
+        userPreferences.clubPreference().set(winnerClub);
         Observable<Club> observable = allClubs.compose(
             transform(winnerClub, statistics.loser().newWithLoss()));
         leaguePreferences.putLeagueClubs(observable);
       } else {
         // computer is winner
         Club loserClub = userClub.newWithLoss();
-        userPreferences.putClub(loserClub);
+        userPreferences.clubPreference().set(loserClub);
         Observable<Club> observable = allClubs.compose(
             transform(statistics.winner().newWithWin(), loserClub));
         leaguePreferences.putLeagueClubs(observable);
@@ -44,7 +44,7 @@ public final class MatchResultsController {
       Club nonUserClub = userClub.nameEquals(statistics.home())
           ? statistics.away() : statistics.home();
       Club drawClub = userClub.newWithDraw();
-      userPreferences.putClub(drawClub);
+      userPreferences.clubPreference().set(drawClub);
       Observable<Club> observable = allClubs.compose(
           transform(drawClub, nonUserClub.newWithDraw()));
       leaguePreferences.putLeagueClubs(observable);

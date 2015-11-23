@@ -1,5 +1,8 @@
 package com.felipecsl.elifut.preferences;
 
+import android.content.SharedPreferences;
+
+import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.felipecsl.elifut.models.Club;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -14,12 +17,15 @@ import rx.Observable;
 public final class LeaguePreferences {
   private static final String KEY_CLUBS = "LC";
   private static final String KEY_OPPONENTS = "OPPONENTS";
-  private final ElifutPreferences preferences;
-  private final Moshi moshi;
+  private final JsonPreference<List<Club>> clubsPreference;
+  private final JsonPreference<List<Club>> opponentsPreference;
 
-  public LeaguePreferences(ElifutPreferences preferences, Moshi moshi) {
-    this.preferences = preferences;
-    this.moshi = moshi;
+  public LeaguePreferences(SharedPreferences preferences, Moshi moshi) {
+    RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(preferences);
+    ParameterizedType type = Types.newParameterizedType(List.class, Club.class);
+    JsonAdapter<List<Club>> adapter = moshi.adapter(type);
+    clubsPreference = new JsonPreference<>(rxSharedPreferences, adapter, KEY_CLUBS);
+    opponentsPreference = new JsonPreference<>(rxSharedPreferences, adapter, KEY_OPPONENTS);
   }
 
   public void putClubsAndInitOpponents(Club userClub, Observable<Club> observable) {
@@ -31,35 +37,30 @@ public final class LeaguePreferences {
 
     Collections.shuffle(otherClubs);
 
-    if (nextOpponents() == null) {
-      putNextOpponents(otherClubs);
+    if (opponentsPreference.get() == null) {
+      opponentsPreference.set(otherClubs);
     }
   }
 
-  public Observable<Club> clubs() {
-    List<Club> clubs = getClubsByKey(KEY_CLUBS);
-
-    if (clubs == null || clubs.isEmpty()) {
-      return Observable.empty();
-    }
-    return Observable.from(clubs);
+  public Observable<List<Club>> clubsObservable() {
+    return clubsPreference.asObservable();
   }
 
-  public List<Club> nextOpponents() {
-    return getClubsByKey(KEY_OPPONENTS);
+  public List<Club> clubs() {
+    return clubsPreference.get();
   }
 
-  private void putNextOpponents(List<Club> clubs) {
-    putClubsByKey(clubs, KEY_OPPONENTS);
+  public JsonPreference<List<Club>> nextOpponentsPreference() {
+    return opponentsPreference;
   }
 
   public Club popAndUpdateNextOpponents() {
-    List<Club> nextOpponents = nextOpponents();
-    if (nextOpponents.isEmpty()) {
+    List<Club> nextOpponents = opponentsPreference.get();
+    if (nextOpponents == null || nextOpponents.isEmpty()) {
       throw new IllegalStateException("no opponents");
     }
     Club club = nextOpponents.remove(0);
-    putNextOpponents(nextOpponents);
+    opponentsPreference.set(nextOpponents);
     return club;
   }
 
@@ -68,18 +69,6 @@ public final class LeaguePreferences {
   }
 
   public void putLeagueClubs(List<Club> clubs) {
-    putClubsByKey(clubs, KEY_CLUBS);
-  }
-
-  private void putClubsByKey(List<Club> observable, String key) {
-    ParameterizedType type = Types.newParameterizedType(List.class, Club.class);
-    JsonAdapter<List<Club>> adapter = moshi.adapter(type);
-    preferences.putObject(adapter, observable, key);
-  }
-
-  private List<Club> getClubsByKey(String key) {
-    ParameterizedType type = Types.newParameterizedType(List.class, Club.class);
-    JsonAdapter<List<Club>> adapter = moshi.adapter(type);
-    return preferences.getObject(adapter, key);
+    clubsPreference.set(clubs);
   }
 }

@@ -29,6 +29,7 @@ import butterknife.BindColor;
 import butterknife.ButterKnife;
 import icepick.State;
 import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 public class LeagueStandingsFragment extends ElifutFragment {
   private final Target leagueLogoTarget = new SimpleTarget() {
@@ -49,6 +50,9 @@ public class LeagueStandingsFragment extends ElifutFragment {
   @State Club currentClub;
   @State ArrayList<Club> clubs;
 
+  private ClubsAdapter adapter;
+  private final CompositeSubscription subscription = new CompositeSubscription();
+
   public static LeagueStandingsFragment newInstance() {
     return new LeagueStandingsFragment();
   }
@@ -64,17 +68,19 @@ public class LeagueStandingsFragment extends ElifutFragment {
     recyclerView.setHasFixedSize(true);
     recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), null));
 
-    Action1<List<Club>> observer = response -> {
-      clubs = new ArrayList<>(response);
-      ClubsAdapter adapter = new ClubsAdapter(response, currentClub);
-      recyclerView.setAdapter(adapter);
-      recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
+    Action1<List<Club>> observer = newClubs -> {
+      clubs = new ArrayList<>(newClubs);
+      if (adapter == null) {
+        initAdapter();
+      } else {
+        adapter.setItems(clubs);
+      }
     };
 
     if (savedInstanceState == null) {
-      league = userPreferences.league();
-      currentClub = userPreferences.club();
-      leaguePreferences.clubs().toList().subscribe(observer);
+      league = userPreferences.leaguePreference().get();
+      currentClub = userPreferences.clubPreference().get();
+      subscription.add(leaguePreferences.clubsObservable().subscribe(observer));
     } else {
       observer.call(clubs);
     }
@@ -84,5 +90,24 @@ public class LeagueStandingsFragment extends ElifutFragment {
         .into(leagueLogoTarget);
 
     return view;
+  }
+
+  private void initAdapter() {
+    adapter = new ClubsAdapter(clubs, currentClub);
+    StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(adapter);
+    recyclerView.addItemDecoration(decoration);
+    adapter.setHasStableIds(true);
+    recyclerView.setAdapter(adapter);
+    adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+      @Override public void onChanged() {
+        super.onChanged();
+        decoration.invalidateHeaders();
+      }
+    });
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    subscription.clear();
   }
 }

@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.R;
@@ -202,7 +201,7 @@ public class MatchProgressActivity extends ElifutActivity {
   @OnClick(R.id.fab_play_pause) public void onClickPause() {
     if (isRunning) {
       stopTimer();
-      Snackbar.make(playPauseButton, R.string.match_paused, Toast.LENGTH_SHORT).show();
+      Snackbar.make(playPauseButton, R.string.match_paused, Snackbar.LENGTH_SHORT).show();
       playPauseButton.setImageResource(R.drawable.ic_play_arrow_white_48dp);
     } else {
       startTimer();

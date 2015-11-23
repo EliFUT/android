@@ -11,20 +11,18 @@ import android.view.ViewGroup;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.LeagueNextMatchesAdapter;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.League;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import icepick.State;
+import rx.subscriptions.CompositeSubscription;
 
 public class LeagueProgressFragment extends ElifutFragment {
   @Bind(R.id.recycler_next_matches) RecyclerView recyclerView;
 
-  @State ArrayList<Club> nextOpponents;
-  @State Club currentClub;
-  @State League league;
+  private final CompositeSubscription subscription = new CompositeSubscription();
+  private LeagueNextMatchesAdapter adapter;
 
   public static LeagueProgressFragment newInstance() {
     return new LeagueProgressFragment();
@@ -34,18 +32,34 @@ public class LeagueProgressFragment extends ElifutFragment {
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_league_progress, container, false);
     ButterKnife.bind(this, view);
-    if (savedInstanceState == null) {
-      league = userPreferences.leaguePreference().get();
-      currentClub = userPreferences.clubPreference().get();
-      nextOpponents = new ArrayList<>(leaguePreferences.opponentsPreference().get());
-    }
 
     LinearLayoutManager layout = new LinearLayoutManager(
         getActivity(), LinearLayoutManager.VERTICAL, false);
     recyclerView.setLayoutManager(layout);
     recyclerView.setHasFixedSize(true);
-    recyclerView.setAdapter(new LeagueNextMatchesAdapter(nextOpponents, currentClub));
+
+    subscription.add(leaguePreferences
+        .opponentsPreference()
+        .asObservable()
+        .subscribe(opponents -> {
+          if (adapter == null) {
+            initAdapter(opponents);
+          } else {
+            adapter.setItems(opponents);
+          }
+        }));
+
 
     return view;
+  }
+
+  private void initAdapter(List<Club> opponents) {
+    adapter = new LeagueNextMatchesAdapter(opponents, userPreferences.clubPreference().get());
+    recyclerView.setAdapter(adapter);
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    subscription.clear();
   }
 }

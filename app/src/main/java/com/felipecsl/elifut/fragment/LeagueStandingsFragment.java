@@ -17,18 +17,16 @@ import com.felipecsl.elifut.adapter.ClubsAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.widget.DividerItemDecoration;
+import com.google.common.base.Preconditions;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
-import icepick.State;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 public class LeagueStandingsFragment extends ElifutFragment {
@@ -45,10 +43,6 @@ public class LeagueStandingsFragment extends ElifutFragment {
   @Bind(R.id.recycler_clubs) RecyclerView recyclerView;
   @BindColor(R.color.color_primary) int colorPrimary;
   @BindColor(R.color.color_secondary) int colorSecondary;
-
-  @State League league;
-  @State Club currentClub;
-  @State ArrayList<Club> clubs;
 
   private ClubsAdapter adapter;
   private final CompositeSubscription subscription = new CompositeSubscription();
@@ -68,22 +62,17 @@ public class LeagueStandingsFragment extends ElifutFragment {
     recyclerView.setHasFixedSize(true);
     recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), null));
 
-    Action1<List<Club>> observer = newClubs -> {
-      clubs = new ArrayList<>(newClubs);
-      if (adapter == null) {
-        initAdapter();
-      } else {
-        adapter.setItems(clubs);
-      }
-    };
-
-    if (savedInstanceState == null) {
-      league = userPreferences.leaguePreference().get();
-      currentClub = userPreferences.clubPreference().get();
-      subscription.add(leaguePreferences.clubsPreference().asObservable().subscribe(observer));
-    } else {
-      observer.call(clubs);
-    }
+    League league = Preconditions.checkNotNull(userPreferences.leaguePreference().get());
+    subscription.add(leaguePreferences
+        .clubsPreference()
+        .asObservable()
+        .subscribe(newClubs -> {
+          if (adapter == null) {
+            initAdapter(newClubs);
+          } else {
+            adapter.setItems(newClubs);
+          }
+        }));
 
     Picasso.with(getContext())
         .load(league.image())
@@ -92,8 +81,8 @@ public class LeagueStandingsFragment extends ElifutFragment {
     return view;
   }
 
-  private void initAdapter() {
-    adapter = new ClubsAdapter(clubs, currentClub);
+  private void initAdapter(List<Club> newClubs) {
+    adapter = new ClubsAdapter(newClubs, userPreferences.clubPreference().get());
     StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(adapter);
     recyclerView.addItemDecoration(decoration);
     adapter.setHasStableIds(true);

@@ -46,6 +46,12 @@ public final class LeagueNextMatchesAdapter extends
     return nextOpponents.size();
   }
 
+  public void setItems(List<Club> newItems) {
+    nextOpponents.clear();
+    nextOpponents.addAll(newItems);
+    notifyDataSetChanged();
+  }
+
   static class ViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.img_team_home) ImageView imgTeamHome;
     @Bind(R.id.img_team_away) ImageView imgTeamAway;

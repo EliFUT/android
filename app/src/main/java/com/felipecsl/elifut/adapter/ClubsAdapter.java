@@ -25,7 +25,7 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
   private final Club selectedClub;
 
   public ClubsAdapter(List<Club> clubs, Club selectedClub) {
-    this.selectedClub = selectedClub;
+    this.selectedClub = Preconditions.checkNotNull(selectedClub);
     this.clubs = Preconditions.checkNotNull(sort(clubs));
   }
 

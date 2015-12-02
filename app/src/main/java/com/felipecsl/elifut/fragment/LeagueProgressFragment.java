@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.LeagueNextMatchesAdapter;
-import com.felipecsl.elifut.models.Club;
-
-import java.util.List;
+import com.felipecsl.elifut.models.LeagueRound;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,13 +38,15 @@ public class LeagueProgressFragment extends ElifutFragment {
     recyclerView.setHasFixedSize(true);
 
     subscription.add(leaguePreferences
-        .opponentsPreference()
+        .roundsPreference()
         .asObservable()
-        .subscribe(opponents -> {
+        .subscribe(rounds -> {
+          // TODO: This is gonna blow up if there are no rounds left
+          LeagueRound round = rounds.get(0);
           if (adapter == null) {
-            initAdapter(opponents);
+            initAdapter(round);
           } else {
-            adapter.setItems(opponents);
+            adapter.setItems(round);
           }
         }));
 
@@ -53,8 +54,9 @@ public class LeagueProgressFragment extends ElifutFragment {
     return view;
   }
 
-  private void initAdapter(List<Club> opponents) {
-    adapter = new LeagueNextMatchesAdapter(opponents, userPreferences.clubPreference().get());
+  private void initAdapter(LeagueRound round) {
+    adapter = new LeagueNextMatchesAdapter(round);
+    recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
     recyclerView.setAdapter(adapter);
   }
 

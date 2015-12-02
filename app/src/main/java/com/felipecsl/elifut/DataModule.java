@@ -7,6 +7,8 @@ import com.felipecsl.elifut.adapter.ModelListAdapterFactory;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
 import com.felipecsl.elifut.models.League;
+import com.felipecsl.elifut.models.LeagueRound;
+import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.models.Player;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
@@ -42,6 +44,8 @@ public class DataModule {
         .add(League.typeAdapterFactory())
         .add(ClubStats.typeAdapterFactory())
         .add(Club.typeAdapterFactory())
+        .add(LeagueRound.typeAdapterFactory())
+        .add(Match.typeAdapterFactory())
         .build();
   }
 

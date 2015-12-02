@@ -64,8 +64,7 @@ public class MatchProgressActivity extends ElifutActivity {
   @Inject UserPreferences userPreferences;
   @Inject LeaguePreferences leaguePreferences;
 
-  @State Club home;
-  @State Club away;
+  @State Match match;
   @State boolean isRunning;
   @State int elapsedMinutes;
   @State DefaultMatchStatistics statistics;
@@ -79,7 +78,7 @@ public class MatchProgressActivity extends ElifutActivity {
 
     @Override public void onCompleted() {
       statistics = new DefaultMatchStatistics(
-          home, away, new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
+          match.home(), match.away(), new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
 
       if (!statistics.isDraw()) {
         finalScoreMessage = statistics.winner().abbrev_name() + " is the winner. Final score "
@@ -109,10 +108,10 @@ public class MatchProgressActivity extends ElifutActivity {
 
     if (savedInstanceState == null) {
       Intent intent = getIntent();
-      home = intent.getParcelableExtra(EXTRA_MATCH);
+      match = intent.getParcelableExtra(EXTRA_MATCH);
     }
 
-    loadClubs(home.id(), away.id());
+    loadClubs(match.home().id(), match.away().id());
   }
 
   @Override protected void onDestroy() {
@@ -138,7 +137,7 @@ public class MatchProgressActivity extends ElifutActivity {
   private void fillClubInfos(Club club) {
     ImageView imgView;
     TextView txtView;
-    if (club.nameEquals(home)) {
+    if (club.nameEquals(match.home())) {
       imgView = imgTeamHome;
       txtView = txtTeamHome;
     } else {
@@ -149,7 +148,7 @@ public class MatchProgressActivity extends ElifutActivity {
         .load(club.large_image())
         .into(imgView);
 
-    txtView.setText(club.abbrev_name().substring(0, 3).toUpperCase());
+    txtView.setText(club.tinyName().toUpperCase());
   }
 
   private void stopTimer() {
@@ -162,7 +161,7 @@ public class MatchProgressActivity extends ElifutActivity {
         .map(matchEvent -> (Goal) matchEvent)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(goal -> {
-          TextView txtScore = goal.club().nameEquals(home) ? txtTeamHomeGoals : txtTeamAwayGoals;
+          TextView txtScore = goal.club().nameEquals(match.home()) ? txtTeamHomeGoals : txtTeamAwayGoals;
           int currGoals = Integer.parseInt(txtScore.getText().toString());
           txtScore.setText(String.valueOf(++currGoals));
           appendEvent(goal.time() + "' " + goal.club().abbrev_name() + " goal.");

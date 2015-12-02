@@ -3,6 +3,7 @@ package com.felipecsl.elifut.models;
 import android.os.Parcelable;
 
 import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
 
 @AutoValue
 public abstract class Match implements Parcelable {
@@ -22,6 +23,10 @@ public abstract class Match implements Parcelable {
   }
 
   public boolean hasClub(Club club) {
-    return home().equals(club) || away().equals(club);
+    return home().nameEquals(club) || away().nameEquals(club);
+  }
+
+  public static JsonAdapter.Factory typeAdapterFactory() {
+    return AutoValue_Match.typeAdapterFactory();
   }
 }

@@ -43,7 +43,7 @@ public abstract class League extends Model {
     LeagueRound[] rounds = new LeagueRound[totalRounds];
 
     for (int k = 0; k < rounds.length; k++) {
-      rounds[k] = LeagueRound.create(k);
+      rounds[k] = LeagueRound.create(k + 1);
     }
     Map<Integer, Club> clubMap = new HashMap<>();
     for (int i = 1; i <= totalClubs; i++) {

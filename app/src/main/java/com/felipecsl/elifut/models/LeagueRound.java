@@ -1,6 +1,7 @@
 package com.felipecsl.elifut.models;
 
 import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +23,18 @@ public abstract class LeagueRound {
     matches().add(match);
   }
 
-  /** Returns {@code true} if any of the provided clubs are playing on this round */
-  public boolean anyClubPlaying(Club... clubs) {
+  public static JsonAdapter.Factory typeAdapterFactory() {
+    return AutoValue_LeagueRound.typeAdapterFactory();
+  }
+
+  /** Returns the first match in this round that has the provided club or null if none found */
+  public Match findMatchByClub(Club club) {
     for (Match match : matches()) {
-      for (Club club : clubs) {
-        if (match.hasClub(club)) {
-          return true;
-        }
+      if (match.hasClub(club)) {
+        return match;
       }
     }
-    return false;
+    return null;
   }
 
   @Override public String toString() {

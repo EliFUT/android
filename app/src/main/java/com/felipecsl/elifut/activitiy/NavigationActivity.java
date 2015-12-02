@@ -53,27 +53,24 @@ public abstract class NavigationActivity extends ElifutActivity
   private final SimpleTarget clubLogoTarget = new SimpleTarget() {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
       headerViewHolder.imgClubLogo.setImageBitmap(bitmap);
-      loadPalette(bitmap);
+      Palette.from(bitmap).generate(palette -> {
+        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
+          @Override public Shader resize(int width, int height) {
+            return new LinearGradient(0, 0, width, height, new int[] {
+                palette.getDarkVibrantColor(0xFF81C784),
+                palette.getLightVibrantColor(0xFF2E7D32)
+            }, null, Shader.TileMode.CLAMP);
+          }
+        };
+        PaintDrawable paintDrawable = new PaintDrawable();
+        paintDrawable.setShape(new RectShape());
+        paintDrawable.setShaderFactory(shaderFactory);
+        LayerDrawable background = new LayerDrawable(new Drawable[] { paintDrawable });
+        //noinspection deprecation
+        headerViewHolder.navHeaderLayout.setBackgroundDrawable(background);
+      });
     }
   };
-
-  private void loadPalette(Bitmap bitmap) {
-    Palette.from(bitmap).generate(palette -> {
-      ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
-        @Override public Shader resize(int width, int height) {
-          return new LinearGradient(0, 0, width, height, new int[] {
-              palette.getMutedColor(0x81C784),
-              palette.getLightMutedColor(0x2E7D32)
-          }, new float[] { 0, 1 }, Shader.TileMode.CLAMP);
-        }
-      };
-      PaintDrawable paintDrawable = new PaintDrawable();
-      paintDrawable.setShape(new RectShape());
-      paintDrawable.setShaderFactory(shaderFactory);
-      LayerDrawable background = new LayerDrawable(new Drawable[] { paintDrawable });
-      headerViewHolder.navHeaderLayout.setBackground(background);
-    });
-  }
 
   private final NavigationHeaderViewHolder headerViewHolder = new NavigationHeaderViewHolder();
 
@@ -164,7 +161,7 @@ public abstract class NavigationActivity extends ElifutActivity
   @OnClick(R.id.fab) public void onClickFab() {
     // TODO: Determine who's home and who's away
     Club club = userPreferences.clubPreference().get();
-    Club opponent = leaguePreferences.popAndUpdateNextMatch();
-    startActivity(MatchProgressActivity.newIntent(this, Match.create(club, opponent)));
+    Match match = leaguePreferences.popAndUpdateNextMatch(club);
+    startActivity(MatchProgressActivity.newIntent(this, match));
   }
 }

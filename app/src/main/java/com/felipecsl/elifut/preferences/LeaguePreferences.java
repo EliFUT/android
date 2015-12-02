@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.felipecsl.elifut.models.Club;
-import com.squareup.moshi.JsonAdapter;
+import com.felipecsl.elifut.models.League;
+import com.felipecsl.elifut.models.LeagueRound;
+import com.felipecsl.elifut.models.Match;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 
@@ -20,40 +22,44 @@ public final class LeaguePreferences {
   private static final String KEY_CLUBS = "LC";
   private static final String KEY_OPPONENTS = "OPPONENTS";
   private final JsonPreference<List<Club>> clubsPreference;
-  private final JsonPreference<List<Club>> opponentsPreference;
+  private final JsonPreference<List<LeagueRound>> roundsPreference;
 
   public LeaguePreferences(SharedPreferences preferences, Moshi moshi) {
-    RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(preferences);
-    ParameterizedType type = Types.newParameterizedType(List.class, Club.class);
-    JsonAdapter<List<Club>> adapter = moshi.adapter(type);
-    clubsPreference = new JsonPreference<>(rxSharedPreferences, adapter, KEY_CLUBS);
-    opponentsPreference = new JsonPreference<>(rxSharedPreferences, adapter, KEY_OPPONENTS);
+    RxSharedPreferences prefs = RxSharedPreferences.create(preferences);
+    ParameterizedType clubsType = Types.newParameterizedType(List.class, Club.class);
+    ParameterizedType roundsType = Types.newParameterizedType(List.class, LeagueRound.class);
+    clubsPreference = new JsonPreference<>(prefs, moshi.adapter(clubsType), KEY_CLUBS);
+    roundsPreference = new JsonPreference<>(prefs, moshi.adapter(roundsType), KEY_OPPONENTS);
   }
 
-  public void putClubsAndInitMatches(Club userClub, Observable<Club> observable) {
-    clubsPreference.set(toList(observable));
-    List<Club> otherClubs = toList(observable.filter((c) -> !c.equals(userClub)));
+  public void putClubsAndInitRounds(Observable<Club> allClubs) {
+    clubsPreference.set(toList(allClubs));
 
-    if (opponentsPreference.get() == null) {
-      opponentsPreference.set(shuffle(otherClubs));
+    if (roundsPreference.get() == null) {
+      roundsPreference.set(League.generateRounds(shuffle(toList(allClubs))));
     }
   }
 
-  public Club popAndUpdateNextMatch() {
-    List<Club> nextOpponents = opponentsPreference.get();
-    if (nextOpponents == null || nextOpponents.isEmpty()) {
+  /**
+   * Removes the next round from the list of upcoming rounds on this league and returns
+   * the match in that round that includes the provided club or null if none found.
+   * TODO Consider breaking this down in 2 methods
+   */
+  public Match popAndUpdateNextMatch(Club club) {
+    List<LeagueRound> nextRounds = roundsPreference.get();
+    if (nextRounds == null || nextRounds.isEmpty()) {
       throw new IllegalStateException("no opponents");
     }
-    Club club = nextOpponents.remove(0);
-    opponentsPreference.set(nextOpponents);
-    return club;
+    Match match = nextRounds.remove(0).findMatchByClub(club);
+    roundsPreference.set(nextRounds);
+    return match;
   }
 
   public JsonPreference<List<Club>> clubsPreference() {
     return clubsPreference;
   }
 
-  public JsonPreference<List<Club>> opponentsPreference() {
-    return opponentsPreference;
+  public JsonPreference<List<LeagueRound>> roundsPreference() {
+    return roundsPreference;
   }
 }

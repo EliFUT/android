@@ -24,6 +24,11 @@ public abstract class Club extends Model {
         .league_id(0);
   }
 
+  public String tinyName() {
+    //noinspection ConstantConditions
+    return abbrev_name() != null ? abbrev_name().substring(0, 3) : name().substring(0, 3);
+  }
+
   @AutoValue.Builder
   public abstract static class Builder {
     public abstract Builder id(int i);
@@ -61,6 +66,7 @@ public abstract class Club extends Model {
   }
 
   @NonNull public ClubStats nonNullStats() {
+    //noinspection ConstantConditions
     return stats() == null ? ClubStats.create() : stats();
   }
 

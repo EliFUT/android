@@ -3,6 +3,7 @@ package com.felipecsl.elifut;
 import com.felipecsl.elifut.match.DefaultMatchStatistics;
 import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Match;
 
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
@@ -13,17 +14,18 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class DefaultMatchStatisticsTest {
-  private Club home = Club.builder().id(0).name("Gremio").build();
-  private Club away = Club.builder().id(1).name("Internacional").build();
-  private RandomGenerator randomMock = mock(RandomGenerator.class);
-  private RealDistribution goalsDistribution = mock(RealDistribution.class);
+  private final Club home = Club.builder().id(0).name("Gremio").build();
+  private final Club away = Club.builder().id(1).name("Internacional").build();
+  private final Match match = Match.create(home, away);
+  private final RandomGenerator randomMock = mock(RandomGenerator.class);
+  private final RealDistribution goalsDistribution = mock(RealDistribution.class);
 
   @Test public void testSimpleHomeWin() {
     when(randomMock.nextFloat()).thenReturn(MatchStatistics.HOME_WIN_PROBABILITY);
     when(goalsDistribution.sample()).thenReturn(4.0);
 
     DefaultMatchStatistics stats =
-        new DefaultMatchStatistics(home, away, randomMock, goalsDistribution);
+        new DefaultMatchStatistics(match, randomMock, goalsDistribution);
 
     assertThat(stats.home()).isEqualTo(home);
     assertThat(stats.away()).isEqualTo(away);
@@ -40,7 +42,7 @@ public class DefaultMatchStatisticsTest {
     when(goalsDistribution.sample()).thenReturn(2.0);
 
     DefaultMatchStatistics stats =
-        new DefaultMatchStatistics(home, away, randomMock, goalsDistribution);
+        new DefaultMatchStatistics(match, randomMock, goalsDistribution);
 
     assertThat(stats.home()).isEqualTo(home);
     assertThat(stats.away()).isEqualTo(away);
@@ -57,7 +59,7 @@ public class DefaultMatchStatisticsTest {
     when(goalsDistribution.sample()).thenReturn(1.0);
 
     DefaultMatchStatistics stats =
-        new DefaultMatchStatistics(home, away, randomMock, goalsDistribution);
+        new DefaultMatchStatistics(match, randomMock, goalsDistribution);
 
     assertThat(stats.home()).isEqualTo(home);
     assertThat(stats.away()).isEqualTo(away);

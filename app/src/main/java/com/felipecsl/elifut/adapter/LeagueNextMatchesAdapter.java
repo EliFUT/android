@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
@@ -77,6 +78,8 @@ public final class LeagueNextMatchesAdapter
   }
 
   static class ViewHolder extends BaseViewHolder<Match> {
+    @Bind(R.id.layout_team_home) LinearLayout layoutTeamHome;
+    @Bind(R.id.layout_team_away) LinearLayout layoutTeamAway;
     @Bind(R.id.img_team_home) ImageView imgTeamHome;
     @Bind(R.id.img_team_away) ImageView imgTeamAway;
     @Bind(R.id.txt_team_home) TextView txtTeamHome;
@@ -102,9 +105,9 @@ public final class LeagueNextMatchesAdapter
       txtTeamHome.setText(home.tinyName().toUpperCase());
       txtTeamAway.setText(away.tinyName().toUpperCase());
       Context context = itemView.getContext();
-      imgTeamAway.setOnClickListener(view -> context.startActivity(
+      layoutTeamAway.setOnClickListener(view -> context.startActivity(
           TeamDetailsActivity.newIntent(context, away)));
-      imgTeamHome.setOnClickListener(view -> context.startActivity(
+      layoutTeamHome.setOnClickListener(view -> context.startActivity(
           TeamDetailsActivity.newIntent(context, home)));
     }
   }

@@ -1,5 +1,6 @@
 package com.felipecsl.elifut.adapter;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
@@ -99,6 +101,9 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
       losses.setText(String.valueOf(stats.losses()));
       goalsDifference.setTypeface(null, typeface);
       goalsDifference.setText(String.valueOf(stats.goals()));
+      Context context = itemView.getContext();
+      layout.setOnClickListener(view -> context.startActivity(
+          TeamDetailsActivity.newIntent(context, club)));
     }
   }
 

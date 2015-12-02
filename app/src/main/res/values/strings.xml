@@ -25,5 +25,5 @@
   <string name="schedule">Schedule</string>
   <string name="standings">Standings</string>
   <string name="team">Team</string>
-  <string name="round_n">Round %1$s</string>
+  <string name="round_n_of_n">Round %1$s of %2$s</string>
 </resources>

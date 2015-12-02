@@ -159,7 +159,6 @@ public abstract class NavigationActivity extends ElifutActivity
   }
 
   @OnClick(R.id.fab) public void onClickFab() {
-    // TODO: Determine who's home and who's away
     Club club = userPreferences.clubPreference().get();
     Match match = leaguePreferences.popAndUpdateNextMatch(club);
     startActivity(MatchProgressActivity.newIntent(this, match));

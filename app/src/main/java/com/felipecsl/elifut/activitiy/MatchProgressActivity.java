@@ -17,7 +17,6 @@ import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.ResponseObserver;
 import com.felipecsl.elifut.match.DefaultMatchStatistics;
 import com.felipecsl.elifut.match.MatchResultsController;
-import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Match;
@@ -25,8 +24,6 @@ import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.widget.FractionView;
 import com.squareup.picasso.Picasso;
-
-import org.apache.commons.math3.random.Well19937c;
 
 import java.util.concurrent.TimeUnit;
 
@@ -77,8 +74,7 @@ public class MatchProgressActivity extends ElifutActivity {
     }
 
     @Override public void onCompleted() {
-      statistics = new DefaultMatchStatistics(
-          match.home(), match.away(), new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
+      statistics = new DefaultMatchStatistics(match);
 
       if (!statistics.isDraw()) {
         finalScoreMessage = statistics.winner().abbrev_name() + " is the winner. Final score "

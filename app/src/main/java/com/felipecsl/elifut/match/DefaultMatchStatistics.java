@@ -6,10 +6,11 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.felipecsl.elifut.BuildConfig;
-import com.felipecsl.elifut.models.ClubStatistics;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.ClubStatistics;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Goals;
+import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchEvent;
 
 import org.apache.commons.math3.distribution.RealDistribution;
@@ -28,9 +29,9 @@ public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
   private final Club home;
   private final Club away;
 
-  @Nullable private Club winner;
-  private List<Goal> winnerGoals;
-  private List<Goal> loserGoals;
+  private final Club winner;
+  private final List<Goal> winnerGoals;
+  private final List<Goal> loserGoals;
 
   private DefaultMatchStatistics(Parcel source) {
     ClassLoader classLoader = getClass().getClassLoader();
@@ -41,14 +42,14 @@ public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
     loserGoals = (List<Goal>) source.createTypedArrayList(Goal.creator());
   }
 
-  public DefaultMatchStatistics(Club home, Club away) {
-    this(home, away, new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
+  public DefaultMatchStatistics(Match match) {
+    this(match, new Well19937c(), MatchStatistics.GOALS_DISTRIBUTION);
   }
 
-  public DefaultMatchStatistics(Club home, Club away, RandomGenerator random,
+  public DefaultMatchStatistics(Match match, RandomGenerator random,
       RealDistribution goalsDistribution) {
-    this.home = home;
-    this.away = away;
+    this.home = match.home();
+    this.away = match.away();
 
     float result = random.nextFloat();
     Log.d(TAG, "winner result was " + result);
@@ -96,19 +97,13 @@ public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
   }
 
   @Override public boolean isHomeWin() {
-    if (isDraw()) {
-      return false;
-    }
+    return !isDraw() && winner.equals(home);
 
-    return winner.equals(home);
   }
 
   @Override public boolean isAwayWin() {
-    if (isDraw()) {
-      return false;
-    }
+    return !isDraw() && winner.equals(away);
 
-    return winner.equals(away);
   }
 
   @Override public boolean isDraw() {
@@ -160,10 +155,6 @@ public class DefaultMatchStatistics implements MatchStatistics, Parcelable {
       return new DefaultMatchStatistics[size];
     }
   };
-
-  public Observable<MatchEvent> eventsObservable() {
-    return eventsObservable(0);
-  }
 
   public Observable<MatchEvent> eventsObservable(final int elapsedTime) {
     Observable<Goal> winnersGoalsObservable = Observable.from(winnerGoals);

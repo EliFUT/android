@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.LeagueNextMatchesAdapter;
+import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
@@ -53,7 +54,9 @@ public class LeagueProgressFragment extends ElifutFragment {
   }
 
   private void initAdapter(LeagueRound round) {
-    adapter = new LeagueNextMatchesAdapter(round);
+    Club club = userPreferences.clubPreference().get();
+    int totalRounds = leaguePreferences.roundsPreference().get().size();
+    adapter = new LeagueNextMatchesAdapter(club, totalRounds, round);
     adapter.setHasStableIds(true);
     StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(adapter);
     recyclerView.addItemDecoration(decoration);

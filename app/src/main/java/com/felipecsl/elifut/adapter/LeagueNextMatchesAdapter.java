@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.BindColor;
 import butterknife.ButterKnife;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -28,15 +30,19 @@ public final class LeagueNextMatchesAdapter
     extends RecyclerView.Adapter<LeagueNextMatchesAdapter.BaseViewHolder<Match>>
     implements StickyRecyclerHeadersAdapter<LeagueNextMatchesAdapter.BaseViewHolder<LeagueRound>> {
   private final List<Match> matches;
+  private final Club currentClub;
+  private final int totalRounds;
   private LeagueRound round;
 
-  public LeagueNextMatchesAdapter(LeagueRound round) {
-    this.round = round;
+  public LeagueNextMatchesAdapter(Club currentClub, int totalRounds, LeagueRound round) {
+    this.currentClub = checkNotNull(currentClub);
+    this.totalRounds = checkNotNull(totalRounds);
+    this.round = checkNotNull(round);
     this.matches = checkNotNull(round).matches();
   }
 
   @Override public BaseViewHolder<Match> onCreateViewHolder(ViewGroup parent, int viewType) {
-    return new ViewHolder(parent);
+    return new ViewHolder(parent, currentClub);
   }
 
   @Override public void onBindViewHolder(BaseViewHolder<Match> holder, int position) {
@@ -52,7 +58,7 @@ public final class LeagueNextMatchesAdapter
   }
 
   @Override public BaseViewHolder<LeagueRound> onCreateHeaderViewHolder(ViewGroup parent) {
-    return new HeaderViewHolder(parent);
+    return new HeaderViewHolder(parent, totalRounds);
   }
 
   @Override public void onBindHeaderViewHolder(BaseViewHolder<LeagueRound> holder, int position) {
@@ -78,6 +84,9 @@ public final class LeagueNextMatchesAdapter
   }
 
   static class ViewHolder extends BaseViewHolder<Match> {
+    private final Club currentClub;
+
+    @Bind(R.id.outer_layout) FrameLayout layoutOuter;
     @Bind(R.id.layout_team_home) LinearLayout layoutTeamHome;
     @Bind(R.id.layout_team_away) LinearLayout layoutTeamAway;
     @Bind(R.id.img_team_home) ImageView imgTeamHome;
@@ -85,8 +94,12 @@ public final class LeagueNextMatchesAdapter
     @Bind(R.id.txt_team_home) TextView txtTeamHome;
     @Bind(R.id.txt_team_away) TextView txtTeamAway;
 
-    ViewHolder(ViewGroup parent) {
+    @BindColor(R.color.light_gray) int colorLightGray;
+    @BindColor(android.R.color.transparent) int colorTransparent;
+
+    ViewHolder(ViewGroup parent, Club currentClub) {
       super(parent, R.layout.adapter_future_match_item);
+      this.currentClub = currentClub;
       ButterKnife.bind(this, itemView);
     }
 
@@ -109,19 +122,25 @@ public final class LeagueNextMatchesAdapter
           TeamDetailsActivity.newIntent(context, away)));
       layoutTeamHome.setOnClickListener(view -> context.startActivity(
           TeamDetailsActivity.newIntent(context, home)));
+
+      layoutOuter.setBackgroundColor(
+          getAdapterPosition() % 2 == 0 ? colorLightGray : colorTransparent);
     }
   }
 
   public static class HeaderViewHolder extends BaseViewHolder<LeagueRound> {
+    private final int totalRounds;
     @Bind(R.id.txt_header) TextView txtHeader;
 
-    HeaderViewHolder(ViewGroup parent) {
+    HeaderViewHolder(ViewGroup parent, int totalRounds) {
       super(parent, R.layout.adapter_round_header);
+      this.totalRounds = totalRounds;
       ButterKnife.bind(this, itemView);
     }
 
     @Override public void bind(LeagueRound round) {
-      txtHeader.setText(itemView.getContext().getString(R.string.round_n, round.roundNumber()));
+      Context context = itemView.getContext();
+      txtHeader.setText(context.getString(R.string.round_n_of_n, round.roundNumber(), totalRounds));
     }
   }
 }

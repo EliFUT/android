@@ -26,12 +26,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class LeagueNextMatchesAdapter
     extends RecyclerView.Adapter<LeagueNextMatchesAdapter.BaseViewHolder<Match>>
     implements StickyRecyclerHeadersAdapter<LeagueNextMatchesAdapter.BaseViewHolder<LeagueRound>> {
-  private final List<Match> nextOpponents;
-  private final LeagueRound round;
+  private final List<Match> matches;
+  private LeagueRound round;
 
   public LeagueNextMatchesAdapter(LeagueRound round) {
     this.round = round;
-    this.nextOpponents = checkNotNull(round).matches();
+    this.matches = checkNotNull(round).matches();
   }
 
   @Override public BaseViewHolder<Match> onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -39,11 +39,15 @@ public final class LeagueNextMatchesAdapter
   }
 
   @Override public void onBindViewHolder(BaseViewHolder<Match> holder, int position) {
-    holder.bind(nextOpponents.get(position));
+    holder.bind(matches.get(position));
   }
 
   @Override public long getHeaderId(int position) {
     return 0;
+  }
+
+  @Override public long getItemId(int position) {
+    return matches.get(position).hashCode();
   }
 
   @Override public BaseViewHolder<LeagueRound> onCreateHeaderViewHolder(ViewGroup parent) {
@@ -55,12 +59,13 @@ public final class LeagueNextMatchesAdapter
   }
 
   @Override public int getItemCount() {
-    return nextOpponents.size();
+    return matches.size();
   }
 
   public void setItems(LeagueRound round) {
-    nextOpponents.clear();
-    nextOpponents.addAll(round.matches());
+    this.round = round;
+    matches.clear();
+    matches.addAll(round.matches());
     notifyDataSetChanged();
   }
 

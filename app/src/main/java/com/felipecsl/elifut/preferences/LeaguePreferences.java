@@ -55,11 +55,15 @@ public final class LeaguePreferences {
     return match;
   }
 
+  public Observable<List<Club>> clubsObservable() {
+    return clubsPreference.asObservable();
+  }
+
   public JsonPreference<List<Club>> clubsPreference() {
     return clubsPreference;
   }
 
-  public JsonPreference<List<LeagueRound>> roundsPreference() {
-    return roundsPreference;
+  public Observable<List<LeagueRound>> roundsObservable() {
+    return roundsPreference.asObservable();
   }
 }

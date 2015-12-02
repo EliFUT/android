@@ -38,8 +38,7 @@ public class LeagueProgressFragment extends ElifutFragment {
     recyclerView.setHasFixedSize(true);
 
     subscription.add(leaguePreferences
-        .roundsPreference()
-        .asObservable()
+        .roundsObservable()
         .subscribe(rounds -> {
           // TODO: This is gonna blow up if there are no rounds left
           LeagueRound round = rounds.get(0);
@@ -50,14 +49,21 @@ public class LeagueProgressFragment extends ElifutFragment {
           }
         }));
 
-
     return view;
   }
 
   private void initAdapter(LeagueRound round) {
     adapter = new LeagueNextMatchesAdapter(round);
-    recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
+    adapter.setHasStableIds(true);
+    StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(adapter);
+    recyclerView.addItemDecoration(decoration);
     recyclerView.setAdapter(adapter);
+    adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+      @Override public void onChanged() {
+        super.onChanged();
+        decoration.invalidateHeaders();
+      }
+    });
   }
 
   @Override public void onDestroy() {

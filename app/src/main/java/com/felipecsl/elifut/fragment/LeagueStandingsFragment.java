@@ -64,8 +64,7 @@ public class LeagueStandingsFragment extends ElifutFragment {
 
     League league = Preconditions.checkNotNull(userPreferences.leaguePreference().get());
     subscription.add(leaguePreferences
-        .clubsPreference()
-        .asObservable()
+        .clubsObservable()
         .subscribe(newClubs -> {
           if (adapter == null) {
             initAdapter(newClubs);

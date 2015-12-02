@@ -20,7 +20,7 @@ public final class MatchResultsController {
     this.userPreferences = userPreferences;
     userClub = userPreferences.clubPreference().get();
     clubsPreference = leaguePreferences.clubsPreference();
-    allClubs = leaguePreferences.clubsObservable().flatMap(Observable::from);
+    allClubs = Observable.from(clubsPreference.get());
   }
 
   public void updateByMatchStatistics(MatchStatistics statistics) {

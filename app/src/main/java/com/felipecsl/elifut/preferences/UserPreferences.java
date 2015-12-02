@@ -2,6 +2,7 @@ package com.felipecsl.elifut.preferences;
 
 import android.content.SharedPreferences;
 
+import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
@@ -18,18 +19,17 @@ public final class UserPreferences {
   private final JsonPreference<Nation> nationPreference;
   private final JsonPreference<Club> clubPreference;
   private final JsonPreference<League> leaguePreference;
-  private final JsonPreference<String> coachPreference;
+  private final Preference<String> coachPreference;
 
   public UserPreferences(SharedPreferences preferences, Moshi moshi) {
     RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(preferences);
     JsonAdapter<Nation> nationAdapter = moshi.adapter(Nation.class);
     JsonAdapter<Club> clubAdapter = moshi.adapter(Club.class);
     JsonAdapter<League> leagueAdapter = moshi.adapter(League.class);
-    JsonAdapter<String> stringAdapter = moshi.adapter(String.class);
     nationPreference = new JsonPreference<>(rxSharedPreferences, nationAdapter, KEY_USER_NATION);
     clubPreference = new JsonPreference<>(rxSharedPreferences, clubAdapter, KEY_USER_CLUB);
     leaguePreference = new JsonPreference<>(rxSharedPreferences, leagueAdapter, KEY_USER_LEAGUE);
-    coachPreference = new JsonPreference<>(rxSharedPreferences, stringAdapter, KEY_COACH_NAME);
+    coachPreference =rxSharedPreferences.getString(KEY_COACH_NAME);
   }
 
   public JsonPreference<Nation> nationPreference() {
@@ -44,7 +44,7 @@ public final class UserPreferences {
     return leaguePreference;
   }
 
-  public JsonPreference<String> coachPreference() {
+  public Preference<String> coachPreference() {
     return coachPreference;
   }
 }

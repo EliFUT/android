@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.squareup.picasso.Picasso;
@@ -36,6 +37,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class NavigationActivity extends ElifutActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -94,7 +97,7 @@ public abstract class NavigationActivity extends ElifutActivity
     setSupportActionBar(toolbar);
     daggerComponent().inject(this);
 
-    Club club = userPreferences.clubPreference().get();
+    Club club = checkNotNull(userPreferences.clubPreference().get());
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -161,7 +164,7 @@ public abstract class NavigationActivity extends ElifutActivity
   @OnClick(R.id.fab) public void onClickFab() {
     // TODO: Determine who's home and who's away
     Club club = userPreferences.clubPreference().get();
-    Club opponent = leaguePreferences.popAndUpdateNextOpponents();
-    startActivity(MatchProgressActivity.newIntent(this, club, opponent));
+    Club opponent = leaguePreferences.popAndUpdateNextMatch();
+    startActivity(MatchProgressActivity.newIntent(this, Match.create(club, opponent)));
   }
 }

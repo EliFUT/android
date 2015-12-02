@@ -9,10 +9,12 @@ import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+
+import static com.felipecsl.elifut.util.CollectionUtils.shuffle;
+import static com.felipecsl.elifut.util.CollectionUtils.toList;
 
 public final class LeaguePreferences {
   private static final String KEY_CLUBS = "LC";
@@ -28,21 +30,16 @@ public final class LeaguePreferences {
     opponentsPreference = new JsonPreference<>(rxSharedPreferences, adapter, KEY_OPPONENTS);
   }
 
-  public void putClubsAndInitOpponents(Club userClub, Observable<Club> observable) {
-    clubsPreference.set(observable.toList().toBlocking().first());
-    List<Club> otherClubs = observable.filter((c) -> !c.equals(userClub))
-        .toList()
-        .toBlocking()
-        .first();
-
-    Collections.shuffle(otherClubs);
+  public void putClubsAndInitMatches(Club userClub, Observable<Club> observable) {
+    clubsPreference.set(toList(observable));
+    List<Club> otherClubs = toList(observable.filter((c) -> !c.equals(userClub)));
 
     if (opponentsPreference.get() == null) {
-      opponentsPreference.set(otherClubs);
+      opponentsPreference.set(shuffle(otherClubs));
     }
   }
 
-  public Club popAndUpdateNextOpponents() {
+  public Club popAndUpdateNextMatch() {
     List<Club> nextOpponents = opponentsPreference.get();
     if (nextOpponents == null || nextOpponents.isEmpty()) {
       throw new IllegalStateException("no opponents");

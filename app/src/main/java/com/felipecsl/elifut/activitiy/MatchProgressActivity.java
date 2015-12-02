@@ -20,6 +20,7 @@ import com.felipecsl.elifut.match.MatchResultsController;
 import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
+import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.widget.FractionView;
@@ -43,8 +44,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class MatchProgressActivity extends ElifutActivity {
-  private static final String EXTRA_CLUB_HOME = "EXTRA_CLUB_HOME";
-  private static final String EXTRA_CLUB_AWAY = "EXTRA_CLUB_AWAY";
+  private static final String EXTRA_MATCH = "EXTRA_MATCH";
   private static final String TAG = MatchProgressActivity.class.getSimpleName();
 
   @Bind(R.id.toolbar) Toolbar toolbar;
@@ -95,10 +95,9 @@ public class MatchProgressActivity extends ElifutActivity {
     }
   };
 
-  public static Intent newIntent(Context context, Club home, Club away) {
+  public static Intent newIntent(Context context, Match match) {
     return new Intent(context, MatchProgressActivity.class)
-        .putExtra(EXTRA_CLUB_HOME, home)
-        .putExtra(EXTRA_CLUB_AWAY, away);
+        .putExtra(EXTRA_MATCH, match);
   }
 
   @Override public void onCreate(Bundle savedInstanceState) {
@@ -110,8 +109,7 @@ public class MatchProgressActivity extends ElifutActivity {
 
     if (savedInstanceState == null) {
       Intent intent = getIntent();
-      home = intent.getParcelableExtra(EXTRA_CLUB_HOME);
-      away = intent.getParcelableExtra(EXTRA_CLUB_AWAY);
+      home = intent.getParcelableExtra(EXTRA_MATCH);
     }
 
     loadClubs(home.id(), away.id());

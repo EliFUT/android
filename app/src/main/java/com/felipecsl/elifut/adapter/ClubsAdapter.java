@@ -9,15 +9,16 @@ import android.widget.TextView;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
-import com.google.common.base.Preconditions;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
+
+import static com.felipecsl.elifut.util.CollectionUtils.sort;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHolder> implements
     StickyRecyclerHeadersAdapter<ClubsAdapter.ViewHolder> {
@@ -25,8 +26,9 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
   private final Club selectedClub;
 
   public ClubsAdapter(List<Club> clubs, Club selectedClub) {
-    this.selectedClub = Preconditions.checkNotNull(selectedClub);
-    this.clubs = Preconditions.checkNotNull(sort(clubs));
+    this.selectedClub = checkNotNull(selectedClub);
+    this.clubs = checkNotNull(sort(clubs, (c1, c2) ->
+        c2.nonNullStats().points() - c1.nonNullStats().points()));
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -59,13 +61,8 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
 
   public void setItems(List<Club> newItems) {
     clubs.clear();
-    clubs.addAll(sort(newItems));
+    clubs.addAll(sort(newItems, (c1, c2) -> c2.nonNullStats().points() - c1.nonNullStats().points()));
     notifyDataSetChanged();
-  }
-
-  private static List<Club> sort(List<Club> clubs) {
-    Collections.sort(clubs, (c1, c2) -> c2.nonNullStats().points() - c1.nonNullStats().points());
-    return clubs;
   }
 
   class ViewHolder extends RecyclerView.ViewHolder {

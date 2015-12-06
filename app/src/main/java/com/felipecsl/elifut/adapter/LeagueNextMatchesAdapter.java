@@ -96,6 +96,7 @@ public final class LeagueNextMatchesAdapter
 
     @BindColor(R.color.light_gray) int colorLightGray;
     @BindColor(android.R.color.transparent) int colorTransparent;
+    @BindColor(R.color.material_red_300) int colorCurrentTeam;
 
     ViewHolder(ViewGroup parent, Club currentClub) {
       super(parent, R.layout.adapter_future_match_item);
@@ -123,12 +124,16 @@ public final class LeagueNextMatchesAdapter
       layoutTeamHome.setOnClickListener(view -> context.startActivity(
           TeamDetailsActivity.newIntent(context, home)));
 
-      layoutOuter.setBackgroundColor(
-          getAdapterPosition() % 2 == 0 ? colorLightGray : colorTransparent);
+      if (!match.hasClub(currentClub)) {
+        layoutOuter.setBackgroundColor(
+            getAdapterPosition() % 2 != 0 ? colorLightGray : colorTransparent);
+      } else {
+        layoutOuter.setBackgroundColor(colorCurrentTeam);
+      }
     }
   }
 
-  public static class HeaderViewHolder extends BaseViewHolder<LeagueRound> {
+  static class HeaderViewHolder extends BaseViewHolder<LeagueRound> {
     private final int totalRounds;
     @Bind(R.id.txt_header) TextView txtHeader;
 

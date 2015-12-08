@@ -17,7 +17,7 @@ android {
   }
   signingConfigs {
     release {
-      if (!hasProperty('CI')) {
+      if (!System.getenv('CI')) {
         storeFile file("elifut.keystore")
         storeFile file(ELIFUT_CERT_PATH)
         storePassword ELIFUT_CERT_PASSWORD

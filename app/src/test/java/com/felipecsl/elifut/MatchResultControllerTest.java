@@ -3,9 +3,10 @@ package com.felipecsl.elifut;
 import android.os.Build;
 import android.support.annotation.Nullable;
 
+import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.match.MatchResultsController;
-import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
 
@@ -26,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class MatchResultsControllerTest {
+public class MatchResultControllerTest {
   private final Club userClub = Club.builder().id(1).name("Club A").build();
   private final Club nonUserClub = Club.builder().id(2).name("Club B").build();
   private final Observable<Club> leagueClubs = Observable.just(userClub, nonUserClub);
@@ -45,7 +46,7 @@ public class MatchResultsControllerTest {
   @Test public void testUserWinner() throws Exception {
     MatchResultsController controller =
         new MatchResultsController(userPreferences, leaguePreferences);
-    MatchStatistics statistics = new TestMatchStatistics() {
+    MatchResult statistics = new TestMatchResult() {
       @Nullable @Override public Club winner() {
         return userClub;
       }
@@ -69,7 +70,7 @@ public class MatchResultsControllerTest {
   @Test public void testUserLoss() {
     MatchResultsController controller =
         new MatchResultsController(userPreferences, leaguePreferences);
-    MatchStatistics statistics = new TestMatchStatistics() {
+    MatchResult statistics = new TestMatchResult() {
       @Nullable @Override public Club winner() {
         return nonUserClub;
       }
@@ -94,13 +95,9 @@ public class MatchResultsControllerTest {
   @Test public void testDraw() {
     MatchResultsController controller =
         new MatchResultsController(userPreferences, leaguePreferences);
-    MatchStatistics statistics = new TestMatchStatistics() {
-      @Override public Club home() {
-        return userClub;
-      }
-
-      @Override public Club away() {
-        return nonUserClub;
+    MatchResult statistics = new TestMatchResult() {
+      @Override public Match match() {
+        return Match.create(userClub, nonUserClub);
       }
 
       @Override public boolean isDraw() {

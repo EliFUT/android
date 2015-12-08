@@ -1,5 +1,7 @@
 package com.felipecsl.elifut.models;
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 
@@ -7,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AutoValue
-public abstract class LeagueRound {
+public abstract class LeagueRound implements Parcelable {
   public abstract int roundNumber();
   public abstract List<Match> matches();
 
@@ -17,6 +19,10 @@ public abstract class LeagueRound {
 
   public static LeagueRound create(int roundNumber) {
     return new AutoValue_LeagueRound(roundNumber, new ArrayList<>());
+  }
+
+  @Override public int describeContents() {
+    return 0;
   }
 
   public void addMatch(Match match) {

@@ -2,5 +2,5 @@ package com.felipecsl.elifut;
 
 public interface TestElifutGraph {
   void inject(TestElifutApplication testElifutApplication);
-  void inject(MatchResultsControllerTest matchResultsControllerTest);
+  void inject(MatchResultControllerTest matchResultsControllerTest);
 }

@@ -26,19 +26,18 @@ import butterknife.ButterKnife;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class LeagueNextMatchesAdapter
-    extends RecyclerView.Adapter<LeagueNextMatchesAdapter.BaseViewHolder<Match>>
-    implements StickyRecyclerHeadersAdapter<LeagueNextMatchesAdapter.BaseViewHolder<LeagueRound>> {
+public final class LeagueMatchesAdapter
+    extends RecyclerView.Adapter<LeagueMatchesAdapter.BaseViewHolder<Match>>
+    implements StickyRecyclerHeadersAdapter<LeagueMatchesAdapter.BaseViewHolder<LeagueRound>> {
   private final List<Match> matches;
   private final Club currentClub;
-  private final int totalRounds;
+  private final String headerText;
   private LeagueRound round;
 
-  public LeagueNextMatchesAdapter(Club currentClub, int totalRounds, LeagueRound round) {
+  public LeagueMatchesAdapter(Club currentClub, String headerText, List<Match> matches) {
     this.currentClub = checkNotNull(currentClub);
-    this.totalRounds = checkNotNull(totalRounds);
-    this.round = checkNotNull(round);
-    this.matches = checkNotNull(round).matches();
+    this.headerText = checkNotNull(headerText);
+    this.matches = checkNotNull(matches);
   }
 
   @Override public BaseViewHolder<Match> onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,7 +57,7 @@ public final class LeagueNextMatchesAdapter
   }
 
   @Override public BaseViewHolder<LeagueRound> onCreateHeaderViewHolder(ViewGroup parent) {
-    return new HeaderViewHolder(parent, totalRounds);
+    return new HeaderViewHolder(parent, headerText);
   }
 
   @Override public void onBindHeaderViewHolder(BaseViewHolder<LeagueRound> holder, int position) {
@@ -134,18 +133,17 @@ public final class LeagueNextMatchesAdapter
   }
 
   static class HeaderViewHolder extends BaseViewHolder<LeagueRound> {
-    private final int totalRounds;
+    private final String text;
     @Bind(R.id.txt_header) TextView txtHeader;
 
-    HeaderViewHolder(ViewGroup parent, int totalRounds) {
+    HeaderViewHolder(ViewGroup parent, String text) {
       super(parent, R.layout.adapter_round_header);
-      this.totalRounds = totalRounds;
+      this.text = text;
       ButterKnife.bind(this, itemView);
     }
 
     @Override public void bind(LeagueRound round) {
-      Context context = itemView.getContext();
-      txtHeader.setText(context.getString(R.string.round_n_of_n, round.roundNumber(), totalRounds));
+      txtHeader.setText(text);
     }
   }
 }

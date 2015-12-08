@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.felipecsl.elifut.R;
-import com.felipecsl.elifut.adapter.LeagueNextMatchesAdapter;
+import com.felipecsl.elifut.adapter.LeagueMatchesAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
@@ -22,7 +22,7 @@ public class LeagueProgressFragment extends ElifutFragment {
   @Bind(R.id.recycler_next_matches) RecyclerView recyclerView;
 
   private final CompositeSubscription subscription = new CompositeSubscription();
-  private LeagueNextMatchesAdapter adapter;
+  private LeagueMatchesAdapter adapter;
 
   public static LeagueProgressFragment newInstance() {
     return new LeagueProgressFragment();
@@ -56,7 +56,8 @@ public class LeagueProgressFragment extends ElifutFragment {
   private void initAdapter(LeagueRound round) {
     Club club = userPreferences.clubPreference().get();
     int totalRounds = leaguePreferences.roundsPreference().get().size();
-    adapter = new LeagueNextMatchesAdapter(club, totalRounds, round);
+    String title = getActivity().getString(R.string.round_n_of_n, round.roundNumber(), totalRounds);
+    adapter = new LeagueMatchesAdapter(club, title, round.matches());
     adapter.setHasStableIds(true);
     StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(adapter);
     recyclerView.addItemDecoration(decoration);

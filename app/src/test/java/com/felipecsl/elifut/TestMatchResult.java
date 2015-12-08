@@ -1,20 +1,18 @@
 package com.felipecsl.elifut;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
-import com.felipecsl.elifut.match.MatchStatistics;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.ClubStatistics;
 import com.felipecsl.elifut.models.Goal;
+import com.felipecsl.elifut.models.Match;
+import com.felipecsl.elifut.models.MatchResult;
 
 import java.util.List;
 
-class TestMatchStatistics implements MatchStatistics {
-  @Override public Club home() {
-    return null;
-  }
-
-  @Override public Club away() {
+class TestMatchResult extends MatchResult {
+  @Override public Match match() {
     return null;
   }
 
@@ -50,15 +48,19 @@ class TestMatchStatistics implements MatchStatistics {
     return null;
   }
 
-  @Override public String refereeName() {
-    return null;
+  @Override public void writeToParcel(Parcel dest, int flags) {
   }
 
-  @Override public ClubStatistics homeStatistics() {
-    return null;
-  }
+  public static final Parcelable.Creator<TestMatchResult> CREATOR =
+      new Parcelable.Creator<TestMatchResult>() {
+        @java.lang.Override
+        public TestMatchResult createFromParcel(Parcel in) {
+          return new TestMatchResult();
+        }
 
-  @Override public ClubStatistics awayStatistics() {
-    return null;
-  }
+        @java.lang.Override
+        public TestMatchResult[] newArray(int size) {
+          return new TestMatchResult[size];
+        }
+      };
 }

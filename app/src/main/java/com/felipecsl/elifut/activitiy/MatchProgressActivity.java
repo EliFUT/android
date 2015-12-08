@@ -15,11 +15,12 @@ import android.widget.TextView;
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.ResponseObserver;
-import com.felipecsl.elifut.match.DefaultMatchStatistics;
+import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.match.MatchResultsController;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Match;
+import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.widget.FractionView;
@@ -64,7 +65,7 @@ public class MatchProgressActivity extends ElifutActivity {
   @State Match match;
   @State boolean isRunning;
   @State int elapsedMinutes;
-  @State DefaultMatchStatistics statistics;
+  @State MatchResult statistics;
 
   private final CompositeSubscription subscriptions = new CompositeSubscription();
   private String finalScoreMessage;
@@ -74,7 +75,7 @@ public class MatchProgressActivity extends ElifutActivity {
     }
 
     @Override public void onCompleted() {
-      statistics = new DefaultMatchStatistics(match);
+      statistics = new MatchResultGenerator().generate(match);
 
       if (!statistics.isDraw()) {
         finalScoreMessage = statistics.winner().abbrev_name() + " is the winner. Final score "

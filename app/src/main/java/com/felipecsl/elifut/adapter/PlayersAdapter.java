@@ -2,11 +2,9 @@ package com.felipecsl.elifut.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Player;
-import com.google.common.base.Preconditions;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,30 +20,21 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
-  private final List<Player> players;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public class PlayersAdapter extends RecyclerViewListAdapter<Player, PlayersAdapter.ViewHolder> {
   private final Club club;
 
   public PlayersAdapter(List<Player> players, Club club) {
-    this.players = Preconditions.checkNotNull(players);
-    this.club = Preconditions.checkNotNull(club);
+    super(checkNotNull(players));
+    this.club = checkNotNull(club);
   }
 
-  @Override
-  public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return new ViewHolder(parent);
+  @Override protected BaseViewHolder.Factory<ViewHolder> itemFactory() {
+    return (parent, viewType) -> new ViewHolder(parent);
   }
 
-  @Override
-  public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.bind(players.get(position));
-  }
-
-  @Override public int getItemCount() {
-    return players.size();
-  }
-
-  class ViewHolder extends RecyclerView.ViewHolder {
+  class ViewHolder extends BaseViewHolder<Player> {
     @Bind(R.id.player_name) TextView txtPlayerName;
     @Bind(R.id.player_image) ImageView imgPlayer;
     @Bind(R.id.player_rating) TextView txtPlayerRating;
@@ -63,12 +51,11 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     @Bind(R.id.attribute_6) TextView attribute6;
 
     public ViewHolder(ViewGroup parent) {
-      super(LayoutInflater.from(parent.getContext())
-          .inflate(R.layout.player_item, parent, false));
+      super(parent, R.layout.player_item);
       ButterKnife.bind(this, itemView);
     }
 
-    public void bind(Player player) {
+    @Override public void bind(Player player) {
       Context context = itemView.getContext();
       int backgroundImageResId = context.getResources().getIdentifier(player.color(),
           "drawable", context.getPackageName());

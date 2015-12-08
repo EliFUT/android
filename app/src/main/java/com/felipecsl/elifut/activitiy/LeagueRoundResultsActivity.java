@@ -6,8 +6,10 @@ import android.support.v7.widget.RecyclerView;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.LeagueMatchesAdapter;
+import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
+import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.UserPreferences;
 
 import javax.inject.Inject;
@@ -15,6 +17,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.State;
+import rx.Observable;
 
 public class LeagueRoundResultsActivity extends ElifutActivity {
   private static final String EXTRA_ROUND = "EXTRA_ROUND";
@@ -33,6 +36,9 @@ public class LeagueRoundResultsActivity extends ElifutActivity {
     if (savedInstanceState == null) {
       round = getIntent().getParcelableExtra(EXTRA_ROUND);
     }
+
+    MatchResultGenerator generator = new MatchResultGenerator();
+    Observable<MatchResult> observable = Observable.from(round.matches()).map(generator::generate);
 
     Club currentClub = userPreferences.clubPreference().get();
     roundResults.setLayoutManager(

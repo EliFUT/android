@@ -16,7 +16,7 @@ import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.ResponseObserver;
 import com.felipecsl.elifut.match.MatchResultGenerator;
-import com.felipecsl.elifut.match.MatchResultsController;
+import com.felipecsl.elifut.match.MatchResultController;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Match;
@@ -114,9 +114,9 @@ public class MatchProgressActivity extends ElifutActivity {
   @Override protected void onDestroy() {
     super.onDestroy();
     stopTimer();
-    MatchResultsController controller = new MatchResultsController(
+    MatchResultController controller = new MatchResultController(
         userPreferences, leaguePreferences);
-    controller.updateByMatchStatistics(statistics);
+    controller.updateWithResult(statistics);
   }
 
   private void loadClubs(int homeId, int awayId) {

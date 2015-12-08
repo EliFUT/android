@@ -4,7 +4,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 
 import com.felipecsl.elifut.models.MatchResult;
-import com.felipecsl.elifut.match.MatchResultsController;
+import com.felipecsl.elifut.match.MatchResultController;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
@@ -44,8 +44,8 @@ public class MatchResultControllerTest {
   }
 
   @Test public void testUserWinner() throws Exception {
-    MatchResultsController controller =
-        new MatchResultsController(userPreferences, leaguePreferences);
+    MatchResultController controller =
+        new MatchResultController(userPreferences, leaguePreferences);
     MatchResult statistics = new TestMatchResult() {
       @Nullable @Override public Club winner() {
         return userClub;
@@ -59,7 +59,7 @@ public class MatchResultControllerTest {
         return false;
       }
     };
-    controller.updateByMatchStatistics(statistics);
+    controller.updateWithResult(statistics);
 
     Club newUserClub = userClub.newWithWin();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
@@ -68,8 +68,8 @@ public class MatchResultControllerTest {
   }
 
   @Test public void testUserLoss() {
-    MatchResultsController controller =
-        new MatchResultsController(userPreferences, leaguePreferences);
+    MatchResultController controller =
+        new MatchResultController(userPreferences, leaguePreferences);
     MatchResult statistics = new TestMatchResult() {
       @Nullable @Override public Club winner() {
         return nonUserClub;
@@ -84,7 +84,7 @@ public class MatchResultControllerTest {
       }
     };
 
-    controller.updateByMatchStatistics(statistics);
+    controller.updateWithResult(statistics);
 
     Club newUserClub = userClub.newWithLoss();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
@@ -93,8 +93,8 @@ public class MatchResultControllerTest {
   }
 
   @Test public void testDraw() {
-    MatchResultsController controller =
-        new MatchResultsController(userPreferences, leaguePreferences);
+    MatchResultController controller =
+        new MatchResultController(userPreferences, leaguePreferences);
     MatchResult statistics = new TestMatchResult() {
       @Override public Match match() {
         return Match.create(userClub, nonUserClub);
@@ -105,7 +105,7 @@ public class MatchResultControllerTest {
       }
     };
 
-    controller.updateByMatchStatistics(statistics);
+    controller.updateWithResult(statistics);
 
     Club newUserClub = userClub.newWithDraw();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);

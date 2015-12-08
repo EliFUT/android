@@ -1,6 +1,7 @@
 package com.felipecsl.elifut.match;
 
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.JsonPreference;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
@@ -12,13 +13,13 @@ import rx.Observable;
 
 import static com.felipecsl.elifut.util.CollectionUtils.toList;
 
-public final class MatchResultsController {
+public final class MatchResultController {
   private final UserPreferences userPreferences;
   private final Club userClub;
   private final Observable<Club> allClubs;
   private final JsonPreference<List<Club>> clubsPreference;
 
-  public MatchResultsController(
+  public MatchResultController(
       UserPreferences userPreferences, LeaguePreferences leaguePreferences) {
     this.userPreferences = userPreferences;
     userClub = userPreferences.clubPreference().get();
@@ -27,35 +28,39 @@ public final class MatchResultsController {
   }
 
   /** Updates the league and clubs based on the provided match results */
-  public void updateByMatchStatistics(MatchResult statistics) {
-    if (!statistics.isDraw()) {
-      Club winner = statistics.winner();
-      Club loser = statistics.loser();
+  public void updateWithResult(MatchResult result) {
+    if (!result.isDraw()) {
+      Club winner = result.winner();
+      Club loser = result.loser();
 
       if (userClub.nameEquals(winner)) {
         // user is winner
         Club winnerClub = userClub.newWithWin();
         updateUserClub(winnerClub);
-        clubsPreference.set(toList(allClubs.compose(transform(winnerClub, loser.newWithLoss()))));
+        updateClubs(winnerClub, loser.newWithLoss());
       } else {
         // computer is winner
         Club loserClub = userClub.newWithLoss();
         updateUserClub(loserClub);
-        clubsPreference.set(toList(allClubs.compose(transform(winner.newWithWin(), loserClub))));
+        updateClubs(winner.newWithWin(), loserClub);
       }
     } else {
       // match result is draw
-      Club nonUserClub = userClub.nameEquals(statistics.match().home())
-          ? statistics.match().away() : statistics.match().home();
+      Match match = result.match();
+      Club nonUserClub = userClub.nameEquals(match.home()) ? match.away() : match.home();
       Club drawClub = userClub.newWithDraw();
       updateUserClub(drawClub);
-      clubsPreference.set(toList(allClubs.compose(transform(drawClub, nonUserClub.newWithDraw()))));
+      updateClubs(drawClub, nonUserClub.newWithDraw());
     }
   }
 
   private void updateUserClub(Club updated) {
     JsonPreference<Club> userClubPreference = userPreferences.clubPreference();
     userClubPreference.set(updated);
+  }
+
+  private void updateClubs(Club clubA, Club clubB) {
+    clubsPreference.set(toList(allClubs.compose(transform(clubA, clubB))));
   }
 
   private Observable.Transformer<Club, Club> transform(Club clubA, Club clubB) {

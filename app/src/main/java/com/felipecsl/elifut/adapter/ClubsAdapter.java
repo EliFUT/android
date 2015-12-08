@@ -2,16 +2,15 @@ package com.felipecsl.elifut.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
+import com.felipecsl.elifut.adapter.ClubsAdapter.HeaderViewHolder;
+import com.felipecsl.elifut.adapter.ClubsAdapter.ViewHolder;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.util.List;
 
@@ -22,52 +21,29 @@ import butterknife.ButterKnife;
 import static com.felipecsl.elifut.util.CollectionUtils.sort;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHolder> implements
-    StickyRecyclerHeadersAdapter<ClubsAdapter.ViewHolder> {
-  private final List<Club> clubs;
+public final class ClubsAdapter
+    extends RecyclerViewHeaderListAdapter<Club, Void, ViewHolder, HeaderViewHolder> {
   private final Club selectedClub;
 
   public ClubsAdapter(List<Club> clubs, Club selectedClub) {
+    super(sort(clubs, (c1, c2) ->
+        c2.nonNullStats().points() - c1.nonNullStats().points()), null);
     this.selectedClub = checkNotNull(selectedClub);
-    this.clubs = checkNotNull(sort(clubs, (c1, c2) ->
-        c2.nonNullStats().points() - c1.nonNullStats().points()));
-  }
-
-  @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return new ViewHolder(parent);
-  }
-
-  @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.bind(position, clubs.get(position));
-  }
-
-  @Override public long getHeaderId(int position) {
-    return 0;
-  }
-
-  @Override public long getItemId(int position) {
-    return clubs.get(position).hashCode();
-  }
-
-  @Override public ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
-    return new HeaderViewHolder(parent);
-  }
-
-  @Override public void onBindHeaderViewHolder(ViewHolder holder, int position) {
-    ((HeaderViewHolder) holder).bind();
-  }
-
-  @Override public int getItemCount() {
-    return clubs.size();
   }
 
   public void setItems(List<Club> newItems) {
-    clubs.clear();
-    clubs.addAll(sort(newItems, (c1, c2) -> c2.nonNullStats().points() - c1.nonNullStats().points()));
-    notifyDataSetChanged();
+    setData(sort(newItems, (c1, c2) -> c2.nonNullStats().points() - c1.nonNullStats().points()));
   }
 
-  class ViewHolder extends RecyclerView.ViewHolder {
+  @Override protected BaseViewHolder.Factory<HeaderViewHolder> headerFactory() {
+    return (parent, viewType) -> new HeaderViewHolder(parent);
+  }
+
+  @Override protected BaseViewHolder.Factory<ViewHolder> itemFactory() {
+    return (parent, viewType) -> new ViewHolder(parent);
+  }
+
+  class ViewHolderImpl {
     @Bind(R.id.layout) ViewGroup layout;
     @Bind(R.id.txt_position) TextView position;
     @Bind(R.id.txt_club_name) TextView clubName;
@@ -76,62 +52,71 @@ public final class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ViewHo
     @Bind(R.id.txt_draws) TextView draws;
     @Bind(R.id.txt_losses) TextView losses;
     @Bind(R.id.txt_goals_difference) TextView goalsDifference;
-    @BindColor(android.R.color.transparent) int transparent;
-    @BindColor(R.color.club_table_header_bg) int headerBg;
-    @BindColor(R.color.club_table_header_text_color) int headerTextColor;
+  }
+
+  class ViewHolder extends BaseViewHolder<Club> {
+    private final ViewHolderImpl views = new ViewHolderImpl();
 
     ViewHolder(ViewGroup parent) {
-      super(LayoutInflater.from(parent.getContext()).inflate(R.layout.club_item, parent, false));
-      ButterKnife.bind(this, itemView);
+      super(parent, R.layout.club_item);
+      ButterKnife.bind(views, itemView);
     }
 
-    void bind(int pos, Club club) {
+    @Override public void bind(Club club) {
       ClubStats stats = club.nonNullStats();
       int typeface = selectedClub.equals(club) ? Typeface.BOLD : Typeface.NORMAL;
-      position.setText(String.valueOf(pos + 1));
-      points.setTypeface(null, typeface);
-      points.setText(String.valueOf(stats.points()));
-      clubName.setText(club.abbrev_name());
-      clubName.setTypeface(null, typeface);
-      wins.setTypeface(null, typeface);
-      wins.setText(String.valueOf(stats.wins()));
-      draws.setTypeface(null, typeface);
-      draws.setText(String.valueOf(stats.draws()));
-      losses.setTypeface(null, typeface);
-      losses.setText(String.valueOf(stats.losses()));
-      goalsDifference.setTypeface(null, typeface);
-      goalsDifference.setText(String.valueOf(stats.goals()));
+      views.position.setText(String.valueOf(getAdapterPosition() + 1));
+      views.points.setTypeface(null, typeface);
+      views.points.setText(String.valueOf(stats.points()));
+      views.clubName.setText(club.abbrev_name());
+      views.clubName.setTypeface(null, typeface);
+      views.wins.setTypeface(null, typeface);
+      views.wins.setText(String.valueOf(stats.wins()));
+      views.draws.setTypeface(null, typeface);
+      views.draws.setText(String.valueOf(stats.draws()));
+      views.losses.setTypeface(null, typeface);
+      views.losses.setText(String.valueOf(stats.losses()));
+      views.goalsDifference.setTypeface(null, typeface);
+      views.goalsDifference.setText(String.valueOf(stats.goals()));
       Context context = itemView.getContext();
-      layout.setOnClickListener(view -> context.startActivity(
+      views.layout.setOnClickListener(view -> context.startActivity(
           TeamDetailsActivity.newIntent(context, club)));
     }
   }
 
-  private class HeaderViewHolder extends ViewHolder {
+  class HeaderViewHolder extends BaseViewHolder<Void> {
+    private final ViewHolderImpl views = new ViewHolderImpl();
+
+    @BindColor(android.R.color.transparent) int transparent;
+    @BindColor(R.color.club_table_header_bg) int headerBg;
+    @BindColor(R.color.club_table_header_text_color) int headerTextColor;
+
     HeaderViewHolder(ViewGroup parent) {
-      super(parent);
+      super(parent, R.layout.club_item);
+      ButterKnife.bind(views, itemView);
+      ButterKnife.bind(this, itemView);
     }
 
-    void bind() {
-      layout.setBackgroundColor(headerBg);
-      clubName.setText(R.string.team);
-      clubName.setTextColor(headerTextColor);
-      clubName.setBackgroundColor(transparent);
-      points.setText("P");
-      points.setTextColor(headerTextColor);
-      points.setBackgroundColor(transparent);
-      wins.setText("W");
-      wins.setTextColor(headerTextColor);
-      wins.setBackgroundColor(transparent);
-      draws.setText("D");
-      draws.setTextColor(headerTextColor);
-      draws.setBackgroundColor(transparent);
-      losses.setText("L");
-      losses.setTextColor(headerTextColor);
-      losses.setBackgroundColor(transparent);
-      goalsDifference.setText("G");
-      goalsDifference.setTextColor(headerTextColor);
-      goalsDifference.setBackgroundColor(transparent);
+    @Override public void bind(Void unused) {
+      views.layout.setBackgroundColor(headerBg);
+      views.clubName.setText(R.string.team);
+      views.clubName.setTextColor(headerTextColor);
+      views.clubName.setBackgroundColor(transparent);
+      views.points.setText("P");
+      views.points.setTextColor(headerTextColor);
+      views.points.setBackgroundColor(transparent);
+      views.wins.setText("W");
+      views.wins.setTextColor(headerTextColor);
+      views.wins.setBackgroundColor(transparent);
+      views.draws.setText("D");
+      views.draws.setTextColor(headerTextColor);
+      views.draws.setBackgroundColor(transparent);
+      views.losses.setText("L");
+      views.losses.setTextColor(headerTextColor);
+      views.losses.setBackgroundColor(transparent);
+      views.goalsDifference.setText("G");
+      views.goalsDifference.setTextColor(headerTextColor);
+      views.goalsDifference.setBackgroundColor(transparent);
     }
   }
 }

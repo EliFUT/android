@@ -4,10 +4,14 @@ buildscript {
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:2.0.0-alpha2'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
-    classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+    classpath 'me.tatarka:gradle-retrolambda:3.2.4'
+    classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
   }
+
+  // Exclude the Lombok version that the android plugin depends on (fix for Retrolambda).
+  configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
 allprojects {
@@ -19,6 +23,11 @@ allprojects {
     maven {
       url "https://clojars.org/repo/"
     }
+  }
+  // Workaround to prevent Gradle from stealing focus from other apps during tests run/etc.
+  // https://gist.github.com/artem-zinnatullin/4c250e04636e25797165
+  tasks.withType(JavaForkOptions) {
+    jvmArgs '-Djava.awt.headless=true'
   }
 }
 

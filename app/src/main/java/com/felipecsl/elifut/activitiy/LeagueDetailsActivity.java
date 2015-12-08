@@ -16,6 +16,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.State;
 
+import static com.felipecsl.elifut.util.ColorUtils.colorizeHeader;
+
 public class LeagueDetailsActivity extends NavigationActivity {
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.viewpager) ViewPager viewPager;
@@ -52,9 +54,6 @@ public class LeagueDetailsActivity extends NavigationActivity {
   }
 
   public void setToolbarColor(int primaryColor, int secondaryColor) {
-    toolbar.setBackgroundColor(primaryColor);
-    tabLayout.setBackgroundColor(primaryColor);
-    tabLayout.setSelectedTabIndicatorColor(secondaryColor);
-    getWindow().setStatusBarColor(primaryColor);
+    colorizeHeader(this, toolbar, tabLayout, primaryColor, secondaryColor);
   }
 }

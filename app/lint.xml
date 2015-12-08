@@ -4,4 +4,10 @@
     <!-- Remove this when this is fixed: https://github.com/JakeWharton/butterknife/issues/338 -->
     <ignore path="**/*$$ViewBinder.java" />
   </issue>
+  <issue id="NewApi">
+    <ignore regexp="Try-with-resources requires API level 19"/>
+  </issue>
+  <issue id="InvalidPackage">
+    <ignore path="**" />
+  </issue>
 </lint>

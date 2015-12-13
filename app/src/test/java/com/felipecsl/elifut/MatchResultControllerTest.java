@@ -3,17 +3,16 @@ package com.felipecsl.elifut;
 import android.os.Build;
 import android.support.annotation.Nullable;
 
-import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.match.MatchResultController;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Match;
+import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
@@ -25,11 +24,12 @@ import rx.Observable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+@RunWith(ElifutTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
+    manifest = ElifutTestRunner.MANIFEST_PATH)
 public class MatchResultControllerTest {
-  private final Club userClub = Club.builder().id(1).name("Club A").build();
-  private final Club nonUserClub = Club.builder().id(2).name("Club B").build();
+  private final Club userClub = Club.create(1, "Club A");
+  private final Club nonUserClub = Club.create(2, "Club B");
   private final Observable<Club> leagueClubs = Observable.just(userClub, nonUserClub);
 
   @Inject UserPreferences userPreferences;

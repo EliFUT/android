@@ -24,6 +24,10 @@ public abstract class Club extends Model {
         .league_id(0);
   }
 
+  public static Club create(int id, String name) {
+    return Club.builder().id(id).name(name).build();
+  }
+
   public String tinyName() {
     //noinspection ConstantConditions
     return abbrev_name() != null ? abbrev_name().substring(0, 3) : name().substring(0, 3);

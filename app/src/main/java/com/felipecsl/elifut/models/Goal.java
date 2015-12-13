@@ -6,7 +6,7 @@ import com.google.auto.value.AutoValue;
 
 @AutoValue
 public abstract class Goal implements Parcelable, MatchEvent {
-  public abstract int time();
+  @Override public abstract int time();
   public abstract Club club();
 
   public static Goal create(int time, Club club) {

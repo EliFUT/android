@@ -24,6 +24,9 @@ public final class MatchResultController {
     this.userPreferences = userPreferences;
     userClub = userPreferences.clubPreference().get();
     clubsPreference = leaguePreferences.clubsPreference();
+    // Could use clubsPreference.asObservable().flatMap(Observable::from); below, but
+    // that doesnt work because, since asObservable() never calls onCompleted(), calling toList()
+    // on it hangs forever.
     allClubs = Observable.from(clubsPreference.get());
   }
 

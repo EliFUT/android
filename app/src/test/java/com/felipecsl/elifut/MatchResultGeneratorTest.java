@@ -14,8 +14,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class MatchResultGeneratorTest {
-  private final Club home = Club.builder().id(0).name("Gremio").build();
-  private final Club away = Club.builder().id(1).name("Internacional").build();
+  private final Club home = Club.create(0, "Gremio");
+  private final Club away = Club.create(1, "Internacional");
   private final Match match = Match.create(home, away);
   private final RandomGenerator random = mock(RandomGenerator.class);
   private final RealDistribution distribution = mock(RealDistribution.class);
@@ -43,8 +43,8 @@ public class MatchResultGeneratorTest {
 
     MatchResult result = generator.generate(match);
 
-    assertThat(result.match().home()).isEqualTo(home);
-    assertThat(result.match().away()).isEqualTo(away);
+    assertThat(result.home()).isEqualTo(home);
+    assertThat(result.away()).isEqualTo(away);
     assertThat(result.winner()).isEqualTo(null);
     assertThat(result.loser()).isEqualTo(null);
     assertThat(result.finalScore()).isEqualTo("1x1");
@@ -59,8 +59,8 @@ public class MatchResultGeneratorTest {
 
     MatchResult result = generator.generate(match);
 
-    assertThat(result.match().home()).isEqualTo(home);
-    assertThat(result.match().away()).isEqualTo(away);
+    assertThat(result.home()).isEqualTo(home);
+    assertThat(result.away()).isEqualTo(away);
     assertThat(result.winner()).isEqualTo(away);
     assertThat(result.loser()).isEqualTo(home);
     assertThat(result.finalScore()).isEqualTo("0x1");

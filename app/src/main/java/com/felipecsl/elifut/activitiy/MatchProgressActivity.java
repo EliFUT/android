@@ -65,8 +65,9 @@ public class MatchProgressActivity extends ElifutActivity {
   @State Match match;
   @State boolean isRunning;
   @State int elapsedMinutes;
-  @State MatchResult statistics;
+  @State MatchResult matchResult;
 
+  private final MatchResultGenerator resultGenerator = new MatchResultGenerator();
   private final CompositeSubscription subscriptions = new CompositeSubscription();
   private String finalScoreMessage;
   private final Observer<Club> observer = new ResponseObserver<Club>(this, TAG, "Failed to load club") {
@@ -75,13 +76,13 @@ public class MatchProgressActivity extends ElifutActivity {
     }
 
     @Override public void onCompleted() {
-      statistics = new MatchResultGenerator().generate(match);
+      matchResult = resultGenerator.generate(match);
 
-      if (!statistics.isDraw()) {
-        finalScoreMessage = statistics.winner().abbrev_name() + " is the winner. Final score "
-            + statistics.finalScore() + ".";
+      if (!matchResult.isDraw()) {
+        finalScoreMessage = matchResult.winner().abbrev_name() + " is the winner. Final score "
+            + matchResult.finalScore() + ".";
       } else {
-        finalScoreMessage = "Game draw. Final score " + statistics.finalScore() + ".";
+        finalScoreMessage = "Game draw. Final score " + matchResult.finalScore() + ".";
       }
       if (BuildConfig.DEBUG) {
         Log.d(TAG, finalScoreMessage);
@@ -116,7 +117,7 @@ public class MatchProgressActivity extends ElifutActivity {
     stopTimer();
     MatchResultController controller = new MatchResultController(
         userPreferences, leaguePreferences);
-    controller.updateWithResult(statistics);
+    controller.updateWithResult(matchResult);
   }
 
   private void loadClubs(int homeId, int awayId) {
@@ -154,7 +155,7 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   private void startTimer() {
-    subscriptions.add(statistics.eventsObservable(elapsedMinutes)
+    subscriptions.add(matchResult.eventsObservable(elapsedMinutes)
         .map(matchEvent -> (Goal) matchEvent)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(goal -> {

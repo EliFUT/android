@@ -69,14 +69,8 @@ public class MatchResultGenerator {
 
     return matchResult
         .match(match)
-        .winner(winner)
-        .loser(winner != null ? loser : null)
         .homeGoals(homeGoals)
         .awayGoals(awayGoals)
-        .isDraw(winner == null)
-        .isHomeWin(isHomeWin)
-        .isAwayWin(!isHomeWin)
-        .finalScore(homeGoals.size() + "x" + awayGoals.size())
         .build();
   }
 }

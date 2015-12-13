@@ -8,6 +8,7 @@ import com.google.auto.value.AutoValue;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -30,28 +31,73 @@ public abstract class MatchResult implements Parcelable {
   public abstract List<Goal> awayGoals();
   public abstract String finalScore();
 
+  public Club home() {
+    return match().home();
+  }
+
+  public Club away() {
+    return match().away();
+  }
+
   @AutoValue.Builder
   public abstract static class Builder {
     public abstract Builder match(Match x);
-    public abstract Builder winner(Club x);
-    public abstract Builder loser(Club x);
-    public abstract Builder isDraw(boolean x);
-    public abstract Builder isHomeWin(boolean x);
-    public abstract Builder isAwayWin(boolean x);
     public abstract Builder homeGoals(List<Goal> x);
     public abstract Builder awayGoals(List<Goal> x);
-    public abstract Builder finalScore(String x);
-    public abstract MatchResult build();
+    public abstract MatchResult autoBuild();
+    abstract Builder winner(Club x);
+    abstract Builder loser(Club x);
+    abstract Builder isDraw(boolean x);
+    abstract Builder isHomeWin(boolean x);
+    abstract Builder isAwayWin(boolean x);
+    abstract Builder finalScore(String x);
+    abstract List<Goal> homeGoals();
+    abstract List<Goal> awayGoals();
+    abstract Match match();
+
+    public MatchResult build() {
+      Club winner = null;
+      Club loser = null;
+      boolean isDraw = false;
+      boolean isHomeWin = false;
+      boolean isAwayWin = false;
+      int awayGoals = awayGoals().size();
+      int homeGoals = homeGoals().size();
+      if (homeGoals != awayGoals) {
+        winner = homeGoals > awayGoals ? match().home() : match().away();
+        loser = homeGoals > awayGoals ? match().away() : match().home();
+        isHomeWin = homeGoals > awayGoals;
+        isAwayWin = !isHomeWin;
+      } else {
+        isDraw = true;
+      }
+      return winner(winner)
+          .loser(loser)
+          .isDraw(isDraw)
+          .isHomeWin(isHomeWin)
+          .isAwayWin(isAwayWin)
+          .finalScore(homeGoals + "x" + awayGoals)
+          .autoBuild();
+    }
   }
 
   public static Builder builder() {
-    return new AutoValue_MatchResult.Builder();
+    return new AutoValue_MatchResult.Builder()
+        .homeGoals(Collections.emptyList())
+        .awayGoals(Collections.emptyList())
+        .isHomeWin(false)
+        .isAwayWin(false)
+        .isDraw(false);
   }
 
   @Override public int describeContents() {
     return 0;
   }
 
+  /**
+   * Returns an {@link Observable} that emits the all the {@link MatchEvent} of this result in this
+   * match at the correct time that they happened.
+   */
   public Observable<MatchEvent> eventsObservable(final int elapsedTime) {
     Observable<Goal> homeGoalsObservable = Observable.from(homeGoals());
     Observable<Goal> awayGoalsObservable = Observable.from(awayGoals());

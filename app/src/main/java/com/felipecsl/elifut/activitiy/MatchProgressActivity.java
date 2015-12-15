@@ -19,6 +19,7 @@ import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.match.MatchResultController;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
+import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
@@ -42,7 +43,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class MatchProgressActivity extends ElifutActivity {
-  private static final String EXTRA_MATCH = "EXTRA_MATCH";
+  private static final String EXTRA_ROUND = "EXTRA_ROUND";
   private static final String TAG = MatchProgressActivity.class.getSimpleName();
 
   @Bind(R.id.toolbar) Toolbar toolbar;
@@ -62,7 +63,7 @@ public class MatchProgressActivity extends ElifutActivity {
   @Inject UserPreferences userPreferences;
   @Inject LeaguePreferences leaguePreferences;
 
-  @State Match match;
+  @State LeagueRound round;
   @State boolean isRunning;
   @State int elapsedMinutes;
   @State MatchResult matchResult;
@@ -70,6 +71,7 @@ public class MatchProgressActivity extends ElifutActivity {
   private final MatchResultGenerator resultGenerator = new MatchResultGenerator();
   private final CompositeSubscription subscriptions = new CompositeSubscription();
   private String finalScoreMessage;
+  private Match match;
   private final Observer<Club> observer = new ResponseObserver<Club>(this, TAG, "Failed to load club") {
     @Override public void onNext(Club response) {
       fillClubInfos(response);
@@ -92,9 +94,9 @@ public class MatchProgressActivity extends ElifutActivity {
     }
   };
 
-  public static Intent newIntent(Context context, Match match) {
+  public static Intent newIntent(Context context, LeagueRound round) {
     return new Intent(context, MatchProgressActivity.class)
-        .putExtra(EXTRA_MATCH, match);
+        .putExtra(EXTRA_ROUND, round);
   }
 
   @Override public void onCreate(Bundle savedInstanceState) {
@@ -106,17 +108,16 @@ public class MatchProgressActivity extends ElifutActivity {
 
     if (savedInstanceState == null) {
       Intent intent = getIntent();
-      match = intent.getParcelableExtra(EXTRA_MATCH);
+      round = intent.getParcelableExtra(EXTRA_ROUND);
     }
-
+    match = round.findMatchByClub(userPreferences.club());
     loadClubs(match.home().id(), match.away().id());
   }
 
   @Override protected void onDestroy() {
     super.onDestroy();
     stopTimer();
-    MatchResultController controller = new MatchResultController(
-        userPreferences, leaguePreferences);
+    MatchResultController controller = new MatchResultController(userPreferences);
     controller.updateWithResult(matchResult);
   }
 
@@ -207,5 +208,6 @@ public class MatchProgressActivity extends ElifutActivity {
 
   @OnClick(R.id.fab_done) public void onClickDone() {
     finish();
+    startActivity(LeagueRoundResultsActivity.newIntent(this, round));
   }
 }

@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.Match;
+import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.squareup.picasso.Picasso;
@@ -105,7 +105,7 @@ public abstract class NavigationActivity extends ElifutActivity
 
     ButterKnife.bind(headerViewHolder, navigationView.getHeaderView(0));
 
-    headerViewHolder.txtCoachName.setText(userPreferences.coachPreference().get());
+    headerViewHolder.txtCoachName.setText(userPreferences.coach());
     headerViewHolder.txtTeamName.setText(club.name());
 
     Picasso.with(this)
@@ -146,7 +146,7 @@ public abstract class NavigationActivity extends ElifutActivity
     int id = item.getItemId();
 
     if (id == R.id.nav_team) {
-      Club club = userPreferences.clubPreference().get();
+      Club club = userPreferences.club();
       startActivity(CurrentTeamDetailsActivity.newIntent(this, club));
       finish();
     } else if (id == R.id.nav_league) {
@@ -159,8 +159,7 @@ public abstract class NavigationActivity extends ElifutActivity
   }
 
   @OnClick(R.id.fab) public void onClickFab() {
-    Club club = userPreferences.clubPreference().get();
-    Match match = leaguePreferences.popAndUpdateNextMatch(club);
-    startActivity(MatchProgressActivity.newIntent(this, match));
+    LeagueRound round = leaguePreferences.nextRound();
+    startActivity(MatchProgressActivity.newIntent(this, round));
   }
 }

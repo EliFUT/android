@@ -9,10 +9,9 @@ import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
-import com.felipecsl.elifut.adapter.LeagueMatchesAdapter.ItemViewHolder;
+import com.felipecsl.elifut.adapter.RoundResultsAdapter.ViewHolder;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.LeagueRound;
-import com.felipecsl.elifut.models.Match;
+import com.felipecsl.elifut.models.MatchResult;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -21,31 +20,19 @@ import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-public final class LeagueMatchesAdapter
-    extends RecyclerViewHeaderListAdapter<Match, String, ItemViewHolder, SimpleHeaderViewHolder> {
+public final class RoundResultsAdapter extends RecyclerViewListAdapter<MatchResult, ViewHolder> {
   private final Club currentClub;
 
-  public LeagueMatchesAdapter(Club currentClub, String headerText, List<Match> matches) {
-    super(matches, checkNotNull(headerText));
-    this.currentClub = checkNotNull(currentClub);
+  public RoundResultsAdapter(Club currentClub, List<MatchResult> matchResults) {
+    super(matchResults);
+    this.currentClub = currentClub;
   }
 
-  @Override protected BaseViewHolder.Factory<SimpleHeaderViewHolder> headerFactory() {
-    return (parent, viewType) ->
-        new SimpleHeaderViewHolder(parent, R.layout.adapter_round_header_item);
+  @Override protected BaseViewHolder.Factory<ViewHolder> itemFactory() {
+    return (parent, viewType) -> new ViewHolder(parent);
   }
 
-  @Override protected BaseViewHolder.Factory<ItemViewHolder> itemFactory() {
-    return (parent, viewType) -> new ItemViewHolder(parent);
-  }
-
-  public void setItems(LeagueRound round) {
-    setData(round.matches());
-  }
-
-  class ItemViewHolder extends BaseViewHolder<Match> {
+  class ViewHolder extends BaseViewHolder<MatchResult> {
     @Bind(R.id.outer_layout) FrameLayout layoutOuter;
     @Bind(R.id.layout_team_home) LinearLayout layoutTeamHome;
     @Bind(R.id.layout_team_away) LinearLayout layoutTeamAway;
@@ -53,19 +40,21 @@ public final class LeagueMatchesAdapter
     @Bind(R.id.img_team_away) ImageView imgTeamAway;
     @Bind(R.id.txt_team_home) TextView txtTeamHome;
     @Bind(R.id.txt_team_away) TextView txtTeamAway;
+    @Bind(R.id.txt_team_home_score) TextView txtTeamHomeScore;
+    @Bind(R.id.txt_team_away_score) TextView txtTeamAwayScore;
 
     @BindColor(R.color.light_gray) int colorLightGray;
     @BindColor(android.R.color.transparent) int colorTransparent;
     @BindColor(R.color.material_red_300) int colorCurrentTeam;
 
-    ItemViewHolder(ViewGroup parent) {
+    ViewHolder(ViewGroup parent) {
       super(parent, R.layout.adapter_match_result_item);
       ButterKnife.bind(this, itemView);
     }
 
-    @Override public void bind(Match match) {
-      Club home = match.home();
-      Club away = match.away();
+    @Override public void bind(MatchResult matchResult) {
+      Club home = matchResult.home();
+      Club away = matchResult.away();
 
       Picasso.with(itemView.getContext())
           .load(home.large_image())
@@ -83,7 +72,10 @@ public final class LeagueMatchesAdapter
       layoutTeamHome.setOnClickListener(view -> context.startActivity(
           TeamDetailsActivity.newIntent(context, home)));
 
-      if (!match.hasClub(currentClub)) {
+      txtTeamHomeScore.setText(String.valueOf(matchResult.homeGoals().size()));
+      txtTeamAwayScore.setText(String.valueOf(matchResult.awayGoals().size()));
+
+      if (!matchResult.match().hasClub(currentClub)) {
         layoutOuter.setBackgroundColor(
             getAdapterPosition() % 2 != 0 ? colorLightGray : colorTransparent);
       } else {

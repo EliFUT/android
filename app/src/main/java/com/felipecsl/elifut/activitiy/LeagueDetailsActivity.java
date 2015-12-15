@@ -32,7 +32,7 @@ public class LeagueDetailsActivity extends NavigationActivity {
     setSupportActionBar(toolbar);
 
     if (savedInstanceState == null) {
-      league = userPreferences.leaguePreference().get();
+      league = userPreferences.league();
     }
 
     navigationView.setCheckedItem(R.id.nav_league);

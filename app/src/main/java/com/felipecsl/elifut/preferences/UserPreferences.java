@@ -32,6 +32,22 @@ public final class UserPreferences {
     coachPreference =rxSharedPreferences.getString(KEY_COACH_NAME);
   }
 
+  public Club club() {
+    return clubPreference.get();
+  }
+
+  public Nation nation() {
+    return nationPreference.get();
+  }
+
+  public League league() {
+    return leaguePreference.get();
+  }
+
+  public String coach() {
+    return coachPreference.get();
+  }
+
   public JsonPreference<Nation> nationPreference() {
     return nationPreference;
   }

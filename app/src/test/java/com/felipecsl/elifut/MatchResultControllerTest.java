@@ -16,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.Arrays;
-
 import javax.inject.Inject;
 
 import rx.Observable;
@@ -44,9 +42,8 @@ public class MatchResultControllerTest {
   }
 
   @Test public void testUserWinner() throws Exception {
-    MatchResultController controller =
-        new MatchResultController(userPreferences, leaguePreferences);
-    MatchResult statistics = new TestMatchResult() {
+    MatchResultController controller = new MatchResultController(userPreferences);
+    MatchResult matchResult = new TestMatchResult() {
       @Nullable @Override public Club winner() {
         return userClub;
       }
@@ -59,18 +56,15 @@ public class MatchResultControllerTest {
         return false;
       }
     };
-    controller.updateWithResult(statistics);
+    controller.updateWithResult(matchResult);
 
     Club newUserClub = userClub.newWithWin();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
-    assertThat(leaguePreferences.clubsPreference().get())
-        .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithLoss()));
   }
 
   @Test public void testUserLoss() {
-    MatchResultController controller =
-        new MatchResultController(userPreferences, leaguePreferences);
-    MatchResult statistics = new TestMatchResult() {
+    MatchResultController controller = new MatchResultController(userPreferences);
+    MatchResult matchResult = new TestMatchResult() {
       @Nullable @Override public Club winner() {
         return nonUserClub;
       }
@@ -84,18 +78,15 @@ public class MatchResultControllerTest {
       }
     };
 
-    controller.updateWithResult(statistics);
+    controller.updateWithResult(matchResult);
 
     Club newUserClub = userClub.newWithLoss();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
-    assertThat(leaguePreferences.clubsPreference().get())
-        .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithWin()));
   }
 
   @Test public void testDraw() {
-    MatchResultController controller =
-        new MatchResultController(userPreferences, leaguePreferences);
-    MatchResult statistics = new TestMatchResult() {
+    MatchResultController controller = new MatchResultController(userPreferences);
+    MatchResult matchResult = new TestMatchResult() {
       @Override public Match match() {
         return Match.create(userClub, nonUserClub);
       }
@@ -105,11 +96,9 @@ public class MatchResultControllerTest {
       }
     };
 
-    controller.updateWithResult(statistics);
+    controller.updateWithResult(matchResult);
 
     Club newUserClub = userClub.newWithDraw();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
-    assertThat(leaguePreferences.clubsPreference().get())
-        .containsOnlyElementsOf(Arrays.asList(newUserClub, nonUserClub.newWithDraw()));
   }
 }

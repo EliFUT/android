@@ -62,7 +62,7 @@ public class LeagueStandingsFragment extends ElifutFragment {
     recyclerView.setHasFixedSize(true);
     recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), null));
 
-    League league = Preconditions.checkNotNull(userPreferences.leaguePreference().get());
+    League league = Preconditions.checkNotNull(userPreferences.league());
     subscription.add(leaguePreferences
         .clubsObservable()
         .subscribe(newClubs -> {

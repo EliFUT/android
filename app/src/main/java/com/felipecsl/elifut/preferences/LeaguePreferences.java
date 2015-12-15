@@ -6,7 +6,6 @@ import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.LeagueRound;
-import com.felipecsl.elifut.models.Match;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 
@@ -40,19 +39,15 @@ public final class LeaguePreferences {
     }
   }
 
-  /**
-   * Removes the next round from the list of upcoming rounds on this league and returns
-   * the match in that round that includes the provided club or null if none found.
-   * TODO Consider breaking this down in 2 methods
-   */
-  public Match popAndUpdateNextMatch(Club club) {
+  /** Removes the next round from the list of upcoming rounds and returns it */
+  public LeagueRound nextRound() {
     List<LeagueRound> nextRounds = roundsPreference.get();
     if (nextRounds == null || nextRounds.isEmpty()) {
-      throw new IllegalStateException("no opponents");
+      throw new IllegalStateException("No more rounds left");
     }
-    Match match = nextRounds.remove(0).findMatchByClub(club);
+    LeagueRound round = nextRounds.remove(0);
     roundsPreference.set(nextRounds);
-    return match;
+    return round;
   }
 
   public Observable<List<Club>> clubsObservable() {

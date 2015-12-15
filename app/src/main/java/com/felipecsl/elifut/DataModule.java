@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.felipecsl.elifut.adapter.ModelListAdapterFactory;
+import com.felipecsl.elifut.match.LeagueRoundExecutor;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
 import com.felipecsl.elifut.models.League;
@@ -61,5 +62,10 @@ public class DataModule {
   @Provides @Singleton
   LeaguePreferences provideLeaguePreferences(SharedPreferences preferences, Moshi moshi) {
     return new LeaguePreferences(preferences, moshi);
+  }
+
+  @Provides @Singleton
+  LeagueRoundExecutor provideLeagueRoundExecutor(LeaguePreferences leaguePreferences) {
+    return new LeagueRoundExecutor(leaguePreferences);
   }
 }

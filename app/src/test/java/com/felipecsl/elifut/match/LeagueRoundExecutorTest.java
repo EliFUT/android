@@ -7,7 +7,6 @@ import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
-import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.JsonPreference;
@@ -26,6 +25,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import rx.Observable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -52,7 +53,7 @@ public class LeagueRoundExecutorTest {
     MockitoAnnotations.initMocks(this);
     clubsPreference = leaguePreferences.clubsPreference();
     clubsPreference.set(leagueClubs);
-    executor = new LeagueRoundExecutor(leaguePreferences, generator);
+    executor = new LeagueRoundExecutor(leaguePreferences);
   }
 
   @Test public void testExecute() throws Exception {
@@ -71,11 +72,31 @@ public class LeagueRoundExecutorTest {
         .awayGoals(Arrays.asList(Goal.create(30, clubD), Goal.create(40, clubD)))
         .build());
 
-    executor.execute(LeagueRound.create(1, Arrays.asList(match1, match2)));
+    executor.execute(Observable.just(match1, match2).map(generator::generate));
 
-    List<Club> clubs = clubsPreference.get();
-
-    assertThat(clubs).containsOnly(
+    assertThat(clubsPreference.get()).containsOnly(
         clubA.newWithWin(), clubB.newWithLoss(), clubC.newWithLoss(), clubD.newWithWin());
+  }
+
+  @Test public void testExecuteDraw() {
+    Match match1 = Match.create(clubA, clubB);
+    Match match2 = Match.create(clubC, clubD);
+
+    when(generator.generate(match1)).thenReturn(MatchResult.builder()
+        .match(match1)
+        .homeGoals(Collections.singletonList(Goal.create(10, clubA)))
+        .awayGoals(Collections.singletonList(Goal.create(15, clubB)))
+        .build());
+
+    when(generator.generate(match2)).thenReturn(MatchResult.builder()
+        .match(match2)
+        .homeGoals(Collections.emptyList())
+        .awayGoals(Collections.emptyList())
+        .build());
+
+    executor.execute(Observable.just(match1, match2).map(generator::generate));
+
+    assertThat(clubsPreference.get()).containsOnly(
+        clubA.newWithDraw(), clubB.newWithDraw(), clubC.newWithDraw(), clubD.newWithDraw());
   }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.felipecsl.elifut.activitiy.CurrentTeamDetailsActivity;
 import com.felipecsl.elifut.activitiy.ElifutActivity;
+import com.felipecsl.elifut.activitiy.LeagueRoundResultsActivity;
 import com.felipecsl.elifut.fragment.ElifutFragment;
 import com.felipecsl.elifut.fragment.LeagueStandingsFragment;
 import com.felipecsl.elifut.activitiy.NavigationActivity;
@@ -30,6 +31,7 @@ public interface ElifutComponent {
   void inject(NavigationActivity navigationActivity);
   void inject(ElifutFragment elifutFragment);
   void inject(ElifutActivity elifutActivity);
+  void inject(LeagueRoundResultsActivity activity);
 
   final class Initializer {
     private Initializer() {

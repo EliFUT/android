@@ -2,6 +2,7 @@ package com.felipecsl.elifut.models;
 
 import android.support.annotation.Nullable;
 
+import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Preconditions;
 import com.squareup.moshi.JsonAdapter;
@@ -27,11 +28,15 @@ public abstract class League extends Model {
     return 0;
   }
 
+  public static List<LeagueRound> generateRounds(List<Club> clubs) {
+    return generateRounds(clubs, new MatchResultGenerator());
+  }
+
   /**
    * Generates a list of league rounds from the provided list of clubs. Assumes that the list is
    * already randomized.
    */
-  public static List<LeagueRound> generateRounds(List<Club> clubs) {
+  public static List<LeagueRound> generateRounds(List<Club> clubs, MatchResultGenerator generator) {
     int totalClubs = clubs.size();
 
     Preconditions.checkNotNull(clubs);
@@ -61,11 +66,19 @@ public abstract class League extends Model {
           away = totalClubs - 1;
         }
 
-        Match m = round % 2 == 0
-            ? Match.create(clubMap.get(home + 1), clubMap.get(away + 1))
-            : Match.create(clubMap.get(away + 1), clubMap.get(home + 1));
+        Club clubHome;
+        Club clubAway;
+        if (round % 2 == 0) {
+          clubHome = clubMap.get(home + 1);
+          clubAway = clubMap.get(away + 1);
+        }
+        else {
+          clubHome = clubMap.get(away + 1);
+          clubAway = clubMap.get(home + 1);
+        }
 
-        rounds[round].addMatch(m);
+        Match newMatch = Match.create(clubHome, clubAway, generator.generate(clubHome, clubAway));
+        rounds[round].addMatch(newMatch);
       }
     }
 

@@ -9,9 +9,10 @@ import com.squareup.moshi.JsonAdapter;
 public abstract class Match implements Parcelable {
   public abstract Club home();
   public abstract Club away();
+  public abstract MatchResult result();
 
-  public static Match create(Club home, Club away) {
-    return new AutoValue_Match(home, away);
+  public static Match create(Club home, Club away, MatchResult result) {
+    return new AutoValue_Match(home, away, result);
   }
 
   @Override public int describeContents() {

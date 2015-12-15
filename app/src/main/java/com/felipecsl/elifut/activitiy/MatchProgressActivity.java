@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.ResponseObserver;
-import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.match.MatchResultController;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
@@ -43,8 +42,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class MatchProgressActivity extends ElifutActivity {
-  private static final String EXTRA_ROUND = "EXTRA_ROUND";
   private static final String TAG = MatchProgressActivity.class.getSimpleName();
+  private static final String EXTRA_ROUND = "EXTRA_ROUND";
 
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.img_team_home) ImageView imgTeamHome;
@@ -66,21 +65,19 @@ public class MatchProgressActivity extends ElifutActivity {
   @State LeagueRound round;
   @State boolean isRunning;
   @State int elapsedMinutes;
-  @State MatchResult matchResult;
 
-  private final MatchResultGenerator resultGenerator = new MatchResultGenerator();
   private final CompositeSubscription subscriptions = new CompositeSubscription();
   private String finalScoreMessage;
   private Match match;
+  private MatchResult matchResult;
   private final Observer<Club> observer = new ResponseObserver<Club>(this, TAG, "Failed to load club") {
     @Override public void onNext(Club response) {
       fillClubInfos(response);
     }
 
     @Override public void onCompleted() {
-      matchResult = resultGenerator.generate(match);
-
       if (!matchResult.isDraw()) {
+        //noinspection ConstantConditions
         finalScoreMessage = matchResult.winner().abbrev_name() + " is the winner. Final score "
             + matchResult.finalScore() + ".";
       } else {
@@ -111,6 +108,7 @@ public class MatchProgressActivity extends ElifutActivity {
       round = intent.getParcelableExtra(EXTRA_ROUND);
     }
     match = round.findMatchByClub(userPreferences.club());
+    matchResult = match.result();
     loadClubs(match.home().id(), match.away().id());
   }
 

@@ -6,16 +6,11 @@ import android.support.annotation.Nullable;
 
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
-import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 
 import java.util.List;
 
 class TestMatchResult extends MatchResult {
-  @Override public Match match() {
-    return null;
-  }
-
   @Nullable @Override public Club winner() {
     return null;
   }

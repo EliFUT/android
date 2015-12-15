@@ -57,44 +57,46 @@ public class LeagueRoundExecutorTest {
   }
 
   @Test public void testExecute() throws Exception {
-    Match match1 = Match.create(clubA, clubB);
-    Match match2 = Match.create(clubC, clubD);
-
-    when(generator.generate(match1)).thenReturn(MatchResult.builder()
-        .match(match1)
+    MatchResult result1 = MatchResult.builder()
         .awayGoals(Collections.emptyList())
         .homeGoals(Collections.singletonList(Goal.create(10, clubA)))
-        .build());
+        .build(clubA, clubB);
 
-    when(generator.generate(match2)).thenReturn(MatchResult.builder()
-        .match(match2)
+    MatchResult result2 = MatchResult.builder()
         .homeGoals(Collections.emptyList())
         .awayGoals(Arrays.asList(Goal.create(30, clubD), Goal.create(40, clubD)))
-        .build());
+        .build(clubC, clubD);
 
-    executor.execute(Observable.just(match1, match2).map(generator::generate));
+    when(generator.generate(clubA, clubB)).thenReturn(result1);
+    when(generator.generate(clubC, clubD)).thenReturn(result2);
+
+    Match match1 = Match.create(clubA, clubB, result1);
+    Match match2 = Match.create(clubC, clubD, result2);
+
+    executor.execute(Observable.just(match1, match2));
 
     assertThat(clubsPreference.get()).containsOnly(
         clubA.newWithWin(), clubB.newWithLoss(), clubC.newWithLoss(), clubD.newWithWin());
   }
 
   @Test public void testExecuteDraw() {
-    Match match1 = Match.create(clubA, clubB);
-    Match match2 = Match.create(clubC, clubD);
-
-    when(generator.generate(match1)).thenReturn(MatchResult.builder()
-        .match(match1)
+    MatchResult result1 = MatchResult.builder()
         .homeGoals(Collections.singletonList(Goal.create(10, clubA)))
         .awayGoals(Collections.singletonList(Goal.create(15, clubB)))
-        .build());
+        .build(clubA, clubB);
 
-    when(generator.generate(match2)).thenReturn(MatchResult.builder()
-        .match(match2)
+    MatchResult result2 = MatchResult.builder()
         .homeGoals(Collections.emptyList())
         .awayGoals(Collections.emptyList())
-        .build());
+        .build(clubC, clubD);
 
-    executor.execute(Observable.just(match1, match2).map(generator::generate));
+    when(generator.generate(clubA, clubB)).thenReturn(result1);
+    when(generator.generate(clubC, clubD)).thenReturn(result2);
+
+    Match match1 = Match.create(clubA, clubB, result1);
+    Match match2 = Match.create(clubC, clubD, result2);
+
+    executor.execute(Observable.just(match1, match2));
 
     assertThat(clubsPreference.get()).containsOnly(
         clubA.newWithDraw(), clubB.newWithDraw(), clubC.newWithDraw(), clubD.newWithDraw());

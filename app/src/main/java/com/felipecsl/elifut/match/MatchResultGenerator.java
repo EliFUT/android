@@ -5,7 +5,6 @@ import android.util.Log;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Goals;
-import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 
 import org.apache.commons.math3.distribution.RealDistribution;
@@ -29,23 +28,23 @@ public class MatchResultGenerator {
     this.goalsDistribution = goalsDistribution;
   }
 
-  public MatchResult generate(Match match) {
+  public MatchResult generate(Club home, Club away) {
     float result = random.nextFloat();
-    MatchResult.Builder matchResult = MatchResult.builder().match(match);
+    MatchResult.Builder matchResult = MatchResult.builder();
     Club winner;
     List<Goal> winnerGoals;
     List<Goal> loserGoals;
     Log.d(TAG, "winner result was " + result);
 
     if (result <= MatchResult.HOME_WIN_PROBABILITY) {
-      winner = match.home();
+      winner = home;
     } else if (result <= MatchResult.DRAW_PROBABILITY) {
       winner = null;
     } else {
-      winner = match.away();
+      winner = away;
     }
-    boolean isHomeWin = match.home().equals(winner);
-    Club loser = isHomeWin ? match.away() : match.home();
+    boolean isHomeWin = home.equals(winner);
+    Club loser = isHomeWin ? away : home;
     int totalGoals = Math.max((int) Math.round(goalsDistribution.sample()), 0);
 
     if (winner != null) {
@@ -60,17 +59,16 @@ public class MatchResultGenerator {
       }
     } else {
       int evenGoals = (totalGoals % 2 == 0) ? totalGoals : totalGoals + 1;
-      winnerGoals = Goals.create(random, evenGoals / 2, match.home());
-      loserGoals = Goals.create(random, evenGoals / 2, match.away());
+      winnerGoals = Goals.create(random, evenGoals / 2, home);
+      loserGoals = Goals.create(random, evenGoals / 2, away);
     }
 
     List<Goal> homeGoals = isHomeWin ? winnerGoals : loserGoals;
     List<Goal> awayGoals = isHomeWin ? loserGoals : winnerGoals;
 
     return matchResult
-        .match(match)
         .homeGoals(homeGoals)
         .awayGoals(awayGoals)
-        .build();
+        .build(home, away);
   }
 }

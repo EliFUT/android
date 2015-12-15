@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.match.LeagueRoundExecutor;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
@@ -37,6 +38,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,6 +46,7 @@ public abstract class NavigationActivity extends ElifutActivity
     implements NavigationView.OnNavigationItemSelectedListener {
   @Inject UserPreferences userPreferences;
   @Inject LeaguePreferences leaguePreferences;
+  @Inject LeagueRoundExecutor roundExecutor;
 
   @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
   @Bind(R.id.nav_view) NavigationView navigationView;
@@ -160,6 +163,7 @@ public abstract class NavigationActivity extends ElifutActivity
 
   @OnClick(R.id.fab) public void onClickFab() {
     LeagueRound round = leaguePreferences.nextRound();
+    roundExecutor.execute(Observable.from(round.matches()));
     startActivity(MatchProgressActivity.newIntent(this, round));
   }
 }

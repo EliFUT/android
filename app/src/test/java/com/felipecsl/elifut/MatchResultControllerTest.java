@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 
 import com.felipecsl.elifut.match.MatchResultController;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
@@ -87,10 +86,6 @@ public class MatchResultControllerTest {
   @Test public void testDraw() {
     MatchResultController controller = new MatchResultController(userPreferences);
     MatchResult matchResult = new TestMatchResult() {
-      @Override public Match match() {
-        return Match.create(userClub, nonUserClub);
-      }
-
       @Override public boolean isDraw() {
         return true;
       }

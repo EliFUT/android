@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.felipecsl.elifut.BuildConfig;
 import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
@@ -21,7 +22,6 @@ public abstract class MatchResult implements Parcelable {
   public static final float DRAW_PROBABILITY = HOME_WIN_PROBABILITY + .174f;
   public static final NormalDistribution GOALS_DISTRIBUTION = new NormalDistribution(2.6, 1.7);
 
-  public abstract Match match();
   @Nullable public abstract Club winner();
   @Nullable public abstract Club loser();
   public abstract boolean isDraw();
@@ -31,17 +31,8 @@ public abstract class MatchResult implements Parcelable {
   public abstract List<Goal> awayGoals();
   public abstract String finalScore();
 
-  public Club home() {
-    return match().home();
-  }
-
-  public Club away() {
-    return match().away();
-  }
-
   @AutoValue.Builder
   public abstract static class Builder {
-    public abstract Builder match(Match x);
     public abstract Builder homeGoals(List<Goal> x);
     public abstract Builder awayGoals(List<Goal> x);
     public abstract MatchResult autoBuild();
@@ -53,9 +44,8 @@ public abstract class MatchResult implements Parcelable {
     abstract Builder finalScore(String x);
     abstract List<Goal> homeGoals();
     abstract List<Goal> awayGoals();
-    abstract Match match();
 
-    public MatchResult build() {
+    public MatchResult build(Club home, Club away) {
       Club winner = null;
       Club loser = null;
       boolean isDraw = false;
@@ -64,8 +54,8 @@ public abstract class MatchResult implements Parcelable {
       int awayGoals = awayGoals().size();
       int homeGoals = homeGoals().size();
       if (homeGoals != awayGoals) {
-        winner = homeGoals > awayGoals ? match().home() : match().away();
-        loser = homeGoals > awayGoals ? match().away() : match().home();
+        winner = homeGoals > awayGoals ? home: away;
+        loser = homeGoals > awayGoals ? away : home;
         isHomeWin = homeGoals > awayGoals;
         isAwayWin = !isHomeWin;
       } else {
@@ -92,6 +82,10 @@ public abstract class MatchResult implements Parcelable {
 
   @Override public int describeContents() {
     return 0;
+  }
+
+  public static JsonAdapter.Factory typeAdapterFactory() {
+    return AutoValue_MatchResult.typeAdapterFactory();
   }
 
   /**

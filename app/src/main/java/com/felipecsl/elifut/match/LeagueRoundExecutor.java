@@ -1,6 +1,7 @@
 package com.felipecsl.elifut.match;
 
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.JsonPreference;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
@@ -19,13 +20,15 @@ public final class LeagueRoundExecutor {
     clubsPreference = leaguePreferences.clubsPreference();
   }
 
-  public void execute(Observable<MatchResult> results) {
-    clubsPreference.set(toList(results.flatMap(this::filterClubsByResult)));
+  public void execute(Observable<Match> matches) {
+    clubsPreference.set(toList(matches.flatMap(this::filterClubsByResult)));
   }
 
-  private Observable<Club> filterClubsByResult(MatchResult result) {
-    return !result.isDraw()
-        ? Observable.just(result.loser().newWithLoss(), result.winner().newWithWin())
-        : Observable.just(result.home().newWithDraw(), result.away().newWithDraw());
+  private Observable<Club> filterClubsByResult(Match match) {
+    MatchResult matchResult = match.result();
+    //noinspection ConstantConditions
+    return !matchResult.isDraw()
+        ? Observable.just(matchResult.loser().newWithLoss(), matchResult.winner().newWithWin())
+        : Observable.just(match.home().newWithDraw(), match.away().newWithDraw());
   }
 }

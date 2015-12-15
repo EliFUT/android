@@ -11,16 +11,12 @@ public class MatchResultTest {
   @Test public void testBuilderHomeWin() {
     Club home = Club.create(1, "Gremio");
     Club away = Club.create(2, "Internacional");
-    Match match = Match.create(home, away);
     List<Goal> homeGoals = Collections.singletonList(Goal.create(5, home));
 
     MatchResult matchResult = MatchResult.builder()
-        .match(match)
         .homeGoals(homeGoals)
-        .build();
+        .build(home, away);
 
-    assertThat(matchResult.home()).isEqualTo(home);
-    assertThat(matchResult.away()).isEqualTo(away);
     assertThat(matchResult.isDraw()).isEqualTo(false);
     assertThat(matchResult.isHomeWin()).isEqualTo(true);
     assertThat(matchResult.isAwayWin()).isEqualTo(false);
@@ -28,20 +24,15 @@ public class MatchResultTest {
     assertThat(matchResult.awayGoals()).isEqualTo(Collections.emptyList());
     assertThat(matchResult.winner()).isEqualTo(home);
     assertThat(matchResult.loser()).isEqualTo(away);
-    assertThat(matchResult.match()).isEqualTo(match);
   }
 
   @Test public void testBuilderDraw() {
     Club home = Club.create(1, "Gremio");
     Club away = Club.create(2, "Internacional");
-    Match match = Match.create(home, away);
 
     MatchResult matchResult = MatchResult.builder()
-        .match(match)
-        .build();
+        .build(home, away);
 
-    assertThat(matchResult.home()).isEqualTo(home);
-    assertThat(matchResult.away()).isEqualTo(away);
     assertThat(matchResult.isDraw()).isEqualTo(true);
     assertThat(matchResult.isHomeWin()).isEqualTo(false);
     assertThat(matchResult.isAwayWin()).isEqualTo(false);
@@ -49,6 +40,5 @@ public class MatchResultTest {
     assertThat(matchResult.awayGoals()).isEqualTo(Collections.emptyList());
     assertThat(matchResult.winner()).isEqualTo(null);
     assertThat(matchResult.loser()).isEqualTo(null);
-    assertThat(matchResult.match()).isEqualTo(match);
   }
 }

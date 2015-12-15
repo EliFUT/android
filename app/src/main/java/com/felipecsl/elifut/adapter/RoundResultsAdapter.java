@@ -11,7 +11,7 @@ import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
 import com.felipecsl.elifut.adapter.RoundResultsAdapter.ViewHolder;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.MatchResult;
+import com.felipecsl.elifut.models.Match;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,11 +20,11 @@ import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
 
-public final class RoundResultsAdapter extends RecyclerViewListAdapter<MatchResult, ViewHolder> {
+public final class RoundResultsAdapter extends RecyclerViewListAdapter<Match, ViewHolder> {
   private final Club currentClub;
 
-  public RoundResultsAdapter(Club currentClub, List<MatchResult> matchResults) {
-    super(matchResults);
+  public RoundResultsAdapter(Club currentClub, List<Match> matches) {
+    super(matches);
     this.currentClub = currentClub;
   }
 
@@ -32,7 +32,7 @@ public final class RoundResultsAdapter extends RecyclerViewListAdapter<MatchResu
     return (parent, viewType) -> new ViewHolder(parent);
   }
 
-  class ViewHolder extends BaseViewHolder<MatchResult> {
+  class ViewHolder extends BaseViewHolder<Match> {
     @Bind(R.id.outer_layout) FrameLayout layoutOuter;
     @Bind(R.id.layout_team_home) LinearLayout layoutTeamHome;
     @Bind(R.id.layout_team_away) LinearLayout layoutTeamAway;
@@ -52,9 +52,9 @@ public final class RoundResultsAdapter extends RecyclerViewListAdapter<MatchResu
       ButterKnife.bind(this, itemView);
     }
 
-    @Override public void bind(MatchResult matchResult) {
-      Club home = matchResult.home();
-      Club away = matchResult.away();
+    @Override public void bind(Match match) {
+      Club home = match.home();
+      Club away = match.away();
 
       Picasso.with(itemView.getContext())
           .load(home.large_image())
@@ -72,10 +72,10 @@ public final class RoundResultsAdapter extends RecyclerViewListAdapter<MatchResu
       layoutTeamHome.setOnClickListener(view -> context.startActivity(
           TeamDetailsActivity.newIntent(context, home)));
 
-      txtTeamHomeScore.setText(String.valueOf(matchResult.homeGoals().size()));
-      txtTeamAwayScore.setText(String.valueOf(matchResult.awayGoals().size()));
+      txtTeamHomeScore.setText(String.valueOf(match.result().homeGoals().size()));
+      txtTeamAwayScore.setText(String.valueOf(match.result().awayGoals().size()));
 
-      if (!matchResult.match().hasClub(currentClub)) {
+      if (!match.hasClub(currentClub)) {
         layoutOuter.setBackgroundColor(
             getAdapterPosition() % 2 != 0 ? colorLightGray : colorTransparent);
       } else {

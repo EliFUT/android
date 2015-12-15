@@ -1,5 +1,7 @@
 package com.felipecsl.elifut.models;
 
+import com.felipecsl.elifut.match.MatchResultGenerator;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -7,8 +9,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class LeagueTest {
   @Test public void testGenerateRoundsThrowsForEmptyListOfClubs() {
@@ -21,7 +27,7 @@ public class LeagueTest {
 
   @Test public void testGenerateRoundsThrowsForOddNumberOfClubs() {
     try {
-      League.generateRounds(Collections.singletonList(newClub("Gremio")));
+      League.generateRounds(singletonList(newClub("Gremio")));
       fail();
     } catch (IllegalArgumentException ignored) {
     }
@@ -32,12 +38,17 @@ public class LeagueTest {
     Club internacional = newClub("Internacional");
     List<Club> clubs = Arrays.asList(gremio, internacional);
 
-    List<LeagueRound> leagueRounds = League.generateRounds(clubs);
+    MatchResultGenerator generator = mock(MatchResultGenerator.class);
+    MatchResult matchResult1 = MatchResult.builder().build(gremio, internacional);
+    MatchResult matchResult2 = MatchResult.builder().build(internacional, gremio);
+    when(generator.generate(gremio, internacional)).thenReturn(matchResult1);
+    when(generator.generate(internacional, gremio)).thenReturn(matchResult2);
+    List<LeagueRound> leagueRounds = League.generateRounds(clubs, generator);
 
     assertThat(leagueRounds.size()).isEqualTo(2);
     assertThat(leagueRounds).isEqualTo(Arrays.asList(
-        LeagueRound.create(1, Collections.singletonList(Match.create(gremio, internacional))),
-        LeagueRound.create(2, Collections.singletonList(Match.create(internacional, gremio)))));
+        LeagueRound.create(1, singletonList(Match.create(gremio, internacional, matchResult1))),
+        LeagueRound.create(2, singletonList(Match.create(internacional, gremio, matchResult2)))));
   }
 
   @Test public void testGenerateRounds() {
@@ -52,15 +63,18 @@ public class LeagueTest {
     Club san = newClub("Santos");
     Club pal = newClub("Palmeiras");
     List<Club> clubs = Arrays.asList(gre, inter, fla, flu, sp, cor, atl, cru, san, pal);
+    MatchResultGenerator generator = mock(MatchResultGenerator.class);
+    MatchResult matchResult = mock(MatchResult.class);
+    when(generator.generate(any(), any())).thenReturn(matchResult);
 
-    List<LeagueRound> leagueRounds = League.generateRounds(clubs);
+    List<LeagueRound> leagueRounds = League.generateRounds(clubs, generator);
 
     List<Match> allMatches = new ArrayList<>(90);
 
     for (int i = 0; i < clubs.size(); i++) {
       for (int j = i + 1; j < clubs.size(); j++) {
-        allMatches.add(Match.create(clubs.get(i), clubs.get(j)));
-        allMatches.add(Match.create(clubs.get(j), clubs.get(i)));
+        allMatches.add(Match.create(clubs.get(i), clubs.get(j), matchResult));
+        allMatches.add(Match.create(clubs.get(j), clubs.get(i), matchResult));
       }
     }
 

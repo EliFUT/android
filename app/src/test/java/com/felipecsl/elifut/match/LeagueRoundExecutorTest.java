@@ -29,7 +29,6 @@ import javax.inject.Inject;
 import rx.Observable;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(ElifutTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
@@ -67,9 +66,6 @@ public class LeagueRoundExecutorTest {
         .awayGoals(Arrays.asList(Goal.create(30, clubD), Goal.create(40, clubD)))
         .build(clubC, clubD);
 
-    when(generator.generate(clubA, clubB)).thenReturn(result1);
-    when(generator.generate(clubC, clubD)).thenReturn(result2);
-
     Match match1 = Match.create(clubA, clubB, result1);
     Match match2 = Match.create(clubC, clubD, result2);
 
@@ -89,9 +85,6 @@ public class LeagueRoundExecutorTest {
         .homeGoals(Collections.emptyList())
         .awayGoals(Collections.emptyList())
         .build(clubC, clubD);
-
-    when(generator.generate(clubA, clubB)).thenReturn(result1);
-    when(generator.generate(clubC, clubD)).thenReturn(result2);
 
     Match match1 = Match.create(clubA, clubB, result1);
     Match match2 = Match.create(clubC, clubD, result2);

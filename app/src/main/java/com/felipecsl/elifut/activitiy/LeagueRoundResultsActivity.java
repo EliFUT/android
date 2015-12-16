@@ -14,6 +14,7 @@ import com.felipecsl.elifut.models.LeagueRound;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import icepick.State;
 
 public class LeagueRoundResultsActivity extends ElifutActivity {
@@ -47,5 +48,9 @@ public class LeagueRoundResultsActivity extends ElifutActivity {
     LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
     recyclerRoundResults.setLayoutManager(layout);
     recyclerRoundResults.setAdapter(new RoundResultsAdapter(currentClub, round.matches()));
+  }
+
+  @OnClick(R.id.fab) public void onClickFab() {
+    finish();
   }
 }

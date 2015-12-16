@@ -64,7 +64,7 @@ public final class ClubsAdapter
 
     @Override public void bind(Club club) {
       ClubStats stats = club.nonNullStats();
-      int typeface = selectedClub.equals(club) ? Typeface.BOLD : Typeface.NORMAL;
+      int typeface = selectedClub.nameEquals(club) ? Typeface.BOLD : Typeface.NORMAL;
       views.position.setText(String.valueOf(getAdapterPosition() + 1));
       views.points.setTypeface(null, typeface);
       views.points.setText(String.valueOf(stats.points()));

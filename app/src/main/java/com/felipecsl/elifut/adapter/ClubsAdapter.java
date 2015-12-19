@@ -12,6 +12,7 @@ import com.felipecsl.elifut.adapter.ClubsAdapter.ViewHolder;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;

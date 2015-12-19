@@ -49,4 +49,8 @@ public class ElifutPersistenceServiceTest {
     service.create(clubs);
     assertThat(service.query(clubFactory.targetType())).isEqualTo(clubs);
   }
+
+  @Test public void testQueryEmptyData() {
+    assertThat(service.query(clubFactory.targetType())).isEqualTo(Collections.emptyList());
+  }
 }

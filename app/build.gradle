@@ -106,6 +106,7 @@ dependencies {
   compile 'com.squareup:javapoet:1.1.0'
   compile 'com.android.support:multidex:1.0.1'
   compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.1'
+  compile 'com.squareup.sqlbrite:sqlbrite:0.4.1'
 
   provided 'frankiesardo:icepick-processor:3.1.0'
   provided 'org.glassfish:javax.annotation:10.0-b28'

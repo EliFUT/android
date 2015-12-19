@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.felipecsl.elifut.TestUtil.newClub;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
@@ -87,16 +88,5 @@ public class LeagueTest {
     }
 
     assertThat(allMatches).isEmpty();
-  }
-
-  private static Club newClub(String name) {
-    return Club.builder()
-        .name(name)
-        .small_image("")
-        .large_image("")
-        .league_id(1)
-        .id(1)
-        .base_id(1)
-        .build();
   }
 }

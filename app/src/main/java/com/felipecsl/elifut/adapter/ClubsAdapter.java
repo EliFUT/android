@@ -25,9 +25,8 @@ public final class ClubsAdapter
     extends RecyclerViewHeaderListAdapter<Club, Void, ViewHolder, HeaderViewHolder> {
   private final Club selectedClub;
 
-  public ClubsAdapter(List<Club> clubs, Club selectedClub) {
-    super(sort(clubs, (c1, c2) ->
-        c2.nonNullStats().points() - c1.nonNullStats().points()), null);
+  public ClubsAdapter(Club selectedClub) {
+    super(new ArrayList<>(), null);
     this.selectedClub = checkNotNull(selectedClub);
   }
 

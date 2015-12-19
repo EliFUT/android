@@ -14,15 +14,12 @@ import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.activitiy.LeagueDetailsActivity;
 import com.felipecsl.elifut.activitiy.SimpleTarget;
 import com.felipecsl.elifut.adapter.ClubsAdapter;
-import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.widget.DividerItemDecoration;
 import com.google.common.base.Preconditions;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -61,17 +58,12 @@ public class LeagueStandingsFragment extends ElifutFragment {
     recyclerView.setLayoutManager(layout);
     recyclerView.setHasFixedSize(true);
     recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), null));
+    initAdapter();
 
     League league = Preconditions.checkNotNull(userPreferences.league());
     subscription.add(leaguePreferences
         .clubsObservable()
-        .subscribe(newClubs -> {
-          if (adapter == null) {
-            initAdapter(newClubs);
-          } else {
-            adapter.setItems(newClubs);
-          }
-        }));
+        .subscribe(adapter::setItems));
 
     Picasso.with(getContext())
         .load(league.image())
@@ -80,8 +72,8 @@ public class LeagueStandingsFragment extends ElifutFragment {
     return view;
   }
 
-  private void initAdapter(List<Club> newClubs) {
-    adapter = new ClubsAdapter(newClubs, userPreferences.clubPreference().get());
+  private void initAdapter() {
+    adapter = new ClubsAdapter(userPreferences.clubPreference().get());
     StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(adapter);
     recyclerView.addItemDecoration(decoration);
     adapter.setHasStableIds(true);

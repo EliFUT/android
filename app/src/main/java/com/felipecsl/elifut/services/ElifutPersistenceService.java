@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
+
 import static com.felipecsl.elifut.Util.closeQuietly;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -39,7 +41,6 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
   }
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
   }
 
   public void create(List<? extends Persistable> persistables) {
@@ -65,7 +66,7 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
     try {
       cursor = db.query("SELECT * FROM " + converter.tableName());
       while (cursor.moveToNext()) {
-        items.add(converter.fromCursor(new SimpleCursor(cursor), this));
+        items.add(cursorToObject(converter, cursor));
       }
     } finally {
       closeQuietly(cursor);
@@ -73,13 +74,22 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
     return items;
   }
 
+  public <T extends Persistable> Observable<T> observable(Class<T> type) {
+    Persistable.Converter<T> converter = converterForType(type);
+    String tableName = converter.tableName();
+    return db.createQuery(tableName, "SELECT * FROM " + tableName)
+        .mapToList(cursor -> cursorToObject(converter, cursor))
+        .flatMap(Observable::from);
+  }
+
   @Nullable public <T extends Persistable> T query(Class<T> type, int rowId) {
     Cursor cursor = null;
     Persistable.Converter<T> converter = converterForType(type);
     try {
-      cursor = db.query("SELECT * FROM " + converter.tableName() + " WHERE id = ?", String.valueOf(rowId));
+      cursor = db.query("SELECT * FROM " + converter.tableName() + " WHERE id = ?",
+          String.valueOf(rowId));
       if (cursor.moveToNext()) {
-        return converter.fromCursor(new SimpleCursor(cursor), this);
+        return cursorToObject(converter, cursor);
       }
     } finally {
       closeQuietly(cursor);
@@ -91,5 +101,10 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
     //noinspection unchecked
     return checkNotNull(
         (Persistable.Converter<T>) converterMap.get(type), "No factory found for type " + type);
+  }
+
+  private <T extends Persistable> T cursorToObject(
+      Persistable.Converter<T> converter, Cursor cursor) {
+    return converter.fromCursor(new SimpleCursor(cursor), this);
   }
 }

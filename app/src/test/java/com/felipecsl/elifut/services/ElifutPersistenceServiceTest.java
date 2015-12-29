@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import rx.observers.TestSubscriber;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(ElifutTestRunner.class)
@@ -41,7 +43,7 @@ public class ElifutPersistenceServiceTest {
       .id(1)
       .base_id(1)
       .build();
-  private final Club internacional = Club.builder()
+  private final Club inter = Club.builder()
       .name("Internacional")
       .small_image("xxx")
       .large_image("xyz")
@@ -53,7 +55,7 @@ public class ElifutPersistenceServiceTest {
       RuntimeEnvironment.application, SqlBrite.create(), converters);
 
   @Test public void testCreateClubs() {
-    List<Club> clubs = Arrays.asList(gremio, internacional);
+    List<Club> clubs = Arrays.asList(gremio, inter);
     service.create(clubs);
     assertThat(service.query(clubConverter.targetType())).isEqualTo(clubs);
   }
@@ -62,15 +64,31 @@ public class ElifutPersistenceServiceTest {
     assertThat(service.query(clubConverter.targetType())).isEqualTo(Collections.emptyList());
   }
 
+  @Test public void testQueryById() {
+    List<Club> clubs = Arrays.asList(gremio, inter);
+    Class<Club> type = clubConverter.targetType();
+    service.create(clubs);
+    assertThat(service.query(type, gremio.id())).isEqualTo(gremio);
+    assertThat(service.query(type, inter.id())).isEqualTo(inter);
+  }
+
+  @Test public void testListen() {
+    List<Club> clubs = Arrays.asList(gremio, inter);
+    service.create(clubs);
+    TestSubscriber<Club> subscriber = new TestSubscriber<>();
+    service.observable(clubConverter.targetType()).subscribe(subscriber);
+    subscriber.assertNoErrors();
+    subscriber.assertValues(gremio, inter);
+  }
+
   @Test public void testMatches() {
     Goal goal = Goal.create(1, gremio);
     MatchResult matchResult = MatchResult.builder()
         .homeGoals(Collections.singletonList(goal))
         .awayGoals(Collections.emptyList())
-        .build(gremio, internacional);
-    List<Match> matches =
-        Collections.singletonList(Match.create(gremio, internacional, matchResult));
-    service.create(Arrays.asList(gremio, internacional));
+        .build(gremio, inter);
+    List<Match> matches = Collections.singletonList(Match.create(gremio, inter, matchResult));
+    service.create(Arrays.asList(gremio, inter));
     service.create(matches);
     assertThat(service.query(matchConverter.targetType())).isEqualTo(matches);
   }

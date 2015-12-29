@@ -5,7 +5,12 @@ import android.os.Build;
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.ClubFactory;
+import com.felipecsl.elifut.models.Goal;
+import com.felipecsl.elifut.models.Match;
+import com.felipecsl.elifut.models.MatchResult;
+import com.felipecsl.elifut.models.factory.ClubConverter;
+import com.felipecsl.elifut.models.factory.MatchConverter;
+import com.felipecsl.elifut.models.factory.MatchResultConverter;
 import com.squareup.sqlbrite.SqlBrite;
 
 import org.junit.Test;
@@ -23,34 +28,50 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
     manifest = ElifutTestRunner.MANIFEST_PATH)
 public class ElifutPersistenceServiceTest {
-  private final ClubFactory clubFactory = new ClubFactory();
+  private final ClubConverter clubConverter = new ClubConverter();
+  private final MatchConverter matchConverter = new MatchConverter();
+  private final MatchResultConverter matchResultConverter = new MatchResultConverter();
+  private final List<MatchResult.Converter<?>> converters =
+      Arrays.asList(clubConverter, matchConverter, matchResultConverter);
+  private final Club gremio = Club.builder()
+      .name("Gremio")
+      .small_image("abc")
+      .large_image("def")
+      .league_id(1)
+      .id(1)
+      .base_id(1)
+      .build();
+  private final Club internacional = Club.builder()
+      .name("Internacional")
+      .small_image("xxx")
+      .large_image("xyz")
+      .league_id(4)
+      .id(2)
+      .base_id(3)
+      .build();
   private final ElifutPersistenceService service = new ElifutPersistenceService(
-      RuntimeEnvironment.application, SqlBrite.create(),
-      Collections.singletonList(clubFactory));
+      RuntimeEnvironment.application, SqlBrite.create(), converters);
 
   @Test public void testCreateClubs() {
-    Club gremio = Club.builder()
-        .name("Gremio")
-        .small_image("abc")
-        .large_image("def")
-        .league_id(1)
-        .id(1)
-        .base_id(1)
-        .build();
-    Club internacional = Club.builder()
-        .name("Internacional")
-        .small_image("xxx")
-        .large_image("xyz")
-        .league_id(4)
-        .id(2)
-        .base_id(3)
-        .build();
     List<Club> clubs = Arrays.asList(gremio, internacional);
     service.create(clubs);
-    assertThat(service.query(clubFactory.targetType())).isEqualTo(clubs);
+    assertThat(service.query(clubConverter.targetType())).isEqualTo(clubs);
   }
 
   @Test public void testQueryEmptyData() {
-    assertThat(service.query(clubFactory.targetType())).isEqualTo(Collections.emptyList());
+    assertThat(service.query(clubConverter.targetType())).isEqualTo(Collections.emptyList());
+  }
+
+  @Test public void testMatches() {
+    Goal goal = Goal.create(1, gremio);
+    MatchResult matchResult = MatchResult.builder()
+        .homeGoals(Collections.singletonList(goal))
+        .awayGoals(Collections.emptyList())
+        .build(gremio, internacional);
+    List<Match> matches =
+        Collections.singletonList(Match.create(gremio, internacional, matchResult));
+    service.create(Arrays.asList(gremio, internacional));
+    service.create(matches);
+    assertThat(service.query(matchConverter.targetType())).isEqualTo(matches);
   }
 }

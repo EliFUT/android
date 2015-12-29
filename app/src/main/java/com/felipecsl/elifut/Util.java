@@ -15,4 +15,15 @@ public final class Util {
     } catch (IOException ignored) {
     }
   }
+
+  public static <T> Class<? extends T> autoValueTypeFor(Class<T> type) {
+    try {
+      String name = type.getName();
+      String packageName = name.substring(0, name.lastIndexOf('.'));
+      //noinspection unchecked
+      return (Class<? extends T>) Class.forName(packageName + ".AutoValue_" + type.getSimpleName());
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }

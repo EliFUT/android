@@ -22,6 +22,11 @@ public class ContentValuesBuilder {
     return this;
   }
 
+  public ContentValuesBuilder put(ContentValues contentValues) {
+    delegate.putAll(contentValues);
+    return this;
+  }
+
   public ContentValues build() {
     return new ContentValues(delegate);
   }

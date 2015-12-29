@@ -1,10 +1,8 @@
 package com.felipecsl.elifut.models;
 
-import android.content.ContentValues;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.felipecsl.elifut.util.ContentValuesBuilder;
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 
@@ -33,24 +31,6 @@ public abstract class Club extends Model implements Persistable {
   public String tinyName() {
     //noinspection ConstantConditions
     return abbrev_name() != null ? abbrev_name().substring(0, 3) : name().substring(0, 3);
-  }
-
-  @Override public ContentValues toContentValues() {
-    ClubStats stats = nonNullStats();
-    return ContentValuesBuilder.create()
-        .put("id", id())
-        .put("base_id", base_id())
-        .put("name", name())
-        .put("abbrev_name", abbrev_name())
-        .put("small_image", small_image())
-        .put("large_image", large_image())
-        .put("league_id", league_id())
-        .put("points", stats.points())
-        .put("wins", stats.wins())
-        .put("draws", stats.draws())
-        .put("losses", stats.losses())
-        .put("goals", stats.goals())
-        .build();
   }
 
   @AutoValue.Builder

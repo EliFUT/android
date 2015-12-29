@@ -17,7 +17,7 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 @AutoValue
-public abstract class MatchResult implements Parcelable {
+public abstract class MatchResult implements Parcelable, Persistable {
   public static final float HOME_WIN_PROBABILITY = .465f;
   public static final float DRAW_PROBABILITY = HOME_WIN_PROBABILITY + .174f;
   public static final NormalDistribution GOALS_DISTRIBUTION = new NormalDistribution(2.6, 1.7);
@@ -35,7 +35,7 @@ public abstract class MatchResult implements Parcelable {
   public abstract static class Builder {
     public abstract Builder homeGoals(List<Goal> x);
     public abstract Builder awayGoals(List<Goal> x);
-    public abstract MatchResult autoBuild();
+    abstract MatchResult autoBuild();
     abstract Builder winner(Club x);
     abstract Builder loser(Club x);
     abstract Builder isDraw(boolean x);

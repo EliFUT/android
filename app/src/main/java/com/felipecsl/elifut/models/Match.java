@@ -6,7 +6,7 @@ import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 
 @AutoValue
-public abstract class Match implements Parcelable {
+public abstract class Match implements Parcelable, Persistable {
   public abstract Club home();
   public abstract Club away();
   public abstract MatchResult result();

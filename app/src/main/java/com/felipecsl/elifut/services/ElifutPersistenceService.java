@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 
+import com.felipecsl.elifut.SimpleCursor;
 import com.felipecsl.elifut.models.Persistable;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -19,20 +21,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ElifutPersistenceService extends SQLiteOpenHelper {
   private final BriteDatabase db;
-  private final Map<Class<?>, Persistable.Factory<?>> factoryMap = new HashMap<>();
+  private final Map<Class<?>, Persistable.Converter<?>> converterMap = new HashMap<>();
 
   public ElifutPersistenceService(Context context, SqlBrite sqlBrite,
-      List<Persistable.Factory<?>> factories) {
+      List<Persistable.Converter<?>> factories) {
     super(context, "ElifutDB", null, 1);
     db = sqlBrite.wrapDatabaseHelper(this);
-    for (Persistable.Factory<?> factory : factories) {
-      factoryMap.put(factory.targetType(), factory);
+    for (Persistable.Converter<?> converter : factories) {
+      converterMap.put(converter.targetType(), converter);
     }
   }
 
   @Override public void onCreate(SQLiteDatabase db) {
-    for (Persistable.Factory<?> factory : factoryMap.values()) {
-      db.execSQL(factory.createStatement());
+    for (Persistable.Converter<?> converter : converterMap.values()) {
+      db.execSQL(converter.createStatement());
     }
   }
 
@@ -43,13 +45,14 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
   public void create(List<? extends Persistable> persistables) {
     BriteDatabase.Transaction transaction = db.newTransaction();
     try {
-      transaction.markSuccessful();
       for (Persistable persistable : persistables) {
         Class<? extends Persistable> type = persistable.getClass();
-        Persistable.Factory<?> factory = checkNotNull(
-            factoryMap.get(type), "No factory found for type " + type);
-        db.insert(factory.tableName(), persistable.toContentValues());
+        //noinspection rawtypes
+        Persistable.Converter converter = converterForType(type);
+        //noinspection unchecked
+        db.insert(converter.tableName(), converter.toContentValues(persistable, this));
       }
+      transaction.markSuccessful();
     } finally {
       transaction.end();
     }
@@ -58,17 +61,35 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
   public <T extends Persistable> List<T> query(Class<T> type) {
     Cursor cursor = null;
     List<T> items = new ArrayList<>();
-    //noinspection unchecked
-    Persistable.Factory<T> factory = checkNotNull(
-        (Persistable.Factory<T>) factoryMap.get(type), "No factory found for type " + type);
+    Persistable.Converter<T> converter = converterForType(type);
     try {
-      cursor = db.query("SELECT * FROM clubs");
+      cursor = db.query("SELECT * FROM " + converter.tableName());
       while (cursor.moveToNext()) {
-        items.add(factory.fromCursor(cursor));
+        items.add(converter.fromCursor(new SimpleCursor(cursor), this));
       }
     } finally {
       closeQuietly(cursor);
     }
     return items;
+  }
+
+  @Nullable public <T extends Persistable> T query(Class<T> type, int rowId) {
+    Cursor cursor = null;
+    Persistable.Converter<T> converter = converterForType(type);
+    try {
+      cursor = db.query("SELECT * FROM " + converter.tableName() + " WHERE id = ?", String.valueOf(rowId));
+      if (cursor.moveToNext()) {
+        return converter.fromCursor(new SimpleCursor(cursor), this);
+      }
+    } finally {
+      closeQuietly(cursor);
+    }
+    return null;
+  }
+
+  public <T extends Persistable> Persistable.Converter<T> converterForType(Class<?> type) {
+    //noinspection unchecked
+    return checkNotNull(
+        (Persistable.Converter<T>) converterMap.get(type), "No factory found for type " + type);
   }
 }

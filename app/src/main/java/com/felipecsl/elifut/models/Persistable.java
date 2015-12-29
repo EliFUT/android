@@ -1,22 +1,24 @@
 package com.felipecsl.elifut.models;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 
+import com.felipecsl.elifut.SimpleCursor;
+import com.felipecsl.elifut.services.ElifutPersistenceService;
 import com.google.common.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public interface Persistable {
-  ContentValues toContentValues();
+import static com.felipecsl.elifut.Util.autoValueTypeFor;
 
-  abstract class Factory<T> {
+public interface Persistable {
+  abstract class Converter<T extends Persistable> {
     //@formatter:off
     private final Type type = new TypeToken<T>(getClass()) {}.getType();
 
     public abstract String tableName();
     public abstract String createStatement();
-    public abstract T fromCursor(Cursor cursor);
+    public abstract T fromCursor(SimpleCursor cursor, ElifutPersistenceService service);
+    public abstract ContentValues toContentValues(T persistable, ElifutPersistenceService service);
     //@formatter:on
 
     public Class<T> targetType() {
@@ -24,15 +26,7 @@ public interface Persistable {
         throw new IllegalStateException("Type must be Class<?>: " + type);
       }
       //noinspection unchecked
-      Class<T> type = (Class<T>) this.type;
-      try {
-        String name = type.getName();
-        String packageName = name.substring(0, name.lastIndexOf('.'));
-        //noinspection unchecked
-        return (Class<T>) Class.forName(packageName + ".AutoValue_" + type.getSimpleName());
-      } catch (ClassNotFoundException e) {
-        throw new RuntimeException(e);
-      }
+      return (Class<T>) autoValueTypeFor((Class<?>) this.type);
     }
   }
 }

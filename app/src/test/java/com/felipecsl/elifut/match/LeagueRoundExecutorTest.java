@@ -5,12 +5,13 @@ import android.os.Build;
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
+import com.felipecsl.elifut.Util;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
-import com.felipecsl.elifut.preferences.JsonPreference;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.services.ElifutPersistenceService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,18 +42,17 @@ public class LeagueRoundExecutorTest {
   private final List<Club> leagueClubs = Arrays.asList(clubA, clubB, clubC, clubD);
 
   @Inject LeaguePreferences leaguePreferences;
+  @Inject ElifutPersistenceService persistenceService;
   @Mock MatchResultGenerator generator;
 
   private LeagueRoundExecutor executor;
-  private JsonPreference<List<Club>> clubsPreference;
 
   @Before public void setUp() {
     TestElifutApplication application = (TestElifutApplication) RuntimeEnvironment.application;
     application.testComponent().inject(this);
     MockitoAnnotations.initMocks(this);
-    clubsPreference = leaguePreferences.clubsPreference();
-    clubsPreference.set(leagueClubs);
-    executor = new LeagueRoundExecutor(leaguePreferences);
+    persistenceService.create(leagueClubs);
+    executor = new LeagueRoundExecutor(persistenceService);
   }
 
   @Test public void testExecute() throws Exception {
@@ -71,7 +71,8 @@ public class LeagueRoundExecutorTest {
 
     executor.execute(Observable.just(match1, match2));
 
-    assertThat(clubsPreference.get()).containsOnly(
+    List<? extends Club> query = persistenceService.query(Util.autoValueTypeFor(Club.class));
+    assertThat(Util.listSupertype(query)).containsOnly(
         clubA.newWithWin(), clubB.newWithLoss(), clubC.newWithLoss(), clubD.newWithWin());
   }
 
@@ -91,7 +92,8 @@ public class LeagueRoundExecutorTest {
 
     executor.execute(Observable.just(match1, match2));
 
-    assertThat(clubsPreference.get()).containsOnly(
+    List<? extends Club> query = persistenceService.query(Util.autoValueTypeFor(Club.class));
+    assertThat(Util.listSupertype(query)).containsOnly(
         clubA.newWithDraw(), clubB.newWithDraw(), clubC.newWithDraw(), clubD.newWithDraw());
   }
 }

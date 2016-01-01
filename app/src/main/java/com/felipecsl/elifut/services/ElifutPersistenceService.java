@@ -5,9 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.felipecsl.elifut.SimpleCursor;
 import com.felipecsl.elifut.models.Persistable;
+import com.google.common.primitives.Ints;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -43,15 +45,16 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
   }
 
+  public long create(Persistable persistable) {
+    Persistable.Converter<Persistable> converter = converterFor(persistable);
+    return db.insert(converter.tableName(), converter.toContentValues(persistable, this));
+  }
+
   public void create(List<? extends Persistable> persistables) {
     BriteDatabase.Transaction transaction = db.newTransaction();
     try {
       for (Persistable persistable : persistables) {
-        Class<? extends Persistable> type = persistable.getClass();
-        //noinspection rawtypes
-        Persistable.Converter converter = converterForType(type);
-        //noinspection unchecked
-        db.insert(converter.tableName(), converter.toContentValues(persistable, this));
+        create(persistable);
       }
       transaction.markSuccessful();
     } finally {
@@ -59,12 +62,29 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
     }
   }
 
+  public int update(Persistable persistable, int id) {
+    Persistable.Converter<Persistable> converter = converterFor(persistable);
+    return db.update(converter.tableName(), converter.toContentValues(persistable, this),
+        "id = ?", String.valueOf(id));
+  }
+
   public <T extends Persistable> List<T> query(Class<T> type) {
+    Persistable.Converter<T> converter = converterForType(type);
+    return rawQuery(converter, "SELECT * FROM " + converter.tableName());
+  }
+
+  public <T extends Persistable> List<T> query(Class<T> type, int... rowIds) {
+    Persistable.Converter<T> converter = converterForType(type);
+    return rawQuery(converter, "SELECT * FROM " + converter.tableName() + " WHERE id IN ( "
+        + TextUtils.join(", ", Ints.asList(rowIds)) + ")");
+  }
+
+  private <T extends Persistable> List<T> rawQuery(
+      Persistable.Converter<T> converter, String queryString) {
     Cursor cursor = null;
     List<T> items = new ArrayList<>();
-    Persistable.Converter<T> converter = converterForType(type);
     try {
-      cursor = db.query("SELECT * FROM " + converter.tableName());
+      cursor = db.query(queryString);
       while (cursor.moveToNext()) {
         items.add(cursorToObject(converter, cursor));
       }
@@ -74,15 +94,7 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
     return items;
   }
 
-  public <T extends Persistable> Observable<T> observable(Class<T> type) {
-    Persistable.Converter<T> converter = converterForType(type);
-    String tableName = converter.tableName();
-    return db.createQuery(tableName, "SELECT * FROM " + tableName)
-        .mapToList(cursor -> cursorToObject(converter, cursor))
-        .flatMap(Observable::from);
-  }
-
-  @Nullable public <T extends Persistable> T query(Class<T> type, int rowId) {
+  @Nullable public <T extends Persistable> T queryOne(Class<T> type, int rowId) {
     Cursor cursor = null;
     Persistable.Converter<T> converter = converterForType(type);
     try {
@@ -95,6 +107,17 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
       closeQuietly(cursor);
     }
     return null;
+  }
+
+  public <T extends Persistable> Observable<List<T>> observable(Class<T> type) {
+    Persistable.Converter<T> converter = converterForType(type);
+    String tableName = converter.tableName();
+    return db.createQuery(tableName, "SELECT * FROM " + tableName)
+        .mapToList(cursor -> cursorToObject(converter, cursor));
+  }
+
+  public <T extends Persistable> Persistable.Converter<T> converterFor(Persistable persistable) {
+    return converterForType(persistable.getClass());
   }
 
   public <T extends Persistable> Persistable.Converter<T> converterForType(Class<?> type) {

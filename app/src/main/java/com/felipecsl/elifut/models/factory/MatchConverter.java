@@ -38,11 +38,11 @@ public class MatchConverter extends Persistable.Converter<Match> {
   }
 
   @Override public Match fromCursor(SimpleCursor cursor, ElifutPersistenceService service) {
-    Club home = checkNotNull(service.query(clubType, cursor.getInt("home_id")));
-    Club away = checkNotNull(service.query(clubType, cursor.getInt("away_id")));
+    Club home = checkNotNull(service.queryOne(clubType, cursor.getInt("home_id")));
+    Club away = checkNotNull(service.queryOne(clubType, cursor.getInt("away_id")));
     Persistable.Converter<MatchResult> converter = service.converterForType(matchResultType);
     MatchResult matchResult = converter.fromCursor(cursor, service);
-    return Match.create(home, away, matchResult);
+    return Match.create(cursor.getInt("id"), home, away, matchResult);
   }
 
   /** This assumes that the clubs participating in this match have been previously created. */

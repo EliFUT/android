@@ -1,9 +1,11 @@
 package com.felipecsl.elifut;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.Closeables;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.List;
 
 public final class Util {
   private Util() {
@@ -25,5 +27,9 @@ public final class Util {
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static <T> List<T> listSupertype(List<? extends T> list) {
+    return Lists.transform(list, i -> (T) i);
   }
 }

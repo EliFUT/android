@@ -55,7 +55,7 @@ public class LeagueProgressFragment extends ElifutFragment {
 
   private void initAdapter(LeagueRound round) {
     Club club = userPreferences.club();
-    int totalRounds = leaguePreferences.roundsPreference().get().size();
+    int totalRounds = leaguePreferences.rounds().size();
     String title = getActivity().getString(R.string.round_n_of_n, round.roundNumber(), totalRounds);
     adapter = new LeagueMatchesAdapter(club, title, round.matches());
     adapter.setHasStableIds(true);

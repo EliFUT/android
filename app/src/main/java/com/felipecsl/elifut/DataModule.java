@@ -13,10 +13,20 @@ import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.models.Nation;
+import com.felipecsl.elifut.models.Persistable;
 import com.felipecsl.elifut.models.Player;
+import com.felipecsl.elifut.models.factory.ClubConverter;
+import com.felipecsl.elifut.models.factory.LeagueRoundConverter;
+import com.felipecsl.elifut.models.factory.MatchConverter;
+import com.felipecsl.elifut.models.factory.MatchResultConverter;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
+import com.felipecsl.elifut.services.ElifutPersistenceService;
 import com.squareup.moshi.Moshi;
+import com.squareup.sqlbrite.SqlBrite;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Singleton;
 
@@ -64,12 +74,22 @@ public class DataModule {
   }
 
   @Provides @Singleton
-  LeaguePreferences provideLeaguePreferences(SharedPreferences preferences, Moshi moshi) {
-    return new LeaguePreferences(preferences, moshi);
+  LeaguePreferences provideLeaguePreferences(ElifutPersistenceService persistenceService) {
+    return new LeaguePreferences(persistenceService);
+  }
+
+  @Provides @Singleton ElifutPersistenceService provideElifutPersistenceService(
+      List<Persistable.Converter<?>> converters) {
+    return new ElifutPersistenceService(context, SqlBrite.create(), converters);
+  }
+
+  @Provides @Singleton List<Persistable.Converter<?>> providePersistenceConverters() {
+    return Arrays.asList(new ClubConverter(), new MatchConverter(), new MatchResultConverter(),
+        new LeagueRoundConverter());
   }
 
   @Provides @Singleton
-  LeagueRoundExecutor provideLeagueRoundExecutor(LeaguePreferences leaguePreferences) {
-    return new LeagueRoundExecutor(leaguePreferences);
+  LeagueRoundExecutor provideLeagueRoundExecutor(ElifutPersistenceService persistenceService) {
+    return new LeagueRoundExecutor(persistenceService);
   }
 }

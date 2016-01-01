@@ -8,6 +8,7 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.LeaguePreferences;
 import com.felipecsl.elifut.preferences.UserPreferences;
+import com.felipecsl.elifut.services.ElifutPersistenceService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,13 +32,14 @@ public class MatchResultControllerTest {
 
   @Inject UserPreferences userPreferences;
   @Inject LeaguePreferences leaguePreferences;
+  @Inject ElifutPersistenceService persistenceService;
 
   @Before public void setUp() {
     TestElifutApplication application = (TestElifutApplication) RuntimeEnvironment.application;
     application.testComponent().inject(this);
 
     userPreferences.clubPreference().set(userClub);
-    leaguePreferences.clubsPreference().set(leagueClubs.toList().toBlocking().first());
+    persistenceService.create(leagueClubs.toList().toBlocking().first());
   }
 
   @Test public void testUserWinner() throws Exception {

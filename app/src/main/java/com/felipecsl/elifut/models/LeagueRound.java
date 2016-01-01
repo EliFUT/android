@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AutoValue
-public abstract class LeagueRound implements Parcelable {
+public abstract class LeagueRound implements Parcelable, Persistable {
   public abstract int roundNumber();
   public abstract List<Match> matches();
 

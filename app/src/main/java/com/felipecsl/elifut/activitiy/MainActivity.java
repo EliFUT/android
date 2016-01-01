@@ -91,7 +91,7 @@ public class MainActivity extends ElifutActivity {
               .compose(applyTransformations());
         })
         .flatMap(clubs -> {
-          leaguePreferences.putClubsAndInitRounds(Observable.from(clubs));
+          leaguePreferences.putClubsAndInitRounds(clubs);
           return Observable.empty();
         })
         .subscribe(new CompletionObserver<Object>(this, TAG, "Failed to load game data.") {

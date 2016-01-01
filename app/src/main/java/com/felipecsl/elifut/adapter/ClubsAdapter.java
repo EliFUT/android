@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
 
+import static com.felipecsl.elifut.Util.listSupertype;
 import static com.felipecsl.elifut.util.CollectionUtils.sort;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -31,8 +32,9 @@ public final class ClubsAdapter
     this.selectedClub = checkNotNull(selectedClub);
   }
 
-  public void setItems(List<Club> newItems) {
-    setData(sort(newItems, (c1, c2) -> c2.nonNullStats().points() - c1.nonNullStats().points()));
+  public void setItems(List<? extends Club> newItems) {
+    setData(sort(listSupertype(newItems), (c1, c2) ->
+        c2.nonNullStats().points() - c1.nonNullStats().points()));
   }
 
   @Override protected BaseViewHolder.Factory<HeaderViewHolder> headerFactory() {

@@ -9,8 +9,6 @@ import com.squareup.moshi.JsonAdapter;
 
 import java.io.IOException;
 
-import rx.Observable;
-
 public final class JsonPreference<T> {
   private static final String TAG = JsonPreference.class.getSimpleName();
   private final Preference<String> rxPreference;
@@ -38,11 +36,8 @@ public final class JsonPreference<T> {
     }
   }
 
-  public void set(T object) {
+  public T set(T object) {
     rxPreference.set(adapter.toJson(object));
-  }
-
-  public Observable<T> asObservable() {
-    return rxPreference.asObservable().map(this::map);
+    return object;
   }
 }

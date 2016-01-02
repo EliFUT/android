@@ -38,7 +38,7 @@ public class LeagueProgressFragment extends ElifutFragment {
     recyclerView.setLayoutManager(layout);
     recyclerView.setHasFixedSize(true);
 
-    subscription.add(leaguePreferences
+    subscription.add(leagueDetails
         .roundsObservable()
         .subscribe(rounds -> {
           // TODO: This is gonna blow up if there are no rounds left
@@ -55,7 +55,7 @@ public class LeagueProgressFragment extends ElifutFragment {
 
   private void initAdapter(LeagueRound round) {
     Club club = userPreferences.club();
-    int totalRounds = leaguePreferences.rounds().size();
+    int totalRounds = leagueDetails.rounds().size();
     String title = getActivity().getString(R.string.round_n_of_n, round.roundNumber(), totalRounds);
     adapter = new LeagueMatchesAdapter(club, title, round.matches());
     adapter.setHasStableIds(true);

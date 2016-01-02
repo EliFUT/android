@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import com.felipecsl.elifut.ElifutApplication;
 import com.felipecsl.elifut.ElifutComponent;
 import com.felipecsl.elifut.activitiy.ElifutActivity;
-import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.ElifutService;
 
@@ -20,7 +20,7 @@ public abstract class ElifutFragment extends Fragment {
 
   @Inject ElifutService service;
   @Inject UserPreferences userPreferences;
-  @Inject LeaguePreferences leaguePreferences;
+  @Inject LeagueDetails leagueDetails;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

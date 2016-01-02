@@ -3,8 +3,8 @@ package com.felipecsl.elifut.models.factory;
 import android.content.ContentValues;
 import android.text.TextUtils;
 
+import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.SimpleCursor;
-import com.felipecsl.elifut.Util;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.Persistable;
@@ -36,9 +36,9 @@ public class LeagueRoundConverter extends Persistable.Converter<LeagueRound> {
   @Override public LeagueRound fromCursor(SimpleCursor cursor, ElifutPersistenceService service) {
     List<Integer> matchIds = Lists.transform(Arrays.asList(
         cursor.getString("matches").split(",")), Integer::valueOf);
-    Class<? extends Match> matchType = Util.autoValueTypeFor(Match.class);
-    List<? extends Match> matches = service.query(matchType, Ints.toArray(matchIds));
-    return LeagueRound.create(cursor.getInt("round_number"), listSupertype(matches));
+    List<? extends Match> matches = service.query(AutoValueClasses.MATCH, Ints.toArray(matchIds));
+    return LeagueRound.create(cursor.getInt("id"), cursor.getInt("round_number"),
+        listSupertype(matches));
   }
 
   /** First creates a record for each of the matches in this round before creating the round. */

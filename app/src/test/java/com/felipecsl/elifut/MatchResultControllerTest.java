@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.felipecsl.elifut.match.MatchResultController;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.MatchResult;
-import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.ElifutPersistenceService;
 
@@ -31,7 +31,7 @@ public class MatchResultControllerTest {
   private final Observable<Club> leagueClubs = Observable.just(userClub, nonUserClub);
 
   @Inject UserPreferences userPreferences;
-  @Inject LeaguePreferences leaguePreferences;
+  @Inject LeagueDetails leagueDetails;
   @Inject ElifutPersistenceService persistenceService;
 
   @Before public void setUp() {

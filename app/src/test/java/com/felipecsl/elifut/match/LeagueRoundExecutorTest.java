@@ -2,6 +2,7 @@ package com.felipecsl.elifut.match;
 
 import android.os.Build;
 
+import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
@@ -10,7 +11,7 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
-import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.services.ElifutPersistenceService;
 
 import org.junit.Before;
@@ -38,9 +39,8 @@ public class LeagueRoundExecutorTest {
   private final Club clubC = Club.create(3, "Club C");
   private final Club clubD = Club.create(4, "Club D");
   private final List<Club> leagueClubs = Arrays.asList(clubA, clubB, clubC, clubD);
-  private final Class<? extends Club> clubType = Util.autoValueTypeFor(Club.class);
 
-  @Inject LeaguePreferences leaguePreferences;
+  @Inject LeagueDetails leagueDetails;
   @Inject ElifutPersistenceService persistenceService;
   @Mock MatchResultGenerator generator;
 
@@ -70,7 +70,7 @@ public class LeagueRoundExecutorTest {
 
     executor.execute(Arrays.asList(match1, match2));
 
-    List<Club> query = Util.listSupertype(persistenceService.query(clubType));
+    List<Club> query = Util.listSupertype(persistenceService.query(AutoValueClasses.CLUB));
     assertThat(query).containsOnly(clubA.newWithWin(), clubB.newWithLoss(), clubC.newWithLoss(),
         clubD.newWithWin());
   }
@@ -91,7 +91,7 @@ public class LeagueRoundExecutorTest {
 
     executor.execute(Arrays.asList(match1, match2));
 
-    List<Club> query = Util.listSupertype(persistenceService.query(clubType));
+    List<Club> query = Util.listSupertype(persistenceService.query(AutoValueClasses.CLUB));
     assertThat(query).containsOnly(clubA.newWithDraw(), clubB.newWithDraw(), clubC.newWithDraw(),
         clubD.newWithDraw());
   }

@@ -16,6 +16,7 @@ import com.felipecsl.elifut.adapter.CountriesSpinnerAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
+import com.felipecsl.elifut.preferences.JsonPreference;
 
 import java.util.List;
 
@@ -36,7 +37,6 @@ public class MainActivity extends ElifutActivity {
   @Bind(R.id.loading_frame) FrameLayout loadingFrame;
   @Bind(R.id.fab) FloatingActionButton okButton;
 
-  private Club userClub;
   private CountriesSpinnerAdapter nationsAdapter;
   private final CompositeSubscription subscriptions = new CompositeSubscription();
   private final Observer<List<Nation>> nationObserver =
@@ -77,21 +77,17 @@ public class MainActivity extends ElifutActivity {
     userPreferences.nationPreference().set(nation);
     userPreferences.coachPreference().set(inputName.getText().toString());
 
+    JsonPreference<Club> clubPreference = userPreferences.clubPreference();
+    JsonPreference<League> leaguePreference = userPreferences.leaguePreference();
+
     subscriptions.add(service.randomClub(nation.id())
         .compose(this.<Club>applyTransformations())
-        .flatMap(club -> {
-          userClub = club;
-          userPreferences.clubPreference().set(club);
-          return service.league(club.league_id())
-              .compose(this.<League>applyTransformations());
-        })
-        .flatMap(league -> {
-          userPreferences.leaguePreference().set(league);
-          return service.clubsByLeague(league.id())
-              .compose(applyTransformations());
-        })
+        .flatMap(club -> service.league(clubPreference.set(club).league_id())
+            .compose(this.<League>applyTransformations()))
+        .flatMap(league -> service.clubsByLeague(leaguePreference.set(league).id())
+            .compose(applyTransformations()))
         .flatMap(clubs -> {
-          leaguePreferences.putClubsAndInitRounds(clubs);
+          leagueDetails.initialize(clubs);
           return Observable.empty();
         })
         .subscribe(new CompletionObserver<Object>(this, TAG, "Failed to load game data.") {

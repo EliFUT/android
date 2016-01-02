@@ -21,7 +21,7 @@ import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
-import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.widget.FractionView;
 import com.squareup.picasso.Picasso;
@@ -60,7 +60,7 @@ public class MatchProgressActivity extends ElifutActivity {
   @BindString(R.string.end_match) String strEndOfMatch;
 
   @Inject UserPreferences userPreferences;
-  @Inject LeaguePreferences leaguePreferences;
+  @Inject LeagueDetails leagueDetails;
 
   @State LeagueRound round;
   @State boolean isRunning;

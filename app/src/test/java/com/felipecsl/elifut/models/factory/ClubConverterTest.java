@@ -2,11 +2,11 @@ package com.felipecsl.elifut.models.factory;
 
 import android.os.Build;
 
+import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
 import com.felipecsl.elifut.TestUtil;
-import com.felipecsl.elifut.Util;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.services.ElifutPersistenceService;
 
@@ -37,6 +37,6 @@ public class ClubConverterTest {
   @Test public void testPersistence() {
     List<Club> clubs = Arrays.asList(TestUtil.GREMIO, TestUtil.INTERNACIONAL);
     service.create(clubs);
-    assertThat(service.query(Util.autoValueTypeFor(Club.class))).isEqualTo(clubs);
+    assertThat(service.query(AutoValueClasses.CLUB)).isEqualTo(clubs);
   }
 }

@@ -2,11 +2,11 @@ package com.felipecsl.elifut.models.factory;
 
 import android.os.Build;
 
+import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
 import com.felipecsl.elifut.TestUtil;
-import com.felipecsl.elifut.Util;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
@@ -57,6 +57,6 @@ public class LeagueRoundConverterTest {
 
     service.create(Arrays.asList(TestUtil.GREMIO, TestUtil.INTERNACIONAL));
     service.create(leagueRounds);
-    assertThat(service.query(Util.autoValueTypeFor(LeagueRound.class))).isEqualTo(leagueRounds);
+    assertThat(service.query(AutoValueClasses.LEAGUE_ROUND)).isEqualTo(leagueRounds);
   }
 }

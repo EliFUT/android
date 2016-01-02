@@ -68,6 +68,11 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
         "id = ?", String.valueOf(id));
   }
 
+  public int delete(Persistable persistable, int id) {
+    Persistable.Converter<Persistable> converter = converterFor(persistable);
+    return db.delete(converter.tableName(), "id = ?", String.valueOf(id));
+  }
+
   public <T extends Persistable> List<T> query(Class<T> type) {
     Persistable.Converter<T> converter = converterForType(type);
     return rawQuery(converter, "SELECT * FROM " + converter.tableName());

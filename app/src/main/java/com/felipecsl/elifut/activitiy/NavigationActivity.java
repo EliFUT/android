@@ -29,7 +29,7 @@ import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.match.LeagueRoundExecutor;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
-import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +44,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class NavigationActivity extends ElifutActivity
     implements NavigationView.OnNavigationItemSelectedListener {
   @Inject UserPreferences userPreferences;
-  @Inject LeaguePreferences leaguePreferences;
+  @Inject LeagueDetails leagueDetails;
   @Inject LeagueRoundExecutor roundExecutor;
 
   @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
@@ -161,7 +161,7 @@ public abstract class NavigationActivity extends ElifutActivity
   }
 
   @OnClick(R.id.fab) public void onClickFab() {
-    LeagueRound round = leaguePreferences.nextRound();
+    LeagueRound round = leagueDetails.nextRound();
     roundExecutor.execute(round.matches());
     startActivity(MatchProgressActivity.newIntent(this, round));
   }

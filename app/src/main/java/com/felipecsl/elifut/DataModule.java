@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.felipecsl.elifut.adapter.ModelListAdapterFactory;
 import com.felipecsl.elifut.match.LeagueRoundExecutor;
+import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
 import com.felipecsl.elifut.models.Goal;
@@ -19,9 +20,10 @@ import com.felipecsl.elifut.models.factory.ClubConverter;
 import com.felipecsl.elifut.models.factory.LeagueRoundConverter;
 import com.felipecsl.elifut.models.factory.MatchConverter;
 import com.felipecsl.elifut.models.factory.MatchResultConverter;
-import com.felipecsl.elifut.preferences.LeaguePreferences;
+import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.LeagueRoundGenerator;
 import com.squareup.moshi.Moshi;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -73,9 +75,13 @@ public class DataModule {
     return new UserPreferences(preferences, moshi);
   }
 
-  @Provides @Singleton
-  LeaguePreferences provideLeaguePreferences(ElifutPersistenceService persistenceService) {
-    return new LeaguePreferences(persistenceService);
+  @Provides @Singleton LeagueRoundGenerator provideLeagueRoundGenerator() {
+    return new LeagueRoundGenerator(new MatchResultGenerator());
+  }
+
+  @Provides @Singleton LeagueDetails provideLeaguePreferences(
+      ElifutPersistenceService persistenceService, LeagueRoundGenerator leagueRoundGenerator) {
+    return new LeagueDetails(persistenceService, leagueRoundGenerator);
   }
 
   @Provides @Singleton ElifutPersistenceService provideElifutPersistenceService(

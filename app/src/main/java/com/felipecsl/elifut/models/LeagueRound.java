@@ -1,6 +1,7 @@
 package com.felipecsl.elifut.models;
 
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
@@ -10,15 +11,21 @@ import java.util.List;
 
 @AutoValue
 public abstract class LeagueRound implements Parcelable, Persistable {
+  // id becomes non-null after it has been persisted to the DB and auto-assigned an id
+  @Nullable public abstract Integer id();
   public abstract int roundNumber();
   public abstract List<Match> matches();
 
+  public static LeagueRound create(Integer id, int roundNumber, List<Match> matches) {
+    return new AutoValue_LeagueRound(id, roundNumber, matches);
+  }
+
   public static LeagueRound create(int roundNumber, List<Match> matches) {
-    return new AutoValue_LeagueRound(roundNumber, matches);
+    return create(null, roundNumber, matches);
   }
 
   public static LeagueRound create(int roundNumber) {
-    return new AutoValue_LeagueRound(roundNumber, new ArrayList<>());
+    return create(roundNumber, new ArrayList<>());
   }
 
   @Override public int describeContents() {
@@ -49,5 +56,23 @@ public abstract class LeagueRound implements Parcelable, Persistable {
       stringBuilder.append(match).append("\n");
     }
     return stringBuilder.toString();
+  }
+
+  // Roll our own equal() and hashCode() since we don't want to include the ID in it
+  @Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    LeagueRound that = (LeagueRound) o;
+
+    //noinspection SimplifiableIfStatement
+    if (roundNumber() != that.roundNumber()) return false;
+    return matches().equals(that.matches());
+  }
+
+  @Override public int hashCode() {
+    int result = roundNumber();
+    result = 31 * result + matches().hashCode();
+    return result;
   }
 }

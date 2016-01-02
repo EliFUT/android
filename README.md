@@ -11,3 +11,5 @@ for more information about it.
 ![league](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-league.png)
 ![team](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-team.png)
 ![match](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-match.png)
+![schedule](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-schedule.png)
+![menu](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-menu.png)

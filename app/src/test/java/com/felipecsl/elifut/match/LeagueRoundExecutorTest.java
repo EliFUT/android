@@ -70,7 +70,8 @@ public class LeagueRoundExecutorTest {
 
     executor.execute(Arrays.asList(match1, match2));
 
-    List<Club> query = Util.listSupertype(persistenceService.query(AutoValueClasses.CLUB));
+    List<? extends Club> clubs = persistenceService.query(AutoValueClasses.CLUB);
+    List<Club> query = Util.listSupertype(clubs);
     assertThat(query).containsOnly(clubA.newWithWin(), clubB.newWithLoss(), clubC.newWithLoss(),
         clubD.newWithWin());
   }
@@ -91,7 +92,8 @@ public class LeagueRoundExecutorTest {
 
     executor.execute(Arrays.asList(match1, match2));
 
-    List<Club> query = Util.listSupertype(persistenceService.query(AutoValueClasses.CLUB));
+    List<? extends Club> clubs = persistenceService.query(AutoValueClasses.CLUB);
+    List<Club> query = Util.listSupertype(clubs);
     assertThat(query).containsOnly(clubA.newWithDraw(), clubB.newWithDraw(), clubC.newWithDraw(),
         clubD.newWithDraw());
   }

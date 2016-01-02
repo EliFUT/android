@@ -55,9 +55,9 @@ public class LeagueRoundGeneratorTest {
     List<LeagueRound> leagueRounds = roundGenerator.generateRounds(clubs);
 
     assertThat(leagueRounds.size()).isEqualTo(2);
-    assertThat(leagueRounds).isEqualTo(Arrays.asList(
+    assertThat(leagueRounds).containsOnly(
         LeagueRound.create(1, singletonList(Match.create(gremio, internacional, matchResult1))),
-        LeagueRound.create(2, singletonList(Match.create(internacional, gremio, matchResult2)))));
+        LeagueRound.create(2, singletonList(Match.create(internacional, gremio, matchResult2))));
   }
 
   @Test public void testGenerateRounds() {

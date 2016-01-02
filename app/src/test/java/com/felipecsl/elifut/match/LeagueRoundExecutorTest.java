@@ -34,8 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
     manifest = ElifutTestRunner.MANIFEST_PATH)
 public class LeagueRoundExecutorTest {
-  private final Club clubA = Club.create(1, "Club A");
-  private final Club clubB = Club.create(2, "Club B");
+  private final Club clubA = Club.create(1, "Club A").newWithWin();
+  private final Club clubB = Club.create(2, "Club B").newWithLoss();
   private final Club clubC = Club.create(3, "Club C");
   private final Club clubD = Club.create(4, "Club D");
   private final List<Club> leagueClubs = Arrays.asList(clubA, clubB, clubC, clubD);

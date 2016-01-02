@@ -18,11 +18,11 @@ public class ClubTest {
   @Test public void testNewWithWin() throws Exception {
     Club club = Club.builder().id(0).name("Sample").build();
     ClubStats stats = club.newWithWin().stats();
-    assertThat(stats.points()).isEqualTo(3);
+    assertThat(stats.points()).isEqualTo(6);
     assertThat(stats.goals()).isEqualTo(0);
     assertThat(stats.losses()).isEqualTo(0);
     assertThat(stats.draws()).isEqualTo(0);
-    assertThat(stats.wins()).isEqualTo(1);
+    assertThat(stats.wins()).isEqualTo(2);
   }
 
   @Test public void testNewWithDraw() throws Exception {

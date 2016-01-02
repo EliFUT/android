@@ -15,6 +15,7 @@ import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -28,7 +29,7 @@ public final class LeagueMatchesAdapter
   private final Club currentClub;
 
   public LeagueMatchesAdapter(Club currentClub, String headerText, List<Match> matches) {
-    super(matches, checkNotNull(headerText));
+    super(new ArrayList<>(matches), checkNotNull(headerText));
     this.currentClub = checkNotNull(currentClub);
   }
 
@@ -42,7 +43,7 @@ public final class LeagueMatchesAdapter
   }
 
   public void setItems(LeagueRound round) {
-    setData(round.matches());
+    setData(new ArrayList<>(round.matches()));
   }
 
   class ItemViewHolder extends BaseViewHolder<Match> {

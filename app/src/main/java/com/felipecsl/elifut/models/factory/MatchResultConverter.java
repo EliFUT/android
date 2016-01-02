@@ -3,9 +3,6 @@ package com.felipecsl.elifut.models.factory;
 import android.content.ContentValues;
 
 import com.felipecsl.elifut.SimpleCursor;
-import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.ClubStats;
-import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.models.Persistable;
 import com.felipecsl.elifut.services.ElifutPersistenceService;
@@ -18,14 +15,8 @@ import java.io.IOException;
 public final class MatchResultConverter extends Persistable.Converter<MatchResult> {
   private final JsonAdapter<MatchResult> adapter;
 
-  public MatchResultConverter() {
-    Moshi moshi = new Moshi.Builder()
-        .add(MatchResult.typeAdapterFactory())
-        .add(Club.typeAdapterFactory())
-        .add(ClubStats.typeAdapterFactory())
-        .add(Goal.typeAdapterFactory())
-        .build();
-    adapter = moshi.adapter(targetType());
+  public MatchResultConverter(Moshi moshi) {
+    adapter = moshi.adapter(MatchResult.class);
   }
 
   @Override public String tableName() {

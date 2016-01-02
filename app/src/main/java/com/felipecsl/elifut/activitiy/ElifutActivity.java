@@ -20,7 +20,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public abstract class ElifutActivity extends AppCompatActivity {
-
   @Inject ElifutService service;
   @Inject UserPreferences userPreferences;
   @Inject LeagueDetails leagueDetails;

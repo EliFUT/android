@@ -89,8 +89,8 @@ public class DataModule {
     return new ElifutPersistenceService(context, SqlBrite.create(), converters);
   }
 
-  @Provides @Singleton List<Persistable.Converter<?>> providePersistenceConverters() {
-    return Arrays.asList(new ClubConverter(), new MatchConverter(), new MatchResultConverter(),
+  @Provides @Singleton List<Persistable.Converter<?>> providePersistenceConverters(Moshi moshi) {
+    return Arrays.asList(new ClubConverter(), new MatchConverter(), new MatchResultConverter(moshi),
         new LeagueRoundConverter());
   }
 

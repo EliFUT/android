@@ -33,7 +33,7 @@ public final class ClubsAdapter
   }
 
   public void setItems(List<? extends Club> newItems) {
-    setData(sort(listSupertype(newItems), (c1, c2) ->
+    setData(sort(new ArrayList<>(listSupertype(newItems)), (c1, c2) ->
         c2.nonNullStats().points() - c1.nonNullStats().points()));
   }
 

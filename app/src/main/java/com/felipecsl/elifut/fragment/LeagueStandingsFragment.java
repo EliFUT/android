@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 import rx.subscriptions.CompositeSubscription;
 
 public class LeagueStandingsFragment extends ElifutFragment {
+  private static final String TAG = "LeagueStandingsFragment";
   private final Target leagueLogoTarget = new SimpleTarget() {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
       Palette.from(bitmap).generate(palette -> {

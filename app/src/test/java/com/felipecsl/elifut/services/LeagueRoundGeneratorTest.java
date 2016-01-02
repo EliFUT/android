@@ -1,5 +1,6 @@
 package com.felipecsl.elifut.services;
 
+import com.felipecsl.elifut.TestUtil;
 import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
@@ -41,8 +42,8 @@ public class LeagueRoundGeneratorTest {
   }
 
   @Test public void testGenerateRoundsTwoClubs() {
-    Club gremio = newClub("Gremio");
-    Club internacional = newClub("Internacional");
+    Club gremio = TestUtil.GREMIO;
+    Club internacional = TestUtil.INTERNACIONAL;
     List<Club> clubs = Arrays.asList(gremio, internacional);
 
     MatchResultGenerator generator = mock(MatchResultGenerator.class);

@@ -52,12 +52,13 @@ public class LeagueRoundGeneratorTest {
     MatchResult matchResult2 = MatchResult.builder().build(internacional, gremio);
     when(generator.generate(gremio, internacional)).thenReturn(matchResult1);
     when(generator.generate(internacional, gremio)).thenReturn(matchResult2);
-    List<LeagueRound> leagueRounds = roundGenerator.generateRounds(clubs);
+
+    List<LeagueRound> leagueRounds = roundGenerator.generateRoundsDeterministic(clubs);
 
     assertThat(leagueRounds.size()).isEqualTo(2);
-    assertThat(leagueRounds).containsOnly(
+    assertThat(leagueRounds).isEqualTo(Arrays.asList(
         LeagueRound.create(1, singletonList(Match.create(gremio, internacional, matchResult1))),
-        LeagueRound.create(2, singletonList(Match.create(internacional, gremio, matchResult2))));
+        LeagueRound.create(2, singletonList(Match.create(internacional, gremio, matchResult2)))));
   }
 
   @Test public void testGenerateRounds() {

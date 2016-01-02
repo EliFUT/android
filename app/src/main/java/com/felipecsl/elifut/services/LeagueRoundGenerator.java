@@ -1,5 +1,7 @@
 package com.felipecsl.elifut.services;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
@@ -24,12 +26,10 @@ public class LeagueRoundGenerator {
     this.generator = generator;
   }
 
-  /** Generates a random list of league rounds from the provided list of clubs. */
-  public List<LeagueRound> generateRounds(List<? extends Club> clubs) {
-    List<? extends Club> randomizedClubs = shuffle(clubs);
-    int totalClubs = randomizedClubs.size();
+  @VisibleForTesting List<LeagueRound> generateRoundsDeterministic(List<? extends Club> clubs) {
+    int totalClubs = clubs.size();
 
-    Preconditions.checkNotNull(randomizedClubs);
+    Preconditions.checkNotNull(clubs);
     Preconditions.checkArgument(totalClubs % 2 == 0, "Need even number of clubs");
     Preconditions.checkArgument(totalClubs > 1, "Need at least 2 clubs");
 
@@ -42,7 +42,7 @@ public class LeagueRoundGenerator {
     }
     Map<Integer, Club> clubMap = new HashMap<>();
     for (int i = 1; i <= totalClubs; i++) {
-      clubMap.put(i, randomizedClubs.get(i - 1));
+      clubMap.put(i, clubs.get(i - 1));
     }
 
     for (int round = 0; round < totalRounds; round++) {
@@ -73,5 +73,10 @@ public class LeagueRoundGenerator {
     }
 
     return  Arrays.asList(rounds);
+  }
+
+  /** Generates a random list of league rounds from the provided list of clubs. */
+  public List<LeagueRound> generateRounds(List<? extends Club> clubs) {
+    return generateRoundsDeterministic(shuffle(clubs));
   }
 }

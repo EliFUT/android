@@ -27,8 +27,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(ElifutTestRunner.class)
@@ -40,6 +38,7 @@ public class LeagueRoundExecutorTest {
   private final Club clubC = Club.create(3, "Club C");
   private final Club clubD = Club.create(4, "Club D");
   private final List<Club> leagueClubs = Arrays.asList(clubA, clubB, clubC, clubD);
+  private final Class<? extends Club> clubType = Util.autoValueTypeFor(Club.class);
 
   @Inject LeaguePreferences leaguePreferences;
   @Inject ElifutPersistenceService persistenceService;
@@ -69,11 +68,11 @@ public class LeagueRoundExecutorTest {
     Match match1 = Match.create(clubA, clubB, result1);
     Match match2 = Match.create(clubC, clubD, result2);
 
-    executor.execute(Observable.just(match1, match2));
+    executor.execute(Arrays.asList(match1, match2));
 
-    List<? extends Club> query = persistenceService.query(Util.autoValueTypeFor(Club.class));
-    assertThat(Util.listSupertype(query)).containsOnly(
-        clubA.newWithWin(), clubB.newWithLoss(), clubC.newWithLoss(), clubD.newWithWin());
+    List<Club> query = Util.listSupertype(persistenceService.query(clubType));
+    assertThat(query).containsOnly(clubA.newWithWin(), clubB.newWithLoss(), clubC.newWithLoss(),
+        clubD.newWithWin());
   }
 
   @Test public void testExecuteDraw() {
@@ -90,10 +89,10 @@ public class LeagueRoundExecutorTest {
     Match match1 = Match.create(clubA, clubB, result1);
     Match match2 = Match.create(clubC, clubD, result2);
 
-    executor.execute(Observable.just(match1, match2));
+    executor.execute(Arrays.asList(match1, match2));
 
-    List<? extends Club> query = persistenceService.query(Util.autoValueTypeFor(Club.class));
-    assertThat(Util.listSupertype(query)).containsOnly(
-        clubA.newWithDraw(), clubB.newWithDraw(), clubC.newWithDraw(), clubD.newWithDraw());
+    List<Club> query = Util.listSupertype(persistenceService.query(clubType));
+    assertThat(query).containsOnly(clubA.newWithDraw(), clubB.newWithDraw(), clubC.newWithDraw(),
+        clubD.newWithDraw());
   }
 }

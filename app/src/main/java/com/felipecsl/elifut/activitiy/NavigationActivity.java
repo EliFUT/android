@@ -38,7 +38,6 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -163,7 +162,7 @@ public abstract class NavigationActivity extends ElifutActivity
 
   @OnClick(R.id.fab) public void onClickFab() {
     LeagueRound round = leaguePreferences.nextRound();
-    roundExecutor.execute(Observable.from(round.matches()));
+    roundExecutor.execute(round.matches());
     startActivity(MatchProgressActivity.newIntent(this, round));
   }
 }

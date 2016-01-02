@@ -5,7 +5,11 @@ import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.services.ElifutPersistenceService;
 
+import java.util.List;
+
 import rx.Observable;
+
+import static com.felipecsl.elifut.util.CollectionUtils.toList;
 
 /** Executes a league round by updating each club stats with their respective win, draw or loss. */
 public final class LeagueRoundExecutor {
@@ -15,8 +19,11 @@ public final class LeagueRoundExecutor {
     this.persistenceService = persistenceService;
   }
 
-  public void execute(Observable<Match> matches) {
-//    clubsPreference.set(toList(matches.flatMap(this::filterClubsByResult)));
+  public void execute(List<Match> matches) {
+    List<Club> clubs = toList(Observable.from(matches).flatMap(this::filterClubsByResult));
+    for (Club club : clubs) {
+      persistenceService.update(club, club.id());
+    }
   }
 
   private Observable<Club> filterClubsByResult(Match match) {

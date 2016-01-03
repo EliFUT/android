@@ -1,5 +1,20 @@
 <resources>
 
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">@color/color_primary</item>
+    <item name="colorPrimaryDark">#90651a</item>
+    <item name="colorAccent">#462e09</item>
+    <item name="android:windowBackground">@color/window_background</item>
+    <!-- enable window content transitions -->
+    <item name="android:windowContentTransitions">true</item>
+    <item name="android:windowActivityTransitions">true</item>
+  </style>
+
+  <style name="AppTheme.PlayerAnimated" parent="AppTheme">
+    <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
+    <item name="android:windowSharedElementExitTransition">@transition/change_image_transform</item>
+  </style>
+
   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
   <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

@@ -1,14 +1,14 @@
 package com.felipecsl.elifut.adapter;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Pair;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -86,7 +86,9 @@ public class PlayerViewHolder extends BaseViewHolder<Player> {
 
     if (shouldHandleClick()) {
       outerLayout.setOnClickListener(view -> {
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) context,
+        //noinspection unchecked
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            (Activity) context,
             Pair.create(imgPlayer, "player_image"),
             Pair.create(imgClub, "img_player_club"),
             Pair.create(imgNation, "img_player_nation"),

@@ -1,8 +1,10 @@
 package com.felipecsl.elifut.activitiy;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
@@ -45,13 +47,14 @@ public class PlayerDetailsActivity extends ElifutActivity {
         .putExtra(EXTRA_CLUB, club);
   }
 
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (AndroidVersion.isAtLeastLollipop()) {
       Window window = getWindow();
       window.setAllowEnterTransitionOverlap(true);
-      window.setEnterTransition(TransitionUtil.makeEnterTransition());
-      window.setExitTransition(TransitionUtil.makeEnterTransition());
+      window.setEnterTransition(TransitionUtil.makeFadeTransition());
+      window.setExitTransition(TransitionUtil.makeFadeTransition());
     }
     setContentView(R.layout.activity_player_details);
     ButterKnife.bind(this);

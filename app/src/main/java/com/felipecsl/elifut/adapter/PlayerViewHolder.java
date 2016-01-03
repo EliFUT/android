@@ -72,8 +72,12 @@ public class PlayerViewHolder extends BaseViewHolder<Player> {
         .load(player.image())
         .into(imgPlayer);
 
+    String clubImage = this instanceof LargePlayerViewHolder
+        ? club.large_image()
+        : club.small_image();
+
     Picasso.with(context)
-        .load(club.small_image())
+        .load(clubImage)
         .into(imgClub);
 
     Picasso.with(context)

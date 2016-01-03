@@ -12,8 +12,6 @@
   </style>
 
   <style name="AppTheme.PlayerAnimated" parent="AppTheme">
-    <item name="android:windowEnterTransition">@android:transition/fade</item>
-    <item name="android:windowExitTransition">@android:transition/fade</item>
     <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
     <item name="android:windowSharedElementExitTransition">@transition/change_image_transform</item>
   </style>

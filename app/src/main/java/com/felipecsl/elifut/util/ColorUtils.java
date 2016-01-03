@@ -12,11 +12,16 @@ public final class ColorUtils {
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public static void colorizeHeader(Activity activity, Toolbar toolbar, TabLayout tabs,
+  public static void colorizeTabsAndHeader(Activity activity, Toolbar toolbar, TabLayout tabs,
       int primaryColor, int secondaryColor) {
-    toolbar.setBackgroundColor(primaryColor);
     tabs.setBackgroundColor(primaryColor);
     tabs.setSelectedTabIndicatorColor(secondaryColor);
+    colorizeHeader(activity, toolbar, primaryColor);
+  }
+
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  public static void colorizeHeader(Activity activity, Toolbar toolbar, int primaryColor) {
+    toolbar.setBackgroundColor(primaryColor);
     if (AndroidVersion.isAtLeastLollipop()) {
       activity.getWindow().setStatusBarColor(darken(primaryColor, 0.9f));
     }

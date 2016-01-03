@@ -7,7 +7,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fitsSystemWindows="true"
-  android:background="#184254"
+
   tools:context="com.felipecsl.elifut.activitiy.PlayerDetailsActivity">
 
   <android.support.design.widget.AppBarLayout

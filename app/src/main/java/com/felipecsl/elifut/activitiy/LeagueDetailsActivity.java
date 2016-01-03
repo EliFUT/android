@@ -16,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.State;
 
-import static com.felipecsl.elifut.util.ColorUtils.colorizeHeader;
+import static com.felipecsl.elifut.util.ColorUtils.colorizeTabsAndHeader;
 
 public class LeagueDetailsActivity extends NavigationActivity {
   @Bind(R.id.toolbar) Toolbar toolbar;
@@ -54,6 +54,6 @@ public class LeagueDetailsActivity extends NavigationActivity {
   }
 
   public void setToolbarColor(int primaryColor, int secondaryColor) {
-    colorizeHeader(this, toolbar, tabLayout, primaryColor, secondaryColor);
+    colorizeTabsAndHeader(this, toolbar, tabLayout, primaryColor, secondaryColor);
   }
 }

@@ -19,7 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.State;
 
-import static com.felipecsl.elifut.util.ColorUtils.colorizeHeader;
+import static com.felipecsl.elifut.util.ColorUtils.colorizeTabsAndHeader;
 
 public class CurrentTeamDetailsActivity extends NavigationActivity implements TabbedActivity {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
@@ -70,6 +70,6 @@ public class CurrentTeamDetailsActivity extends NavigationActivity implements Ta
   }
 
   @Override public void setToolbarColor(int primaryColor, int secondaryColor) {
-    colorizeHeader(this, toolbar, tabLayout, primaryColor, secondaryColor);
+    colorizeTabsAndHeader(this, toolbar, tabLayout, primaryColor, secondaryColor);
   }
 }

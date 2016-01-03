@@ -21,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.State;
 
-import static com.felipecsl.elifut.util.ColorUtils.colorizeHeader;
+import static com.felipecsl.elifut.util.ColorUtils.colorizeTabsAndHeader;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class TeamDetailsActivity extends ElifutActivity implements TabbedActivity {
@@ -69,7 +69,7 @@ public class TeamDetailsActivity extends ElifutActivity implements TabbedActivit
   }
 
   @Override public void setToolbarColor(int primaryColor, int secondaryColor) {
-    colorizeHeader(this, toolbar, tabLayout, primaryColor, secondaryColor);
+    colorizeTabsAndHeader(this, toolbar, tabLayout, primaryColor, secondaryColor);
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {

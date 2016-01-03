@@ -27,4 +27,5 @@
   <string name="team">Team</string>
   <string name="round_n_of_n">Round %1$s of %2$s</string>
   <string name="round_results">Round %1$s results</string>
+  <string name="player_details">Player Details</string>
 </resources>

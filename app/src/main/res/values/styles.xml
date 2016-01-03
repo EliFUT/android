@@ -6,6 +6,16 @@
     <item name="colorPrimaryDark">#90651a</item>
     <item name="colorAccent">#462e09</item>
     <item name="android:windowBackground">@color/window_background</item>
+    <!-- enable window content transitions -->
+    <item name="android:windowContentTransitions">true</item>
+    <item name="android:windowActivityTransitions">true</item>
+  </style>
+
+  <style name="AppTheme.PlayerAnimated" parent="AppTheme">
+    <item name="android:windowEnterTransition">@android:transition/fade</item>
+    <item name="android:windowExitTransition">@android:transition/fade</item>
+    <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
+    <item name="android:windowSharedElementExitTransition">@transition/change_image_transform</item>
   </style>
 
   <style name="Widget.CardContent" parent="android:Widget">
@@ -19,6 +29,10 @@
   <style name="AppTheme.TextAppearance.PlayerCard" parent="TextAppearance.AppCompat.Subhead">
     <item name="android:textColor">#36221B</item>
     <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="AppTheme.TextAppearance.PlayerCard.Large" parent="AppTheme.TextAppearance.PlayerCard">
+    <item name="android:textSize">20sp</item>
   </style>
 
   <style name="AppTheme.League">

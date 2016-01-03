@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-  package="com.felipecsl.elifut"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="com.felipecsl.elifut"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
   <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -20,13 +19,19 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".activitiy.CurrentTeamDetailsActivity"/>
+    <activity
+      android:name=".activitiy.CurrentTeamDetailsActivity"
+      android:theme="@style/AppTheme.PlayerAnimated"/>
     <activity android:name=".activitiy.LeagueDetailsActivity"/>
     <activity
       android:name=".activitiy.MatchProgressActivity"
       android:label="@string/match_progress"/>
     <activity android:name=".activitiy.TeamDetailsActivity"/>
     <activity android:name=".activitiy.LeagueRoundResultsActivity"/>
+    <activity
+      android:name=".activitiy.PlayerDetailsActivity"
+      android:label="@string/player_details"
+      android:theme="@style/AppTheme.PlayerAnimated"/>
   </application>
 
 </manifest>

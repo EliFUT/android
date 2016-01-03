@@ -11,8 +11,8 @@
 
   <FrameLayout
     android:id="@+id/player_layout"
-    android:layout_width="121dp"
-    android:layout_height="182dp"
+    android:layout_width="242dp"
+    android:layout_height="364dp"
     android:layout_gravity="center">
 
     <ImageView
@@ -25,8 +25,8 @@
     <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="20dp"
-      android:layout_marginTop="5dp"
+      android:layout_marginLeft="40dp"
+      android:layout_marginTop="30dp"
       android:orientation="vertical">
 
       <TextView
@@ -35,31 +35,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="18sp"
+        android:textSize="23sp"
         android:textStyle="bold"
         tools:text="75"/>
 
       <TextView
         android:id="@+id/player_position"
-        style="@style/AppTheme.TextAppearance.PlayerCard"
+        style="@style/AppTheme.TextAppearance.PlayerCard.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="-4dp"
         android:textStyle="bold"
         tools:text="CDM"/>
 
       <ImageView
         android:id="@+id/img_player_club"
-        android:layout_width="30dp"
-        android:layout_height="25dp"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:transitionName="img_player_club"/>
 
       <ImageView
         android:id="@+id/img_player_nation"
-        android:layout_width="25dp"
-        android:layout_height="20dp"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:transitionName="img_player_nation"/>
 
@@ -67,22 +66,22 @@
 
     <ImageView
       android:id="@+id/player_image"
-      android:layout_width="60dp"
-      android:layout_height="60dp"
+      android:layout_width="120dp"
+      android:layout_height="120dp"
       android:layout_gravity="end"
-      android:layout_marginRight="5dp"
-      android:layout_marginTop="31dp"
+      android:layout_marginRight="10dp"
+      android:layout_marginTop="62dp"
       android:transitionName="player_image"/>
 
     <TextView
       android:id="@+id/player_name"
-      style="@style/AppTheme.TextAppearance.PlayerCard"
+      style="@style/AppTheme.TextAppearance.PlayerCard.Large"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center_horizontal"
-      android:layout_marginTop="89dp"
-      android:paddingLeft="7dp"
-      android:paddingRight="7dp"
+      android:layout_marginTop="180dp"
+      android:paddingLeft="14dp"
+      android:paddingRight="14dp"
       android:singleLine="true"
       android:textStyle="bold"
       tools:text="AGUERO"/>
@@ -90,10 +89,10 @@
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="105dp"
+      android:layout_marginTop="210dp"
       android:orientation="horizontal"
-      android:paddingLeft="18dp"
-      android:paddingRight="12dp">
+      android:paddingLeft="36dp"
+      android:paddingRight="24dp">
 
       <LinearLayout
         android:layout_width="0dp"
@@ -104,12 +103,11 @@
 
         <TextView
           android:id="@+id/attribute_1"
-          style="@style/AppTheme.TextAppearance.PlayerCard"
+          style="@style/AppTheme.TextAppearance.PlayerCard.Large"
           android:layout_width="wrap_content"
-          android:layout_height="14.5dp"
+          android:layout_height="29dp"
           android:text="PAC"
-          android:textSize="12sp"
-          android:translationY="-1.5dp"/>
+          />
 
         <View
           android:layout_width="match_parent"
@@ -118,12 +116,11 @@
 
         <TextView
           android:id="@+id/attribute_2"
-          style="@style/AppTheme.TextAppearance.PlayerCard"
+          style="@style/AppTheme.TextAppearance.PlayerCard.Large"
           android:layout_width="wrap_content"
-          android:layout_height="14.5dp"
+          android:layout_height="29dp"
           android:text="SHO"
-          android:textSize="12sp"
-          android:translationY="-1.5dp"/>
+          />
 
         <View
           android:layout_width="match_parent"
@@ -132,12 +129,11 @@
 
         <TextView
           android:id="@+id/attribute_3"
-          style="@style/AppTheme.TextAppearance.PlayerCard"
+          style="@style/AppTheme.TextAppearance.PlayerCard.Large"
           android:layout_width="wrap_content"
-          android:layout_height="14.5dp"
+          android:layout_height="29dp"
           android:text="PAS"
-          android:textSize="12sp"
-          android:translationY="-1.5dp"/>
+          />
 
       </LinearLayout>
 
@@ -150,12 +146,11 @@
 
         <TextView
           android:id="@+id/attribute_4"
-          style="@style/AppTheme.TextAppearance.PlayerCard"
+          style="@style/AppTheme.TextAppearance.PlayerCard.Large"
           android:layout_width="wrap_content"
-          android:layout_height="14.5dp"
+          android:layout_height="29dp"
           android:text="DRI"
-          android:textSize="12sp"
-          android:translationY="-1.5dp"/>
+          />
 
         <View
           android:layout_width="match_parent"
@@ -164,12 +159,11 @@
 
         <TextView
           android:id="@+id/attribute_5"
-          style="@style/AppTheme.TextAppearance.PlayerCard"
+          style="@style/AppTheme.TextAppearance.PlayerCard.Large"
           android:layout_width="wrap_content"
-          android:layout_height="14.5dp"
+          android:layout_height="29dp"
           android:text="DEF"
-          android:textSize="12sp"
-          android:translationY="-1.5dp"/>
+          />
 
         <View
           android:layout_width="match_parent"
@@ -178,12 +172,11 @@
 
         <TextView
           android:id="@+id/attribute_6"
-          style="@style/AppTheme.TextAppearance.PlayerCard"
+          style="@style/AppTheme.TextAppearance.PlayerCard.Large"
           android:layout_width="wrap_content"
-          android:layout_height="14.5dp"
+          android:layout_height="29dp"
           android:text="PHY"
-          android:textSize="12sp"
-          android:translationY="-1.5dp"/>
+          />
 
       </LinearLayout>
 

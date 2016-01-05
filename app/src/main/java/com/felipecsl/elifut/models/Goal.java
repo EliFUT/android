@@ -8,14 +8,11 @@ import com.squareup.moshi.JsonAdapter;
 @AutoValue
 public abstract class Goal implements Parcelable, MatchEvent {
   @Override public abstract int time();
+//  public abstract Player player();
   public abstract Club club();
 
   public static Goal create(int time, Club club) {
     return new AutoValue_Goal(time, club);
-  }
-
-  public static Creator<? extends Goal> creator() {
-    return AutoValue_Goal.CREATOR;
   }
 
   @Override public int describeContents() {

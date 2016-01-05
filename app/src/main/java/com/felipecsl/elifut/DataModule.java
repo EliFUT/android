@@ -16,10 +16,11 @@ import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.models.Persistable;
 import com.felipecsl.elifut.models.Player;
-import com.felipecsl.elifut.models.factory.ClubConverter;
-import com.felipecsl.elifut.models.factory.LeagueRoundConverter;
-import com.felipecsl.elifut.models.factory.MatchConverter;
-import com.felipecsl.elifut.models.factory.MatchResultConverter;
+import com.felipecsl.elifut.models.converter.ClubConverter;
+import com.felipecsl.elifut.models.converter.LeagueRoundConverter;
+import com.felipecsl.elifut.models.converter.MatchConverter;
+import com.felipecsl.elifut.models.converter.MatchResultConverter;
+import com.felipecsl.elifut.models.converter.PlayerConverter;
 import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.ElifutPersistenceService;
@@ -70,8 +71,8 @@ public class DataModule {
     return context.getSharedPreferences("ELIFUT_DATA", Context.MODE_PRIVATE);
   }
 
-  @Provides @Singleton
-  UserPreferences provideUserPreferences(SharedPreferences preferences, Moshi moshi) {
+  @Provides @Singleton UserPreferences provideUserPreferences(SharedPreferences preferences,
+      Moshi moshi) {
     return new UserPreferences(preferences, moshi);
   }
 
@@ -90,12 +91,16 @@ public class DataModule {
   }
 
   @Provides @Singleton List<Persistable.Converter<?>> providePersistenceConverters(Moshi moshi) {
-    return Arrays.asList(new ClubConverter(), new MatchConverter(), new MatchResultConverter(moshi),
-        new LeagueRoundConverter());
+    return Arrays.asList(
+        new ClubConverter(),
+        new MatchConverter(),
+        new MatchResultConverter(moshi),
+        new LeagueRoundConverter(),
+        new PlayerConverter());
   }
 
-  @Provides @Singleton
-  LeagueRoundExecutor provideLeagueRoundExecutor(ElifutPersistenceService persistenceService) {
+  @Provides @Singleton LeagueRoundExecutor provideLeagueRoundExecutor(
+      ElifutPersistenceService persistenceService) {
     return new LeagueRoundExecutor(persistenceService);
   }
 }

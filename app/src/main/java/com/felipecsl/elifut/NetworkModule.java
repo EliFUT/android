@@ -65,6 +65,7 @@ public class NetworkModule {
     OkHttpClient client = new OkHttpClient();
     StethoInitializer.addInterceptor(client.networkInterceptors());
     client.setReadTimeout(15, TimeUnit.SECONDS);
+    client.setConnectTimeout(15, TimeUnit.SECONDS);
     return client.setCache(cache);
   }
 }

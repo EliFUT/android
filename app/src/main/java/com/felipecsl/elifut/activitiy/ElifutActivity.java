@@ -5,19 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.felipecsl.elifut.ElifutApplication;
 import com.felipecsl.elifut.ElifutComponent;
+import com.felipecsl.elifut.Util;
 import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.ElifutService;
-import com.felipecsl.elifut.services.ResponseBodyMapper;
-import com.felipecsl.elifut.services.ResponseMapper;
 
 import javax.inject.Inject;
 
 import icepick.Icepick;
 import retrofit.Response;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public abstract class ElifutActivity extends AppCompatActivity {
   @Inject ElifutService service;
@@ -44,10 +41,6 @@ public abstract class ElifutActivity extends AppCompatActivity {
   }
 
   public <T> Observable.Transformer<Response<T>, T> applyTransformations() {
-    return (Observable<Response<T>> observable) ->
-      observable.subscribeOn(Schedulers.io())
-        .flatMap(ResponseMapper.<T>instance())
-        .map(ResponseBodyMapper.<T>instance())
-        .observeOn(AndroidSchedulers.mainThread());
+    return Util.apiObservableTransformer();
   }
 }

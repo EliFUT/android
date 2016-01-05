@@ -6,6 +6,7 @@ import com.felipecsl.elifut.models.MatchResult;
 
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,5 +60,27 @@ public class MatchResultGeneratorTest {
     assertThat(result.isDraw()).isEqualTo(false);
     assertThat(result.homeGoals().size()).isEqualTo(0);
     assertThat(result.awayGoals().size()).isEqualTo(1);
+  }
+
+  @Ignore @Test public void testStatistics() {
+    MatchResultGenerator generator = new MatchResultGenerator();
+    int totalMatches = 100;
+    float totalHomeWins = 0;
+    float totalAwayWins = 0;
+    float totalDraws = 0;
+    for (int i = 0; i < totalMatches; i++) {
+      MatchResult result = generator.generate(home, away);
+      if (result.isDraw()) {
+        totalDraws++;
+      } else if (result.isHomeWin()) {
+        totalHomeWins++;
+      } else {
+        totalAwayWins++;
+      }
+    }
+    System.out.println("Stats after " + totalMatches + " matches:");
+    System.out.println("Total home wins: " + (int) ((totalHomeWins/totalMatches)*100) + "%");
+    System.out.println("Total away wins: " + (int) ((totalAwayWins/totalMatches)*100) + "%");
+    System.out.println("Total draws: " + (int) ((totalDraws/totalMatches)*100) + "%");
   }
 }

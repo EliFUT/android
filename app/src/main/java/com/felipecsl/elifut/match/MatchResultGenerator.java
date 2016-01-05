@@ -45,19 +45,20 @@ public class MatchResultGenerator {
     }
     boolean isHomeWin = home.equals(winner);
     Club loser = isHomeWin ? away : home;
-    int totalGoals = Math.max((int) Math.round(goalsDistribution.sample()), 0);
+    int totalGoals = Math.max((int) Math.floor(goalsDistribution.sample()), 0);
 
     if (winner != null) {
       if (totalGoals <= 2) {
+        // 1x0 or 2x0
         winnerGoals = Goals.create(random, Math.max(totalGoals, 1), winner);
         loserGoals = Collections.emptyList();
       } else {
-        // 3+ goals
-        loserGoals =
-            Goals.create(random, random.nextInt(Math.max(1, (totalGoals / 2) - 1)), loser);
+        // 3+ goals (eg.: 3x1, 3x0, 4x0, etc)
+        loserGoals = Goals.create(random, random.nextInt(Math.max(1, (totalGoals / 2) - 1)), loser);
         winnerGoals = Goals.create(random, totalGoals - loserGoals.size(), winner);
       }
     } else {
+      // draw (0x0, 1x1, 2x2, etc)
       int evenGoals = (totalGoals % 2 == 0) ? totalGoals : totalGoals + 1;
       winnerGoals = Goals.create(random, evenGoals / 2, home);
       loserGoals = Goals.create(random, evenGoals / 2, away);

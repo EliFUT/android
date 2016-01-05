@@ -1,9 +1,9 @@
 package com.felipecsl.elifut;
 
 import com.felipecsl.elifut.match.LeagueRoundExecutorTest;
-import com.felipecsl.elifut.models.factory.ClubConverterTest;
-import com.felipecsl.elifut.models.factory.LeagueRoundConverterTest;
-import com.felipecsl.elifut.models.factory.MatchConverterTest;
+import com.felipecsl.elifut.models.converter.ClubConverterTest;
+import com.felipecsl.elifut.models.converter.LeagueRoundConverterTest;
+import com.felipecsl.elifut.models.converter.MatchConverterTest;
 import com.felipecsl.elifut.preferences.LeagueDetailsTest;
 import com.felipecsl.elifut.services.ElifutPersistenceServiceTest;
 

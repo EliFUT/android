@@ -1,40 +1,42 @@
 package com.felipecsl.elifut.activitiy;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Spinner;
 
+import com.felipecsl.elifut.AppInitializer;
 import com.felipecsl.elifut.CompletionObserver;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.ResponseObserver;
 import com.felipecsl.elifut.adapter.CountriesSpinnerAdapter;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
-import com.felipecsl.elifut.preferences.JsonPreference;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class MainActivity extends ElifutActivity {
   private static final String TAG = "MainActivity";
 
+  @Inject AppInitializer initializer;
+
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.input_name) EditText inputName;
   @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
   @Bind(R.id.countries_spinner) Spinner countriesSpinner;
-  @Bind(R.id.loading_frame) FrameLayout loadingFrame;
   @Bind(R.id.fab) FloatingActionButton okButton;
 
   private CountriesSpinnerAdapter nationsAdapter;
@@ -71,30 +73,34 @@ public class MainActivity extends ElifutActivity {
   }
 
   @OnClick(R.id.fab) public void onClickNext() {
-    loadingFrame.setVisibility(View.VISIBLE);
+    ProgressDialog progressDialog = buildProgressDialog();
+    progressDialog.show();
+
     okButton.setVisibility(View.GONE);
     Nation nation = (Nation) nationsAdapter.getItem(countriesSpinner.getSelectedItemPosition());
     userPreferences.nationPreference().set(nation);
     userPreferences.coachPreference().set(inputName.getText().toString());
 
-    JsonPreference<Club> clubPreference = userPreferences.clubPreference();
-    JsonPreference<League> leaguePreference = userPreferences.leaguePreference();
-
-    subscriptions.add(service.randomClub(nation.id())
-        .compose(this.<Club>applyTransformations())
-        .flatMap(club -> service.league(clubPreference.set(club).league_id())
-            .compose(this.<League>applyTransformations()))
-        .flatMap(league -> service.clubsByLeague(leaguePreference.set(league).id())
-            .compose(applyTransformations()))
-        .flatMap(clubs -> {
-          leagueDetails.initialize(clubs);
-          return Observable.empty();
-        })
+    subscriptions.add(initializer
+        .initialize(nation.id(), progressDialog)
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new CompletionObserver<Object>(this, TAG, "Failed to load game data.") {
           @Override public void onCompleted() {
+            progressDialog.setProgress(100);
+            progressDialog.dismiss();
             launchHomeScreen();
           }
         }));
+  }
+
+  private ProgressDialog buildProgressDialog() {
+    ProgressDialog progressDialog = new ProgressDialog(this);
+    progressDialog.setMax(100);
+    progressDialog.setIndeterminate(false);
+    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    progressDialog.setTitle(R.string.loading);
+    progressDialog.setMessage(getString(R.string.please_wait));
+    return progressDialog;
   }
 
   private void launchHomeScreen() {

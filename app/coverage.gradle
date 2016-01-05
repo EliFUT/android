@@ -1,0 +1,56 @@
+apply plugin: 'jacoco'
+
+afterEvaluate { project ->
+
+    project.android.productFlavors.each { flavor ->
+
+        def jacocoRetrolambdaMap = [:]
+
+        project.android.buildTypes.each { type ->
+
+            task "jacoco${flavor.name.capitalize()}${type.name.capitalize()}TestReport"(type: JacocoReport, dependsOn: "test${flavor.name.capitalize()}${type.name.capitalize()}UnitTest") {
+
+                reports {
+                    xml.enabled = true
+                    html.enabled = true
+                }
+
+                jacocoClasspath = configurations['androidJacocoAnt']
+
+                def fileFilter = ['**/Dagger*.class', '**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+                def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/${flavor.name}/${type.name}", excludes: fileFilter)
+                def mainSrc = "${project.projectDir}/src/main/java"
+
+                sourceDirectories = files([mainSrc])
+                classDirectories = files([debugTree])
+                executionData = files("${buildDir}/jacoco/test${flavor.name.capitalize()}${type.name.capitalize()}UnitTest.exec")
+
+                // Small workaround for coverage on Retrolambda class files
+                doFirst {
+                    new File("${buildDir}/intermediates/classes/${flavor.name}/${type.name}").eachFileRecurse { file ->
+                        if (file.name.contains('$$')) {
+                            def renamed = file.path.replace '$$', '$'
+                            jacocoRetrolambdaMap[renamed] = file.path
+                            file.renameTo renamed
+                        }
+                    }
+                }
+
+                doLast {
+                    // Revert renamed files back to their generated names
+                    jacocoRetrolambdaMap.each { renamed, original ->
+                        new File(renamed).renameTo original
+                    }
+                    println "JaCoCo report has been generated to file://${reports.html.destination}/index.html"
+                }
+            }
+        }
+    }
+
+    task jacocoTestReport(dependsOn: project.android.buildTypes.collect {
+        def type = it.name
+        project.android.productFlavors.collect {
+            "jacoco${it.name.capitalize()}${type.capitalize()}TestReport"
+        }
+    })
+}

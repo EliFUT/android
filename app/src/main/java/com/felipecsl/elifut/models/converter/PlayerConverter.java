@@ -19,6 +19,7 @@ public class PlayerConverter extends Persistable.Converter<Player> {
         + " ("
         + "id INTEGER PRIMARY KEY, "
         + "base_id INTEGER, "
+        + "club_id INTEGER, "
         + "first_name TEXT, "
         + "last_name TEXT, "
         + "name TEXT, "
@@ -43,6 +44,7 @@ public class PlayerConverter extends Persistable.Converter<Player> {
     return Player.builder()
         .base_id(cursor.getInt("base_id"))
         .id(cursor.getInt("id"))
+        .clubId(cursor.getInt("club_id"))
         .first_name(cursor.getString("first_name"))
         .last_name(cursor.getString("last_name"))
         .name(cursor.getString("name"))
@@ -50,7 +52,7 @@ public class PlayerConverter extends Persistable.Converter<Player> {
         .position(cursor.getString("position"))
         .image(cursor.getString("image"))
         .nation_image(cursor.getString("nation_image"))
-        .rating(cursor.getInt("rationg"))
+        .rating(cursor.getInt("rating"))
         .player_type(cursor.getString("player_type"))
         .attribute_1(cursor.getInt("attribute_1"))
         .attribute_2(cursor.getInt("attribute_2"))
@@ -67,6 +69,7 @@ public class PlayerConverter extends Persistable.Converter<Player> {
     return ContentValuesBuilder.create()
         .put("base_id", player.base_id())
         .put("id", player.id())
+        .put("club_id", player.clubId())
         .put("first_name", player.first_name())
         .put("last_name", player.last_name())
         .put("name", player.name())

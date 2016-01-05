@@ -84,12 +84,18 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
         + TextUtils.join(", ", Ints.asList(rowIds)) + ")");
   }
 
+  public <T extends Persistable> List<T> query(Class<T> type, String whereClause, String... args) {
+    Persistable.Converter<T> converter = converterForType(type);
+    return rawQuery(converter, "SELECT * FROM " + converter.tableName() + " WHERE " + whereClause,
+        args);
+  }
+
   private <T extends Persistable> List<T> rawQuery(
-      Persistable.Converter<T> converter, String queryString) {
+      Persistable.Converter<T> converter, String query, String... args) {
     Cursor cursor = null;
     List<T> items = new ArrayList<>();
     try {
-      cursor = db.query(queryString);
+      cursor = db.query(query, args);
       while (cursor.moveToNext()) {
         items.add(cursorToObject(converter, cursor));
       }

@@ -8,16 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.R;
-import com.felipecsl.elifut.ResponseObserver;
 import com.felipecsl.elifut.adapter.PlayersAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.models.Player;
+import com.felipecsl.elifut.services.ElifutPersistenceService;
 import com.felipecsl.elifut.util.FragmentBundler;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.BindDimen;
@@ -31,6 +33,8 @@ public final class TeamPlayersFragment extends ElifutFragment {
   @Bind(R.id.progress_bar_layout) ViewGroup progressBarLayout;
   @Bind(R.id.recycler_players) RecyclerView playersList;
   @BindDimen(R.dimen.player_spacing) int playerSpacing;
+
+  @Inject ElifutPersistenceService persistenceService;
 
   @State Club club;
   @State Nation nation;
@@ -69,13 +73,8 @@ public final class TeamPlayersFragment extends ElifutFragment {
   }
 
   private void loadPlayers() {
-    service.playersByClub(club.id())
-        .compose(this.<List<Player>>applyTransformations())
-        .subscribe(new ResponseObserver<List<Player>>(getActivity(), TAG, "Failed to load club players") {
-          @Override public void onNext(List<Player> response) {
-            players = new ArrayList<>(response);
-            onPlayersLoaded();
-          }
-        });
+    players = new ArrayList<>(persistenceService.query(
+        AutoValueClasses.PLAYER, "club_id = ?", String.valueOf(club.id())));
+    onPlayersLoaded();
   }
 }

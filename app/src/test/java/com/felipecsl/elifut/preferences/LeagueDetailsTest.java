@@ -6,7 +6,7 @@ import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
-import com.felipecsl.elifut.TestUtil;
+import com.felipecsl.elifut.TestFixtures;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.LeagueRound;
@@ -36,18 +36,18 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
     manifest = ElifutTestRunner.MANIFEST_PATH)
 public class LeagueDetailsTest {
-  private final List<Club> clubs = Arrays.asList(TestUtil.GREMIO, TestUtil.INTERNACIONAL);
-  private final Goal goal = Goal.create(1, TestUtil.GREMIO);
+  private final List<Club> clubs = Arrays.asList(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
+  private final Goal goal = Goal.create(1, TestFixtures.GREMIO);
   private final MatchResult matchResult = MatchResult.builder()
       .homeGoals(Collections.singletonList(goal))
       .awayGoals(Collections.emptyList())
-      .build(TestUtil.GREMIO, TestUtil.INTERNACIONAL);
+      .build(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
   private final LeagueRound round1 = LeagueRound.create(1, 1, Arrays.asList(
-      Match.create(TestUtil.GREMIO, TestUtil.INTERNACIONAL, matchResult),
-      Match.create(TestUtil.INTERNACIONAL, TestUtil.GREMIO, matchResult)));
+      Match.create(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL, matchResult),
+      Match.create(TestFixtures.INTERNACIONAL, TestFixtures.GREMIO, matchResult)));
   private final LeagueRound round2 = LeagueRound.create(2, 1, Arrays.asList(
-      Match.create(TestUtil.INTERNACIONAL, TestUtil.GREMIO, matchResult),
-      Match.create(TestUtil.GREMIO, TestUtil.INTERNACIONAL, matchResult)));
+      Match.create(TestFixtures.INTERNACIONAL, TestFixtures.GREMIO, matchResult),
+      Match.create(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL, matchResult)));
   private final List<LeagueRound> rounds = Arrays.asList(round1, round2);
   private LeagueDetails leagueDetails;
 

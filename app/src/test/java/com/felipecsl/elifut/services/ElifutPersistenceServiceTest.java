@@ -6,8 +6,9 @@ import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
-import com.felipecsl.elifut.TestUtil;
+import com.felipecsl.elifut.TestFixtures;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Player;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,16 +42,25 @@ public class ElifutPersistenceServiceTest {
   }
 
   @Test public void testQueryById() {
-    List<Club> clubs = Arrays.asList(TestUtil.GREMIO, TestUtil.INTERNACIONAL);
+    List<Club> clubs = Arrays.asList(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
     service.create(clubs);
-    assertThat(service.queryOne(AutoValueClasses.CLUB, TestUtil.GREMIO.id()))
-        .isEqualTo(TestUtil.GREMIO);
-    assertThat(service.queryOne(AutoValueClasses.CLUB, TestUtil.INTERNACIONAL.id()))
-        .isEqualTo(TestUtil.INTERNACIONAL);
+    assertThat(service.queryOne(AutoValueClasses.CLUB, TestFixtures.GREMIO.id()))
+        .isEqualTo(TestFixtures.GREMIO);
+    assertThat(service.queryOne(AutoValueClasses.CLUB, TestFixtures.INTERNACIONAL.id()))
+        .isEqualTo(TestFixtures.INTERNACIONAL);
+  }
+
+  @Test public void testQueryWithWhereClause() {
+    // This test method is also testing PlayerConverter indirectly
+    List<Player> players = Arrays.asList(TestFixtures.PELE, TestFixtures.GORNALDO);
+    service.create(players);
+    String clubId = String.valueOf(TestFixtures.PELE.clubId());
+    assertThat(service.query(AutoValueClasses.PLAYER, "club_id = ?", clubId))
+        .isEqualTo(Collections.singletonList(TestFixtures.PELE));
   }
 
   @Test public void testObservable() {
-    List<Club> clubs = Arrays.asList(TestUtil.GREMIO, TestUtil.INTERNACIONAL);
+    List<Club> clubs = Arrays.asList(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
     service.create(clubs);
     TestSubscriber<List<? extends Club>> subscriber = new TestSubscriber<>();
     service.observable(AutoValueClasses.CLUB).subscribe(subscriber);
@@ -59,19 +69,19 @@ public class ElifutPersistenceServiceTest {
   }
 
   @Test public void testUpdate() {
-    List<Club> clubs = Arrays.asList(TestUtil.GREMIO, TestUtil.INTERNACIONAL);
+    List<Club> clubs = Arrays.asList(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
     service.create(clubs);
-    Club updatedGremio = TestUtil.GREMIO.toBuilder().small_image("plimba").build();
+    Club updatedGremio = TestFixtures.GREMIO.toBuilder().small_image("plimba").build();
     assertThat(service.update(updatedGremio, updatedGremio.id())).isEqualTo(1);
     assertThat(service.query(AutoValueClasses.CLUB))
-        .isEqualTo(Arrays.asList(updatedGremio, TestUtil.INTERNACIONAL));
+        .isEqualTo(Arrays.asList(updatedGremio, TestFixtures.INTERNACIONAL));
   }
 
   @Test public void testDelete() {
-    List<Club> clubs = Arrays.asList(TestUtil.GREMIO, TestUtil.INTERNACIONAL);
+    List<Club> clubs = Arrays.asList(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
     service.create(clubs);
-    assertThat(service.delete(TestUtil.GREMIO, TestUtil.GREMIO.id())).isEqualTo(1);
+    assertThat(service.delete(TestFixtures.GREMIO, TestFixtures.GREMIO.id())).isEqualTo(1);
     assertThat(service.query(AutoValueClasses.CLUB))
-        .isEqualTo(Collections.singletonList(TestUtil.INTERNACIONAL));
+        .isEqualTo(Collections.singletonList(TestFixtures.INTERNACIONAL));
   }
 }

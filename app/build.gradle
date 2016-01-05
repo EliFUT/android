@@ -35,7 +35,7 @@ android {
 
   buildTypes {
     debug {
-      buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
+      buildConfigField "String", "API_ENDPOINT", "\"$devApiEndpoint\""
     }
     release {
       buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
@@ -91,9 +91,9 @@ dependencies {
   compile 'io.reactivex:rxjava:1.1.0'
   compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
   compile 'io.reactivex:rxandroid:1.0.1'
-  compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
-  compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
-  compile 'com.squareup.retrofit:converter-moshi:2.0.0-beta2'
+  compile "com.squareup.retrofit:retrofit:$retrofitVersion"
+  compile "com.squareup.retrofit:adapter-rxjava:$retrofitVersion"
+  compile "com.squareup.retrofit:converter-moshi:$retrofitVersion"
   compile 'com.squareup.moshi:moshi:1.0.0'
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'com.google.dagger:dagger:2.0.2'

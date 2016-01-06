@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="color_primary">#c3aa27</color>
+  <color name="color_primary">#2e7d32</color>
+  <color name="color_primary_dark">#1f5e23</color>
+  <color name="color_accent">#e72828</color>
   <color name="color_secondary">#232322</color>
   <color name="window_background">#FFF5F5F5</color>
   <color name="club_table_header_bg">#2d2a2a</color>

@@ -1,4 +1,4 @@
-package com.felipecsl.elifut;
+package com.felipecsl.elifut.animations;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

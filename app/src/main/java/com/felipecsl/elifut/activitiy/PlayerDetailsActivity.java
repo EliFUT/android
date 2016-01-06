@@ -11,7 +11,7 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.felipecsl.elifut.AnimationUtil;
+import com.felipecsl.elifut.animations.AnimationUtil;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.LargePlayerViewHolder;
 import com.felipecsl.elifut.models.Club;

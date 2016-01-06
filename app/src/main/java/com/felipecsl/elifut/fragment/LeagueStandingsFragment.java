@@ -24,6 +24,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class LeagueStandingsFragment extends ElifutFragment {
@@ -64,6 +65,7 @@ public class LeagueStandingsFragment extends ElifutFragment {
     League league = Preconditions.checkNotNull(userPreferences.league());
     subscription.add(leagueDetails
         .clubsObservable()
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(adapter::setItems));
 
     Picasso.with(getContext())

@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-  android:id="@+id/main_content"
+<FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fitsSystemWindows="true">
 
-  <include layout="@layout/tabbed_app_bar_layout"/>
+  <android.support.design.widget.CoordinatorLayout
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-  <include layout="@layout/scrolling_viewpager"/>
+    <include layout="@layout/tabbed_app_bar_layout"/>
 
-  <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="@dimen/fab_margin"
-    android:alpha="0.7"
-    android:src="@drawable/ic_fast_forward_white_48dp"/>
+    <include layout="@layout/scrolling_viewpager"/>
 
-</android.support.design.widget.CoordinatorLayout>
+    <android.support.design.widget.FloatingActionButton
+      android:id="@+id/fab"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|end"
+      android:layout_margin="@dimen/fab_margin"
+      android:alpha="0.7"
+      android:src="@drawable/ic_fast_forward_white_48dp"/>
+
+  </android.support.design.widget.CoordinatorLayout>
+
+  <include layout="@layout/circular_reveal_overlay"/>
+
+</FrameLayout>

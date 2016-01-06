@@ -1,5 +1,7 @@
 package com.felipecsl.elifut;
 
+import android.os.AsyncTask;
+
 import com.felipecsl.elifut.services.ResponseBodyMapper;
 import com.felipecsl.elifut.services.ResponseMapper;
 import com.google.common.collect.Lists;
@@ -46,5 +48,14 @@ public final class Util {
             .flatMap(ResponseMapper.<T>instance())
             .map(ResponseBodyMapper.<T>instance())
             .observeOn(AndroidSchedulers.mainThread());
+  }
+
+  public static void defer(Runnable runnable) {
+    new AsyncTask<Void, Void, Void>() {
+      @Override protected Void doInBackground(Void... params) {
+        runnable.run();
+        return null;
+      }
+    }.execute();
   }
 }

@@ -16,6 +16,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class LeagueProgressFragment extends ElifutFragment {
@@ -41,14 +42,15 @@ public class LeagueProgressFragment extends ElifutFragment {
 
     subscription.add(leagueDetails
         .roundsObservable()
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(rounds -> {
-          int totalRounds = leagueDetails.rounds().size();
-          if (totalRounds == 0) {
+          int roundsLeft = leagueDetails.rounds().size();
+          if (roundsLeft == 0) {
             throw new IllegalStateException("No rounds left");
           }
           LeagueRound round = rounds.get(0);
           String title = getActivity().getString(
-              R.string.round_n_of_n, round.roundNumber(), totalRounds);
+              R.string.next_round_n_of_n, round.roundNumber(), roundsLeft + round.roundNumber());
           adapter.setRound(round, title);
         }));
 

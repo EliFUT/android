@@ -98,6 +98,7 @@ public class MatchProgressActivity extends ElifutActivity {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     setContentView(R.layout.activity_match_progress);
     ButterKnife.bind(this);
     daggerComponent().inject(this);

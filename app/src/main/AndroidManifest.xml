@@ -31,8 +31,7 @@
     <activity
       android:name=".activitiy.TeamDetailsActivity"
       android:theme="@style/AppTheme.WithTransition"/>
-    <activity
-      android:name=".activitiy.LeagueRoundResultsActivity"/>
+    <activity android:name=".activitiy.LeagueRoundResultsActivity"/>
     <activity
       android:name=".activitiy.PlayerDetailsActivity"
       android:label="@string/player_details"

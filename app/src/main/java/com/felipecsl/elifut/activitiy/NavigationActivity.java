@@ -1,5 +1,6 @@
 package com.felipecsl.elifut.activitiy;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -21,11 +23,15 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.Util;
+import com.felipecsl.elifut.animations.SimpleAnimatorListener;
 import com.felipecsl.elifut.match.LeagueRoundExecutor;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
@@ -36,6 +42,7 @@ import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.BindDimen;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -43,14 +50,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class NavigationActivity extends ElifutActivity
     implements NavigationView.OnNavigationItemSelectedListener {
+  private final Handler handler = new Handler();
+
   @Inject UserPreferences userPreferences;
   @Inject LeagueDetails leagueDetails;
   @Inject LeagueRoundExecutor roundExecutor;
 
+  @Bind(R.id.circular_reveal_overlay) View circularRevealOverlay;
   @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
   @Bind(R.id.nav_view) NavigationView navigationView;
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.fab) FloatingActionButton fab;
+  @BindDimen(R.dimen.fab_margin) int fabMargin;
 
   private final SimpleTarget clubLogoTarget = new SimpleTarget() {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -162,7 +173,26 @@ public abstract class NavigationActivity extends ElifutActivity
 
   @OnClick(R.id.fab) public void onClickFab() {
     LeagueRound round = leagueDetails.nextRound();
-    roundExecutor.execute(round.matches());
-    startActivity(MatchProgressActivity.newIntent(this, round));
+    circularRevealOverlay.setVisibility(View.VISIBLE);
+    int distFromEdge = fabMargin + (fab.getWidth() / 2);
+    int cx = drawerLayout.getWidth() - distFromEdge;
+    int cy = drawerLayout.getHeight() - distFromEdge;
+    float finalRadius = Math.max(drawerLayout.getWidth(), drawerLayout.getHeight());
+    Animator circularReveal = ViewAnimationUtils
+        .createCircularReveal(circularRevealOverlay, cx, cy, 0, finalRadius)
+        .setDuration(400);
+    circularReveal.addListener(new SimpleAnimatorListener() {
+      @Override public void onAnimationStart(Animator animation) {
+        handler.postDelayed(() ->
+            startActivity(MatchProgressActivity.newIntent(NavigationActivity.this, round)), 200);
+      }
+
+      @Override public void onAnimationEnd(Animator animation) {
+        circularRevealOverlay.postDelayed(() ->
+            circularRevealOverlay.setVisibility(View.GONE), 1000);
+        Util.defer(() -> roundExecutor.execute(round.matches()));
+      }
+    });
+    circularReveal.start();
   }
 }

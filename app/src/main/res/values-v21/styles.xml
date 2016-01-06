@@ -2,8 +2,8 @@
 
   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="colorPrimary">@color/color_primary</item>
-    <item name="colorPrimaryDark">#90651a</item>
-    <item name="colorAccent">#462e09</item>
+    <item name="colorPrimaryDark">@color/color_primary_dark</item>
+    <item name="colorAccent">@color/color_accent</item>
     <item name="android:windowBackground">@color/window_background</item>
     <!-- enable window content transitions -->
     <item name="android:windowContentTransitions">true</item>
@@ -11,7 +11,8 @@
   </style>
 
   <style name="AppTheme.WithTransition" parent="AppTheme">
-    <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
+    <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform
+    </item>
     <item name="android:windowSharedElementExitTransition">@transition/change_image_transform</item>
   </style>
 

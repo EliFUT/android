@@ -7,20 +7,21 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.util.BundleBuilder;
 
 public class FractionView extends View {
-  private Paint circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private Paint sectorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private RectF sectorOval = new RectF();
+  private final Paint circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private final Paint sectorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private final RectF sectorOval = new RectF();
   private int numerator = 1;
   private int denominator = 60;
-  private OnChangeListener listener;
 
   public FractionView(Context context) {
     super(context);
@@ -40,11 +41,12 @@ public class FractionView extends View {
   private void init() {
     // Avoid allocating new memory in onDraw by initializing circlePaint
     // in the constructor.
+    int color = ContextCompat.getColor(getContext(), R.color.color_accent);
     circlePaint.setColor(Color.WHITE);
     circlePaint.setStyle(Paint.Style.FILL);
-    sectorPaint.setColor(0xffff5a5f);
+    sectorPaint.setColor(color);
     sectorPaint.setStyle(Paint.Style.FILL);
-    strokePaint.setColor(0xffff5a5f);
+    strokePaint.setColor(color);
     strokePaint.setStyle(Paint.Style.STROKE);
   }
 
@@ -88,10 +90,6 @@ public class FractionView extends View {
 
     // Request a redraw
     invalidate();
-
-    if (listener != null) {
-      listener.onChange(numerator, denominator);
-    }
   }
 
   @Override
@@ -143,13 +141,5 @@ public class FractionView extends View {
       super.onRestoreInstanceState(state);
     }
     setFraction(numerator, denominator);
-  }
-
-  public void setOnChangeListener(OnChangeListener listener) {
-    listener = listener;
-  }
-
-  public interface OnChangeListener {
-    public void onChange(int numerator, int denominator);
   }
 }

@@ -10,7 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.felipecsl.elifut.AnimationUtil;
+import com.felipecsl.elifut.animations.AnimationUtil;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.ViewPagerAdapter;
 import com.felipecsl.elifut.fragment.TeamDetailsFragment;

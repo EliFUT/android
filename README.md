@@ -27,23 +27,23 @@ some core concepts of Android development and advanced usage of some libraries.
 
 Below is a non-comprehensive list of the libraries/plugins/patterns used:
 
- * Dependency Injection using [Dagger](google/dagger);
- * Image caching and loading using [Picasso](square/picasso)
- * Unit testing using JUnit and [Robolectric](robolectric/robolectric)
- * Reactive programming using [RxJava](reactivex/rxjava) and [RxAndroid](reactivex/rxandroid)
- * `View` binding using [ButterKnife](jakewharton/butterknife)
- * JSON manipulation using [Moshi](square/moshi)
- * Value classes using [AutoValue](google/auto)
- * Networking using [OkHttp](square/okhttp)
- * HTTP client using [Retrofit](square/retrofit)
- * `Activity`/`Fragment` state management using [Icepick](frankiesardo/icepick)
- * Reactive `SharedPreferences` using [rx-preferences](f2prateek/rx-preferences)
- * Reactive SQLite data using [SqlBrite](square/sqlbrite)
- * Code-generation based `Parcelable` implementation using [auto-value-parcel](rharter/auto-value-parcel)
- * Code-generation based Moshi JSON adapters using [auto-value-parcel](rharter/auto-value-moshi)
- * Additional Java utility classes provided by [Guava](google/guava)
- * Debugging using [Stetho](facebook/stetho)
- * Java 8 lambdas using [Retrolambda](evant/gradle-retrolambda)
+ * Dependency Injection using [Dagger](https://github.com/google/dagger)
+ * Image caching and loading using [Picasso](https://github.com/square/picasso)
+ * Unit testing using JUnit and [Robolectric](https://github.com/robolectric/robolectric)
+ * Reactive programming using [RxJava](reactivex/rxjava) and [RxAndroid](https://github.com/reactivex/rxandroid)
+ * `View` binding using [ButterKnife](https://github.com/jakewharton/butterknife)
+ * JSON manipulation using [Moshi](https://github.com/square/moshi)
+ * Value classes using [AutoValue](https://github.com/google/auto)
+ * Networking using [OkHttp](https://github.com/square/okhttp)
+ * HTTP client using [Retrofit](https://github.com/square/retrofit)
+ * `Activity`/`Fragment` state management using [Icepick](https://github.com/frankiesardo/icepick)
+ * Reactive `SharedPreferences` using [rx-preferences](https://github.com/f2prateek/rx-preferences)
+ * Reactive SQLite data using [SqlBrite](https://github.com/square/sqlbrite)
+ * Code-generation based `Parcelable` implementation using [auto-value-parcel](https://github.com/rharter/auto-value-parcel)
+ * Code-generation based Moshi JSON adapters using [auto-value-parcel](https://github.com/rharter/auto-value-moshi)
+ * Additional Java utility classes provided by [Guava](https://github.com/google/guava)
+ * Debugging using [Stetho](https://github.com/facebook/stetho)
+ * Java 8 lambdas using [Retrolambda](https://github.com/evant/gradle-retrolambda)
  * Material design widgets using AppCompat and the Support Design Library
 
 ## Building and running

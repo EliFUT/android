@@ -69,7 +69,7 @@ development API by setting the `API_ENPOINT` constant in the build.gradle to `$d
 
 **Huge thanks to Square and their Android team for releasing such a huge
 number of very high quality libraries. As you can see from the list above, the vast majority of
-them are created and maintained by Square.
+them are created and maintained by Square.**
 
 ## License
 

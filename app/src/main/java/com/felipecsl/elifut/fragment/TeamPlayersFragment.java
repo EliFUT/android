@@ -18,6 +18,7 @@ import com.felipecsl.elifut.services.ElifutPersistenceService;
 import com.felipecsl.elifut.util.FragmentBundler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -72,8 +73,9 @@ public final class TeamPlayersFragment extends ElifutFragment {
   }
 
   private void loadPlayers() {
-    players = new ArrayList<>(persistenceService.query(
-        AutoValueClasses.PLAYER, "club_id = ?", String.valueOf(club.id())));
+    List<? extends Player> players = persistenceService.query(
+        AutoValueClasses.PLAYER, "club_id = ?", String.valueOf(club.id()));
+    this.players = new ArrayList<>(players);
     onPlayersLoaded();
   }
 }

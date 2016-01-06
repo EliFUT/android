@@ -3,10 +3,10 @@ package com.felipecsl.elifut;
 import android.content.Context;
 
 import com.facebook.stetho.Stetho;
-import com.facebook.stetho.okhttp.StethoInterceptor;
-import com.squareup.okhttp.Interceptor;
 
 import java.util.List;
+
+import okhttp3.Interceptor;
 
 public final class StethoInitializer {
   public static void initialize(Context context) {
@@ -14,6 +14,7 @@ public final class StethoInitializer {
   }
 
   public static void addInterceptor(List<Interceptor> list) {
-    list.add(new StethoInterceptor());
+    // TODO: Uncomment when Stetho supports OkHttp 3 and add to the provider in NetworkModule.
+//    list.add(new StethoInterceptor());
   }
 }

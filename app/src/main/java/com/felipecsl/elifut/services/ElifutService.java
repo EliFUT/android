@@ -7,10 +7,10 @@ import com.felipecsl.elifut.models.Player;
 
 import java.util.List;
 
-import retrofit.Response;
-import retrofit.http.GET;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import retrofit2.Response;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface ElifutService {

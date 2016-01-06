@@ -16,7 +16,7 @@ import com.google.common.collect.FluentIterable;
 
 import java.util.List;
 
-import retrofit.Response;
+import retrofit2.Response;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 

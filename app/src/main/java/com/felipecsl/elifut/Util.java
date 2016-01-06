@@ -9,7 +9,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 
-import retrofit.Response;
+import retrofit2.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

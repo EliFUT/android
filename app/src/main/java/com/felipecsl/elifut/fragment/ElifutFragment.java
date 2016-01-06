@@ -13,7 +13,7 @@ import com.felipecsl.elifut.services.ElifutService;
 import javax.inject.Inject;
 
 import icepick.Icepick;
-import retrofit.Response;
+import retrofit2.Response;
 import rx.Observable;
 
 public abstract class ElifutFragment extends Fragment {

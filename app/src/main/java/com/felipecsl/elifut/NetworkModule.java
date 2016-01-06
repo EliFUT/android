@@ -3,9 +3,6 @@ package com.felipecsl.elifut;
 import android.content.Context;
 
 import com.felipecsl.elifut.services.ElifutService;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.io.File;
 import java.util.concurrent.Executor;
@@ -15,10 +12,13 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.CallAdapter;
-import retrofit.Converter;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import okhttp3.Cache;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import retrofit2.CallAdapter;
+import retrofit2.Converter;
+import retrofit2.Retrofit;
+import retrofit2.RxJavaCallAdapterFactory;
 
 @Module
 public class NetworkModule {
@@ -62,10 +62,10 @@ public class NetworkModule {
   }
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Cache cache) {
-    OkHttpClient client = new OkHttpClient();
-    StethoInitializer.addInterceptor(client.networkInterceptors());
-    client.setReadTimeout(15, TimeUnit.SECONDS);
-    client.setConnectTimeout(15, TimeUnit.SECONDS);
-    return client.setCache(cache);
+    return new OkHttpClient.Builder()
+        .readTimeout(15, TimeUnit.SECONDS)
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .cache(cache)
+        .build();
   }
 }

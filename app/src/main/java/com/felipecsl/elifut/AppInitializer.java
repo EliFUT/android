@@ -58,6 +58,7 @@ public class AppInitializer {
           return Observable.from(clubs);
         })
         .flatMap(club -> {
+          // TODO: Use players count to determine how much we have to increment the progress per step
           progressDialog.setProgress(progressDialog.getProgress() + 2);
           return service.playersByClub(club.id())
               .compose(transform())

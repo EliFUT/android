@@ -27,7 +27,6 @@ import butterknife.ButterKnife;
 import icepick.State;
 
 public final class TeamPlayersFragment extends ElifutFragment {
-  private static final String TAG = TeamPlayersFragment.class.getSimpleName();
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
 
   @Bind(R.id.progress_bar_layout) ViewGroup progressBarLayout;

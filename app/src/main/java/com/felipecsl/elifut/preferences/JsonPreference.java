@@ -14,8 +14,7 @@ public final class JsonPreference<T> {
   private final Preference<String> rxPreference;
   private final JsonAdapter<T> adapter;
 
-  JsonPreference(
-      RxSharedPreferences rxSharedPreferences, JsonAdapter<T> adapter, String key) {
+  JsonPreference(RxSharedPreferences rxSharedPreferences, JsonAdapter<T> adapter, String key) {
     this.adapter = adapter;
     this.rxPreference = rxSharedPreferences.getString(key);
   }

@@ -15,8 +15,7 @@ import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -28,8 +27,8 @@ public final class LeagueMatchesAdapter
     extends RecyclerViewHeaderListAdapter<Match, String, ItemViewHolder, SimpleHeaderViewHolder> {
   private final Club currentClub;
 
-  public LeagueMatchesAdapter(Club currentClub, String headerText, List<Match> matches) {
-    super(new ArrayList<>(matches), checkNotNull(headerText));
+  public LeagueMatchesAdapter(Club currentClub) {
+    super(Collections.emptyList(), "");
     this.currentClub = checkNotNull(currentClub);
   }
 
@@ -42,8 +41,9 @@ public final class LeagueMatchesAdapter
     return (parent, viewType) -> new ItemViewHolder(parent);
   }
 
-  public void setItems(LeagueRound round) {
-    setData(new ArrayList<>(round.matches()));
+  public void setRound(LeagueRound round, String headerText) {
+    setData(round.matches());
+    setHeaderData(headerText);
   }
 
   class ItemViewHolder extends BaseViewHolder<Match> {

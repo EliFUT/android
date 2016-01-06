@@ -10,7 +10,7 @@ abstract class RecyclerViewHeaderListAdapter<R, J, T extends BaseViewHolder<R>, 
     extends RecyclerViewListAdapter<R, T>
     implements StickyRecyclerHeadersAdapter<H> {
 
-  protected final J headerData;
+  protected J headerData;
 
   protected RecyclerViewHeaderListAdapter(List<R> data, J headerData) {
     super(data);
@@ -29,5 +29,9 @@ abstract class RecyclerViewHeaderListAdapter<R, J, T extends BaseViewHolder<R>, 
 
   @Override public H onCreateHeaderViewHolder(ViewGroup parent) {
     return headerFactory().newInstance(parent, 0);
+  }
+
+  protected void setHeaderData(J headerData) {
+    this.headerData = headerData;
   }
 }

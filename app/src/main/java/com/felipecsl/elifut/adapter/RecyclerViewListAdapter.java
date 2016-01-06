@@ -3,11 +3,13 @@ package com.felipecsl.elifut.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.google.common.collect.FluentIterable;
+
 import java.util.List;
 
 public abstract class RecyclerViewListAdapter<R, T extends BaseViewHolder<R>>
     extends RecyclerView.Adapter<T> {
-  protected final List<R> data;
+  protected List<R> data;
 
   protected RecyclerViewListAdapter(List<R> data) {
     this.data = data;
@@ -32,8 +34,7 @@ public abstract class RecyclerViewListAdapter<R, T extends BaseViewHolder<R>>
   }
 
   protected void setData(List<R> newData) {
-    data.clear();
-    data.addAll(newData);
+    data = FluentIterable.from(newData).toList();
     notifyDataSetChanged();
   }
 }

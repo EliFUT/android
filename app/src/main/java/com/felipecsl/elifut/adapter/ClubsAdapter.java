@@ -13,6 +13,7 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -28,7 +29,7 @@ public final class ClubsAdapter
   private final Club selectedClub;
 
   public ClubsAdapter(Club selectedClub) {
-    super(new ArrayList<>(), null);
+    super(Collections.emptyList(), null);
     this.selectedClub = checkNotNull(selectedClub);
   }
 

@@ -37,27 +37,27 @@ public class LeagueProgressFragment extends ElifutFragment {
         getActivity(), LinearLayoutManager.VERTICAL, false);
     recyclerView.setLayoutManager(layout);
     recyclerView.setHasFixedSize(true);
+    initAdapter();
 
     subscription.add(leagueDetails
         .roundsObservable()
         .subscribe(rounds -> {
-          // TODO: This is gonna blow up if there are no rounds left
-          LeagueRound round = rounds.get(0);
-          if (adapter == null) {
-            initAdapter(round);
-          } else {
-            adapter.setItems(round);
+          int totalRounds = leagueDetails.rounds().size();
+          if (totalRounds == 0) {
+            throw new IllegalStateException("No rounds left");
           }
+          LeagueRound round = rounds.get(0);
+          String title = getActivity().getString(
+              R.string.round_n_of_n, round.roundNumber(), totalRounds);
+          adapter.setRound(round, title);
         }));
 
     return view;
   }
 
-  private void initAdapter(LeagueRound round) {
+  private void initAdapter() {
     Club club = userPreferences.club();
-    int totalRounds = leagueDetails.rounds().size();
-    String title = getActivity().getString(R.string.round_n_of_n, round.roundNumber(), totalRounds);
-    adapter = new LeagueMatchesAdapter(club, title, round.matches());
+    adapter = new LeagueMatchesAdapter(club);
     adapter.setHasStableIds(true);
     StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(adapter);
     recyclerView.addItemDecoration(decoration);

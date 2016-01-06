@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 import com.felipecsl.elifut.R;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 import icepick.State;
 
 import static com.felipecsl.elifut.util.ColorUtils.colorizeTabsAndHeader;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LeagueDetailsActivity extends NavigationActivity {
   @Bind(R.id.toolbar) Toolbar toolbar;
@@ -37,7 +39,8 @@ public class LeagueDetailsActivity extends NavigationActivity {
 
     navigationView.setCheckedItem(R.id.nav_league);
 
-    getSupportActionBar().setTitle(league.name());
+    ActionBar actionBar = checkNotNull(getSupportActionBar());
+    actionBar.setTitle(league.name());
     setupViewPager();
   }
 

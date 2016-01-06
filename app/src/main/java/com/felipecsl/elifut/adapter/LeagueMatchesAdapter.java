@@ -1,6 +1,9 @@
 package com.felipecsl.elifut.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -79,10 +82,18 @@ public final class LeagueMatchesAdapter
       txtTeamHome.setText(home.tinyName().toUpperCase());
       txtTeamAway.setText(away.tinyName().toUpperCase());
       Context context = itemView.getContext();
-      layoutTeamAway.setOnClickListener(view -> context.startActivity(
-          TeamDetailsActivity.newIntent(context, away)));
-      layoutTeamHome.setOnClickListener(view -> context.startActivity(
-          TeamDetailsActivity.newIntent(context, home)));
+      layoutTeamAway.setOnClickListener(view -> {
+        //noinspection unchecked
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            (Activity) context, Pair.create(imgTeamAway, "img_team"));
+        context.startActivity(TeamDetailsActivity.newIntent(context, away), options.toBundle());
+      });
+      layoutTeamHome.setOnClickListener(view -> {
+        //noinspection unchecked
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            (Activity) context, Pair.create(imgTeamHome, "img_team"));
+        context.startActivity(TeamDetailsActivity.newIntent(context, home), options.toBundle());
+      });
 
       if (!match.hasClub(currentClub)) {
         layoutOuter.setBackgroundColor(

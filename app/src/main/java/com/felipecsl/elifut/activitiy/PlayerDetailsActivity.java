@@ -1,10 +1,8 @@
 package com.felipecsl.elifut.activitiy;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
@@ -12,14 +10,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.Window;
 
+import com.felipecsl.elifut.AnimationUtil;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.LargePlayerViewHolder;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Player;
-import com.felipecsl.elifut.transitions.TransitionUtil;
-import com.felipecsl.elifut.util.AndroidVersion;
 import com.felipecsl.elifut.util.ColorUtils;
 import com.squareup.picasso.Picasso;
 
@@ -47,15 +43,9 @@ public class PlayerDetailsActivity extends ElifutActivity {
         .putExtra(EXTRA_CLUB, club);
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (AndroidVersion.isAtLeastLollipop()) {
-      Window window = getWindow();
-      window.setAllowEnterTransitionOverlap(true);
-      window.setEnterTransition(TransitionUtil.makeFadeTransition());
-      window.setExitTransition(TransitionUtil.makeFadeTransition());
-    }
+    AnimationUtil.setupActivityTransition(this);
     setContentView(R.layout.activity_player_details);
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);

@@ -10,7 +10,7 @@
     <item name="android:windowActivityTransitions">true</item>
   </style>
 
-  <style name="AppTheme.PlayerAnimated" parent="AppTheme">
+  <style name="AppTheme.WithTransition" parent="AppTheme">
     <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
     <item name="android:windowSharedElementExitTransition">@transition/change_image_transform</item>
   </style>

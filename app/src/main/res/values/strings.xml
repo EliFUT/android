@@ -29,5 +29,5 @@
   <string name="round_results">Round %1$s results</string>
   <string name="player_details">Player Details</string>
   <string name="loading">Loading</string>
-  <string name="please_wait">Please wait...</string>
+  <string name="please_wait_downloading_data">Downloading game data. This should take a minute or two. Please wait…</string>
 </resources>

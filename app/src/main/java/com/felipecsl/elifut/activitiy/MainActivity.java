@@ -99,7 +99,7 @@ public class MainActivity extends ElifutActivity {
     progressDialog.setIndeterminate(false);
     progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     progressDialog.setTitle(R.string.loading);
-    progressDialog.setMessage(getString(R.string.please_wait));
+    progressDialog.setMessage(getString(R.string.please_wait_downloading_data));
     return progressDialog;
   }
 

@@ -54,7 +54,7 @@ public class MatchResultGenerator {
         loserGoals = Collections.emptyList();
       } else {
         // 3+ goals (eg.: 3x1, 3x0, 4x0, etc)
-        loserGoals = Goals.create(random, random.nextInt(Math.max(1, (totalGoals / 2) - 1)), loser);
+        loserGoals = Goals.create(random, random.nextInt(Math.max(1, (totalGoals / 2) + 1)), loser);
         winnerGoals = Goals.create(random, totalGoals - loserGoals.size(), winner);
       }
     } else {

@@ -17,7 +17,6 @@ import retrofit2.Response;
 import rx.Observable;
 
 public abstract class ElifutFragment extends Fragment {
-
   @Inject ElifutService service;
   @Inject UserPreferences userPreferences;
   @Inject LeagueDetails leagueDetails;

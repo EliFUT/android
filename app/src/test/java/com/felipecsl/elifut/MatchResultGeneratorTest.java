@@ -62,7 +62,7 @@ public class MatchResultGeneratorTest {
     assertThat(result.awayGoals().size()).isEqualTo(1);
   }
 
-  @Ignore @Test public void testStatistics() {
+  @Ignore("Run only manually") @Test public void testStatistics() {
     MatchResultGenerator generator = new MatchResultGenerator();
     int totalMatches = 100;
     float totalHomeWins = 0;

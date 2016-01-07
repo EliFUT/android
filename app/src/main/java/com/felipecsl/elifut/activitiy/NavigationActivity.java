@@ -182,12 +182,8 @@ public abstract class NavigationActivity extends ElifutActivity
         .createCircularReveal(circularRevealOverlay, cx, cy, 0, finalRadius)
         .setDuration(400);
     circularReveal.addListener(new SimpleAnimatorListener() {
-      @Override public void onAnimationStart(Animator animation) {
-        handler.postDelayed(() ->
-            startActivity(MatchProgressActivity.newIntent(NavigationActivity.this, round)), 200);
-      }
-
       @Override public void onAnimationEnd(Animator animation) {
+        startActivity(MatchProgressActivity.newIntent(NavigationActivity.this, round));
         circularRevealOverlay.postDelayed(() ->
             circularRevealOverlay.setVisibility(View.GONE), 1000);
         Util.defer(() -> roundExecutor.execute(round.matches()));

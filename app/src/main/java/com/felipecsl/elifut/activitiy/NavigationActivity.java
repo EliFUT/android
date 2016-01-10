@@ -12,7 +12,6 @@ import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -50,8 +49,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class NavigationActivity extends ElifutActivity
     implements NavigationView.OnNavigationItemSelectedListener {
-  private final Handler handler = new Handler();
-
   @Inject UserPreferences userPreferences;
   @Inject LeagueDetails leagueDetails;
   @Inject LeagueRoundExecutor roundExecutor;

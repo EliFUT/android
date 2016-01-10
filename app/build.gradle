@@ -115,10 +115,8 @@ dependencies {
   provided 'org.glassfish:javax.annotation:10.0-b28'
 
   apt 'com.google.dagger:dagger-compiler:2.0.2'
-//  apt 'com.ryanharter.auto.value:auto-value-parcel:0.2-SNAPSHOT'
-//  apt 'com.ryanharter.auto.value:auto-value-moshi:0.1-SNAPSHOT'
-  apt(files('libs/auto-parcel-0.2-SNAPSHOT.jar'))
-  apt(files('libs/auto-value-moshi-0.2-SNAPSHOT.jar'))
+  apt 'com.ryanharter.auto.value:auto-value-parcel:0.2-SNAPSHOT'
+  apt 'com.ryanharter.auto.value:auto-value-moshi:0.2-SNAPSHOT'
 
   testCompile 'junit:junit:4.12'
   testCompile 'org.mockito:mockito-core:1.10.19'

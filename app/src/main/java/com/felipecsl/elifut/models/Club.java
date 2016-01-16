@@ -1,8 +1,10 @@
 package com.felipecsl.elifut.models;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.gabrielittner.auto.value.cursor.CursorAdapter;
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 
@@ -13,7 +15,11 @@ public abstract class Club extends Model implements Persistable {
   public abstract String large_image();
   public abstract int league_id();
   @Nullable public abstract String abbrev_name();
-  @Nullable public abstract ClubStats stats();
+  @CursorAdapter(ClubStats.class) @Nullable public abstract ClubStats stats();
+
+  public static Club create(Cursor cursor) {
+    return AutoValue_Club.createFromCursor(cursor);
+  }
 
   public static Builder builder() {
     return new AutoValue_Club.Builder()

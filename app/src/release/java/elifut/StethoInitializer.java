@@ -1,7 +1,7 @@
 package com.felipecsl.elifut;
 
 import android.content.Context;
-import com.squareup.okhttp.Interceptor;
+import okhttp3.Interceptor;
 import java.util.List;
 
 public final class StethoInitializer {

@@ -28,10 +28,10 @@ public class ElifutPersistenceService extends SQLiteOpenHelper {
   private final Map<Class<?>, Persistable.Converter<?>> converterMap = new HashMap<>();
 
   public ElifutPersistenceService(Context context, SqlBrite sqlBrite,
-      List<Persistable.Converter<?>> factories) {
+      List<Persistable.Converter<?>> converters) {
     super(context, "ElifutDB", null, 1);
     db = sqlBrite.wrapDatabaseHelper(this);
-    for (Persistable.Converter<?> converter : factories) {
+    for (Persistable.Converter<?> converter : converters) {
       converterMap.put(converter.targetType(), converter);
     }
   }

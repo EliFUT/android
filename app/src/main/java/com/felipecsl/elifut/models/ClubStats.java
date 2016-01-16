@@ -1,5 +1,6 @@
 package com.felipecsl.elifut.models;
 
+import android.database.Cursor;
 import android.os.Parcelable;
 
 import com.google.auto.value.AutoValue;
@@ -12,6 +13,10 @@ public abstract class ClubStats implements Parcelable {
   public abstract int draws();
   public abstract int losses();
   public abstract int goals();
+
+  public static ClubStats create(Cursor cursor) {
+    return AutoValue_ClubStats.createFromCursor(cursor);
+  }
 
   public int games() {
     return wins() + draws() + losses();

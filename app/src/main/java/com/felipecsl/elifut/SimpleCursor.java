@@ -16,4 +16,8 @@ public class SimpleCursor {
   public String getString(String columnName) {
     return cursor.getString(cursor.getColumnIndex(columnName));
   }
+
+  public Cursor toCursor() {
+    return cursor;
+  }
 }

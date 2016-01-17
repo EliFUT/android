@@ -37,7 +37,7 @@ android {
 
   buildTypes {
     debug {
-      buildConfigField "String", "API_ENDPOINT", "\"$devApiEndpoint\""
+      buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
     }
     release {
       buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""

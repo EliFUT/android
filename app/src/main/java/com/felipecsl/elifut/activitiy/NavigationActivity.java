@@ -1,6 +1,7 @@
 package com.felipecsl.elifut.activitiy;
 
 import android.animation.Animator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
@@ -36,6 +38,7 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
+import com.felipecsl.elifut.util.AndroidVersion;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -66,10 +69,9 @@ public abstract class NavigationActivity extends ElifutActivity
       Palette.from(bitmap).generate(palette -> {
         ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
           @Override public Shader resize(int width, int height) {
-            return new LinearGradient(0, 0, width, height, new int[] {
-                palette.getDarkVibrantColor(0xFF81C784),
-                palette.getLightVibrantColor(0xFF2E7D32)
-            }, null, Shader.TileMode.CLAMP);
+            return new LinearGradient(0, 0, width, height,
+                new int[] { palette.getDarkVibrantColor(0xFF81C784),
+                    palette.getLightVibrantColor(0xFF2E7D32) }, null, Shader.TileMode.CLAMP);
           }
         };
         PaintDrawable paintDrawable = new PaintDrawable();
@@ -106,8 +108,9 @@ public abstract class NavigationActivity extends ElifutActivity
 
     Club club = checkNotNull(userPreferences.clubPreference().get());
 
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-        R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    ActionBarDrawerToggle toggle =
+        new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close);
     drawerLayout.setDrawerListener(toggle);
     toggle.syncState();
 
@@ -118,9 +121,7 @@ public abstract class NavigationActivity extends ElifutActivity
     headerViewHolder.txtCoachName.setText(userPreferences.coach());
     headerViewHolder.txtTeamName.setText(club.name());
 
-    Picasso.with(this)
-        .load(club.large_image())
-        .into(clubLogoTarget);
+    Picasso.with(this).load(club.large_image()).into(clubLogoTarget);
   }
 
   @Override public void onBackPressed() {
@@ -168,24 +169,31 @@ public abstract class NavigationActivity extends ElifutActivity
     return true;
   }
 
-  @OnClick(R.id.fab) public void onClickFab() {
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP) @OnClick(R.id.fab) public void onClickFab() {
     LeagueRound round = leagueDetails.nextRound();
     circularRevealOverlay.setVisibility(View.VISIBLE);
     int distFromEdge = fabMargin + (fab.getWidth() / 2);
     int cx = drawerLayout.getWidth() - distFromEdge;
     int cy = drawerLayout.getHeight() - distFromEdge;
     float finalRadius = Math.max(drawerLayout.getWidth(), drawerLayout.getHeight());
-    Animator circularReveal = ViewAnimationUtils
-        .createCircularReveal(circularRevealOverlay, cx, cy, 0, finalRadius)
-        .setDuration(400);
-    circularReveal.addListener(new SimpleAnimatorListener() {
-      @Override public void onAnimationEnd(Animator animation) {
-        startActivity(MatchProgressActivity.newIntent(NavigationActivity.this, round));
-        circularRevealOverlay.postDelayed(() ->
-            circularRevealOverlay.setVisibility(View.GONE), 1000);
-        Util.defer(() -> roundExecutor.execute(round.matches()));
-      }
-    });
-    circularReveal.start();
+    if (AndroidVersion.isAtLeastLollipop()) {
+      Animator circularReveal =
+          ViewAnimationUtils.createCircularReveal(circularRevealOverlay, cx, cy, 0, finalRadius)
+              .setDuration(400);
+      circularReveal.addListener(new SimpleAnimatorListener() {
+        @Override public void onAnimationEnd(Animator animation) {
+          startMatchProgressActivity(round);
+        }
+      });
+      circularReveal.start();
+    } else {
+      startMatchProgressActivity(round);
+    }
+  }
+
+  private void startMatchProgressActivity(LeagueRound round) {
+    startActivity(MatchProgressActivity.newIntent(NavigationActivity.this, round));
+    circularRevealOverlay.postDelayed(() -> circularRevealOverlay.setVisibility(View.GONE), 1000);
+    Util.defer(() -> roundExecutor.execute(round.matches()));
   }
 }

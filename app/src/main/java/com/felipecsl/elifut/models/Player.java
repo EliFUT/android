@@ -1,14 +1,25 @@
 package com.felipecsl.elifut.models;
 
+import android.database.Cursor;
 import android.support.annotation.Nullable;
 
+import com.gabrielittner.auto.value.cursor.ColumnName;
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 
+import java.util.Arrays;
+import java.util.List;
+
 @AutoValue
 public abstract class Player extends Model implements Persistable {
+  public static final List<String> DEFENDER_POSITIONS =
+      Arrays.asList("RB", "RWB", "CB", "LB", "LWB");
+  public static final List<String> MIDFIELDER_POSITIONS =
+      Arrays.asList("RM", "CDM", "CM", "CAM", "LM");
+  public static final List<String> ATTACKER_POSITIONS =
+      Arrays.asList("RW", "CF", "ST", "LW");
   // Not sent directly from the API, but manually filled after retrieval
-  @Nullable public abstract Integer clubId();
+  @ColumnName("club_id") @Nullable public abstract Integer clubId();
   public abstract String first_name();
   public abstract String last_name();
   public abstract String name();
@@ -59,6 +70,10 @@ public abstract class Player extends Model implements Persistable {
   public Builder toBuilder() {
     // https://github.com/google/auto/issues/281
     return new AutoValue_Player.Builder(this);
+  }
+
+  public static Player create(Cursor cursor) {
+    return AutoValue_Player.createFromCursor(cursor);
   }
 
   enum Foot {

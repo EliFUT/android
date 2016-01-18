@@ -30,7 +30,6 @@ import icepick.State;
 public final class TeamPlayersFragment extends ElifutFragment {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
 
-  @Bind(R.id.progress_bar_layout) ViewGroup progressBarLayout;
   @Bind(R.id.recycler_players) RecyclerView playersList;
   @BindDimen(R.dimen.player_spacing) int playerSpacing;
 
@@ -68,7 +67,6 @@ public final class TeamPlayersFragment extends ElifutFragment {
   }
 
   private void onPlayersLoaded() {
-    progressBarLayout.setVisibility(View.GONE);
     playersList.setAdapter(new PlayersAdapter(players, club));
   }
 

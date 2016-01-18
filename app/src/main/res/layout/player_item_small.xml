@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  android:id="@+id/player_outer_layout"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:foreground="?attr/selectableItemBackground"
+  android:paddingBottom="10dp"
+  android:paddingTop="10dp">
+
+  <FrameLayout
+    android:id="@+id/player_layout"
+    android:layout_width="78dp"
+    android:layout_height="120dp"
+    android:layout_gravity="center">
+
+    <ImageView
+      android:id="@+id/img_player_quality"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:transitionName="img_player_quality"
+      tools:src="@drawable/gold"/>
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="13dp"
+      android:layout_marginTop="4dp"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/player_rating"
+        style="@style/AppTheme.TextAppearance.PlayerCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="11.7sp"
+        android:textStyle="bold"
+        tools:text="75"/>
+
+      <TextView
+        android:id="@+id/player_position"
+        style="@style/AppTheme.TextAppearance.PlayerCard.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="-2.6dp"
+        android:textStyle="bold"
+        tools:text="CDM"/>
+
+      <ImageView
+        android:id="@+id/img_player_club"
+        android:layout_width="19.5dp"
+        android:layout_height="17dp"
+        android:layout_gravity="center"
+        android:transitionName="img_player_club"/>
+
+      <ImageView
+        android:id="@+id/img_player_nation"
+        android:layout_width="17dp"
+        android:layout_height="13dp"
+        android:layout_gravity="center"
+        android:transitionName="img_player_nation"/>
+
+    </LinearLayout>
+
+    <ImageView
+      android:id="@+id/player_image"
+      android:layout_width="39dp"
+      android:layout_height="39dp"
+      android:layout_gravity="end"
+      android:layout_marginRight="3.9dp"
+      android:layout_marginTop="19.5dp"
+      android:transitionName="player_image"/>
+
+    <TextView
+      android:id="@+id/player_name"
+      style="@style/AppTheme.TextAppearance.PlayerCard.Small"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="58.5dp"
+      android:paddingLeft="4.5dp"
+      android:paddingRight="4.5dp"
+      android:singleLine="true"
+      android:textStyle="bold"
+      tools:text="AGUERO"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="69dp"
+      android:orientation="horizontal"
+      android:paddingLeft="11.7dp"
+      android:paddingRight="7.8dp">
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.3"
+        android:baselineAligned="false"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/attribute_1"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="9.1dp"
+          android:text="PAC"
+          android:textSize="7.8sp"
+          android:translationY="-1dp"/>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="#aaaaaa"/>
+
+        <TextView
+          android:id="@+id/attribute_2"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="9.1dp"
+          android:text="SHO"
+          android:textSize="7.8sp"
+          android:translationY="-1dp"/>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="#aaaaaa"/>
+
+        <TextView
+          android:id="@+id/attribute_3"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="9.1dp"
+          android:text="PAS"
+          android:textSize="7.8sp"
+          android:translationY="-1dp"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/attribute_4"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="9.1dp"
+          android:text="DRI"
+          android:textSize="7.8sp"
+          android:translationY="-1dp"/>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="#aaaaaa"/>
+
+        <TextView
+          android:id="@+id/attribute_5"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="9.1dp"
+          android:text="DEF"
+          android:textSize="7.8sp"
+          android:translationY="-1dp"/>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:background="#aaaaaa"/>
+
+        <TextView
+          android:id="@+id/attribute_6"
+          style="@style/AppTheme.TextAppearance.PlayerCard"
+          android:layout_width="wrap_content"
+          android:layout_height="9.1dp"
+          android:text="PHY"
+          android:textSize="7.8sp"
+          android:translationY="-1dp"/>
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </FrameLayout>
+
+</FrameLayout>

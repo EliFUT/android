@@ -10,11 +10,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.felipecsl.elifut.animations.AnimationUtil;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.ViewPagerAdapter;
+import com.felipecsl.elifut.animations.AnimationUtil;
 import com.felipecsl.elifut.fragment.TeamDetailsFragment;
-import com.felipecsl.elifut.fragment.TeamPlayersFragment;
+import com.felipecsl.elifut.fragment.TeamSquadFragment;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
@@ -68,7 +68,7 @@ public class TeamDetailsActivity extends ElifutActivity implements TabbedActivit
     ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
     adapter.addFragment(TeamDetailsFragment.newInstance(club, "?", nation, league),
         getString(R.string.infos));
-    adapter.addFragment(TeamPlayersFragment.newInstance(club), getString(R.string.players));
+    adapter.addFragment(TeamSquadFragment.newInstance(club), getString(R.string.players));
     viewPager.setAdapter(adapter);
     tabLayout.setupWithViewPager(viewPager);
     // We need to delay the enter transition until after the tabLayout has finished adding the tabs

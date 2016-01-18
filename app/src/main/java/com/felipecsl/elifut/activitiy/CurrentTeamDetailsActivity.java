@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.ViewPagerAdapter;
 import com.felipecsl.elifut.fragment.TeamDetailsFragment;
-import com.felipecsl.elifut.fragment.TeamPlayersFragment;
+import com.felipecsl.elifut.fragment.TeamSquadFragment;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import icepick.State;
 
 import static com.felipecsl.elifut.util.ColorUtils.colorizeTabsAndHeader;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class CurrentTeamDetailsActivity extends NavigationActivity implements TabbedActivity {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
@@ -52,7 +54,8 @@ public class CurrentTeamDetailsActivity extends NavigationActivity implements Ta
 
     navigationView.setCheckedItem(R.id.nav_team);
 
-    getSupportActionBar().setTitle(club.shortName());
+    ActionBar actionBar = checkNotNull(getSupportActionBar());
+    actionBar.setTitle(club.shortName());
     setupViewPager();
   }
 
@@ -64,7 +67,7 @@ public class CurrentTeamDetailsActivity extends NavigationActivity implements Ta
     ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
     adapter.addFragment(TeamDetailsFragment.newInstance(club, coachName, nation, league),
         getString(R.string.infos));
-    adapter.addFragment(TeamPlayersFragment.newInstance(club), getString(R.string.players));
+    adapter.addFragment(TeamSquadFragment.newInstance(club), getString(R.string.players));
     viewPager.setAdapter(adapter);
     tabLayout.setupWithViewPager(viewPager);
   }

@@ -28,6 +28,10 @@
     <item name="android:textSize">20sp</item>
   </style>
 
+  <style name="AppTheme.TextAppearance.PlayerCard.Small" parent="AppTheme.TextAppearance.PlayerCard">
+    <item name="android:textSize">7.8sp</item>
+  </style>
+
   <style name="AppTheme.League">
   </style>
 

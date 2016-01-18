@@ -12,6 +12,7 @@ import com.felipecsl.elifut.fragment.LeagueProgressFragment;
 import com.felipecsl.elifut.fragment.LeagueStandingsFragment;
 import com.felipecsl.elifut.fragment.TeamDetailsFragment;
 import com.felipecsl.elifut.fragment.TeamPlayersFragment;
+import com.felipecsl.elifut.fragment.TeamSquadFragment;
 
 import javax.inject.Singleton;
 
@@ -29,6 +30,7 @@ public interface ElifutComponent {
   void inject(LeagueProgressFragment leagueProgressFragment);
   void inject(NavigationActivity navigationActivity);
   void inject(ElifutFragment elifutFragment);
+  void inject(TeamSquadFragment elifutFragment);
   void inject(ElifutActivity elifutActivity);
 
   final class Initializer {

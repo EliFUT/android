@@ -41,28 +41,7 @@ public class PlayerConverter extends Persistable.Converter<Player> {
   }
 
   @Override public Player fromCursor(SimpleCursor cursor, ElifutPersistenceService service) {
-    return Player.builder()
-        .base_id(cursor.getInt("base_id"))
-        .id(cursor.getInt("id"))
-        .clubId(cursor.getInt("club_id"))
-        .first_name(cursor.getString("first_name"))
-        .last_name(cursor.getString("last_name"))
-        .name(cursor.getString("name"))
-        .common_name(cursor.getString("common_name"))
-        .position(cursor.getString("position"))
-        .image(cursor.getString("image"))
-        .nation_image(cursor.getString("nation_image"))
-        .rating(cursor.getInt("rating"))
-        .player_type(cursor.getString("player_type"))
-        .attribute_1(cursor.getInt("attribute_1"))
-        .attribute_2(cursor.getInt("attribute_2"))
-        .attribute_3(cursor.getInt("attribute_3"))
-        .attribute_4(cursor.getInt("attribute_4"))
-        .attribute_5(cursor.getInt("attribute_5"))
-        .attribute_6(cursor.getInt("attribute_6"))
-        .quality(cursor.getString("quality"))
-        .color(cursor.getString("color"))
-        .build();
+    return Player.create(cursor.toCursor());
   }
 
   @Override public ContentValues toContentValues(Player player, ElifutPersistenceService service) {

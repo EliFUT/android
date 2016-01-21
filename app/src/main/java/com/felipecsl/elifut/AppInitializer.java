@@ -8,6 +8,7 @@ import com.felipecsl.elifut.models.Player;
 import com.felipecsl.elifut.preferences.JsonPreference;
 import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
+import com.felipecsl.elifut.services.ClubSquadBuilder;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.ElifutService;
 import com.felipecsl.elifut.services.ResponseBodyMapper;
@@ -41,42 +42,52 @@ public class AppInitializer {
     return service.randomClub(nationId)
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
-        .compose(transform())
-        .flatMap(club -> {
-          progressDialog.setProgress(15);
-          return service.league(clubPreference.set(club).league_id())
-              .compose(transform());
-        })
-        .flatMap(league -> {
-          progressDialog.setProgress(30);
-          return service.clubsByLeague(leaguePreference.set(league).id())
-              .compose(transform());
-        })
-        .flatMap(clubs -> {
-          progressDialog.setProgress(45);
-          leagueDetails.initialize(clubs);
-          return Observable.from(clubs);
-        })
-        .flatMap(club -> {
-          // TODO: Use players count to determine how much we have to increment the progress per step
-          progressDialog.setProgress(progressDialog.getProgress() + 2);
-          return service.playersByClub(club.id())
-              .compose(transform())
-              .map(players -> new ClubAndPlayers(club, players));
-        })
-        .flatMap(clubAndPlayers -> {
-          persistenceService.create(FluentIterable
-              .from(clubAndPlayers.players)
-              .transform(player -> player.toBuilder().clubId(clubAndPlayers.club.id()).build())
-              .toList());
-          return Observable.empty();
-        });
+        .compose(this::transform)
+        .doOnNext(i -> progressDialog.setProgress(15))
+        .flatMap(this::loadLeague)
+        .doOnNext(i -> progressDialog.setProgress(30))
+        .flatMap(this::loadLeagueClubs)
+        .doOnNext(i -> progressDialog.setProgress(45))
+        .flatMap(this::initializeClubs)
+        .doOnNext(i -> progressDialog.setProgress(progressDialog.getProgress() + 2))
+        .flatMap(this::loadPlayers)
+        .map(this::persistPlayers)
+        .map(ClubSquadBuilder::build)
+        .map(persistenceService::create)
+        .map(nothing -> (Void) null);
   }
 
-  private static <T> Observable.Transformer<Response<T>, T> transform() {
-    return (Observable<Response<T>> observable) ->
-        observable.flatMap(ResponseMapper.<T>instance())
-            .map(ResponseBodyMapper.<T>instance());
+  private Observable<? extends List<Club>> loadLeagueClubs(League league) {
+    return service.clubsByLeague(leaguePreference.set(league).id())
+        .compose(this::transform);
+  }
+
+  private Observable<? extends League> loadLeague(Club club) {
+    return service.league(clubPreference.set(club).league_id()).compose(this::transform);
+  }
+
+  private ClubSquadBuilder persistPlayers(ClubAndPlayers clubAndPlayers) {
+    persistenceService.create(FluentIterable
+        .from(clubAndPlayers.players)
+        .transform(player -> player.toBuilder().clubId(clubAndPlayers.club.id()).build())
+        .toList());
+    return new ClubSquadBuilder(clubAndPlayers.club, clubAndPlayers.players);
+  }
+
+  private Observable<? extends ClubAndPlayers> loadPlayers(Club club) {
+    return service.playersByClub(club.id())
+        .compose(this::transform)
+        .map(players -> new ClubAndPlayers(club, players));
+  }
+
+  private Observable<? extends Club> initializeClubs(List<Club> clubs) {
+    leagueDetails.initialize(clubs);
+    return Observable.from(clubs);
+  }
+
+  private <T> Observable<T> transform(Observable<Response<T>> observable) {
+    return observable.flatMap(ResponseMapper.<T>instance())
+        .map(ResponseBodyMapper.<T>instance());
   }
 
   static class ClubAndPlayers {

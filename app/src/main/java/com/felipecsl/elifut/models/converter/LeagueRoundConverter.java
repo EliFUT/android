@@ -42,8 +42,7 @@ public class LeagueRoundConverter extends Persistable.Converter<LeagueRound> {
   }
 
   /** First creates a record for each of the matches in this round before creating the round. */
-  @Override public ContentValues toContentValues(
-      LeagueRound round, ElifutDataStore service) {
+  @Override public ContentValues toContentValues(LeagueRound round, ElifutDataStore service) {
     return ContentValuesBuilder.create()
         .put("round_number", round.roundNumber())
         .put("matches", TextUtils.join(",", Lists.transform(round.matches(), service::create)))

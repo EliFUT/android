@@ -17,6 +17,7 @@ import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.models.Persistable;
 import com.felipecsl.elifut.models.Player;
 import com.felipecsl.elifut.models.converter.ClubConverter;
+import com.felipecsl.elifut.models.converter.ClubSquadConverter;
 import com.felipecsl.elifut.models.converter.LeagueRoundConverter;
 import com.felipecsl.elifut.models.converter.MatchConverter;
 import com.felipecsl.elifut.models.converter.MatchResultConverter;
@@ -94,6 +95,7 @@ public class DataModule {
     return Arrays.asList(
         new ClubConverter(),
         new MatchConverter(),
+        new ClubSquadConverter(),
         new MatchResultConverter(moshi),
         new LeagueRoundConverter(),
         new PlayerConverter());

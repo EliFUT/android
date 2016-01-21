@@ -17,6 +17,7 @@ import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.activitiy.PlayerDetailsActivity;
 import com.felipecsl.elifut.adapter.SmallPlayerViewHolder;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.Player;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.FragmentBundler;
@@ -131,9 +132,9 @@ public class TeamSquadFragment extends ElifutFragment {
   }
 
   private void loadPlayers() {
-    List<? extends Player> players =
-        persistenceService.query(AutoValueClasses.PLAYER, "club_id = ?", String.valueOf(club.id()));
-    this.players = new ArrayList<>(players);
+    ClubSquad clubSquad  = persistenceService.query(
+        AutoValueClasses.CLUB_SQUAD, "club_id = ?", String.valueOf(club.id())).get(0);
+    this.players = new ArrayList<>(clubSquad.squad());
     onPlayersLoaded();
   }
 

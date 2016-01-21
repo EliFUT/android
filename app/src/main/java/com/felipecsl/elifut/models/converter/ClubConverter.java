@@ -6,7 +6,7 @@ import com.felipecsl.elifut.SimpleCursor;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
 import com.felipecsl.elifut.models.Persistable;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.ContentValuesBuilder;
 
 public class ClubConverter extends Persistable.Converter<Club> {
@@ -35,11 +35,11 @@ public class ClubConverter extends Persistable.Converter<Club> {
   }
 
   @Override public Club fromCursor(SimpleCursor cursor,
-      ElifutPersistenceService elifutPersistenceService) {
+      ElifutDataStore elifutDataStore) {
     return Club.create(cursor.toCursor());
   }
 
-  @Override public ContentValues toContentValues(Club club, ElifutPersistenceService service) {
+  @Override public ContentValues toContentValues(Club club, ElifutDataStore service) {
     ClubStats stats = club.nonNullStats();
     return ContentValuesBuilder.create()
         .put("id", club.id())

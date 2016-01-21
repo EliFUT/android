@@ -12,7 +12,7 @@ import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.LeagueDetails;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class LeagueRoundExecutorTest {
   private final List<Club> leagueClubs = Arrays.asList(clubA, clubB, clubC, clubD);
 
   @Inject LeagueDetails leagueDetails;
-  @Inject ElifutPersistenceService persistenceService;
+  @Inject ElifutDataStore persistenceService;
   @Mock MatchResultGenerator generator;
 
   private LeagueRoundExecutor executor;

@@ -29,8 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(ElifutTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
     manifest = ElifutTestRunner.MANIFEST_PATH)
-public class ElifutPersistenceServiceTest {
-  @Inject ElifutPersistenceService service;
+public class ElifutDataStoreTest {
+  @Inject ElifutDataStore service;
 
   @Before public void setUp() {
     TestElifutApplication application = (TestElifutApplication) RuntimeEnvironment.application;

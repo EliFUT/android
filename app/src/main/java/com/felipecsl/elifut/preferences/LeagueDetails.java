@@ -3,7 +3,7 @@ package com.felipecsl.elifut.preferences;
 import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.LeagueRoundGenerator;
 
 import java.util.List;
@@ -11,10 +11,10 @@ import java.util.List;
 import rx.Observable;
 
 public final class LeagueDetails {
-  private final ElifutPersistenceService service;
+  private final ElifutDataStore service;
   private final LeagueRoundGenerator leagueRoundGenerator;
 
-  public LeagueDetails(ElifutPersistenceService persistenceService,
+  public LeagueDetails(ElifutDataStore persistenceService,
       LeagueRoundGenerator leagueRoundGenerator) {
     this.service = persistenceService;
     this.leagueRoundGenerator = leagueRoundGenerator;

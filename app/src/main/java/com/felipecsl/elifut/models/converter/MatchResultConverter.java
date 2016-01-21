@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import com.felipecsl.elifut.SimpleCursor;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.models.Persistable;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.ContentValuesBuilder;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -32,7 +32,7 @@ public final class MatchResultConverter extends Persistable.Converter<MatchResul
         + ")";
   }
 
-  @Override public MatchResult fromCursor(SimpleCursor cursor, ElifutPersistenceService service) {
+  @Override public MatchResult fromCursor(SimpleCursor cursor, ElifutDataStore service) {
     try {
       return adapter.fromJson(cursor.getString("result"));
     } catch (IOException e) {
@@ -41,7 +41,7 @@ public final class MatchResultConverter extends Persistable.Converter<MatchResul
   }
 
   @Override public ContentValues toContentValues(
-      MatchResult matchResult, ElifutPersistenceService service) {
+      MatchResult matchResult, ElifutDataStore service) {
     return ContentValuesBuilder.create()
         .put("result", adapter.toJson(matchResult))
         .build();

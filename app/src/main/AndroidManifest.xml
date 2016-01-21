@@ -29,6 +29,9 @@
       android:name=".activitiy.MatchProgressActivity"
       android:label="@string/match_progress"/>
     <activity
+      android:name=".activitiy.TeamPlayersActivity"
+      android:label="@string/select_a_player"/>
+    <activity
       android:name=".activitiy.TeamDetailsActivity"
       android:theme="@style/AppTheme.WithTransition"/>
     <activity android:name=".activitiy.LeagueRoundResultsActivity"/>

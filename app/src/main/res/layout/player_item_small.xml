@@ -5,9 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:foreground="?attr/selectableItemBackground"
-  android:paddingBottom="10dp"
-  android:paddingTop="10dp">
+  android:foreground="?attr/selectableItemBackground">
 
   <FrameLayout
     android:id="@+id/player_layout"

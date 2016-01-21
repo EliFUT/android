@@ -1,7 +1,12 @@
 package com.felipecsl.elifut.fragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +14,11 @@ import android.widget.FrameLayout;
 
 import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.activitiy.PlayerDetailsActivity;
 import com.felipecsl.elifut.adapter.SmallPlayerViewHolder;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Player;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.FragmentBundler;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
@@ -29,7 +35,7 @@ import icepick.State;
 public class TeamSquadFragment extends ElifutFragment {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
 
-  @Inject ElifutPersistenceService persistenceService;
+  @Inject ElifutDataStore persistenceService;
 
   @State Club club;
   @State ArrayList<Player> players;
@@ -119,7 +125,7 @@ public class TeamSquadFragment extends ElifutFragment {
   }
 
   private void loadPlayer(ViewGroup target, Player player) {
-    SmallPlayerViewHolder viewHolder = new SmallPlayerViewHolder(target, club);
+    SelectableSmallPlayerViewHolder viewHolder = new SelectableSmallPlayerViewHolder(target, club);
     viewHolder.bind(player);
     target.addView(viewHolder.itemView);
   }
@@ -129,5 +135,25 @@ public class TeamSquadFragment extends ElifutFragment {
         persistenceService.query(AutoValueClasses.PLAYER, "club_id = ?", String.valueOf(club.id()));
     this.players = new ArrayList<>(players);
     onPlayersLoaded();
+  }
+
+  class SelectableSmallPlayerViewHolder extends SmallPlayerViewHolder {
+    SelectableSmallPlayerViewHolder(ViewGroup parent, Club club) {
+      super(parent, club);
+    }
+
+    @Override protected void onClickPlayer(View view, Player player) {
+      super.onClickPlayer(view, player);
+      Context context = itemView.getContext();
+      //noinspection unchecked
+      ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+          (Activity) context,
+          Pair.create(imgPlayer, "player_image"),
+          Pair.create(imgClub, "img_player_club"),
+          Pair.create(imgNation, "img_player_nation"),
+          Pair.create(imgPlayerQuality, "img_player_quality"));
+      Intent intent = PlayerDetailsActivity.newIntent(context, player, club);
+      context.startActivity(intent, options.toBundle());
+    }
   }
 }

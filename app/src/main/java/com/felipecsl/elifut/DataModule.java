@@ -23,7 +23,7 @@ import com.felipecsl.elifut.models.converter.MatchResultConverter;
 import com.felipecsl.elifut.models.converter.PlayerConverter;
 import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.LeagueRoundGenerator;
 import com.squareup.moshi.Moshi;
 import com.squareup.sqlbrite.SqlBrite;
@@ -81,13 +81,13 @@ public class DataModule {
   }
 
   @Provides @Singleton LeagueDetails provideLeaguePreferences(
-      ElifutPersistenceService persistenceService, LeagueRoundGenerator leagueRoundGenerator) {
+      ElifutDataStore persistenceService, LeagueRoundGenerator leagueRoundGenerator) {
     return new LeagueDetails(persistenceService, leagueRoundGenerator);
   }
 
-  @Provides @Singleton ElifutPersistenceService provideElifutPersistenceService(
+  @Provides @Singleton ElifutDataStore provideElifutPersistenceService(
       List<Persistable.Converter<?>> converters) {
-    return new ElifutPersistenceService(context, SqlBrite.create(), converters);
+    return new ElifutDataStore(context, SqlBrite.create(), converters);
   }
 
   @Provides @Singleton List<Persistable.Converter<?>> providePersistenceConverters(Moshi moshi) {
@@ -100,7 +100,7 @@ public class DataModule {
   }
 
   @Provides @Singleton LeagueRoundExecutor provideLeagueRoundExecutor(
-      ElifutPersistenceService persistenceService) {
+      ElifutDataStore persistenceService) {
     return new LeagueRoundExecutor(persistenceService);
   }
 }

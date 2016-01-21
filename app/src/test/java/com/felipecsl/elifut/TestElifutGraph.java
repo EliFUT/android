@@ -5,7 +5,7 @@ import com.felipecsl.elifut.models.converter.ClubConverterTest;
 import com.felipecsl.elifut.models.converter.LeagueRoundConverterTest;
 import com.felipecsl.elifut.models.converter.MatchConverterTest;
 import com.felipecsl.elifut.preferences.LeagueDetailsTest;
-import com.felipecsl.elifut.services.ElifutPersistenceServiceTest;
+import com.felipecsl.elifut.services.ElifutDataStoreTest;
 
 public interface TestElifutGraph {
   void inject(MatchResultControllerTest matchResultsControllerTest);
@@ -13,6 +13,6 @@ public interface TestElifutGraph {
   void inject(LeagueRoundConverterTest leagueRoundConverterTest);
   void inject(ClubConverterTest clubConverterTest);
   void inject(MatchConverterTest matchConverterTest);
-  void inject(ElifutPersistenceServiceTest elifutPersistenceServiceTest);
+  void inject(ElifutDataStoreTest elifutPersistenceServiceTest);
   void inject(LeagueDetailsTest leagueDetailsTest);
 }

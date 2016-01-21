@@ -2,22 +2,19 @@ package com.felipecsl.elifut.activitiy;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
-import com.felipecsl.elifut.animations.AnimationUtil;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.LargePlayerViewHolder;
+import com.felipecsl.elifut.animations.AnimationUtil;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Player;
-import com.felipecsl.elifut.util.ColorUtils;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -26,6 +23,10 @@ import icepick.State;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Displays a single Player card on the screen, also providing the ability to replace it by
+ * selecting a different one (only possible if the user is looking at a player of his own team).
+ */
 public class PlayerDetailsActivity extends ElifutActivity {
   private static final String EXTRA_PLAYER = "EXTRA_PLAYER";
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
@@ -63,23 +64,23 @@ public class PlayerDetailsActivity extends ElifutActivity {
     viewHolder.bind(player);
     rootLayout.addView(viewHolder.itemView);
 
-    Picasso.with(this)
-        .load(club.large_image())
-        .into(new SimpleTarget() {
-          @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Palette.from(bitmap).generate(palette ->
-                ColorUtils.colorizeHeader(PlayerDetailsActivity.this, toolbar,
-                    palette.getDarkVibrantColor(colorPrimary))
-            );
-          }
-        });
+    colorizeToolbar(club, toolbar, colorPrimary);
+  }
+
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    if (userPreferences.isCurrentUserClub(club)) {
+      getMenuInflater().inflate(R.menu.menu_player_details, menu);
+    }
+    return true;
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == android.R.id.home) {
+    int itemId = item.getItemId();
+    if (itemId == android.R.id.home) {
       ActivityCompat.finishAfterTransition(this);
-      return true;
+    } else if (itemId == R.id.action_replace) {
+      startActivity(TeamPlayersActivity.newIntent(this, club));
     }
-    return super.onOptionsItemSelected(item);
+    return true;
   }
 }

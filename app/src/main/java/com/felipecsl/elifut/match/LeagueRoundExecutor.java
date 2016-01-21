@@ -5,7 +5,7 @@ import android.util.Log;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.google.common.collect.FluentIterable;
 
 import java.util.Arrays;
@@ -14,9 +14,9 @@ import java.util.List;
 /** Executes a league round by updating each club stats with their respective win, draw or loss. */
 public final class LeagueRoundExecutor {
   private static final String TAG = "LeagueRoundExecutor";
-  private final ElifutPersistenceService persistenceService;
+  private final ElifutDataStore persistenceService;
 
-  public LeagueRoundExecutor(ElifutPersistenceService persistenceService) {
+  public LeagueRoundExecutor(ElifutDataStore persistenceService) {
     this.persistenceService = persistenceService;
   }
 

@@ -3,8 +3,9 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".activitiy.CurrentTeamDetailsActivity">
   <item
-    android:id="@+id/action_settings"
+    android:id="@+id/action_replace"
     android:orderInCategory="100"
-    android:title="@string/action_settings"
-    app:showAsAction="never"/>
+    android:icon="@drawable/ic_sync_white_24px"
+    android:title="@string/action_replace"
+    app:showAsAction="ifRoom"/>
 </menu>

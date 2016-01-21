@@ -25,6 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class CurrentTeamDetailsActivity extends NavigationActivity implements TabbedActivity {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
+  private static final String TAG = "CurrentTeamDetailsActv";
 
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.viewpager) ViewPager viewPager;

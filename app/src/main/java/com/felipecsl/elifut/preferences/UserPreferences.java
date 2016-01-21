@@ -48,6 +48,10 @@ public final class UserPreferences {
     return coachPreference.get();
   }
 
+  public boolean isCurrentUserClub(Club club) {
+    return club().equals(club);
+  }
+
   public JsonPreference<Nation> nationPreference() {
     return nationPreference;
   }

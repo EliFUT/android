@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import com.felipecsl.elifut.SimpleCursor;
 import com.felipecsl.elifut.models.Persistable;
 import com.felipecsl.elifut.models.Player;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.ContentValuesBuilder;
 
 public class PlayerConverter extends Persistable.Converter<Player> {
@@ -40,11 +40,11 @@ public class PlayerConverter extends Persistable.Converter<Player> {
         + ")";
   }
 
-  @Override public Player fromCursor(SimpleCursor cursor, ElifutPersistenceService service) {
+  @Override public Player fromCursor(SimpleCursor cursor, ElifutDataStore service) {
     return Player.create(cursor.toCursor());
   }
 
-  @Override public ContentValues toContentValues(Player player, ElifutPersistenceService service) {
+  @Override public ContentValues toContentValues(Player player, ElifutDataStore service) {
     return ContentValuesBuilder.create()
         .put("base_id", player.base_id())
         .put("id", player.id())

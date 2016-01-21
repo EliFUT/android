@@ -8,7 +8,7 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.models.Persistable;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.ContentValuesBuilder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -32,7 +32,7 @@ public class MatchConverter extends Persistable.Converter<Match> {
         + ")";
   }
 
-  @Override public Match fromCursor(SimpleCursor cursor, ElifutPersistenceService service) {
+  @Override public Match fromCursor(SimpleCursor cursor, ElifutDataStore service) {
     Club home = checkNotNull(service.queryOne(AutoValueClasses.CLUB, cursor.getInt("home_id")));
     Club away = checkNotNull(service.queryOne(AutoValueClasses.CLUB, cursor.getInt("away_id")));
     Persistable.Converter<MatchResult> converter =
@@ -42,7 +42,7 @@ public class MatchConverter extends Persistable.Converter<Match> {
   }
 
   /** This assumes that the clubs participating in this match have been previously created. */
-  @Override public ContentValues toContentValues(Match match, ElifutPersistenceService service) {
+  @Override public ContentValues toContentValues(Match match, ElifutDataStore service) {
     Persistable.Converter<MatchResult> converter =
         service.converterForType(AutoValueClasses.MATCH_RESULT);
     return ContentValuesBuilder.create()

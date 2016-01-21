@@ -8,7 +8,7 @@ import com.felipecsl.elifut.models.Player;
 import com.felipecsl.elifut.preferences.JsonPreference;
 import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.ElifutService;
 import com.felipecsl.elifut.services.ResponseBodyMapper;
 import com.felipecsl.elifut.services.ResponseMapper;
@@ -26,10 +26,10 @@ public class AppInitializer {
   private final LeagueDetails leagueDetails;
   private final JsonPreference<Club> clubPreference;
   private final JsonPreference<League> leaguePreference;
-  private final ElifutPersistenceService persistenceService;
+  private final ElifutDataStore persistenceService;
 
   public AppInitializer(ElifutService service, UserPreferences userPreferences,
-      LeagueDetails leagueDetails, ElifutPersistenceService persistenceService) {
+      LeagueDetails leagueDetails, ElifutDataStore persistenceService) {
     this.service = service;
     this.leagueDetails = leagueDetails;
     this.persistenceService = persistenceService;

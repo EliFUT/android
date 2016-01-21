@@ -18,7 +18,6 @@ public final class AnimationUtil {
       Window window = activity.getWindow();
       window.setAllowEnterTransitionOverlap(true);
       window.setEnterTransition(TransitionUtil.makeFadeTransition());
-      window.setExitTransition(TransitionUtil.makeFadeTransition());
     }
   }
 }

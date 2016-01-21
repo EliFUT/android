@@ -3,7 +3,7 @@ package com.felipecsl.elifut.models;
 import android.content.ContentValues;
 
 import com.felipecsl.elifut.SimpleCursor;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.google.common.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -17,8 +17,8 @@ public interface Persistable {
 
     public abstract String tableName();
     public abstract String createStatement();
-    public abstract T fromCursor(SimpleCursor cursor, ElifutPersistenceService service);
-    public abstract ContentValues toContentValues(T persistable, ElifutPersistenceService service);
+    public abstract T fromCursor(SimpleCursor cursor, ElifutDataStore service);
+    public abstract ContentValues toContentValues(T persistable, ElifutDataStore service);
     //@formatter:on
 
     public Class<T> targetType() {

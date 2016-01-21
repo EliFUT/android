@@ -8,7 +8,7 @@ import com.felipecsl.elifut.SimpleCursor;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.Persistable;
-import com.felipecsl.elifut.services.ElifutPersistenceService;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.ContentValuesBuilder;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
@@ -33,7 +33,7 @@ public class LeagueRoundConverter extends Persistable.Converter<LeagueRound> {
         + ")";
   }
 
-  @Override public LeagueRound fromCursor(SimpleCursor cursor, ElifutPersistenceService service) {
+  @Override public LeagueRound fromCursor(SimpleCursor cursor, ElifutDataStore service) {
     List<Integer> matchIds = Lists.transform(Arrays.asList(
         cursor.getString("matches").split(",")), Integer::valueOf);
     List<? extends Match> matches = service.query(AutoValueClasses.MATCH, Ints.toArray(matchIds));
@@ -43,7 +43,7 @@ public class LeagueRoundConverter extends Persistable.Converter<LeagueRound> {
 
   /** First creates a record for each of the matches in this round before creating the round. */
   @Override public ContentValues toContentValues(
-      LeagueRound round, ElifutPersistenceService service) {
+      LeagueRound round, ElifutDataStore service) {
     return ContentValuesBuilder.create()
         .put("round_number", round.roundNumber())
         .put("matches", TextUtils.join(",", Lists.transform(round.matches(), service::create)))

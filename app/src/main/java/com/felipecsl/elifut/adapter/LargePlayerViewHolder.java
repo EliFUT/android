@@ -9,8 +9,4 @@ public class LargePlayerViewHolder extends PlayerViewHolder {
   public LargePlayerViewHolder(ViewGroup parent, Club club) {
     super(parent, club, R.layout.player_item_large);
   }
-
-  @Override protected boolean shouldHandleClick() {
-    return false;
-  }
 }

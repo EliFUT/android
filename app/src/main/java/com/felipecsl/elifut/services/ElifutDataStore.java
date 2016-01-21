@@ -23,11 +23,11 @@ import rx.Observable;
 import static com.felipecsl.elifut.Util.closeQuietly;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ElifutPersistenceService extends SQLiteOpenHelper {
+public class ElifutDataStore extends SQLiteOpenHelper {
   private final BriteDatabase db;
   private final Map<Class<?>, Persistable.Converter<?>> converterMap = new HashMap<>();
 
-  public ElifutPersistenceService(Context context, SqlBrite sqlBrite,
+  public ElifutDataStore(Context context, SqlBrite sqlBrite,
       List<Persistable.Converter<?>> converters) {
     super(context, "ElifutDB", null, 1);
     db = sqlBrite.wrapDatabaseHelper(this);

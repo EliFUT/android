@@ -7,11 +7,11 @@ import com.felipecsl.elifut.activitiy.ElifutActivity;
 import com.felipecsl.elifut.activitiy.MainActivity;
 import com.felipecsl.elifut.activitiy.MatchProgressActivity;
 import com.felipecsl.elifut.activitiy.NavigationActivity;
+import com.felipecsl.elifut.activitiy.TeamPlayersActivity;
 import com.felipecsl.elifut.fragment.ElifutFragment;
 import com.felipecsl.elifut.fragment.LeagueProgressFragment;
 import com.felipecsl.elifut.fragment.LeagueStandingsFragment;
 import com.felipecsl.elifut.fragment.TeamDetailsFragment;
-import com.felipecsl.elifut.fragment.TeamPlayersFragment;
 import com.felipecsl.elifut.fragment.TeamSquadFragment;
 
 import javax.inject.Singleton;
@@ -23,7 +23,7 @@ import dagger.Component;
 public interface ElifutComponent {
   void inject(MainActivity mainActivity);
   void inject(CurrentTeamDetailsActivity currentTeamDetailsActivity);
-  void inject(TeamPlayersFragment teamPlayersFragment);
+  void inject(TeamPlayersActivity activity);
   void inject(TeamDetailsFragment teamDetailsFragment);
   void inject(LeagueStandingsFragment leagueStandingsActivity);
   void inject(MatchProgressActivity matchProgressActivity);

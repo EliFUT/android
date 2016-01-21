@@ -1,5 +1,6 @@
 package com.felipecsl.elifut;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.felipecsl.elifut.services.ResponseBodyMapper;
@@ -57,5 +58,10 @@ public final class Util {
         return null;
       }
     }.execute();
+  }
+
+  public static int dpToPx(Context context, int dp) {
+    float scale = context.getResources().getDisplayMetrics().density;
+    return (int) ((dp * scale) + 0.5f);
   }
 }

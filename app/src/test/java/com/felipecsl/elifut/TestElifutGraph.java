@@ -1,6 +1,7 @@
 package com.felipecsl.elifut;
 
 import com.felipecsl.elifut.match.LeagueRoundExecutorTest;
+import com.felipecsl.elifut.models.ClubTest;
 import com.felipecsl.elifut.models.converter.ClubConverterTest;
 import com.felipecsl.elifut.models.converter.LeagueRoundConverterTest;
 import com.felipecsl.elifut.models.converter.MatchConverterTest;
@@ -15,4 +16,5 @@ public interface TestElifutGraph {
   void inject(MatchConverterTest matchConverterTest);
   void inject(ElifutDataStoreTest elifutPersistenceServiceTest);
   void inject(LeagueDetailsTest leagueDetailsTest);
+  void inject(ClubTest clubTest);
 }

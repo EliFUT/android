@@ -1,31 +1,22 @@
 package com.felipecsl.elifut.activitiy;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.PlayersAdapter;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.Player;
 import com.felipecsl.elifut.services.ElifutDataStore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -49,7 +40,7 @@ public class TeamPlayersActivity extends ElifutActivity implements PlayersAdapte
   @Bind(R.id.toolbar) Toolbar toolbar;
   @BindColor(R.color.color_primary) int colorPrimary;
 
-  @Inject ElifutDataStore persistenceService;
+  @Inject ElifutDataStore dataStore;
 
   @State Club club;
   @State Player previousPlayer;
@@ -101,19 +92,12 @@ public class TeamPlayersActivity extends ElifutActivity implements PlayersAdapte
   }
 
   private void loadPlayers() {
-    this.players = new ArrayList<>(club.substitutes(persistenceService));
+    this.players = new ArrayList<>(club.substitutes(dataStore));
     onPlayersLoaded();
   }
 
   @Override public void onPlayerSelected(Player player) {
-    List<? extends ClubSquad> clubSquads = persistenceService.query(
-        AutoValueClasses.CLUB_SQUAD, "club_id = ?", String.valueOf(club.id()));
-    ClubSquad clubSquad = clubSquads.get(
-        Preconditions.checkElementIndex(0, clubSquads.size(), "Club squad not found"));
-    List<Player> squad = new ArrayList<>(clubSquad.squad());
-    squad.remove(previousPlayer);
-    squad.add(player);
-    persistenceService.update(clubSquad.toBuilder().squad(squad).build(), clubSquad.id());
+    club.replacePlayer(previousPlayer, player, dataStore);
     finish();
 
     String message = getString(R.string.player_replaced, previousPlayer.name(), player.name());

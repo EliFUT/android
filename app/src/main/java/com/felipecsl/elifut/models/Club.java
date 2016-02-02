@@ -49,6 +49,18 @@ public abstract class Club extends Model implements Persistable {
         .toList();
   }
 
+  /** Replaces an existing player on this Club's squad with a new one and saves the changes. */
+  public void replacePlayer(Player oldPlayer, Player newPlayer, ElifutDataStore dataStore) {
+    List<? extends ClubSquad> clubSquads = dataStore.query(
+        AutoValueClasses.CLUB_SQUAD, "club_id = ?", String.valueOf(id()));
+    ClubSquad clubSquad = clubSquads.get(
+        Preconditions.checkElementIndex(0, clubSquads.size(), "Club squad not found"));
+    List<Player> squad = new ArrayList<>(clubSquad.squad());
+    squad.remove(oldPlayer);
+    squad.add(newPlayer);
+    dataStore.update(clubSquad.toBuilder().squad(squad).build(), clubSquad.id());
+  }
+
   public static Builder builder() {
     return new AutoValue_Club.Builder()
         .stats(ClubStats.builder().build())

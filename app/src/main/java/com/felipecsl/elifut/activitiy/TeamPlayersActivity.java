@@ -1,19 +1,26 @@
 package com.felipecsl.elifut.activitiy;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.PlayersAdapter;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.Player;
 import com.felipecsl.elifut.services.ElifutDataStore;
 
@@ -30,13 +37,13 @@ import icepick.State;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * An Activity that displays all the Players belonging to the provided club in a RecyclerView.
- * It allows selecting one of the players and upon click, it will finish and return the selected
+ * An Activity that displays all the Players belonging to the provided club in a RecyclerView. It
+ * allows selecting one of the players and upon click, it will finish and return the selected
  * player.
  */
 public class TeamPlayersActivity extends ElifutActivity implements PlayersAdapter.Callbacks {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
-  private static final String TAG = "TeamPlayersActivity";
+  private static final String EXTRA_PREVIOUS_PLAYER = "EXTRA_PREVIOUS_PLAYER";
 
   @Bind(R.id.recycler_players) RecyclerView playersList;
   @Bind(R.id.toolbar) Toolbar toolbar;
@@ -45,11 +52,13 @@ public class TeamPlayersActivity extends ElifutActivity implements PlayersAdapte
   @Inject ElifutDataStore persistenceService;
 
   @State Club club;
+  @State Player previousPlayer;
   @State ArrayList<Player> players;
 
-  public static Intent newIntent(Context context, Club club) {
+  public static Intent newIntent(Context context, Player previousPlayer, Club club) {
     return new Intent(context, TeamPlayersActivity.class)
-        .putExtra(EXTRA_CLUB, club);
+        .putExtra(EXTRA_CLUB, club)
+        .putExtra(EXTRA_PREVIOUS_PLAYER, previousPlayer);
   }
 
   @Override public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +76,9 @@ public class TeamPlayersActivity extends ElifutActivity implements PlayersAdapte
     playersList.setHasFixedSize(true);
 
     if (savedInstanceState == null) {
-      club = getIntent().getParcelableExtra(EXTRA_CLUB);
+      Intent intent = getIntent();
+      club = intent.getParcelableExtra(EXTRA_CLUB);
+      previousPlayer = intent.getParcelableExtra(EXTRA_PREVIOUS_PLAYER);
       loadPlayers();
     } else {
       onPlayersLoaded();
@@ -90,13 +101,22 @@ public class TeamPlayersActivity extends ElifutActivity implements PlayersAdapte
   }
 
   private void loadPlayers() {
-    List<? extends Player> players = persistenceService.query(
-        AutoValueClasses.PLAYER, "club_id = ?", String.valueOf(club.id()));
-    this.players = new ArrayList<>(players);
+    this.players = new ArrayList<>(club.substitutes(persistenceService));
     onPlayersLoaded();
   }
 
   @Override public void onPlayerSelected(Player player) {
-    Log.d(TAG, "Now update the club squad");
+    List<? extends ClubSquad> clubSquads = persistenceService.query(
+        AutoValueClasses.CLUB_SQUAD, "club_id = ?", String.valueOf(club.id()));
+    ClubSquad clubSquad = clubSquads.get(
+        Preconditions.checkElementIndex(0, clubSquads.size(), "Club squad not found"));
+    List<Player> squad = new ArrayList<>(clubSquad.squad());
+    squad.remove(previousPlayer);
+    squad.add(player);
+    persistenceService.update(clubSquad.toBuilder().squad(squad).build(), clubSquad.id());
+    finish();
+
+    String message = getString(R.string.player_replaced, previousPlayer.name(), player.name());
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 }

@@ -9,7 +9,9 @@ import android.text.TextUtils;
 
 import com.felipecsl.elifut.SimpleCursor;
 import com.felipecsl.elifut.models.Persistable;
+
 import com.google.common.primitives.Ints;
+
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -105,26 +107,42 @@ public class ElifutDataStore extends SQLiteOpenHelper {
     return items;
   }
 
-  @Nullable public <T extends Persistable> T queryOne(Class<T> type, int rowId) {
-    Cursor cursor = null;
+  @Nullable public <T extends Persistable> T queryOne(Class<T> type, String whereClause,
+      String... args) {
     Persistable.Converter<T> converter = converterForType(type);
-    try {
-      cursor = db.query("SELECT * FROM " + converter.tableName() + " WHERE id = ?",
-          String.valueOf(rowId));
-      if (cursor.moveToNext()) {
-        return cursorToObject(converter, cursor);
-      }
-    } finally {
-      closeQuietly(cursor);
+    List<T> list = rawQuery(
+        converter, "SELECT * FROM " + converter.tableName() + " WHERE " + whereClause, args);
+    if (!list.isEmpty()) {
+      return list.get(0);
     }
     return null;
   }
 
-  public <T extends Persistable> Observable<List<T>> observable(Class<T> type) {
+  @Nullable public <T extends Persistable> T queryOne(Class<T> type, int rowId) {
+    return queryOne(type, "id = ?", String.valueOf(rowId));
+  }
+
+  public <T extends Persistable> Observable<List<T>> observe(Class<T> type) {
     Persistable.Converter<T> converter = converterForType(type);
     String tableName = converter.tableName();
     return db.createQuery(tableName, "SELECT * FROM " + tableName)
         .mapToList(cursor -> cursorToObject(converter, cursor));
+  }
+
+  public <T extends Persistable> Observable<List<T>> observe(
+      Class<T> type, String whereClause, String... args) {
+    Persistable.Converter<T> converter = converterForType(type);
+    String tableName = converter.tableName();
+    return db.createQuery(tableName, "SELECT * FROM " + tableName + " WHERE " + whereClause, args)
+        .mapToList(cursor -> cursorToObject(converter, cursor));
+  }
+
+  public <T extends Persistable> Observable<T> observeOne(
+      Class<T> type, String whereClause, String... args) {
+    Persistable.Converter<T> converter = converterForType(type);
+    String tableName = converter.tableName();
+    return db.createQuery(tableName, "SELECT * FROM " + tableName + " WHERE " + whereClause, args)
+        .mapToOne(cursor -> cursorToObject(converter, cursor));
   }
 
   public <T extends Persistable> Persistable.Converter<T> converterFor(Persistable persistable) {

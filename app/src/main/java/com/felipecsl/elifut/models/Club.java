@@ -4,9 +4,20 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.felipecsl.elifut.AutoValueClasses;
+import com.felipecsl.elifut.services.ElifutDataStore;
 import com.gabrielittner.auto.value.cursor.CursorAdapter;
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
+
 import com.squareup.moshi.JsonAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AutoValue
 public abstract class Club extends Model implements Persistable {
@@ -19,6 +30,23 @@ public abstract class Club extends Model implements Persistable {
 
   public static Club create(Cursor cursor) {
     return AutoValue_Club.createFromCursor(cursor);
+  }
+
+  /**
+   * Returns a list of all the players on this team who are substitutes, that is, who are not
+   * on the main squad of 11 players.
+   */
+  public List<? extends Player> substitutes(ElifutDataStore dataStore) {
+    String clubId = String.valueOf(id());
+    List<? extends Player> players = dataStore.query(
+        AutoValueClasses.PLAYER, "club_id = ?", clubId);
+    ClubSquad clubSquad = Preconditions.checkNotNull(dataStore.queryOne(
+        AutoValueClasses.CLUB_SQUAD, "club_id = ?", clubId));
+    // Exclude the players who are already on the team squad from the list of all players, so we
+    // get a list with only the subs.
+    return FluentIterable.from(players)
+        .filter(Predicates.not(Predicates.in(clubSquad.squad())))
+        .toList();
   }
 
   public static Builder builder() {

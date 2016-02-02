@@ -30,6 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class PlayerDetailsActivity extends ElifutActivity {
   private static final String EXTRA_PLAYER = "EXTRA_PLAYER";
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
+  private static final int REQUEST_REPLACE = 9090;
 
   @Bind(R.id.layout_root) CoordinatorLayout rootLayout;
   @Bind(R.id.toolbar) Toolbar toolbar;
@@ -79,8 +80,15 @@ public class PlayerDetailsActivity extends ElifutActivity {
     if (itemId == android.R.id.home) {
       ActivityCompat.finishAfterTransition(this);
     } else if (itemId == R.id.action_replace) {
-      startActivity(TeamPlayersActivity.newIntent(this, club));
+      startActivityForResult(TeamPlayersActivity.newIntent(this, player, club), REQUEST_REPLACE);
     }
     return true;
+  }
+
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == REQUEST_REPLACE) {
+      finish();
+    }
   }
 }

@@ -42,11 +42,11 @@ public final class LeagueDetails {
   }
 
   public Observable<? extends List<? extends Club>> clubsObservable() {
-    return service.observable(AutoValueClasses.CLUB);
+    return service.observe(AutoValueClasses.CLUB);
   }
 
   public Observable<? extends List<? extends LeagueRound>> roundsObservable() {
-    return service.observable(AutoValueClasses.LEAGUE_ROUND);
+    return service.observe(AutoValueClasses.LEAGUE_ROUND);
   }
 
   public List<? extends LeagueRound> rounds() {

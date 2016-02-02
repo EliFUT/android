@@ -33,4 +33,5 @@
   <string name="title_activity_blank">BlankActivity</string>
   <string name="action_replace">Replace</string>
   <string name="select_a_player">Select a player to switch</string>
+  <string name="player_replaced">Player %1$s replaced with %2$s</string>
 </resources>

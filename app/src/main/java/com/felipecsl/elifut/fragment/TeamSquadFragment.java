@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.Player;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.FragmentBundler;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 
@@ -32,9 +34,11 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.State;
+import rx.Observer;
 
 public class TeamSquadFragment extends ElifutFragment {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
+  private static final String TAG = "TeamSquadFragment";
 
   @Inject ElifutDataStore persistenceService;
 
@@ -54,6 +58,20 @@ public class TeamSquadFragment extends ElifutFragment {
   @Bind(R.id.player_at2) FrameLayout at2;
   @Bind(R.id.player_at3) FrameLayout at3;
   @Bind(R.id.player_at4) FrameLayout at4;
+
+  private final Observer<ClubSquad> playersObserver = new Observer<ClubSquad>() {
+    @Override public void onCompleted() {
+    }
+
+    @Override public void onError(Throwable e) {
+      Log.d(TAG, "Failed to load squad", e);
+    }
+
+    @Override public void onNext(ClubSquad clubSquad) {
+      players = new ArrayList<>(clubSquad.squad());
+      onPlayersLoaded();
+    }
+  };
 
   public static TeamSquadFragment newInstance(Club club) {
     return FragmentBundler.make(new TeamSquadFragment())
@@ -128,14 +146,13 @@ public class TeamSquadFragment extends ElifutFragment {
   private void loadPlayer(ViewGroup target, Player player) {
     SelectableSmallPlayerViewHolder viewHolder = new SelectableSmallPlayerViewHolder(target, club);
     viewHolder.bind(player);
+    target.removeAllViews();
     target.addView(viewHolder.itemView);
   }
 
   private void loadPlayers() {
-    ClubSquad clubSquad  = persistenceService.query(
-        AutoValueClasses.CLUB_SQUAD, "club_id = ?", String.valueOf(club.id())).get(0);
-    this.players = new ArrayList<>(clubSquad.squad());
-    onPlayersLoaded();
+    persistenceService.observeOne(AutoValueClasses.CLUB_SQUAD, "club_id = ?",
+        String.valueOf(club.id())).subscribe(playersObserver);
   }
 
   class SelectableSmallPlayerViewHolder extends SmallPlayerViewHolder {

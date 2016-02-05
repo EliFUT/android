@@ -7,6 +7,7 @@ import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
 import com.felipecsl.elifut.TestFixtures;
+import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
@@ -44,6 +45,15 @@ public class MatchConverterTest {
         .build(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
     Match match = Match.create(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL, matchResult);
     service.create(Arrays.asList(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL));
+    service.create(match);
+    assertThat(service.query(AutoValueClasses.MATCH)).isEqualTo(Collections.singletonList(match));
+  }
+
+  @Test public void testMissingResult() {
+    Club gremio = TestFixtures.GREMIO;
+    Club internacional = TestFixtures.INTERNACIONAL;
+    Match match = Match.create(gremio, internacional);
+    service.create(Arrays.asList(gremio, internacional));
     service.create(match);
     assertThat(service.query(AutoValueClasses.MATCH)).isEqualTo(Collections.singletonList(match));
   }

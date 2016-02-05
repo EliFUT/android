@@ -170,7 +170,7 @@ public abstract class NavigationActivity extends ElifutActivity
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP) @OnClick(R.id.fab) public void onClickFab() {
-    LeagueRound round = leagueDetails.nextRound();
+    LeagueRound round = leagueDetails.executeRound(leagueDetails.nextRound());
     circularRevealOverlay.setVisibility(View.VISIBLE);
     int distFromEdge = fabMargin + (fab.getWidth() / 2);
     int cx = drawerLayout.getWidth() - distFromEdge;

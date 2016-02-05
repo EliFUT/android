@@ -6,6 +6,7 @@ import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
+
 import com.google.common.base.Preconditions;
 
 import java.util.Arrays;
@@ -16,14 +17,7 @@ import java.util.Map;
 import static com.felipecsl.elifut.util.CollectionUtils.shuffle;
 
 public class LeagueRoundGenerator {
-  private final MatchResultGenerator generator;
-
   public LeagueRoundGenerator() {
-    this(new MatchResultGenerator());
-  }
-
-  public LeagueRoundGenerator(MatchResultGenerator generator) {
-    this.generator = generator;
   }
 
   @VisibleForTesting List<LeagueRound> generateRoundsDeterministic(List<? extends Club> clubs) {
@@ -61,21 +55,22 @@ public class LeagueRoundGenerator {
         if (round % 2 == 0) {
           clubHome = clubMap.get(home + 1);
           clubAway = clubMap.get(away + 1);
-        }
-        else {
+        } else {
           clubHome = clubMap.get(away + 1);
           clubAway = clubMap.get(home + 1);
         }
 
-        Match newMatch = Match.create(clubHome, clubAway, generator.generate(clubHome, clubAway));
+        Match newMatch = Match.create(clubHome, clubAway);
         rounds[round].addMatch(newMatch);
       }
     }
 
-    return  Arrays.asList(rounds);
+    return Arrays.asList(rounds);
   }
 
-  /** Generates a random list of league rounds from the provided list of clubs. */
+  /**
+   * Generates a random list of league rounds from the provided list of clubs.
+   */
   public List<LeagueRound> generateRounds(List<? extends Club> clubs) {
     return generateRoundsDeterministic(shuffle(clubs));
   }

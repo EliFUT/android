@@ -59,6 +59,7 @@ public class TeamSquadFragment extends ElifutFragment {
   @Bind(R.id.player_at3) FrameLayout at3;
   @Bind(R.id.player_at4) FrameLayout at4;
 
+  private boolean hasSavedState;
   private final Observer<ClubSquad> playersObserver = new Observer<ClubSquad>() {
     @Override public void onCompleted() {
     }
@@ -86,33 +87,39 @@ public class TeamSquadFragment extends ElifutFragment {
     ButterKnife.bind(this, v);
     daggerComponent().inject(this);
 
-    if (savedInstanceState == null) {
-      club = getArguments().getParcelable(EXTRA_CLUB);
-      loadPlayers();
-    } else {
-      onPlayersLoaded();
-    }
+    hasSavedState = savedInstanceState != null;
 
     return v;
+  }
+
+  @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+    super.setUserVisibleHint(isVisibleToUser);
+    if (isVisibleToUser) {
+      if (!hasSavedState) {
+        club = getArguments().getParcelable(EXTRA_CLUB);
+        loadPlayers();
+      } else {
+        onPlayersLoaded();
+      }
+    }
   }
 
   private void onPlayersLoaded() {
     FluentIterable<Player> defenders = defenders();
     FluentIterable<Player> midfielders = midfielders();
     FluentIterable<Player> attackers = attackers();
-    FluentIterable<Player> cbs = defenders.filter(p -> p.position().equals("CB"));
 
-    loadPlayer(gk, playerByPosition("GK"));
-    loadPlayer(lb, defenders.filter(p -> p.position().equals("LB")).first().get());
-    loadPlayer(cb1, cbs.first().get());
-    loadPlayer(cb2, cbs.last().get());
-    loadPlayer(rb, defenders.filter(p -> p.position().equals("RB")).first().get());
-    loadPlayer(cm1, midfielders.get(0));
-    loadPlayer(cm2, midfielders.get(1));
-    loadPlayer(cm3, midfielders.get(2));
-    loadPlayer(cm4, midfielders.get(3));
-    loadPlayer(at2, attackers.first().get());
-    loadPlayer(at3, attackers.last().get());
+    loadPlayer(gk, playerByPosition("GK"), 200);
+    loadPlayer(lb, defenders.get(0), 220);
+    loadPlayer(cb1, defenders.get(1), 230);
+    loadPlayer(cb2, defenders.get(2), 240);
+    loadPlayer(rb, defenders.get(3), 250);
+    loadPlayer(cm1, midfielders.get(0), 270);
+    loadPlayer(cm2, midfielders.get(1), 280);
+    loadPlayer(cm3, midfielders.get(2), 290);
+    loadPlayer(cm4, midfielders.get(3), 300);
+    loadPlayer(at2, attackers.first().get(), 320);
+    loadPlayer(at3, attackers.last().get(), 330);
   }
 
   private FluentIterable<Player> defenders() {
@@ -143,10 +150,18 @@ public class TeamSquadFragment extends ElifutFragment {
     return FluentIterable.from(players).filter(predicate);
   }
 
-  private void loadPlayer(ViewGroup target, Player player) {
+  private void loadPlayer(ViewGroup target, Player player, long delay) {
     SelectableSmallPlayerViewHolder viewHolder = new SelectableSmallPlayerViewHolder(target, club);
     viewHolder.bind(player);
     target.removeAllViews();
+    viewHolder.itemView.setAlpha(0);
+    viewHolder.itemView.setScaleX(0.8f);
+    viewHolder.itemView.setScaleY(0.8f);
+    viewHolder.itemView.animate()
+        .scaleX(1)
+        .scaleY(1)
+        .setStartDelay(delay)
+        .alpha(1);
     target.addView(viewHolder.itemView);
   }
 

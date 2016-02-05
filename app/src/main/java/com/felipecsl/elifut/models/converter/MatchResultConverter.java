@@ -34,10 +34,14 @@ public final class MatchResultConverter extends Persistable.Converter<MatchResul
 
   @Override public MatchResult fromCursor(SimpleCursor cursor, ElifutDataStore service) {
     try {
-      return adapter.fromJson(cursor.getString("result"));
+      String result = cursor.getString("result");
+      if (result != null) {
+        return adapter.fromJson(result);
+      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+    return null;
   }
 
   @Override public ContentValues toContentValues(

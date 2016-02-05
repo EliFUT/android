@@ -45,10 +45,14 @@ public class MatchConverter extends Persistable.Converter<Match> {
   @Override public ContentValues toContentValues(Match match, ElifutDataStore service) {
     Persistable.Converter<MatchResult> converter =
         service.converterForType(AutoValueClasses.MATCH_RESULT);
-    return ContentValuesBuilder.create()
+    ContentValuesBuilder contentValuesBuilder = ContentValuesBuilder.create()
         .put("home_id", match.home().id())
-        .put("away_id", match.away().id())
-        .put(converter.toContentValues(match.result(), service))
-        .build();
+        .put("away_id", match.away().id());
+
+    if (match.result() != null) {
+      contentValuesBuilder.put(converter.toContentValues(match.result(), service));
+    }
+
+    return contentValuesBuilder.build();
   }
 }

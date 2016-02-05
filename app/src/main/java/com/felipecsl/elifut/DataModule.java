@@ -78,12 +78,16 @@ public class DataModule {
   }
 
   @Provides @Singleton LeagueRoundGenerator provideLeagueRoundGenerator() {
-    return new LeagueRoundGenerator(new MatchResultGenerator());
+    return new LeagueRoundGenerator();
   }
 
-  @Provides @Singleton LeagueDetails provideLeaguePreferences(
-      ElifutDataStore persistenceService, LeagueRoundGenerator leagueRoundGenerator) {
-    return new LeagueDetails(persistenceService, leagueRoundGenerator);
+  @Provides @Singleton MatchResultGenerator provideMatchResultGenerator() {
+    return new MatchResultGenerator();
+  }
+
+  @Provides @Singleton LeagueDetails provideLeagueDetails(ElifutDataStore persistenceService,
+      LeagueRoundGenerator leagueRoundGenerator, MatchResultGenerator matchResultGenerator) {
+    return new LeagueDetails(persistenceService, leagueRoundGenerator, matchResultGenerator);
   }
 
   @Provides @Singleton ElifutDataStore provideElifutPersistenceService(

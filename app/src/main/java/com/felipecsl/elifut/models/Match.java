@@ -12,14 +12,23 @@ public abstract class Match implements Parcelable, Persistable {
   @Nullable public abstract Integer id();
   public abstract Club home();
   public abstract Club away();
-  public abstract MatchResult result();
+  // Result is initially null and is only computed when the match is about to start
+  @Nullable public abstract MatchResult result();
 
-  public static Match create(Club home, Club away, MatchResult result) {
-    return create(null, home, away, result);
+  public static Match create(Club home, Club away) {
+    return new AutoValue_Match(null, home, away, null);
   }
 
-  public static Match create(Integer id, Club home, Club away, MatchResult result) {
-    return new AutoValue_Match(id, home, away, result);
+  public static Match create(Integer id, Club home, Club away, MatchResult matchResult) {
+    return new AutoValue_Match(id, home, away, matchResult);
+  }
+
+  public static Match create(Club home, Club away, MatchResult matchResult) {
+    return new AutoValue_Match(null, home, away, matchResult);
+  }
+
+  public static Match create(Integer id, Club home, Club away) {
+    return new AutoValue_Match(id, home, away, null);
   }
 
   @Override public int describeContents() {
@@ -27,13 +36,16 @@ public abstract class Match implements Parcelable, Persistable {
   }
 
   @Override public String toString() {
-    return home().name()
-        + " "
-        + result().homeGoals().size()
-        + " X "
-        + result().awayGoals().size()
-        + " "
-        + away().name();
+    if (result() != null) {
+      return home().name()
+          + " "
+          + result().homeGoals().size()
+          + " X "
+          + result().awayGoals().size()
+          + " "
+          + away().name();
+    }
+    return home().name() + " X " + away().name();
   }
 
   public boolean hasClub(Club club) {
@@ -49,18 +61,21 @@ public abstract class Match implements Parcelable, Persistable {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    Match match = (Match) o;
+    Match matchTwo = (Match) o;
 
-    if (!home().equals(match.home())) return false;
+    if (!home().equals(matchTwo.home())) return false;
     //noinspection SimplifiableIfStatement
-    if (!away().equals(match.away())) return false;
-    return result().equals(match.result());
+    if (!away().equals(matchTwo.away())) return false;
+    //noinspection ConstantConditions
+    return result() != null ? result().equals(matchTwo.result()) : matchTwo.result() == null;
+
   }
 
   @Override public int hashCode() {
     int result1 = home().hashCode();
     result1 = 31 * result1 + away().hashCode();
-    result1 = 31 * result1 + result().hashCode();
+    //noinspection ConstantConditions
+    result1 = 31 * result1 + (result() != null ? result().hashCode() : 0);
     return result1;
   }
 }

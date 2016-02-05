@@ -7,6 +7,7 @@ import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
 import com.felipecsl.elifut.TestFixtures;
+import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.LeagueRound;
@@ -29,6 +30,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -52,15 +54,15 @@ public class LeagueDetailsTest {
   private LeagueDetails leagueDetails;
 
   @Inject ElifutDataStore persistenceService;
+  @Inject MatchResultGenerator matchResultGenerator;
   @Mock LeagueRoundGenerator roundGenerator;
-
 
   @Before public void setUp() throws Exception {
     TestElifutApplication application = (TestElifutApplication) RuntimeEnvironment.application;
     application.testComponent().inject(this);
     initMocks(this);
 
-    leagueDetails = new LeagueDetails(persistenceService, roundGenerator);
+    leagueDetails = new LeagueDetails(persistenceService, roundGenerator, matchResultGenerator);
   }
 
   @Test public void testInitialize() {
@@ -81,5 +83,23 @@ public class LeagueDetailsTest {
     assertThat(leagueDetails.rounds()).isEqualTo(Collections.singletonList(round2));
     assertThat(leagueDetails.nextRound()).isEqualTo(round2);
     assertThat(leagueDetails.rounds()).isEqualTo(Collections.emptyList());
+  }
+
+  @Test public void testExecuteRound() {
+    Club gremio = TestFixtures.GREMIO;
+    Club internacional = TestFixtures.INTERNACIONAL;
+    MatchResultGenerator mockResultGenerator = mock(MatchResultGenerator.class);
+    MatchResult fakeResult = MatchResult.builder()
+        .homeGoals(Collections.singletonList(Goal.create(10, gremio)))
+        .awayGoals(Collections.emptyList())
+        .build(gremio, internacional);
+    when(mockResultGenerator.generate(gremio, internacional))
+        .thenReturn(fakeResult);
+    LeagueDetails leagueDetails = new LeagueDetails(
+        persistenceService, roundGenerator, mockResultGenerator);
+    Match match = Match.create(gremio, internacional);
+    LeagueRound round = LeagueRound.create(1, Collections.singletonList(match));
+
+    assertThat(leagueDetails.executeRound(round).matches().get(0).result()).isEqualTo(fakeResult);
   }
 }

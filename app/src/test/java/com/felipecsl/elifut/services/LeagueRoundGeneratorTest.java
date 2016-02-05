@@ -46,19 +46,14 @@ public class LeagueRoundGeneratorTest {
     Club internacional = TestFixtures.INTERNACIONAL;
     List<Club> clubs = Arrays.asList(gremio, internacional);
 
-    MatchResultGenerator generator = mock(MatchResultGenerator.class);
-    LeagueRoundGenerator roundGenerator = new LeagueRoundGenerator(generator);
-    MatchResult matchResult1 = MatchResult.builder().build(gremio, internacional);
-    MatchResult matchResult2 = MatchResult.builder().build(internacional, gremio);
-    when(generator.generate(gremio, internacional)).thenReturn(matchResult1);
-    when(generator.generate(internacional, gremio)).thenReturn(matchResult2);
+    LeagueRoundGenerator roundGenerator = new LeagueRoundGenerator();
 
     List<LeagueRound> leagueRounds = roundGenerator.generateRoundsDeterministic(clubs);
 
     assertThat(leagueRounds.size()).isEqualTo(2);
     assertThat(leagueRounds).isEqualTo(Arrays.asList(
-        LeagueRound.create(1, singletonList(Match.create(gremio, internacional, matchResult1))),
-        LeagueRound.create(2, singletonList(Match.create(internacional, gremio, matchResult2)))));
+        LeagueRound.create(1, singletonList(Match.create(gremio, internacional))),
+        LeagueRound.create(2, singletonList(Match.create(internacional, gremio)))));
   }
 
   @Test public void testGenerateRounds() {
@@ -73,10 +68,7 @@ public class LeagueRoundGeneratorTest {
     Club san = newClub("Santos");
     Club pal = newClub("Palmeiras");
     List<Club> clubs = Arrays.asList(gre, inter, fla, flu, sp, cor, atl, cru, san, pal);
-    MatchResultGenerator generator = mock(MatchResultGenerator.class);
-    LeagueRoundGenerator roundGenerator = new LeagueRoundGenerator(generator);
-    MatchResult matchResult = mock(MatchResult.class);
-    when(generator.generate(any(), any())).thenReturn(matchResult);
+    LeagueRoundGenerator roundGenerator = new LeagueRoundGenerator();
 
     List<LeagueRound> leagueRounds = roundGenerator.generateRounds(clubs);
 
@@ -84,8 +76,8 @@ public class LeagueRoundGeneratorTest {
 
     for (int i = 0; i < clubs.size(); i++) {
       for (int j = i + 1; j < clubs.size(); j++) {
-        allMatches.add(Match.create(clubs.get(i), clubs.get(j), matchResult));
-        allMatches.add(Match.create(clubs.get(j), clubs.get(i), matchResult));
+        allMatches.add(Match.create(clubs.get(i), clubs.get(j)));
+        allMatches.add(Match.create(clubs.get(j), clubs.get(i)));
       }
     }
 

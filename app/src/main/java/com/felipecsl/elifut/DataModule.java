@@ -24,6 +24,7 @@ import com.felipecsl.elifut.models.converter.MatchResultConverter;
 import com.felipecsl.elifut.models.converter.PlayerConverter;
 import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
+import com.felipecsl.elifut.services.ClubDataStore;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.LeagueRoundGenerator;
 import com.squareup.moshi.Moshi;
@@ -85,13 +86,18 @@ public class DataModule {
     return new MatchResultGenerator();
   }
 
-  @Provides @Singleton LeagueDetails provideLeagueDetails(ElifutDataStore persistenceService,
-      LeagueRoundGenerator leagueRoundGenerator, MatchResultGenerator matchResultGenerator) {
-    return new LeagueDetails(persistenceService, leagueRoundGenerator, matchResultGenerator);
+  @Provides @Singleton LeagueDetails provideLeagueDetails(ClubDataStore clubDataStore,
+      LeagueRoundGenerator leagueRoundGenerator, MatchResultGenerator matchResultGenerator,
+      ElifutDataStore persistenceService) {
+    return new LeagueDetails(persistenceService, clubDataStore, leagueRoundGenerator,
+        matchResultGenerator);
   }
 
-  @Provides @Singleton ElifutDataStore provideElifutPersistenceService(
-      List<Persistable.Converter<?>> converters) {
+  @Provides @Singleton ClubDataStore provideClubDataStore(ElifutDataStore elifutDataStore) {
+    return new ClubDataStore(elifutDataStore);
+  }
+
+  @Provides @Singleton ElifutDataStore provideDataStore(List<Persistable.Converter<?>> converters) {
     return new ElifutDataStore(context, SqlBrite.create(), converters);
   }
 

@@ -13,9 +13,9 @@ import java.util.List;
 
 /**
  * Generates a {@link ClubSquad} for the provided team based on the list of all the available
- * players for that team. The returned squad has exactly 11 players, including: 1 GK, 4 defenders,
+ * players for that team. The returned players has exactly 11 players, including: 1 GK, 4 defenders,
  * 4 midfielders and 2 attackers. It will try to use exactly 1 RB and 1 LB from the provided list.
- * If it can't find them, then other positions (CB) will be used to complete the squad.
+ * If it can't find them, then other positions (CB) will be used to complete the players.
  */
 public final class ClubSquadBuilder {
   private final Club club;

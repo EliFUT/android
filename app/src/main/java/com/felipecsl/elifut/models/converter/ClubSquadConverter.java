@@ -45,7 +45,7 @@ public class ClubSquadConverter extends Persistable.Converter<ClubSquad> {
     return ContentValuesBuilder.create()
         .put("id", clubSquad.id())
         .put("club_id", clubSquad.clubId())
-        .put("player_ids", TextUtils.join(",", Lists.transform(clubSquad.squad(), Player::id)))
+        .put("player_ids", TextUtils.join(",", Lists.transform(clubSquad.players(), Player::id)))
         .build();
   }
 }

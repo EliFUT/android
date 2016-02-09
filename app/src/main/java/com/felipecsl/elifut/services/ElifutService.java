@@ -17,7 +17,7 @@ public interface ElifutService {
   @GET("/players/{id}.json")
   Observable<Response<Player>> player(@Path("id") int id);
 
-  @GET("/players/squad.json")
+  @GET("/players/players.json")
   Observable<Response<List<Player>>> playersByClub(@Query("club_id") int clubId);
 
   @GET("/clubs/{id}.json")

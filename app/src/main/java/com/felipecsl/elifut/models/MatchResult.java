@@ -1,10 +1,11 @@
 package com.felipecsl.elifut.models;
 
+import com.google.auto.value.AutoValue;
+
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.felipecsl.elifut.BuildConfig;
-import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -19,7 +20,7 @@ import rx.schedulers.Schedulers;
 @AutoValue
 public abstract class MatchResult implements Parcelable, Persistable {
   public static final float HOME_WIN_PROBABILITY = .465f;
-  public static final float DRAW_PROBABILITY = HOME_WIN_PROBABILITY + .174f;
+  public static final float DRAW_PROBABILITY = .174f;
   public static final NormalDistribution GOALS_DISTRIBUTION = new NormalDistribution(2.6, 1.7);
 
   @Nullable public abstract Club winner();

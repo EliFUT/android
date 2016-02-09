@@ -1,5 +1,7 @@
 package com.felipecsl.elifut.services;
 
+import com.google.common.primitives.Ints;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,9 +11,6 @@ import android.text.TextUtils;
 
 import com.felipecsl.elifut.SimpleCursor;
 import com.felipecsl.elifut.models.Persistable;
-
-import com.google.common.primitives.Ints;
-
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 

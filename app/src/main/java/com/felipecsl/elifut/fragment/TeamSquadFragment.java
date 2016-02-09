@@ -1,5 +1,8 @@
 package com.felipecsl.elifut.fragment;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,18 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.felipecsl.elifut.AutoValueClasses;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.activitiy.PlayerDetailsActivity;
 import com.felipecsl.elifut.adapter.SmallPlayerViewHolder;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.Player;
+import com.felipecsl.elifut.services.ClubDataStore;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.FragmentBundler;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +41,7 @@ public class TeamSquadFragment extends ElifutFragment {
   private static final String TAG = "TeamSquadFragment";
 
   @Inject ElifutDataStore persistenceService;
+  @Inject ClubDataStore clubDataStore;
 
   @State Club club;
   @State ArrayList<Player> players;
@@ -65,11 +66,11 @@ public class TeamSquadFragment extends ElifutFragment {
     }
 
     @Override public void onError(Throwable e) {
-      Log.d(TAG, "Failed to load squad", e);
+      Log.d(TAG, "Failed to load players", e);
     }
 
     @Override public void onNext(ClubSquad clubSquad) {
-      players = new ArrayList<>(clubSquad.squad());
+      players = new ArrayList<>(clubSquad.players());
       onPlayersLoaded();
     }
   };
@@ -166,8 +167,7 @@ public class TeamSquadFragment extends ElifutFragment {
   }
 
   private void loadPlayers() {
-    persistenceService.observeOne(AutoValueClasses.CLUB_SQUAD, "club_id = ?",
-        String.valueOf(club.id())).subscribe(playersObserver);
+    clubDataStore.squadObservable(club).subscribe(playersObserver);
   }
 
   class SelectableSmallPlayerViewHolder extends SmallPlayerViewHolder {

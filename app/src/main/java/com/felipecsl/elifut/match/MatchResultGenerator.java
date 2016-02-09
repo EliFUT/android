@@ -3,6 +3,7 @@ package com.felipecsl.elifut.match;
 import android.util.Log;
 
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Goals;
 import com.felipecsl.elifut.models.MatchResult;
@@ -13,7 +14,9 @@ import org.apache.commons.math3.random.Well19937c;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
+/** Generates random results for matches */
 public class MatchResultGenerator {
   private static final String TAG = MatchResultGenerator.class.getSimpleName();
   private final RandomGenerator random;
@@ -28,21 +31,31 @@ public class MatchResultGenerator {
     this.goalsDistribution = goalsDistribution;
   }
 
-  public MatchResult generate(Club home, Club away) {
+  public MatchResult generate(Club home, ClubSquad homeSquad, Club away, ClubSquad awaySquad) {
     float result = random.nextFloat();
     MatchResult.Builder matchResult = MatchResult.builder();
     Club winner;
     List<Goal> winnerGoals;
     List<Goal> loserGoals;
-    Log.d(TAG, "winner result was " + result);
 
-    if (result <= MatchResult.HOME_WIN_PROBABILITY) {
+    double ratingDifference = homeSquad.rating() - awaySquad.rating();
+    double ratingDiffModifier = (ratingDifference * 0.7) / 100;
+    double homeWinProbability = MatchResult.HOME_WIN_PROBABILITY + ratingDiffModifier;
+    double drawProbability = homeWinProbability + MatchResult.DRAW_PROBABILITY;
+
+    if (result <= homeWinProbability) {
       winner = home;
-    } else if (result <= MatchResult.DRAW_PROBABILITY) {
+    } else if (result <= drawProbability) {
       winner = null;
     } else {
       winner = away;
     }
+
+    Log.d(TAG, String.format(Locale.getDefault(),
+        "%s X %s\nHome winning Odds=%.2f, Away winning odds=%.2f\nWinner=%s, Result=%.2f",
+        home, away, homeWinProbability * 100, (1 - drawProbability) * 100,
+        winner, result * 100));
+
     boolean isHomeWin = home.equals(winner);
     Club loser = isHomeWin ? away : home;
     int totalGoals = Math.max((int) Math.floor(goalsDistribution.sample()), 0);

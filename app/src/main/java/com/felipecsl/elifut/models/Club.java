@@ -1,19 +1,15 @@
 package com.felipecsl.elifut.models;
 
+import com.google.auto.value.AutoValue;
+import com.google.common.base.Predicates;
+import com.google.common.collect.FluentIterable;
+
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.felipecsl.elifut.AutoValueClasses;
-import com.felipecsl.elifut.services.ElifutDataStore;
+import com.felipecsl.elifut.services.ClubDataStore;
 import com.gabrielittner.auto.value.cursor.CursorAdapter;
-import com.google.auto.value.AutoValue;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-
 import com.squareup.moshi.JsonAdapter;
 
 import java.util.ArrayList;
@@ -32,33 +28,31 @@ public abstract class Club extends Model implements Persistable {
     return AutoValue_Club.createFromCursor(cursor);
   }
 
+  @Override public String toString() {
+    return shortName();
+  }
+
   /**
    * Returns a list of all the players on this team who are substitutes, that is, who are not
-   * on the main squad of 11 players.
+   * on the main players of 11 players.
    */
-  public List<? extends Player> substitutes(ElifutDataStore dataStore) {
-    String clubId = String.valueOf(id());
-    List<? extends Player> players = dataStore.query(
-        AutoValueClasses.PLAYER, "club_id = ?", clubId);
-    ClubSquad clubSquad = Preconditions.checkNotNull(dataStore.queryOne(
-        AutoValueClasses.CLUB_SQUAD, "club_id = ?", clubId));
-    // Exclude the players who are already on the team squad from the list of all players, so we
+  public List<? extends Player> substitutes(ClubDataStore dataStore) {
+    List<? extends Player> players = dataStore.allPlayers(this);
+    ClubSquad clubSquad = dataStore.squad(this);
+    // Exclude the players who are already on the team players from the list of all players, so we
     // get a list with only the subs.
     return FluentIterable.from(players)
-        .filter(Predicates.not(Predicates.in(clubSquad.squad())))
+        .filter(Predicates.not(Predicates.in(clubSquad.players())))
         .toList();
   }
 
-  /** Replaces an existing player on this Club's squad with a new one and saves the changes. */
-  public void replacePlayer(Player oldPlayer, Player newPlayer, ElifutDataStore dataStore) {
-    List<? extends ClubSquad> clubSquads = dataStore.query(
-        AutoValueClasses.CLUB_SQUAD, "club_id = ?", String.valueOf(id()));
-    ClubSquad clubSquad = clubSquads.get(
-        Preconditions.checkElementIndex(0, clubSquads.size(), "Club squad not found"));
-    List<Player> squad = new ArrayList<>(clubSquad.squad());
+  /** Replaces an existing player on this Club's players with a new one and saves the changes. */
+  public void replacePlayer(Player oldPlayer, Player newPlayer, ClubDataStore dataStore) {
+    ClubSquad clubSquad = dataStore.squad(this);
+    List<Player> squad = new ArrayList<>(clubSquad.players());
     squad.remove(oldPlayer);
     squad.add(newPlayer);
-    dataStore.update(clubSquad.toBuilder().squad(squad).build(), clubSquad.id());
+    dataStore.updateSquad(clubSquad, clubSquad.toBuilder().players(squad).build());
   }
 
   public static Builder builder() {

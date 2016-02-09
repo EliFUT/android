@@ -14,7 +14,7 @@ import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.adapter.PlayersAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Player;
-import com.felipecsl.elifut.services.ElifutDataStore;
+import com.felipecsl.elifut.services.ClubDataStore;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class TeamPlayersActivity extends ElifutActivity implements PlayersAdapte
   @Bind(R.id.toolbar) Toolbar toolbar;
   @BindColor(R.color.color_primary) int colorPrimary;
 
-  @Inject ElifutDataStore dataStore;
+  @Inject ClubDataStore dataStore;
 
   @State Club club;
   @State Player previousPlayer;

@@ -2,12 +2,17 @@ package com.felipecsl.elifut;
 
 import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.MatchResult;
+import com.felipecsl.elifut.models.Player;
 
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -21,10 +26,12 @@ public class MatchResultGeneratorTest {
   private final MatchResultGenerator generator = new MatchResultGenerator(random, distribution);
 
   @Test public void testSimpleHomeWin() {
+    ClubSquad mockSquad = mock(ClubSquad.class);
+    when(mockSquad.rating()).thenReturn(70D);
     when(random.nextFloat()).thenReturn(MatchResult.HOME_WIN_PROBABILITY);
     when(distribution.sample()).thenReturn(4.0);
 
-    MatchResult result = generator.generate(home, away);
+    MatchResult result = generator.generate(home, mockSquad, away, mockSquad);
 
     assertThat(result.winner()).isEqualTo(home);
     assertThat(result.loser()).isEqualTo(away);
@@ -35,10 +42,13 @@ public class MatchResultGeneratorTest {
   }
 
   @Test public void testSimpleDraw() {
-    when(random.nextFloat()).thenReturn(MatchResult.DRAW_PROBABILITY);
+    ClubSquad mockSquad = mock(ClubSquad.class);
+    when(mockSquad.rating()).thenReturn(70D);
+    when(random.nextFloat()).thenReturn(
+        MatchResult.HOME_WIN_PROBABILITY + MatchResult.DRAW_PROBABILITY);
     when(distribution.sample()).thenReturn(2.0);
 
-    MatchResult result = generator.generate(home, away);
+    MatchResult result = generator.generate(home, mockSquad, away, mockSquad);
 
     assertThat(result.winner()).isEqualTo(null);
     assertThat(result.loser()).isEqualTo(null);
@@ -49,10 +59,13 @@ public class MatchResultGeneratorTest {
   }
 
   @Test public void testSimpleAwayWin() {
-    when(random.nextFloat()).thenReturn(MatchResult.DRAW_PROBABILITY + 0.1f);
+    ClubSquad mockSquad = mock(ClubSquad.class);
+    when(mockSquad.rating()).thenReturn(70D);
+    when(random.nextFloat()).thenReturn(
+        MatchResult.HOME_WIN_PROBABILITY + MatchResult.DRAW_PROBABILITY + 0.1f);
     when(distribution.sample()).thenReturn(1.0);
 
-    MatchResult result = generator.generate(home, away);
+    MatchResult result = generator.generate(home, mockSquad, away, mockSquad);
 
     assertThat(result.winner()).isEqualTo(away);
     assertThat(result.loser()).isEqualTo(home);
@@ -62,14 +75,18 @@ public class MatchResultGeneratorTest {
     assertThat(result.awayGoals().size()).isEqualTo(1);
   }
 
-  @Ignore("Run only manually") @Test public void testStatistics() {
+  @Ignore("Run only manually")
+  @Test public void testStatistics() {
+    ClubSquad mockSquad = mock(ClubSquad.class);
+    when(mockSquad.rating()).thenReturn(70D);
     MatchResultGenerator generator = new MatchResultGenerator();
-    int totalMatches = 100;
+    int totalMatches = 10000;
     float totalHomeWins = 0;
     float totalAwayWins = 0;
     float totalDraws = 0;
     for (int i = 0; i < totalMatches; i++) {
-      MatchResult result = generator.generate(home, away);
+      MatchResult result = generator.generate(
+          home, ClubSquad.create(home.id(), newSquad(60)), away, mockSquad);
       if (result.isDraw()) {
         totalDraws++;
       } else if (result.isHomeWin()) {
@@ -79,8 +96,40 @@ public class MatchResultGeneratorTest {
       }
     }
     System.out.println("Stats after " + totalMatches + " matches:");
-    System.out.println("Total home wins: " + (int) ((totalHomeWins/totalMatches)*100) + "%");
-    System.out.println("Total away wins: " + (int) ((totalAwayWins/totalMatches)*100) + "%");
-    System.out.println("Total draws: " + (int) ((totalDraws/totalMatches)*100) + "%");
+    System.out.println("Total home wins: " + (int) ((totalHomeWins / totalMatches) * 100) + "%");
+    System.out.println("Total away wins: " + (int) ((totalAwayWins / totalMatches) * 100) + "%");
+    System.out.println("Total draws: " + (int) ((totalDraws / totalMatches) * 100) + "%");
+  }
+
+  private static Player newPlayer(int rating) {
+    return Player.builder()
+        .id(1)
+        .base_id(1)
+        .first_name("Edson")
+        .last_name("Arantes do Nascimento")
+        .name("Edson Arantes do Nascimento")
+        .position("ST")
+        .image("http://example.com/foo.png")
+        .nation_image("http://example.com/foo.png")
+        .rating(rating)
+        .clubId(12)
+        .player_type("Forward")
+        .attribute_1(90)
+        .attribute_2(90)
+        .attribute_3(90)
+        .attribute_4(90)
+        .attribute_5(90)
+        .attribute_6(90)
+        .quality("90")
+        .color("gold")
+        .build();
+  }
+
+  private static List<Player> newSquad(int rating) {
+    List<Player> players = new ArrayList<>(11);
+    for (int i = 0; i < 10; i++) {
+      players.add(newPlayer(i % 2 == 0 ? rating + 1 : rating - 1));
+    }
+    return players;
   }
 }

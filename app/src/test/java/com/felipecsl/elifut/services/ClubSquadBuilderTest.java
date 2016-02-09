@@ -88,7 +88,7 @@ public class ClubSquadBuilderTest {
 
     ClubSquad clubSquad = builder.build();
 
-    assertThat(clubSquad.squad()).containsExactly(buildPlayer("GK"), buildPlayer("LB"),
+    assertThat(clubSquad.players()).containsExactly(buildPlayer("GK"), buildPlayer("LB"),
         buildPlayer("CB"), buildPlayer("CB"), buildPlayer("RB"), buildPlayer("LM"),
         buildPlayer("CM"), buildPlayer("CAM"), buildPlayer("CDM"), buildPlayer("ST"),
         buildPlayer("CF"));
@@ -103,7 +103,7 @@ public class ClubSquadBuilderTest {
 
     ClubSquad clubSquad = builder.build();
 
-    assertThat(clubSquad.squad()).containsExactly(buildPlayer("GK"), buildPlayer("LB"),
+    assertThat(clubSquad.players()).containsExactly(buildPlayer("GK"), buildPlayer("LB"),
         buildPlayer("CB"), buildPlayer("CB"), buildPlayer("RB"), buildPlayer("LM"),
         buildPlayer("CM"), buildPlayer("CAM"), buildPlayer("CDM"), buildPlayer("ST"),
         buildPlayer("CF"));

@@ -9,10 +9,12 @@ import com.felipecsl.elifut.TestElifutApplication;
 import com.felipecsl.elifut.TestFixtures;
 import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
+import com.felipecsl.elifut.services.ClubDataStore;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.LeagueRoundGenerator;
 
@@ -29,8 +31,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -42,7 +47,7 @@ public class LeagueDetailsTest {
   private final Goal goal = Goal.create(1, TestFixtures.GREMIO);
   private final MatchResult matchResult = MatchResult.builder()
       .homeGoals(Collections.singletonList(goal))
-      .awayGoals(Collections.emptyList())
+      .awayGoals(emptyList())
       .build(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
   private final LeagueRound round1 = LeagueRound.create(1, 1, Arrays.asList(
       Match.create(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL, matchResult),
@@ -55,6 +60,7 @@ public class LeagueDetailsTest {
 
   @Inject ElifutDataStore persistenceService;
   @Inject MatchResultGenerator matchResultGenerator;
+  @Mock ClubDataStore clubDataStore;
   @Mock LeagueRoundGenerator roundGenerator;
 
   @Before public void setUp() throws Exception {
@@ -62,7 +68,8 @@ public class LeagueDetailsTest {
     application.testComponent().inject(this);
     initMocks(this);
 
-    leagueDetails = new LeagueDetails(persistenceService, roundGenerator, matchResultGenerator);
+    leagueDetails = new LeagueDetails(persistenceService, clubDataStore, roundGenerator,
+        matchResultGenerator);
   }
 
   @Test public void testInitialize() {
@@ -82,7 +89,7 @@ public class LeagueDetailsTest {
     assertThat(leagueDetails.nextRound()).isEqualTo(round1);
     assertThat(leagueDetails.rounds()).isEqualTo(Collections.singletonList(round2));
     assertThat(leagueDetails.nextRound()).isEqualTo(round2);
-    assertThat(leagueDetails.rounds()).isEqualTo(Collections.emptyList());
+    assertThat(leagueDetails.rounds()).isEqualTo(emptyList());
   }
 
   @Test public void testExecuteRound() {
@@ -91,15 +98,23 @@ public class LeagueDetailsTest {
     MatchResultGenerator mockResultGenerator = mock(MatchResultGenerator.class);
     MatchResult fakeResult = MatchResult.builder()
         .homeGoals(Collections.singletonList(Goal.create(10, gremio)))
-        .awayGoals(Collections.emptyList())
+        .awayGoals(emptyList())
         .build(gremio, internacional);
-    when(mockResultGenerator.generate(gremio, internacional))
+
+    when(clubDataStore.squad(any())).thenReturn(ClubSquad.create(0, emptyList()));
+    ClubSquad homeSquad = ClubSquad.create(0, emptyList());
+    ClubSquad awaySquad = ClubSquad.create(0, emptyList());
+    when(mockResultGenerator.generate(gremio, homeSquad, internacional, awaySquad))
         .thenReturn(fakeResult);
+
     LeagueDetails leagueDetails = new LeagueDetails(
-        persistenceService, roundGenerator, mockResultGenerator);
+        persistenceService, clubDataStore, roundGenerator, mockResultGenerator);
     Match match = Match.create(gremio, internacional);
     LeagueRound round = LeagueRound.create(1, Collections.singletonList(match));
 
-    assertThat(leagueDetails.executeRound(round).matches().get(0).result()).isEqualTo(fakeResult);
+    LeagueRound leagueRound = leagueDetails.executeRound(round);
+
+    verify(mockResultGenerator).generate(gremio, homeSquad, internacional, awaySquad);
+    assertThat(leagueRound.matches().get(0).result()).isEqualTo(fakeResult);
   }
 }

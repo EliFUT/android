@@ -6,8 +6,8 @@ import com.felipecsl.elifut.BuildConfig;
 import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
 import com.felipecsl.elifut.TestFixtures;
+import com.felipecsl.elifut.services.ClubDataStore;
 import com.felipecsl.elifut.services.ElifutDataStore;
-import com.squareup.sqlbrite.SqlBrite;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     manifest = ElifutTestRunner.MANIFEST_PATH)
 public class ClubTest {
   @Inject ElifutDataStore service;
+  @Inject ClubDataStore clubDataStore;
 
   @Before public void setUp() {
     TestElifutApplication application = (TestElifutApplication) RuntimeEnvironment.application;
@@ -83,7 +84,7 @@ public class ClubTest {
     ClubSquad clubSquad = ClubSquad.create(0, Collections.singletonList(gornaldo));
     service.create(players);
     service.create(clubSquad);
-    List<? extends Player> substitutes = club.substitutes(service);
+    List<? extends Player> substitutes = club.substitutes(clubDataStore);
     assertThat(substitutes).isEqualTo(Collections.singletonList(pele));
   }
 }

@@ -1,5 +1,7 @@
 package com.felipecsl.elifut.services;
 
+import java.io.IOException;
+
 import retrofit2.Response;
 import rx.Observable;
 import rx.functions.Func1;
@@ -21,6 +23,11 @@ public final class ResponseMapper<T> implements Func1<Response<T>, Observable<Re
     if (response.isSuccess()) {
       return Observable.just(response);
     }
-    return Observable.error(new Throwable());
+    try {
+      return Observable.error(new RuntimeException(response.raw().request().url()
+          + ": " + response.errorBody().string()));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

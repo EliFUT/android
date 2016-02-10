@@ -68,18 +68,6 @@ public class ClubSquadBuilderTest {
     }
   }
 
-  @Test public void throwIfNotEnoughAttackers() {
-    try {
-      List<Player> players = Arrays.asList(buildPlayer("LB"), buildPlayer("CB"), buildPlayer("CB"),
-          buildPlayer("RB"), buildPlayer("LM"), buildPlayer("CM"), buildPlayer("GK"),
-          buildPlayer("CAM"), buildPlayer("CDM"), buildPlayer("CM"), buildPlayer("CF"));
-      ClubSquadBuilder builder = new ClubSquadBuilder(TestFixtures.GREMIO, players);
-      builder.build();
-      fail();
-    } catch (IllegalArgumentException ignored) {
-    }
-  }
-
   @Test public void simpleSquad() {
     Player[] players = new Player[] { buildPlayer("LB"), buildPlayer("CB"), buildPlayer("CB"),
         buildPlayer("RB"), buildPlayer("LM"), buildPlayer("CM"), buildPlayer("GK"),
@@ -107,6 +95,34 @@ public class ClubSquadBuilderTest {
         buildPlayer("CB"), buildPlayer("CB"), buildPlayer("RB"), buildPlayer("LM"),
         buildPlayer("CM"), buildPlayer("CAM"), buildPlayer("CDM"), buildPlayer("ST"),
         buildPlayer("CF"));
+  }
+
+  @Test public void noAttackersButExtraMidfielders() {
+    Player[] players = new Player[] { buildPlayer("LB"), buildPlayer("CB"), buildPlayer("CB"),
+        buildPlayer("CM"), buildPlayer("RB"), buildPlayer("LM"), buildPlayer("CM"),
+        buildPlayer("GK"), buildPlayer("CM"), buildPlayer("CAM"), buildPlayer("CDM") };
+    ClubSquadBuilder builder = new ClubSquadBuilder(TestFixtures.GREMIO, Arrays.asList(players));
+
+    ClubSquad clubSquad = builder.build();
+
+    assertThat(clubSquad.players()).containsExactly(buildPlayer("GK"), buildPlayer("LB"),
+        buildPlayer("CB"), buildPlayer("CB"), buildPlayer("RB"), buildPlayer("CM"),
+        buildPlayer("LM"), buildPlayer("CM"), buildPlayer("CM"), buildPlayer("CAM"),
+        buildPlayer("CDM"));
+  }
+
+  @Test public void noAttackersButExtraDefenderAndGoalkeeper() {
+    Player[] players = new Player[] { buildPlayer("LB"), buildPlayer("CB"), buildPlayer("CB"),
+        buildPlayer("CB"), buildPlayer("RB"), buildPlayer("LM"), buildPlayer("CM"),
+        buildPlayer("GK"), buildPlayer("GK"), buildPlayer("CAM"), buildPlayer("CDM") };
+    ClubSquadBuilder builder = new ClubSquadBuilder(TestFixtures.GREMIO, Arrays.asList(players));
+
+    ClubSquad clubSquad = builder.build();
+
+    assertThat(clubSquad.players()).containsExactly(buildPlayer("GK"), buildPlayer("LB"),
+        buildPlayer("CB"), buildPlayer("CB"), buildPlayer("RB"), buildPlayer("LM"),
+        buildPlayer("CM"), buildPlayer("CAM"), buildPlayer("CDM"), buildPlayer("CB"),
+        buildPlayer("GK"));
   }
 
   private static Player buildPlayer(String position) {

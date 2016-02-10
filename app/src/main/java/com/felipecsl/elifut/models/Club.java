@@ -75,26 +75,20 @@ public abstract class Club extends Model implements Persistable {
     return abbrev_name() != null ? abbrev_name().substring(0, 3) : name().substring(0, 3);
   }
 
+  // @formatter:off
   @AutoValue.Builder
   public abstract static class Builder {
     public abstract Builder id(int i);
-
     public abstract Builder base_id(int i);
-
     public abstract Builder name(String s);
-
     public abstract Builder abbrev_name(String s);
-
     public abstract Builder small_image(String s);
-
     public abstract Builder large_image(String s);
-
     public abstract Builder league_id(int i);
-
     public abstract Builder stats(ClubStats s);
-
     public abstract Club build();
   }
+  // @formatter:on
 
   public Builder toBuilder() {
     // https://github.com/google/auto/issues/281

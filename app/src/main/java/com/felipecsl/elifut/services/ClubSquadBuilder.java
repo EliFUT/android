@@ -34,7 +34,7 @@ public final class ClubSquadBuilder {
         findByAnyPosition(Player.MIDFIELDER_POSITIONS).toSortedList(comparator));
     List<Player> goalkeepers = new ArrayList<>(playersByPosition("GK").toSortedList(comparator));
     Preconditions.checkNotNull(allPlayers);
-    Preconditions.checkArgument(allPlayers.size() >= 11, "Need at least 11 players");
+    Preconditions.checkArgument(allPlayers.size() >= 11, "Need at least 11 players, club=" + club);
     Preconditions.checkArgument(!goalkeepers.isEmpty(),
         "Need at least one goalkeeper, club=" + club);
     Preconditions.checkArgument(defenders.size() > 3, "Need at least 4 defenders, club=" + club);

@@ -38,7 +38,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Converter;
-import retrofit2.MoshiConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 @Module
 public class DataModule {

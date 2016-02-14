@@ -91,7 +91,10 @@ public class ElifutDataStoreTest {
 
     service.deleteAll();
 
-    assertThat(service.query(AutoValueClasses.CLUB)).isEmpty();
-    assertThat(service.query(AutoValueClasses.PLAYER)).isEmpty();
+    List<? extends Club> clubs = service.query(AutoValueClasses.CLUB);
+    List<? extends Player> players = service.query(AutoValueClasses.PLAYER);
+
+    assertThat(clubs).isEmpty();
+    assertThat(players).isEmpty();
   }
 }

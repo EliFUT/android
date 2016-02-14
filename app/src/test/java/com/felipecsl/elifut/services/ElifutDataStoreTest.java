@@ -84,4 +84,14 @@ public class ElifutDataStoreTest {
     assertThat(service.query(AutoValueClasses.CLUB))
         .isEqualTo(Collections.singletonList(TestFixtures.INTERNACIONAL));
   }
+
+  @Test public void testDeleteAll() {
+    service.create(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
+    service.create(TestFixtures.GORNALDO, TestFixtures.PELE);
+
+    service.deleteAll();
+
+    assertThat(service.query(AutoValueClasses.CLUB)).isEmpty();
+    assertThat(service.query(AutoValueClasses.PLAYER)).isEmpty();
+  }
 }

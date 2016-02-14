@@ -1,14 +1,15 @@
 package com.felipecsl.elifut.services;
 
-import android.support.annotation.VisibleForTesting;
+import com.google.common.base.Preconditions;
 
-import com.felipecsl.elifut.match.MatchResultGenerator;
+import android.support.annotation.VisibleForTesting;
+import android.util.Log;
+
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
 
-import com.google.common.base.Preconditions;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -17,16 +18,23 @@ import java.util.Map;
 import static com.felipecsl.elifut.util.CollectionUtils.shuffle;
 
 public class LeagueRoundGenerator {
+  private static final String TAG = "LeagueRoundGenerator";
+
   public LeagueRoundGenerator() {
   }
 
   @VisibleForTesting List<LeagueRound> generateRoundsDeterministic(List<? extends Club> clubs) {
-    int totalClubs = clubs.size();
-
     Preconditions.checkNotNull(clubs);
-    Preconditions.checkArgument(totalClubs % 2 == 0, "Need even number of clubs");
-    Preconditions.checkArgument(totalClubs > 1, "Need at least 2 clubs");
+    Preconditions.checkArgument(clubs.size() > 1, "Need at least 2 clubs");
 
+    List<? extends Club> clubsCopy = new ArrayList<>(clubs);
+
+    if (clubsCopy.size() % 2 != 0) {
+      clubsCopy.remove(clubsCopy.size() - 1);
+      Log.d(TAG, "Got odd number of clubs, dropping the last one");
+    }
+
+    int totalClubs = clubsCopy.size();
     int totalRounds = (totalClubs - 1) * 2;
     int matchesPerRound = totalClubs / 2;
     LeagueRound[] rounds = new LeagueRound[totalRounds];
@@ -36,7 +44,7 @@ public class LeagueRoundGenerator {
     }
     Map<Integer, Club> clubMap = new HashMap<>();
     for (int i = 1; i <= totalClubs; i++) {
-      clubMap.put(i, clubs.get(i - 1));
+      clubMap.put(i, clubsCopy.get(i - 1));
     }
 
     for (int round = 0; round < totalRounds; round++) {

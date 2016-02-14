@@ -3,6 +3,7 @@ package com.felipecsl.elifut.activitiy;
 import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.LinearGradient;
@@ -20,6 +21,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -30,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.felipecsl.elifut.AppInitializer;
 import com.felipecsl.elifut.R;
 import com.felipecsl.elifut.Util;
 import com.felipecsl.elifut.animations.SimpleAnimatorListener;
@@ -55,6 +58,7 @@ public abstract class NavigationActivity extends ElifutActivity
   @Inject UserPreferences userPreferences;
   @Inject LeagueDetails leagueDetails;
   @Inject LeagueRoundExecutor roundExecutor;
+  @Inject AppInitializer appInitializer;
 
   @Bind(R.id.circular_reveal_overlay) View circularRevealOverlay;
   @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
@@ -70,14 +74,14 @@ public abstract class NavigationActivity extends ElifutActivity
         ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
           @Override public Shader resize(int width, int height) {
             return new LinearGradient(0, 0, width, height,
-                new int[] { palette.getDarkVibrantColor(0xFF81C784),
-                    palette.getLightVibrantColor(0xFF2E7D32) }, null, Shader.TileMode.CLAMP);
+                new int[]{palette.getDarkVibrantColor(0xFF81C784),
+                    palette.getLightVibrantColor(0xFF2E7D32)}, null, Shader.TileMode.CLAMP);
           }
         };
         PaintDrawable paintDrawable = new PaintDrawable();
         paintDrawable.setShape(new RectShape());
         paintDrawable.setShaderFactory(shaderFactory);
-        LayerDrawable background = new LayerDrawable(new Drawable[] { paintDrawable });
+        LayerDrawable background = new LayerDrawable(new Drawable[]{paintDrawable});
         //noinspection deprecation
         headerViewHolder.navHeaderLayout.setBackgroundDrawable(background);
       });
@@ -148,9 +152,25 @@ public abstract class NavigationActivity extends ElifutActivity
       case android.R.id.home:
         drawerLayout.openDrawer(GravityCompat.START);
         return true;
+      case R.id.action_abandon:
+        new AlertDialog.Builder(this)
+            .setMessage(R.string.abandon_confirmation)
+            .setTitle(R.string.are_you_sure)
+            .setPositiveButton(R.string.yes, (d, w) -> abandon(d))
+            .setNegativeButton(R.string.no, (d, w) -> d.dismiss())
+            .create()
+            .show();
+        return true;
     }
 
     return super.onOptionsItemSelected(item);
+  }
+
+  private void abandon(DialogInterface d) {
+    d.dismiss();
+    appInitializer.clearData();
+    finish();
+    startActivity(MainActivity.newIntent(this));
   }
 
   @Override public boolean onNavigationItemSelected(MenuItem item) {

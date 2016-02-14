@@ -15,6 +15,7 @@ import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,10 @@ public class ElifutDataStore extends SQLiteOpenHelper {
   public long create(Persistable persistable) {
     Persistable.Converter<Persistable> converter = converterFor(persistable);
     return db.insert(converter.tableName(), converter.toContentValues(persistable, this));
+  }
+
+  public void create(Persistable... persistables) {
+    create(Arrays.asList(persistables));
   }
 
   public void create(List<? extends Persistable> persistables) {
@@ -157,5 +162,11 @@ public class ElifutDataStore extends SQLiteOpenHelper {
   private <T extends Persistable> T cursorToObject(
       Persistable.Converter<T> converter, Cursor cursor) {
     return converter.fromCursor(new SimpleCursor(cursor), this);
+  }
+
+  public void deleteAll() {
+    for (Persistable.Converter<?> converter : converterMap.values()) {
+      db.execute("DELETE FROM " + converter.tableName());
+    }
   }
 }

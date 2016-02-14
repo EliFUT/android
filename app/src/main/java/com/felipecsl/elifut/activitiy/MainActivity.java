@@ -1,6 +1,8 @@
 package com.felipecsl.elifut.activitiy;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -107,5 +109,9 @@ public class MainActivity extends ElifutActivity {
     Club club = userPreferences.club();
     startActivity(CurrentTeamDetailsActivity.newIntent(MainActivity.this, club));
     finish();
+  }
+
+  public static Intent newIntent(Context context) {
+    return new Intent(context, MainActivity.class);
   }
 }

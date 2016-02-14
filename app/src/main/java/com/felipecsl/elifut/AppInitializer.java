@@ -1,6 +1,9 @@
 package com.felipecsl.elifut;
 
+import com.google.common.collect.FluentIterable;
+
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
@@ -13,7 +16,6 @@ import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.ElifutService;
 import com.felipecsl.elifut.services.ResponseBodyMapper;
 import com.felipecsl.elifut.services.ResponseMapper;
-import com.google.common.collect.FluentIterable;
 
 import java.util.List;
 
@@ -28,12 +30,15 @@ public class AppInitializer {
   private final JsonPreference<Club> clubPreference;
   private final JsonPreference<League> leaguePreference;
   private final ElifutDataStore persistenceService;
+  private final SharedPreferences sharedPreferences;
 
   public AppInitializer(ElifutService service, UserPreferences userPreferences,
-      LeagueDetails leagueDetails, ElifutDataStore persistenceService) {
+      LeagueDetails leagueDetails, ElifutDataStore persistenceService,
+      SharedPreferences sharedPreferences) {
     this.service = service;
     this.leagueDetails = leagueDetails;
     this.persistenceService = persistenceService;
+    this.sharedPreferences = sharedPreferences;
     this.clubPreference = userPreferences.clubPreference();
     this.leaguePreference = userPreferences.leaguePreference();
   }
@@ -55,6 +60,12 @@ public class AppInitializer {
         .map(ClubSquadBuilder::build)
         .map(persistenceService::create)
         .map(nothing -> (Void) null);
+  }
+
+  /** Clears all app settings and reinitializes state */
+  public void clearData() {
+    sharedPreferences.edit().clear().apply();
+    persistenceService.deleteAll();
   }
 
   private Observable<? extends List<Club>> loadLeagueClubs(League league) {

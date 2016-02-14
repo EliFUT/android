@@ -34,4 +34,9 @@
   <string name="action_replace">Replace</string>
   <string name="select_a_player">Select a player to switch</string>
   <string name="player_replaced">Player %1$s replaced with %2$s</string>
+  <string name="action_abandon">Abandon League</string>
+  <string name="abandon_confirmation">All you current progress will be lost!</string>
+  <string name="are_you_sure">Are you sure?</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
 </resources>

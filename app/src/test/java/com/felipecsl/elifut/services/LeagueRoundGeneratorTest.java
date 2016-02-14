@@ -1,11 +1,9 @@
 package com.felipecsl.elifut.services;
 
 import com.felipecsl.elifut.TestFixtures;
-import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.felipecsl.elifut.models.Match;
-import com.felipecsl.elifut.models.MatchResult;
 
 import org.junit.Test;
 
@@ -18,9 +16,6 @@ import static com.felipecsl.elifut.TestUtil.newClub;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class LeagueRoundGeneratorTest {
   @Test public void testGenerateRoundsThrowsForEmptyListOfClubs() {
@@ -32,13 +27,12 @@ public class LeagueRoundGeneratorTest {
     }
   }
 
-  @Test public void testGenerateRoundsThrowsForOddNumberOfClubs() {
+  @Test public void testGenerateRoundsOddNumberOfClubsDropsOne() {
     LeagueRoundGenerator roundGenerator = new LeagueRoundGenerator();
-    try {
-      roundGenerator.generateRounds(singletonList(newClub("Gremio")));
-      fail();
-    } catch (IllegalArgumentException ignored) {
-    }
+    List<LeagueRound> leagueRounds = roundGenerator.generateRounds(
+        Arrays.asList(newClub("Gremio"), newClub("Internacional"), newClub("Juventude")));
+
+    assertThat(leagueRounds.size()).isEqualTo(2);
   }
 
   @Test public void testGenerateRoundsTwoClubs() {

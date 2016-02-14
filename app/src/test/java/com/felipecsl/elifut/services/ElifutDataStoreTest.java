@@ -84,4 +84,17 @@ public class ElifutDataStoreTest {
     assertThat(service.query(AutoValueClasses.CLUB))
         .isEqualTo(Collections.singletonList(TestFixtures.INTERNACIONAL));
   }
+
+  @Test public void testDeleteAll() {
+    service.create(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
+    service.create(TestFixtures.GORNALDO, TestFixtures.PELE);
+
+    service.deleteAll();
+
+    List<? extends Club> clubs = service.query(AutoValueClasses.CLUB);
+    List<? extends Player> players = service.query(AutoValueClasses.PLAYER);
+
+    assertThat(clubs).isEmpty();
+    assertThat(players).isEmpty();
+  }
 }

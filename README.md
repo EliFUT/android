@@ -52,7 +52,14 @@ Run `./gradlew check` to compile and run the unit tests. If everything passes, y
 app on any emulator or device with API > 16 with `./gradlew assembleFastLDebug installFastLDebug`.
 By default, the app will be pointing to the production API. You can change that to use your local
 development API by setting the `API_ENPOINT` constant in the build.gradle to `$devApiEndpoint`:
-`buildConfigField "String", "API_ENDPOINT", "\"$devApiEndpoint\""`
+`buildConfigField "String", "API_ENDPOINT", "\"$devApiEndpoint\""`.
+
+[Generate](https://developers.google.com/analytics/devguides/collection/android/v4) a
+`google-services.json` file for Google Analytics and put it in the app/ directory.
+
+In order to build a signed release app, you'll also need to define 2 environment variables:
+`ELIFUT_CERT_PATH` and `ELIFUT_CERT_PASSWORD`. They should point to the path to your signing certificate
+and your certificate password, respectively.
 
 ## Contributing
 
@@ -62,7 +69,8 @@ development API by setting the `API_ENPOINT` constant in the build.gradle to `$d
  * Start a feature/bugfix branch, eg.: `yourname/fix-bug-xyz` or `yourname/implement-feature-abc`
  * Commit and push until you are happy with your contribution
  * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
- * Open a Pull Request and describe your motivation and changes. Make sure the Travis build passed on your branch by making sure it has a green checkmark
+ * Open a Pull Request and describe your motivation and changes. Make sure the Travis build passed
+ on your branch by making sure it has a green checkmark
  * Squash the commits so we can keep a clean history
 
 ## Acknowledgements

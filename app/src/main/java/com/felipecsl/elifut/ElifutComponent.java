@@ -19,7 +19,12 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { NetworkModule.class, DataModule.class, ElifutModule.class })
+@Component(modules = {
+    NetworkModule.class,
+    DataModule.class,
+    ElifutModule.class,
+    AnalyticsModule.class
+})
 public interface ElifutComponent {
   void inject(MainActivity mainActivity);
   void inject(CurrentTeamDetailsActivity currentTeamDetailsActivity);
@@ -42,6 +47,7 @@ public interface ElifutComponent {
           .elifutModule(new ElifutModule())
           .networkModule(new NetworkModule(context))
           .dataModule(new DataModule(context))
+          .analyticsModule(new AnalyticsModule(context))
           .build();
     }
   }

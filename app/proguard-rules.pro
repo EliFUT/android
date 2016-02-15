@@ -37,7 +37,9 @@
 -dontwarn java.lang.invoke.**
 -dontwarn rx.internal.util.unsafe.**
 -dontwarn com.squareup.okhttp.**
--dontwarn autovalue.shaded.com.google.common$.auto.service.processor.$AutoServiceProcessor
+-dontwarn okhttp3.**
+-dontnote okhttp3.**
+-dontwarn autovalue.shaded.com.google$.auto.service.processor.$AutoServiceProcessor
 -keep class **$$Icepick { *; }
 -keep public class * extends android.view.View
 -dontnote com.google.vending.licensing.ILicensingService
@@ -93,6 +95,10 @@
 -keepclassmembers class ** { ** actionIntent; }
 -keepclassmembers class ** { ** SDK_INT; }
 -dontwarn retrofit.**
+-dontwarn retrofit2.**
+-dontnote retrofit2.**
+-dontnote com.squareup.picasso.**
+-dontnote com.google.common.util.concurrent.**
 -dontwarn android.support.v7.**
 -keep class android.support.v7.** { *; }
 -keep interface android.support.v7.** { *; }
@@ -112,3 +118,6 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
+
+# Play Services
+-dontnote com.google.android.gms.**

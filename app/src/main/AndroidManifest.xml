@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.felipecsl.elifut"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.felipecsl.elifut">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
   <application
     android:name=".ElifutApplication"
@@ -14,31 +15,31 @@
       android:name=".activitiy.MainActivity"
       android:label="@string/title_activity_main">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
+        <action android:name="android.intent.action.MAIN" />
 
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
     <activity
       android:name=".activitiy.CurrentTeamDetailsActivity"
-      android:theme="@style/AppTheme.WithTransition"/>
+      android:theme="@style/AppTheme.WithTransition" />
     <activity
       android:name=".activitiy.LeagueDetailsActivity"
-      android:theme="@style/AppTheme.WithTransition"/>
+      android:theme="@style/AppTheme.WithTransition" />
     <activity
       android:name=".activitiy.MatchProgressActivity"
-      android:label="@string/match_progress"/>
+      android:label="@string/match_progress" />
     <activity
       android:name=".activitiy.TeamPlayersActivity"
-      android:label="@string/select_a_player"/>
+      android:label="@string/select_a_player" />
     <activity
       android:name=".activitiy.TeamDetailsActivity"
-      android:theme="@style/AppTheme.WithTransition"/>
-    <activity android:name=".activitiy.LeagueRoundResultsActivity"/>
+      android:theme="@style/AppTheme.WithTransition" />
+    <activity android:name=".activitiy.LeagueRoundResultsActivity" />
     <activity
       android:name=".activitiy.PlayerDetailsActivity"
       android:label="@string/player_details"
-      android:theme="@style/AppTheme.WithTransition"/>
+      android:theme="@style/AppTheme.WithTransition" />
   </application>
 
 </manifest>

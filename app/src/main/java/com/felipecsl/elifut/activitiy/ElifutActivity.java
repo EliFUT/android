@@ -1,10 +1,14 @@
 package com.felipecsl.elifut.activitiy;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.felipecsl.elifut.ElifutApplication;
 import com.felipecsl.elifut.ElifutComponent;
@@ -26,6 +30,7 @@ public abstract class ElifutActivity extends AppCompatActivity {
   @Inject ElifutService service;
   @Inject UserPreferences userPreferences;
   @Inject LeagueDetails leagueDetails;
+  @Inject Tracker tracker;
 
   protected ElifutApplication getElifutApp() {
     return (ElifutApplication) getApplication();
@@ -39,6 +44,10 @@ public abstract class ElifutActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     daggerComponent().inject(this);
     Icepick.restoreInstanceState(this, savedInstanceState);
+    String screenName = getClass().getSimpleName();
+    Log.i(screenName, "Setting screen name: " + screenName);
+    tracker.setScreenName(screenName);
+    tracker.send(new HitBuilders.ScreenViewBuilder().build());
   }
 
   @Override public void onSaveInstanceState(Bundle outState) {

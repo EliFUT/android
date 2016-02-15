@@ -1,9 +1,9 @@
-
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.google.gms.google-services'
 apply from: './coverage.gradle'
 
 android {

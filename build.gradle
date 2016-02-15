@@ -9,6 +9,7 @@ buildscript {
     classpath 'me.tatarka:gradle-retrolambda:3.2.4'
     classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
+    classpath 'com.google.gms:google-services:2.0.0-beta4'
   }
 
   // Exclude the Lombok version that the android plugin depends on (fix for Retrolambda).
@@ -37,5 +38,5 @@ ext {
   devApiEndpoint = "http://10.0.3.2:3000/"
   prodApiEndpoint = "http://104.131.134.208/"
   retrofitVersion = "2.0.0-beta4"
-  playServicesVersion = '8.4.0'
+  playServicesVersion = '8.3.0'
 }

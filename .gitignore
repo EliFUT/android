@@ -8,3 +8,4 @@
 /build
 /captures
 app/google-services.json.prod
+/app/src/main/res/values/strings-notranslate.xml

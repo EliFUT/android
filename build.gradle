@@ -1,15 +1,18 @@
 buildscript {
   repositories {
     jcenter()
+    maven { url 'https://maven.fabric.io/public' }
   }
+
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.0.0-beta4'
+    classpath 'com.android.tools.build:gradle:2.0.0-beta5'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
     classpath 'me.tatarka:gradle-retrolambda:3.2.4'
     classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
     classpath 'com.google.gms:google-services:2.0.0-beta4'
+    classpath 'io.fabric.tools:gradle:1.+'
   }
 
   // Exclude the Lombok version that the android plugin depends on (fix for Retrolambda).
@@ -19,12 +22,9 @@ buildscript {
 allprojects {
   repositories {
     jcenter()
-    maven {
-      url 'https://oss.sonatype.org/content/repositories/snapshots'
-    }
-    maven {
-      url "https://clojars.org/repo/"
-    }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url "https://clojars.org/repo/" }
+    maven { url 'https://maven.fabric.io/public' }
   }
   // Workaround to prevent Gradle from stealing focus from other apps during tests run/etc.
   // https://gist.github.com/artem-zinnatullin/4c250e04636e25797165

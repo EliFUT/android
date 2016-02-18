@@ -16,7 +16,6 @@
       android:label="@string/title_activity_main">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
@@ -40,6 +39,9 @@
       android:name=".activitiy.PlayerDetailsActivity"
       android:label="@string/player_details"
       android:theme="@style/AppTheme.WithTransition" />
+    <meta-data
+      android:name="io.fabric.ApiKey"
+      android:value="${fabricApiKey}" />
   </application>
 
 </manifest>

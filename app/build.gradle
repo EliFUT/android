@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'android-apt'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'me.tatarka.retrolambda'
@@ -17,6 +18,7 @@ android {
     versionCode 1
     versionName "1.0"
     multiDexEnabled true
+    manifestPlaceholders = [fabricApiKey: System.getenv('ELIFUT_FABRIC_API_KEY')]
   }
   signingConfigs {
     release {
@@ -99,7 +101,7 @@ dependencies {
   compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
   compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
   compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-  compile 'com.squareup.moshi:moshi:1.0.0'
+  compile 'com.squareup.moshi:moshi:1.1.0'
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'com.google.dagger:dagger:2.0.2'
   compile 'frankiesardo:icepick:3.1.0'
@@ -113,6 +115,9 @@ dependencies {
   compile 'com.android.support:multidex:1.0.1'
   compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.1'
   compile 'com.squareup.sqlbrite:sqlbrite:0.5.1'
+  compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+    transitive = true;
+  }
 
   provided 'frankiesardo:icepick-processor:3.1.0'
   provided 'org.glassfish:javax.annotation:10.0-b28'

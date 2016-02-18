@@ -18,7 +18,7 @@ android {
     versionCode 1
     versionName "1.0"
     multiDexEnabled true
-    manifestPlaceholders = [fabricApiKey: ELIFUT_FABRIC_API_KEY]
+    manifestPlaceholders = [fabricApiKey: System.getenv('ELIFUT_FABRIC_API_KEY')]
   }
   signingConfigs {
     release {

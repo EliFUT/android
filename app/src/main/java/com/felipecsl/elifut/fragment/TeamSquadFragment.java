@@ -1,7 +1,6 @@
 package com.felipecsl.elifut.fragment;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,6 +26,8 @@ import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.FragmentBundler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -106,49 +107,21 @@ public class TeamSquadFragment extends ElifutFragment {
   }
 
   private void onPlayersLoaded() {
-    FluentIterable<Player> defenders = defenders();
-    FluentIterable<Player> midfielders = midfielders();
-    FluentIterable<Player> attackers = attackers();
+    List<Player> sortedPlayers = ImmutableList.<Player>builder()
+        .add(Player.filterGoalkeepers(players).get(0))
+        .addAll(Player.filterDefenders(players))
+        .addAll(Player.filterMidfielders(players))
+        .addAll(Player.filterAttackers(players))
+        .build();
 
-    loadPlayer(gk, playerByPosition("GK"), 200);
-    loadPlayer(lb, defenders.get(0), 220);
-    loadPlayer(cb1, defenders.get(1), 230);
-    loadPlayer(cb2, defenders.get(2), 240);
-    loadPlayer(rb, defenders.get(3), 250);
-    loadPlayer(cm1, midfielders.get(0), 270);
-    loadPlayer(cm2, midfielders.get(1), 280);
-    loadPlayer(cm3, midfielders.get(2), 290);
-    loadPlayer(cm4, midfielders.get(3), 300);
-    loadPlayer(at2, attackers.first().get(), 320);
-    loadPlayer(at3, attackers.last().get(), 330);
-  }
+    List<ViewGroup> viewGroups = Arrays.asList(gk, lb, cb1, cb2, rb, cm1, cm2, cm3, cm4, at2, at3);
+    Iterator<ViewGroup> iterator = viewGroups.iterator();
+    int delay = 200;
 
-  private FluentIterable<Player> defenders() {
-    return findByAnyPosition(Player.DEFENDER_POSITIONS);
-  }
-
-  private FluentIterable<Player> attackers() {
-    return findByAnyPosition(Player.ATTACKER_POSITIONS);
-  }
-
-  private FluentIterable<Player> midfielders() {
-    return findByAnyPosition(Player.MIDFIELDER_POSITIONS);
-  }
-
-  private FluentIterable<Player> findByAnyPosition(List<String> possibilities) {
-    return findPlayerBy(p -> possibilities.indexOf(p.position()) != -1);
-  }
-
-  private FluentIterable<Player> playersByPosition(String position) {
-    return findPlayerBy(p -> p.position().equals(position));
-  }
-
-  @Nullable private Player playerByPosition(String position) {
-    return playersByPosition(position).first().get();
-  }
-
-  private FluentIterable<Player> findPlayerBy(Predicate<Player> predicate) {
-    return FluentIterable.from(players).filter(predicate);
+    for (Player player : sortedPlayers) {
+      loadPlayer(iterator.next(), player, delay);
+      delay += 20;
+    }
   }
 
   private void loadPlayer(ViewGroup target, Player player, long delay) {

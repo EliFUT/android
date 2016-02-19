@@ -1,24 +1,35 @@
 package com.felipecsl.elifut.models;
 
+import com.google.auto.value.AutoValue;
+import com.google.common.collect.FluentIterable;
+
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 
 import com.gabrielittner.auto.value.cursor.ColumnName;
-import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @AutoValue
 public abstract class Player extends Model implements Persistable {
+  private static final Comparator<Player> PLAYER_COMPARATOR = (c1, c2) -> c2.rating() - c1.rating();
   public static final List<String> DEFENDER_POSITIONS =
       Arrays.asList("RB", "RWB", "CB", "LB", "LWB");
   public static final List<String> MIDFIELDER_POSITIONS =
       Arrays.asList("RM", "CDM", "CM", "CAM", "LM");
   public static final List<String> ATTACKER_POSITIONS =
       Arrays.asList("RW", "CF", "ST", "LW");
+  public static final List<String> VALID_COLORS =
+      Arrays.asList("bronze", "silver", "gold", "rare_bronze", "rare_silver", "rare_gold");
+  public static final List<String> GOALKEEPER_POSITIONS =
+      Collections.singletonList("GK");
+
   // Not sent directly from the API, but manually filled after retrieval
+  // @formatter:off
   @ColumnName("club_id") @Nullable public abstract Integer clubId();
   public abstract String first_name();
   public abstract String last_name();
@@ -62,6 +73,7 @@ public abstract class Player extends Model implements Persistable {
     public abstract Builder color(String x);
     public abstract Player build();
   }
+  // @formatter:on
 
   public static Builder builder() {
     return new AutoValue_Player.Builder();
@@ -76,8 +88,8 @@ public abstract class Player extends Model implements Persistable {
     return AutoValue_Player.createFromCursor(cursor);
   }
 
-  enum Foot {
-    Left, Right
+  public boolean isValidColor() {
+    return VALID_COLORS.indexOf(color()) != -1;
   }
 
   public static JsonAdapter.Factory typeAdapterFactory() {
@@ -86,5 +98,34 @@ public abstract class Player extends Model implements Persistable {
 
   @Override public int describeContents() {
     return 0;
+  }
+
+  @Override public String toString() {
+    return rating() + " " + position() + " " + name();
+  }
+
+  /** Filters the provided list of players by returns only defenders in that list */
+  public static List<Player> filterDefenders(List<Player> players) {
+    return filterByPosition(players, DEFENDER_POSITIONS);
+  }
+
+  /** Filters the provided list of players by returns only midfielders in that list */
+  public static List<Player> filterMidfielders(List<Player> players) {
+    return filterByPosition(players, MIDFIELDER_POSITIONS);
+  }
+
+  /** Filters the provided list of players by returns only attackers in that list */
+  public static List<Player> filterAttackers(List<Player> players) {
+    return filterByPosition(players, ATTACKER_POSITIONS);
+  }
+
+  public static List<Player> filterGoalkeepers(List<Player> players) {
+    return filterByPosition(players, GOALKEEPER_POSITIONS);
+  }
+
+  private static List<Player> filterByPosition(List<Player> players, List<String> possibilities) {
+    return FluentIterable.from(players)
+        .filter(p -> possibilities.indexOf(p.position()) != -1)
+        .toSortedList(PLAYER_COMPARATOR);
   }
 }

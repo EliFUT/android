@@ -44,30 +44,6 @@ public class ClubSquadBuilderTest {
     }
   }
 
-  @Test public void throwIfNotEnoughDefenders() {
-    try {
-      List<Player> players = Arrays.asList(buildPlayer("LB"), buildPlayer("GK"), buildPlayer("CB"),
-          buildPlayer("RB"), buildPlayer("LM"), buildPlayer("CM"), buildPlayer("GK"),
-          buildPlayer("CAM"), buildPlayer("RM"), buildPlayer("ST"), buildPlayer("CF"));
-      ClubSquadBuilder builder = new ClubSquadBuilder(TestFixtures.GREMIO, players);
-      builder.build();
-      fail();
-    } catch (IllegalArgumentException ignored) {
-    }
-  }
-
-  @Test public void throwIfNotEnoughMidfielders() {
-    try {
-      List<Player> players = Arrays.asList(buildPlayer("LB"), buildPlayer("CB"), buildPlayer("CB"),
-          buildPlayer("RB"), buildPlayer("LM"), buildPlayer("CM"), buildPlayer("GK"),
-          buildPlayer("CAM"), buildPlayer("ST"), buildPlayer("ST"), buildPlayer("CF"));
-      ClubSquadBuilder builder = new ClubSquadBuilder(TestFixtures.GREMIO, players);
-      builder.build();
-      fail();
-    } catch (IllegalArgumentException ignored) {
-    }
-  }
-
   @Test public void simpleSquad() {
     Player[] players = new Player[] { buildPlayer("LB"), buildPlayer("CB"), buildPlayer("CB"),
         buildPlayer("RB"), buildPlayer("LM"), buildPlayer("CM"), buildPlayer("GK"),
@@ -92,7 +68,7 @@ public class ClubSquadBuilderTest {
     ClubSquad clubSquad = builder.build();
 
     assertThat(clubSquad.players()).containsExactly(buildPlayer("GK"), buildPlayer("LB"),
-        buildPlayer("CB"), buildPlayer("CB"), buildPlayer("RB"), buildPlayer("LM"),
+        buildPlayer("CB"), buildPlayer("CB"), buildPlayer("CB"), buildPlayer("LM"),
         buildPlayer("CM"), buildPlayer("CAM"), buildPlayer("CDM"), buildPlayer("ST"),
         buildPlayer("CF"));
   }
@@ -120,18 +96,32 @@ public class ClubSquadBuilderTest {
     ClubSquad clubSquad = builder.build();
 
     assertThat(clubSquad.players()).containsExactly(buildPlayer("GK"), buildPlayer("LB"),
-        buildPlayer("CB"), buildPlayer("CB"), buildPlayer("RB"), buildPlayer("LM"),
-        buildPlayer("CM"), buildPlayer("CAM"), buildPlayer("CDM"), buildPlayer("CB"),
+        buildPlayer("CB"), buildPlayer("CB"), buildPlayer("CB"), buildPlayer("LM"),
+        buildPlayer("CM"), buildPlayer("CAM"), buildPlayer("CDM"), buildPlayer("RB"),
         buildPlayer("GK"));
+  }
+
+  @Test public void notEnoughDefendersButExtraMidfielders() {
+    Player[] players = new Player[] { buildPlayer("LB"), buildPlayer("CB"), buildPlayer("CB"),
+        buildPlayer("CDM"), buildPlayer("RW"), buildPlayer("LM"), buildPlayer("CM"),
+        buildPlayer("GK"), buildPlayer("ST"), buildPlayer("CAM"), buildPlayer("CDM") };
+    ClubSquadBuilder builder = new ClubSquadBuilder(TestFixtures.GREMIO, Arrays.asList(players));
+
+    ClubSquad clubSquad = builder.build();
+
+    assertThat(clubSquad.players()).containsExactly(buildPlayer("GK"), buildPlayer("LB"),
+        buildPlayer("CB"), buildPlayer("CB"), buildPlayer("CDM"), buildPlayer("LM"),
+        buildPlayer("CM"), buildPlayer("CAM"), buildPlayer("CDM"), buildPlayer("RW"),
+        buildPlayer("ST"));
   }
 
   private static Player buildPlayer(String position) {
     return Player.builder()
         .id(1)
         .base_id(1)
-        .first_name("Edson")
-        .last_name("Arantes do Nascimento")
-        .name("Edson Arantes do Nascimento")
+        .first_name("Pele")
+        .last_name("N")
+        .name("Pele")
         .position(position)
         .image("http://example.com/foo.png")
         .nation_image("http://example.com/foo.png")

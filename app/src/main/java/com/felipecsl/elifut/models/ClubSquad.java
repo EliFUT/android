@@ -16,6 +16,11 @@ public abstract class ClubSquad implements Persistable {
   public abstract int clubId();
   public abstract List<Player> players();
 
+  // TODO: For now, all squads are 4-4-2 by default
+  public static final int TOTAL_DEFENDERS = 4;
+  public static final int TOTAL_MIDFIELDERS = 4;
+  public static final int TOTAL_ATTACKERS = 2;
+
   public static ClubSquad create(int clubId, List<Player> squad) {
     return create(null, clubId, squad);
   }

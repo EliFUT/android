@@ -7,6 +7,14 @@ apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.google.gms.google-services'
 apply from: './coverage.gradle'
 
+def getFabricApiKey() {
+  String env = System.getenv('ELIFUT_FABRIC_API_KEY');
+  if (env != null) {
+    return env;
+  }
+  return ELIFUT_FABRIC_API_KEY;
+}
+
 android {
   compileSdkVersion 23
   buildToolsVersion '23.0.2'
@@ -18,7 +26,7 @@ android {
     versionCode 1
     versionName "1.0"
     multiDexEnabled true
-    manifestPlaceholders = [fabricApiKey: System.getenv('ELIFUT_FABRIC_API_KEY')]
+    manifestPlaceholders = [fabricApiKey: getFabricApiKey()]
   }
   signingConfigs {
     release {

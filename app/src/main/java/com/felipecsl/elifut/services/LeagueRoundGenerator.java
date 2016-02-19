@@ -80,6 +80,7 @@ public class LeagueRoundGenerator {
    * Generates a random list of league rounds from the provided list of clubs.
    */
   public List<LeagueRound> generateRounds(List<? extends Club> clubs) {
-    return generateRoundsDeterministic(shuffle(clubs));
+    // Make a defensive copy since we need to mutate it
+    return generateRoundsDeterministic(shuffle(new ArrayList<>(clubs)));
   }
 }

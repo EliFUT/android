@@ -5,7 +5,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.0.0-beta5'
+    classpath 'com.android.tools.build:gradle:2.0.0-beta6'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
     classpath 'me.tatarka:gradle-retrolambda:3.2.4'
@@ -34,7 +34,7 @@ allprojects {
 }
 
 ext {
-  supportLibVersion = '23.1.1'
+  supportLibVersion = '23.2.0'
   devApiEndpoint = "http://10.0.3.2:3000/"
   prodApiEndpoint = "http://104.131.134.208/"
   retrofitVersion = "2.0.0-beta4"

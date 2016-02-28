@@ -18,6 +18,7 @@ import com.felipecsl.elifut.ResponseObserver;
 import com.felipecsl.elifut.adapter.CountriesSpinnerAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Nation;
+import com.felipecsl.elifut.preferences.UserPreferences;
 
 import java.util.List;
 
@@ -82,6 +83,7 @@ public class MainActivity extends ElifutActivity {
     Nation nation = (Nation) nationsAdapter.getItem(countriesSpinner.getSelectedItemPosition());
     userPreferences.nationPreference().set(nation);
     userPreferences.coachPreference().set(inputName.getText().toString());
+    userPreferences.coinsPreference().set(UserPreferences.INITIAL_COINS_AMOUNT);
 
     subscriptions.add(initializer
         .initialize(nation.id(), progressDialog)

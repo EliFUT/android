@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import com.felipecsl.elifut.match.MatchResultController;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.MatchResult;
-import com.felipecsl.elifut.preferences.LeagueDetails;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.ElifutDataStore;
 
@@ -31,7 +30,6 @@ public class MatchResultControllerTest {
   private final Observable<Club> leagueClubs = Observable.just(userClub, nonUserClub);
 
   @Inject UserPreferences userPreferences;
-  @Inject LeagueDetails leagueDetails;
   @Inject ElifutDataStore persistenceService;
 
   @Before public void setUp() {
@@ -97,5 +95,57 @@ public class MatchResultControllerTest {
 
     Club newUserClub = userClub.newWithDraw();
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
+  }
+
+  @Test public void testCoinsUpdateAfterWin() {
+    MatchResultController controller = new MatchResultController(userPreferences);
+    MatchResult matchResult = new TestMatchResult() {
+      @Nullable @Override public Club winner() {
+        return userClub;
+      }
+
+      @Nullable @Override public Club loser() {
+        return nonUserClub;
+      }
+
+      @Override public boolean isDraw() {
+        return false;
+      }
+    };
+    Long coinsBefore = userPreferences.coins();
+    controller.updateWithResult(matchResult);
+    assertThat(userPreferences.coins() - coinsBefore).isEqualTo(UserPreferences.COINS_PRIZE_WIN);
+  }
+
+  @Test public void testCoinsUpdateAfterLoss() {
+    MatchResultController controller = new MatchResultController(userPreferences);
+    MatchResult matchResult = new TestMatchResult() {
+      @Nullable @Override public Club winner() {
+        return nonUserClub;
+      }
+
+      @Nullable @Override public Club loser() {
+        return userClub;
+      }
+
+      @Override public boolean isDraw() {
+        return false;
+      }
+    };
+    Long coinsBefore = userPreferences.coins();
+    controller.updateWithResult(matchResult);
+    assertThat(userPreferences.coins() - coinsBefore).isEqualTo(UserPreferences.COINS_PRIZE_LOSS);
+  }
+
+  @Test public void testCoinsUpdateAfterDraw() {
+    MatchResultController controller = new MatchResultController(userPreferences);
+    MatchResult matchResult = new TestMatchResult() {
+      @Override public boolean isDraw() {
+        return true;
+      }
+    };
+    Long coinsBefore = userPreferences.coins();
+    controller.updateWithResult(matchResult);
+    assertThat(userPreferences.coins() - coinsBefore).isEqualTo(UserPreferences.COINS_PRIZE_DRAW);
   }
 }

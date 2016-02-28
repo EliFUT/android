@@ -7,4 +7,5 @@
   android:layout_gravity="start"
   android:fitsSystemWindows="true"
   app:headerLayout="@layout/nav_header_home"
+  app:itemBackground="@android:color/transparent"
   app:menu="@menu/activity_home_drawer"/>

@@ -15,11 +15,18 @@ public final class UserPreferences {
   private static final String KEY_USER_NATION = "UserNation";
   private static final String KEY_USER_LEAGUE = "UserLeague";
   private static final String KEY_COACH_NAME = "COACH_NAME";
+  private static final String KEY_COINS = "COINS";
+
+  public static final long INITIAL_COINS_AMOUNT = 200L;
+  public static final long COINS_PRIZE_WIN = 75L;
+  public static final long COINS_PRIZE_DRAW = 25L;
+  public static final long COINS_PRIZE_LOSS = 0L;
 
   private final JsonPreference<Nation> nationPreference;
   private final JsonPreference<Club> clubPreference;
   private final JsonPreference<League> leaguePreference;
   private final Preference<String> coachPreference;
+  private final Preference<Long> coinsPreference;
 
   public UserPreferences(SharedPreferences preferences, Moshi moshi) {
     RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(preferences);
@@ -29,7 +36,8 @@ public final class UserPreferences {
     nationPreference = new JsonPreference<>(rxSharedPreferences, nationAdapter, KEY_USER_NATION);
     clubPreference = new JsonPreference<>(rxSharedPreferences, clubAdapter, KEY_USER_CLUB);
     leaguePreference = new JsonPreference<>(rxSharedPreferences, leagueAdapter, KEY_USER_LEAGUE);
-    coachPreference =rxSharedPreferences.getString(KEY_COACH_NAME);
+    coachPreference = rxSharedPreferences.getString(KEY_COACH_NAME);
+    coinsPreference = rxSharedPreferences.getLong(KEY_COINS);
   }
 
   public Club club() {
@@ -46,6 +54,10 @@ public final class UserPreferences {
 
   public String coach() {
     return coachPreference.get();
+  }
+
+  public Long coins() {
+    return coinsPreference.get();
   }
 
   public boolean isCurrentUserClub(Club club) {
@@ -66,5 +78,9 @@ public final class UserPreferences {
 
   public Preference<String> coachPreference() {
     return coachPreference;
+  }
+
+  public Preference<Long> coinsPreference() {
+    return coinsPreference;
   }
 }

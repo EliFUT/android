@@ -26,9 +26,26 @@
     android:paddingTop="@dimen/nav_header_vertical_spacing"
     android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
-  <TextView
-    android:id="@+id/text_coach_name"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+      android:id="@+id/text_coach_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+    <TextView
+      android:drawableLeft="@drawable/ic_attach_money_white_24px"
+      android:id="@+id/text_coins"
+      android:textStyle="bold"
+      android:textSize="16sp"
+      android:textColor="@color/white"
+      android:gravity="center_vertical"
+      android:layout_gravity="end"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+  </FrameLayout>
 
 </LinearLayout>

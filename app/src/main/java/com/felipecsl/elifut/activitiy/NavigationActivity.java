@@ -44,12 +44,16 @@ import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.util.AndroidVersion;
 import com.squareup.picasso.Picasso;
 
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.BindDimen;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscription;
+import rx.functions.Action1;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -67,6 +71,22 @@ public abstract class NavigationActivity extends ElifutActivity
   @Bind(R.id.fab) FloatingActionButton fab;
   @BindDimen(R.dimen.fab_margin) int fabMargin;
 
+  private Subscription coinsSubscription;
+  private final Action1<? super Long> coinsObserver = new Action1<Long>() {
+    @Override public void call(Long aLong) {
+      headerViewHolder.txtCoins.setText(String.format(
+          Locale.getDefault(), "%d", userPreferences.coins()));
+    }
+  };
+
+  static class NavigationHeaderViewHolder {
+    @Bind(R.id.text_coach_name) TextView txtCoachName;
+    @Bind(R.id.text_team_name) TextView txtTeamName;
+    @Bind(R.id.img_club_logo) ImageView imgClubLogo;
+    @Bind(R.id.text_coins) TextView txtCoins;
+    @Bind(R.id.nav_header_layout) LinearLayout navHeaderLayout;
+  }
+
   private final SimpleTarget clubLogoTarget = new SimpleTarget() {
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
       headerViewHolder.imgClubLogo.setImageBitmap(bitmap);
@@ -74,14 +94,14 @@ public abstract class NavigationActivity extends ElifutActivity
         ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
           @Override public Shader resize(int width, int height) {
             return new LinearGradient(0, 0, width, height,
-                new int[]{palette.getDarkVibrantColor(0xFF81C784),
-                    palette.getLightVibrantColor(0xFF2E7D32)}, null, Shader.TileMode.CLAMP);
+                new int[] { palette.getDarkVibrantColor(0xFF81C784),
+                    palette.getLightVibrantColor(0xFF2E7D32) }, null, Shader.TileMode.CLAMP);
           }
         };
         PaintDrawable paintDrawable = new PaintDrawable();
         paintDrawable.setShape(new RectShape());
         paintDrawable.setShaderFactory(shaderFactory);
-        LayerDrawable background = new LayerDrawable(new Drawable[]{paintDrawable});
+        LayerDrawable background = new LayerDrawable(new Drawable[] { paintDrawable });
         //noinspection deprecation
         headerViewHolder.navHeaderLayout.setBackgroundDrawable(background);
       });
@@ -89,13 +109,6 @@ public abstract class NavigationActivity extends ElifutActivity
   };
 
   private final NavigationHeaderViewHolder headerViewHolder = new NavigationHeaderViewHolder();
-
-  static class NavigationHeaderViewHolder {
-    @Bind(R.id.text_coach_name) TextView txtCoachName;
-    @Bind(R.id.text_team_name) TextView txtTeamName;
-    @Bind(R.id.img_club_logo) ImageView imgClubLogo;
-    @Bind(R.id.nav_header_layout) LinearLayout navHeaderLayout;
-  }
 
   public static Intent newIntent(Context context) {
     return new Intent(context, LeagueDetailsActivity.class);
@@ -115,7 +128,7 @@ public abstract class NavigationActivity extends ElifutActivity
     ActionBarDrawerToggle toggle =
         new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close);
-    drawerLayout.setDrawerListener(toggle);
+    drawerLayout.addDrawerListener(toggle);
     toggle.syncState();
 
     navigationView.setNavigationItemSelectedListener(this);
@@ -124,8 +137,16 @@ public abstract class NavigationActivity extends ElifutActivity
 
     headerViewHolder.txtCoachName.setText(userPreferences.coach());
     headerViewHolder.txtTeamName.setText(club.name());
+    coinsSubscription = userPreferences.coinsPreference().asObservable().subscribe(coinsObserver);
 
-    Picasso.with(this).load(club.large_image()).into(clubLogoTarget);
+    Picasso.with(this)
+        .load(club.large_image())
+        .into(clubLogoTarget);
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    coinsSubscription.unsubscribe();
   }
 
   @Override public void onBackPressed() {

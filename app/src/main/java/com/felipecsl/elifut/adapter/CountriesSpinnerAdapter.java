@@ -49,9 +49,11 @@ public final class CountriesSpinnerAdapter extends BaseAdapter {
     Nation country = (Nation) getItem(position);
     v.setText(country.toString());
 
+    Picasso.with(context).cancelRequest(v);
+
     Picasso.with(context)
         .load(country.large_image())
-        .placeholder(R.drawable.image_placeholder)
+//        .placeholder(R.drawable.image_placeholder)
         .into(v);
 
     return v;

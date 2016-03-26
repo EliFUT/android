@@ -6,6 +6,7 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.google.gms.google-services'
 apply from: './coverage.gradle'
+apply from: './minSdk.gradle'
 
 def getFabricApiKey() {
   String env = System.getenv('ELIFUT_FABRIC_API_KEY');
@@ -21,7 +22,7 @@ android {
 
   defaultConfig {
     applicationId "com.felipecsl.elifut"
-    minSdkVersion 16
+    minSdkVersion minSdk()
     targetSdkVersion 23
     versionCode 1
     versionName "1.0"
@@ -59,14 +60,6 @@ android {
 
   testOptions {
     unitTests.returnDefaultValues = true
-  }
-
-  productFlavors {
-    fastL {
-      minSdkVersion 21
-    }
-    dev {
-    }
   }
 
   dexOptions {

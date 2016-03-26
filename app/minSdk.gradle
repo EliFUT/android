@@ -1,0 +1,12 @@
+def minSdk() {
+  def minSdkPropertyName = 'com.felipecsl.elifut.minSdk'
+  def realMinSdk = 16
+
+  project.hasProperty(minSdkPropertyName) ?
+      project.property(minSdkPropertyName)
+      : realMinSdk
+}
+
+ext {
+  minSdk = this.&minSdk
+}

@@ -76,9 +76,7 @@ public class LeagueRoundGenerator {
     return Arrays.asList(rounds);
   }
 
-  /**
-   * Generates a random list of league rounds from the provided list of clubs.
-   */
+  /** Generates a random list of league rounds from the provided list of clubs. */
   public List<LeagueRound> generateRounds(List<? extends Club> clubs) {
     // Make a defensive copy since we need to mutate it
     return generateRoundsDeterministic(shuffle(new ArrayList<>(clubs)));

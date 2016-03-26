@@ -20,7 +20,7 @@ public final class ResponseMapper<T> implements Func1<Response<T>, Observable<Re
 
   @Override
   public Observable<Response<T>> call(Response<T> response) {
-    if (response.isSuccess()) {
+    if (response.isSuccessful()) {
       return Observable.just(response);
     }
     try {

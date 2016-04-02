@@ -2,14 +2,19 @@ package com.felipecsl.elifut.activitiy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.BuildConfig;
@@ -31,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.BindDimen;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -50,14 +56,16 @@ public class MatchProgressActivity extends ElifutActivity {
   @Bind(R.id.img_team_away) ImageView imgTeamAway;
   @Bind(R.id.txt_team_home) TextView txtTeamHome;
   @Bind(R.id.txt_team_away) TextView txtTeamAway;
-  @Bind(R.id.txt_match_events) TextView txtMatchEvents;
   @Bind(R.id.txt_team_home_goals) TextView txtTeamHomeGoals;
+  @Bind(R.id.events_layout) LinearLayout eventsLayout;
   @Bind(R.id.txt_team_away_goals) TextView txtTeamAwayGoals;
   @Bind(R.id.fractionView) FractionView fractionView;
   @Bind(R.id.fab_play_pause) FloatingActionButton playPauseButton;
   @Bind(R.id.fab_done) FloatingActionButton doneButton;
   @BindString(R.string.end_first_half) String strEndOfFirstHalf;
   @BindString(R.string.end_match) String strEndOfMatch;
+  @BindDimen(R.dimen.match_event_icon_size) int iconSize;
+  @BindDimen(R.dimen.match_event_icon_padding) int iconPadding;
 
   @Inject UserPreferences userPreferences;
   @Inject LeagueDetails leagueDetails;
@@ -68,7 +76,9 @@ public class MatchProgressActivity extends ElifutActivity {
 
   private final CompositeSubscription subscriptions = new CompositeSubscription();
   private String finalScoreMessage;
+  private int finalScoreIcon;
   private Match match;
+  private Club userClub;
   private MatchResult matchResult;
   private final Observer<Club> observer = new ResponseObserver<Club>(this, TAG, "Failed to load club") {
     @Override public void onNext(Club response) {
@@ -77,10 +87,14 @@ public class MatchProgressActivity extends ElifutActivity {
 
     @Override public void onCompleted() {
       if (!matchResult.isDraw()) {
+        Club winner = matchResult.winner();
         //noinspection ConstantConditions
-        finalScoreMessage = matchResult.winner().abbrev_name() + " is the winner. Final score "
+        finalScoreIcon = winner.nameEquals(userClub)
+            ? R.drawable.ic_mood_black_48px : R.drawable.ic_sentiment_very_dissatisfied_black_48px;
+        finalScoreMessage = winner.abbrev_name() + " is the winner. Final score "
             + matchResult.finalScore() + ".";
       } else {
+        finalScoreIcon = R.drawable.ic_sentiment_neutral_black_48px;
         finalScoreMessage = "Game draw. Final score " + matchResult.finalScore() + ".";
       }
       if (BuildConfig.DEBUG) {
@@ -108,7 +122,8 @@ public class MatchProgressActivity extends ElifutActivity {
       Intent intent = getIntent();
       round = intent.getParcelableExtra(EXTRA_ROUND);
     }
-    match = round.findMatchByClub(userPreferences.club());
+    userClub = userPreferences.club();
+    match = round.findMatchByClub(userClub);
     matchResult = match.result();
     loadClubs(match.home().id(), match.away().id());
   }
@@ -159,10 +174,11 @@ public class MatchProgressActivity extends ElifutActivity {
         .map(matchEvent -> (Goal) matchEvent)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(goal -> {
-          TextView txtScore = goal.club().nameEquals(match.home()) ? txtTeamHomeGoals : txtTeamAwayGoals;
+          TextView txtScore = goal.club().nameEquals(match.home())
+              ? txtTeamHomeGoals : txtTeamAwayGoals;
           int currGoals = Integer.parseInt(txtScore.getText().toString());
           txtScore.setText(String.valueOf(++currGoals));
-          appendEvent(goal.time() + "' " + goal.club().abbrev_name() + " goal.");
+          appendEvent(R.drawable.ball, goal.time() + "' " + goal.club().abbrev_name() + " goal.");
         }));
 
     subscriptions.add(timerObservable()
@@ -171,11 +187,11 @@ public class MatchProgressActivity extends ElifutActivity {
           elapsedMinutes++;
           fractionView.setFraction(elapsedMinutes % 45, 60);
           if (elapsedMinutes == 45) {
-            appendEvent(strEndOfFirstHalf);
+            appendEvent(R.drawable.ic_schedule_black_48px, strEndOfFirstHalf);
           } else if (elapsedMinutes == 90) {
             stopTimer();
-            appendEvent(strEndOfMatch);
-            appendEvent(finalScoreMessage);
+            appendEvent(R.drawable.ic_schedule_black_48px, strEndOfMatch);
+            appendEvent(finalScoreIcon, finalScoreMessage);
             playPauseButton.setVisibility(View.GONE);
             doneButton.setVisibility(View.VISIBLE);
             fractionView.setFraction(45, 60);
@@ -189,8 +205,15 @@ public class MatchProgressActivity extends ElifutActivity {
         : Observable.interval(0, 1, TimeUnit.SECONDS);
   }
 
-  private void appendEvent(String text) {
-    txtMatchEvents.setText(text + "\n" + txtMatchEvents.getText());
+  private void appendEvent(@DrawableRes int icon, String text) {
+    TextView view = (TextView) LayoutInflater.from(this)
+        .inflate(R.layout.match_event, eventsLayout, false);
+    view.setText(text);
+    Drawable drawable = ContextCompat.getDrawable(this, icon);
+    drawable.setBounds(0, 0, iconSize, iconSize);
+    view.setCompoundDrawablePadding(iconPadding);
+    view.setCompoundDrawables(drawable, null, null, null);
+    eventsLayout.addView(view, 0);
   }
 
   @OnClick(R.id.fab_play_pause) public void onClickPause() {

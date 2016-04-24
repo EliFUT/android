@@ -89,13 +89,17 @@ public class MatchProgressActivity extends ElifutActivity {
       if (!matchResult.isDraw()) {
         Club winner = matchResult.winner();
         //noinspection ConstantConditions
-        finalScoreIcon = winner.nameEquals(userClub)
-            ? R.drawable.ic_mood_black_48px : R.drawable.ic_sentiment_very_dissatisfied_black_48px;
-        finalScoreMessage = winner.abbrev_name() + " is the winner. Final score "
-            + matchResult.finalScore() + ".";
+        boolean isWinner = winner.nameEquals(userClub);
+        finalScoreIcon = isWinner ? R.drawable.ic_mood_black_48px
+            : R.drawable.ic_sentiment_very_dissatisfied_black_48px;
+        if (isWinner) {
+          finalScoreMessage = "Winner!";
+        } else {
+          finalScoreMessage = "Defeated.";
+        }
       } else {
         finalScoreIcon = R.drawable.ic_sentiment_neutral_black_48px;
-        finalScoreMessage = "Game draw. Final score " + matchResult.finalScore() + ".";
+        finalScoreMessage = "Draw.";
       }
       if (BuildConfig.DEBUG) {
         Log.d(TAG, finalScoreMessage);
@@ -178,7 +182,7 @@ public class MatchProgressActivity extends ElifutActivity {
               ? txtTeamHomeGoals : txtTeamAwayGoals;
           int currGoals = Integer.parseInt(txtScore.getText().toString());
           txtScore.setText(String.valueOf(++currGoals));
-          appendEvent(R.drawable.ball, goal.time() + "' " + goal.club().abbrev_name() + " goal.");
+          appendEvent(R.drawable.ball, goal.time() + "' " + goal.club().abbrev_name());
         }));
 
     subscriptions.add(timerObservable()
@@ -192,6 +196,13 @@ public class MatchProgressActivity extends ElifutActivity {
             stopTimer();
             appendEvent(R.drawable.ic_schedule_black_48px, strEndOfMatch);
             appendEvent(finalScoreIcon, finalScoreMessage);
+            Club winner = matchResult.winner();
+            boolean isDraw = matchResult.isDraw();
+            boolean isWinner = !isDraw && userClub.nameEquals(winner);
+            if (isDraw || isWinner) {
+              appendEvent(R.drawable.ic_attach_money_black_24dp, "+" +
+                  (isWinner ? UserPreferences.COINS_PRIZE_WIN : UserPreferences.COINS_PRIZE_DRAW));
+            }
             playPauseButton.setVisibility(View.GONE);
             doneButton.setVisibility(View.VISIBLE);
             fractionView.setFraction(45, 60);

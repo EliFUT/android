@@ -12,6 +12,7 @@ buildscript {
     classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
     classpath 'com.google.gms:google-services:2.1.0-rc1'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.2"
     classpath 'io.fabric.tools:gradle:1.+'
   }
 
@@ -39,4 +40,5 @@ ext {
   prodApiEndpoint = "http://104.131.134.208/"
   retrofitVersion = "2.0.0"
   playServicesVersion = '8.3.0'
+  kotlinVersion = '1.0.2'
 }

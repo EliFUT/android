@@ -6,11 +6,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
+import com.felipecsl.elifut.Util;
 import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
 import com.felipecsl.elifut.adapter.ClubsAdapter.HeaderViewHolder;
 import com.felipecsl.elifut.adapter.ClubsAdapter.ViewHolder;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubStats;
+import com.felipecsl.elifut.util.CollectionUtilsKt;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +22,6 @@ import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
 
-import static com.felipecsl.elifut.Util.listSupertype;
-import static com.felipecsl.elifut.util.CollectionUtils.sort;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class ClubsAdapter
@@ -34,7 +34,7 @@ public final class ClubsAdapter
   }
 
   public void setItems(List<? extends Club> newItems) {
-    setData(sort(new ArrayList<>(listSupertype(newItems)), (c1, c2) ->
+    setData(CollectionUtilsKt.sort(new ArrayList<>(Util.<Club>listSupertype(newItems)), (c1, c2) ->
         c2.nonNullStats().points() - c1.nonNullStats().points()));
   }
 

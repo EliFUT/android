@@ -39,7 +39,7 @@
 -dontwarn com.squareup.okhttp.**
 -dontwarn okhttp3.**
 -dontnote okhttp3.**
--dontwarn autovalue.shaded.com.google$.auto.service.processor.$AutoServiceProcessor
+-dontwarn autovalue.shaded.**
 -keep class **$$Icepick { *; }
 -keep public class * extends android.view.View
 -dontnote com.google.vending.licensing.ILicensingService
@@ -121,3 +121,7 @@
 
 # Play Services
 -dontnote com.google.android.gms.**
+
+# Kotlin
+-dontwarn kotlin.**
+-keep class com.felipecsl.elifut.services.ClubDataStore

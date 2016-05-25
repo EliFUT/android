@@ -227,7 +227,7 @@ public class MatchProgressActivity extends ElifutActivity {
     eventsLayout.addView(view, 0);
   }
 
-  @OnClick(R.id.fab_play_pause) public void onClickPause() {
+  @OnClick(R.id.fab_play_pause) void onClickPause() {
     if (isRunning) {
       stopTimer();
       Snackbar.make(playPauseButton, R.string.match_paused, Snackbar.LENGTH_SHORT).show();
@@ -239,7 +239,7 @@ public class MatchProgressActivity extends ElifutActivity {
     }
   }
 
-  @OnClick(R.id.fab_done) public void onClickDone() {
+  @OnClick(R.id.fab_done) void onClickDone() {
     finish();
     startActivity(LeagueRoundResultsActivity.newIntent(this, round));
   }

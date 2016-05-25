@@ -12,7 +12,6 @@ import com.felipecsl.elifut.services.ClubDataStore;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.LeagueRoundGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -55,7 +54,8 @@ public final class LeagueDetails {
   /** Adds MatchResults to the list of matches on the provided LeagueRound */
   public LeagueRound executeRound(LeagueRound round) {
     List<Match> matchesWithResult = FluentIterable.from(round.matches())
-        .transform(m -> Match.create(m.id(), m.home(), m.away(), resultFor(m))).toList();
+        .transform(m -> Match.create(m.id(), m.home(), m.away(), resultFor(m)))
+        .toList();
     return LeagueRound.create(round.id(), round.roundNumber(), matchesWithResult);
   }
 

@@ -1,9 +1,11 @@
 package com.felipecsl.elifut.models;
 
+import com.google.auto.value.AutoValue;
+
 import android.support.annotation.Nullable;
 
-import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 @AutoValue
 public abstract class League extends Model {
@@ -13,8 +15,8 @@ public abstract class League extends Model {
 
   public abstract String image();
 
-  public static JsonAdapter.Factory typeAdapterFactory() {
-    return AutoValue_League.typeAdapterFactory();
+  public static JsonAdapter<League> jsonAdapter(Moshi moshi) {
+    return new AutoValue_League.MoshiJsonAdapter(moshi);
   }
 
   @Override public int describeContents() {

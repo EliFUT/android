@@ -8,7 +8,6 @@ import com.felipecsl.elifut.ElifutTestRunner;
 import com.felipecsl.elifut.TestElifutApplication;
 import com.felipecsl.elifut.Util;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.LeagueDetails;
@@ -28,6 +27,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.felipecsl.elifut.TestFixtures.newGoal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(ElifutTestRunner.class)
@@ -57,12 +57,12 @@ public class LeagueRoundExecutorTest {
   @Test public void testExecute() throws Exception {
     MatchResult result1 = MatchResult.builder()
         .awayGoals(Collections.emptyList())
-        .homeGoals(Collections.singletonList(Goal.create(10, clubA)))
+        .homeGoals(Collections.singletonList(newGoal(10, clubA)))
         .build(clubA, clubB);
 
     MatchResult result2 = MatchResult.builder()
         .homeGoals(Collections.emptyList())
-        .awayGoals(Arrays.asList(Goal.create(30, clubD), Goal.create(40, clubD)))
+        .awayGoals(Arrays.asList(newGoal(30, clubD), newGoal(40, clubD)))
         .build(clubC, clubD);
 
     Match match1 = Match.create(clubA, clubB, result1);
@@ -78,8 +78,8 @@ public class LeagueRoundExecutorTest {
 
   @Test public void testExecuteDraw() {
     MatchResult result1 = MatchResult.builder()
-        .homeGoals(Collections.singletonList(Goal.create(10, clubA)))
-        .awayGoals(Collections.singletonList(Goal.create(15, clubB)))
+        .homeGoals(Collections.singletonList(newGoal(10, clubA)))
+        .awayGoals(Collections.singletonList(newGoal(15, clubB)))
         .build(clubA, clubB);
 
     MatchResult result2 = MatchResult.builder()

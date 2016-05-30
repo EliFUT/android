@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.Player;
+import com.felipecsl.elifut.models.PlayersKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,10 @@ public final class ClubSquadBuilder {
     Preconditions.checkNotNull(allPlayers);
     Preconditions.checkArgument(allPlayers.size() >= 11, "Need at least 11 players, club=" + club);
     this.club = club;
-    defenders = new ArrayList<>(Player.filterDefenders(allPlayers));
-    midfielders = new ArrayList<>(Player.filterMidfielders(allPlayers));
-    goalkeepers = new ArrayList<>(Player.filterGoalkeepers(allPlayers));
-    attackers = new ArrayList<>(Player.filterAttackers(allPlayers));
+    defenders = new ArrayList<>(PlayersKt.defenders(allPlayers));
+    midfielders = new ArrayList<>(PlayersKt.midfielders(allPlayers));
+    goalkeepers = new ArrayList<>(PlayersKt.goalkeepers(allPlayers));
+    attackers = new ArrayList<>(PlayersKt.attackers(allPlayers));
     Preconditions.checkArgument(!goalkeepers.isEmpty(), "Need at least 1 goalkeeper, club=" + club);
   }
 

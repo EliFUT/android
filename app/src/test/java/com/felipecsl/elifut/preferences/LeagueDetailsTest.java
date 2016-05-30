@@ -31,6 +31,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.felipecsl.elifut.TestFixtures.newGoal;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -44,7 +45,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
     manifest = ElifutTestRunner.MANIFEST_PATH)
 public class LeagueDetailsTest {
   private final List<Club> clubs = Arrays.asList(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
-  private final Goal goal = Goal.create(1, TestFixtures.GREMIO);
+  private final Goal goal = newGoal(1, TestFixtures.GREMIO);
   private final MatchResult matchResult = MatchResult.builder()
       .homeGoals(Collections.singletonList(goal))
       .awayGoals(emptyList())
@@ -97,7 +98,7 @@ public class LeagueDetailsTest {
     Club internacional = TestFixtures.INTERNACIONAL;
     MatchResultGenerator mockResultGenerator = mock(MatchResultGenerator.class);
     MatchResult fakeResult = MatchResult.builder()
-        .homeGoals(Collections.singletonList(Goal.create(10, gremio)))
+        .homeGoals(Collections.singletonList(newGoal(10, gremio)))
         .awayGoals(emptyList())
         .build(gremio, internacional);
 

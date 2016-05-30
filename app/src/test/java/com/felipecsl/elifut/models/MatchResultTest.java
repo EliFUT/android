@@ -5,13 +5,14 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.List;
 
+import static com.felipecsl.elifut.TestFixtures.newGoal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MatchResultTest {
   @Test public void testBuilderHomeWin() {
     Club home = Club.create(1, "Gremio");
     Club away = Club.create(2, "Internacional");
-    List<Goal> homeGoals = Collections.singletonList(Goal.create(5, home));
+    List<Goal> homeGoals = Collections.singletonList(newGoal(home));
 
     MatchResult matchResult = MatchResult.builder()
         .homeGoals(homeGoals)

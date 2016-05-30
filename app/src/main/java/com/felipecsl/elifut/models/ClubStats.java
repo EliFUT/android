@@ -1,10 +1,12 @@
 package com.felipecsl.elifut.models;
 
+import com.google.auto.value.AutoValue;
+
 import android.database.Cursor;
 import android.os.Parcelable;
 
-import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 @AutoValue
 public abstract class ClubStats implements Parcelable {
@@ -70,8 +72,8 @@ public abstract class ClubStats implements Parcelable {
     return new AutoValue_ClubStats.Builder(this);
   }
 
-  public static JsonAdapter.Factory typeAdapterFactory() {
-    return AutoValue_ClubStats.typeAdapterFactory();
+  public static JsonAdapter<ClubStats> jsonAdapter(Moshi moshi) {
+    return new AutoValue_ClubStats.MoshiJsonAdapter(moshi);
   }
 
   @Override public int describeContents() {

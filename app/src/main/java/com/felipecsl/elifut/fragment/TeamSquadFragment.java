@@ -21,6 +21,7 @@ import com.felipecsl.elifut.adapter.SmallPlayerViewHolder;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubSquad;
 import com.felipecsl.elifut.models.Player;
+import com.felipecsl.elifut.models.PlayersKt;
 import com.felipecsl.elifut.services.ClubDataStore;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.util.FragmentBundler;
@@ -108,10 +109,10 @@ public class TeamSquadFragment extends ElifutFragment {
 
   private void onPlayersLoaded() {
     List<Player> sortedPlayers = ImmutableList.<Player>builder()
-        .add(Player.filterGoalkeepers(players).get(0))
-        .addAll(Player.filterDefenders(players))
-        .addAll(Player.filterMidfielders(players))
-        .addAll(Player.filterAttackers(players))
+        .add(PlayersKt.goalkeepers(players).get(0))
+        .addAll(PlayersKt.defenders(players))
+        .addAll(PlayersKt.midfielders(players))
+        .addAll(PlayersKt.attackers(players))
         .build();
 
     List<ViewGroup> viewGroups = Arrays.asList(gk, lb, cb1, cb2, rb, cm1, cm2, cm3, cm4, at2, at3);

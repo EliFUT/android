@@ -1,6 +1,7 @@
 package com.felipecsl.elifut;
 
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.Player;
 
 public final class TestFixtures {
@@ -67,4 +68,16 @@ public final class TestFixtures {
       .quality("90")
       .color("gold")
       .build();
+
+  public static Goal newGoal(Club club) {
+    return newGoal(5, club);
+  }
+
+  public static Goal newGoal(int id, Club club) {
+    return newGoal(id, club, PELE);
+  }
+
+  public static Goal newGoal(int id, Club club, Player player) {
+    return Goal.create(id, club, player);
+  }
 }

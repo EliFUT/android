@@ -2,6 +2,7 @@ package com.felipecsl.elifut;
 
 import com.felipecsl.elifut.match.LeagueRoundExecutorTest;
 import com.felipecsl.elifut.models.ClubTest;
+import com.felipecsl.elifut.models.GoalGeneratorTest;
 import com.felipecsl.elifut.models.converter.ClubConverterTest;
 import com.felipecsl.elifut.models.converter.LeagueRoundConverterTest;
 import com.felipecsl.elifut.models.converter.MatchConverterTest;

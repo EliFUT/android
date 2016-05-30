@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.felipecsl.elifut.BuildConfig;
 import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
@@ -85,8 +86,8 @@ public abstract class MatchResult implements Parcelable, Persistable {
     return 0;
   }
 
-  public static JsonAdapter.Factory typeAdapterFactory() {
-    return AutoValue_MatchResult.typeAdapterFactory();
+  public static JsonAdapter<MatchResult> jsonAdapter(Moshi moshi) {
+    return new AutoValue_MatchResult.MoshiJsonAdapter(moshi);
   }
 
   /**

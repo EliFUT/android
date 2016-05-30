@@ -1,7 +1,6 @@
 package com.felipecsl.elifut.models;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
 
 import android.database.Cursor;
@@ -11,9 +10,13 @@ import android.support.annotation.Nullable;
 import com.felipecsl.elifut.services.ClubDataStore;
 import com.gabrielittner.auto.value.cursor.CursorAdapter;
 import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
 
 @AutoValue
 public abstract class Club extends Model implements Persistable {
@@ -44,7 +47,7 @@ public abstract class Club extends Model implements Persistable {
     // Exclude the players who are already on the team players from the list of all players, so we
     // get a list with only the subs.
     return FluentIterable.from(players)
-        .filter(Predicates.not(Predicates.in(clubSquad.players())))
+        .filter(not(in(clubSquad.players())))
         .toList();
   }
 
@@ -122,8 +125,8 @@ public abstract class Club extends Model implements Persistable {
     return abbrev_name() != null ? abbrev_name() : name();
   }
 
-  public static JsonAdapter.Factory typeAdapterFactory() {
-    return AutoValue_Club.typeAdapterFactory();
+  public static JsonAdapter<Club> jsonAdapter(Moshi moshi) {
+    return new AutoValue_Club.MoshiJsonAdapter(moshi);
   }
 
   @Override public int describeContents() {

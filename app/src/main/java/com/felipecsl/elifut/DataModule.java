@@ -7,12 +7,7 @@ import com.felipecsl.elifut.adapter.ModelListAdapterFactory;
 import com.felipecsl.elifut.match.LeagueRoundExecutor;
 import com.felipecsl.elifut.match.MatchResultGenerator;
 import com.felipecsl.elifut.models.Club;
-import com.felipecsl.elifut.models.ClubStats;
-import com.felipecsl.elifut.models.Goal;
-import com.felipecsl.elifut.models.League;
-import com.felipecsl.elifut.models.LeagueRound;
-import com.felipecsl.elifut.models.Match;
-import com.felipecsl.elifut.models.MatchResult;
+import com.felipecsl.elifut.models.GoalGenerator;
 import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.models.Persistable;
 import com.felipecsl.elifut.models.Player;
@@ -27,6 +22,7 @@ import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.ClubDataStore;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.LeagueRoundGenerator;
+import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.Moshi;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -57,15 +53,7 @@ public class DataModule {
         .add(new ModelListAdapterFactory<>(Nation.class))
         .add(new ModelListAdapterFactory<>(Club.class))
         .add(new ModelListAdapterFactory<>(Player.class))
-        .add(Nation.typeAdapterFactory())
-        .add(Player.typeAdapterFactory())
-        .add(League.typeAdapterFactory())
-        .add(ClubStats.typeAdapterFactory())
-        .add(Club.typeAdapterFactory())
-        .add(LeagueRound.typeAdapterFactory())
-        .add(MatchResult.typeAdapterFactory())
-        .add(Goal.typeAdapterFactory())
-        .add(Match.typeAdapterFactory())
+        .add(new AutoValueMoshiAdapterFactory())
         .build();
   }
 
@@ -82,8 +70,13 @@ public class DataModule {
     return new LeagueRoundGenerator();
   }
 
-  @Provides @Singleton MatchResultGenerator provideMatchResultGenerator() {
-    return new MatchResultGenerator();
+  @Provides @Singleton GoalGenerator provideGoalGenerator(ClubDataStore clubDataStore) {
+    return new GoalGenerator(clubDataStore);
+  }
+
+  @Provides @Singleton MatchResultGenerator provideMatchResultGenerator(
+      GoalGenerator goalGenerator) {
+    return new MatchResultGenerator(goalGenerator);
   }
 
   @Provides @Singleton LeagueDetails provideLeagueDetails(ClubDataStore clubDataStore,

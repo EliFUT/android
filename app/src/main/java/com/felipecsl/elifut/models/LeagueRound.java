@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +37,8 @@ public abstract class LeagueRound implements Parcelable, Persistable {
     matches().add(match);
   }
 
-  public static JsonAdapter.Factory typeAdapterFactory() {
-    return AutoValue_LeagueRound.typeAdapterFactory();
+  public static JsonAdapter<LeagueRound> jsonAdapter(Moshi moshi) {
+    return new AutoValue_LeagueRound.MoshiJsonAdapter(moshi);
   }
 
   /** Returns the first match in this round that has the provided club or null if none found */

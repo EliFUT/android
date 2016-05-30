@@ -26,7 +26,11 @@ public abstract class ClubSquad implements Persistable {
   }
 
   public static ClubSquad create(Integer id, int clubId, List<Player> squad) {
-    return new AutoValue_ClubSquad(id, clubId, squad);
+    return builder()
+        .id(id)
+        .clubId(clubId)
+        .players(squad)
+        .build();
   }
 
   public double rating() {

@@ -1,10 +1,12 @@
 package com.felipecsl.elifut.models;
 
+import com.google.auto.value.AutoValue;
+
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
-import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 @AutoValue
 public abstract class Match implements Parcelable, Persistable {
@@ -52,8 +54,8 @@ public abstract class Match implements Parcelable, Persistable {
     return home().nameEquals(club) || away().nameEquals(club);
   }
 
-  public static JsonAdapter.Factory typeAdapterFactory() {
-    return AutoValue_Match.typeAdapterFactory();
+  public static JsonAdapter<Match> jsonAdapter(Moshi moshi) {
+    return new AutoValue_Match.MoshiJsonAdapter(moshi);
   }
 
   // Roll our own equal() and hashCode() since we don't want to include the ID in it

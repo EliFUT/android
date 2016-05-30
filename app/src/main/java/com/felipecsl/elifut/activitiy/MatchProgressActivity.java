@@ -182,7 +182,8 @@ public class MatchProgressActivity extends ElifutActivity {
               ? txtTeamHomeGoals : txtTeamAwayGoals;
           int currGoals = Integer.parseInt(txtScore.getText().toString());
           txtScore.setText(String.valueOf(++currGoals));
-          appendEvent(R.drawable.ball, goal.time() + "' " + goal.club().abbrev_name());
+          appendEvent(R.drawable.ball, goal.time() + "' " + goal.club().abbrev_name() + ' '
+              + goal.player().name());
         }));
 
     subscriptions.add(timerObservable()

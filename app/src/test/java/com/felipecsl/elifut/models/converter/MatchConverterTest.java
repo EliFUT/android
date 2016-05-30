@@ -24,6 +24,7 @@ import java.util.Collections;
 
 import javax.inject.Inject;
 
+import static com.felipecsl.elifut.TestFixtures.newGoal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(ElifutTestRunner.class)
@@ -38,7 +39,7 @@ public class MatchConverterTest {
   }
 
   @Test public void testMatches() {
-    Goal goal = Goal.create(1, TestFixtures.GREMIO);
+    Goal goal = newGoal(1, TestFixtures.GREMIO);
     MatchResult matchResult = MatchResult.builder()
         .homeGoals(Collections.singletonList(goal))
         .awayGoals(Collections.emptyList())

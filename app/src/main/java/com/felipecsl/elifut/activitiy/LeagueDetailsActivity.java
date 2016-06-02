@@ -13,7 +13,7 @@ import com.felipecsl.elifut.fragment.LeagueProgressFragment;
 import com.felipecsl.elifut.fragment.LeagueStandingsFragment;
 import com.felipecsl.elifut.models.League;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.State;
 
@@ -21,10 +21,10 @@ import static com.felipecsl.elifut.util.ColorUtils.colorizeTabsAndHeader;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LeagueDetailsActivity extends NavigationActivity {
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.viewpager) ViewPager viewPager;
-  @Bind(R.id.tabs) TabLayout tabLayout;
-  @Bind(R.id.fab) FloatingActionButton fab;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.viewpager) ViewPager viewPager;
+  @BindView(R.id.tabs) TabLayout tabLayout;
+  @BindView(R.id.fab) FloatingActionButton fab;
 
   @State League league;
 

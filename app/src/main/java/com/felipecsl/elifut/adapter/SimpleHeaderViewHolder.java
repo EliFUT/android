@@ -6,11 +6,11 @@ import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 class SimpleHeaderViewHolder extends BaseViewHolder<String> {
-  @Bind(R.id.txt_header) TextView txtHeader;
+  @BindView(R.id.txt_header) TextView txtHeader;
 
   SimpleHeaderViewHolder(ViewGroup parent, @LayoutRes int layoutId) {
     super(parent, layoutId);

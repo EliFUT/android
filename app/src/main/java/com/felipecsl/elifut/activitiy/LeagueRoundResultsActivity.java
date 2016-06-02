@@ -12,7 +12,7 @@ import com.felipecsl.elifut.adapter.RoundResultsAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.State;
@@ -20,8 +20,8 @@ import icepick.State;
 public class LeagueRoundResultsActivity extends ElifutActivity {
   private static final String EXTRA_ROUND = "EXTRA_ROUND";
 
-  @Bind(R.id.recycler_round_results) RecyclerView recyclerRoundResults;
-  @Bind(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.recycler_round_results) RecyclerView recyclerRoundResults;
+  @BindView(R.id.toolbar) Toolbar toolbar;
 
   @State LeagueRound round;
 

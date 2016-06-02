@@ -16,27 +16,27 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Player;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PlayerViewHolder extends BaseViewHolder<Player> {
   protected final Club club;
 
-  @Bind(R.id.player_outer_layout) protected ViewGroup outerLayout;
-  @Bind(R.id.player_name) protected TextView txtPlayerName;
-  @Bind(R.id.player_image) protected ImageView imgPlayer;
-  @Bind(R.id.player_rating) protected TextView txtPlayerRating;
-  @Bind(R.id.player_layout) protected FrameLayout playerLayout;
-  @Bind(R.id.player_position) protected TextView playerPosition;
-  @Bind(R.id.img_player_quality) protected ImageView imgPlayerQuality;
-  @Bind(R.id.img_player_club) protected ImageView imgClub;
-  @Bind(R.id.img_player_nation) protected ImageView imgNation;
-  @Bind(R.id.attribute_1) protected TextView attribute1;
-  @Bind(R.id.attribute_2) protected TextView attribute2;
-  @Bind(R.id.attribute_3) protected TextView attribute3;
-  @Bind(R.id.attribute_4) protected TextView attribute4;
-  @Bind(R.id.attribute_5) protected TextView attribute5;
-  @Bind(R.id.attribute_6) protected TextView attribute6;
+  @BindView(R.id.player_outer_layout) protected ViewGroup outerLayout;
+  @BindView(R.id.player_name) protected TextView txtPlayerName;
+  @BindView(R.id.player_image) protected ImageView imgPlayer;
+  @BindView(R.id.player_rating) protected TextView txtPlayerRating;
+  @BindView(R.id.player_layout) protected FrameLayout playerLayout;
+  @BindView(R.id.player_position) protected TextView playerPosition;
+  @BindView(R.id.img_player_quality) protected ImageView imgPlayerQuality;
+  @BindView(R.id.img_player_club) protected ImageView imgClub;
+  @BindView(R.id.img_player_nation) protected ImageView imgNation;
+  @BindView(R.id.attribute_1) protected TextView attribute1;
+  @BindView(R.id.attribute_2) protected TextView attribute2;
+  @BindView(R.id.attribute_3) protected TextView attribute3;
+  @BindView(R.id.attribute_4) protected TextView attribute4;
+  @BindView(R.id.attribute_5) protected TextView attribute5;
+  @BindView(R.id.attribute_6) protected TextView attribute6;
 
   protected PlayerViewHolder(ViewGroup parent, Club club) {
     this(parent, club, R.layout.player_item);

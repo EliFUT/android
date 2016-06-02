@@ -82,8 +82,7 @@
 }
 -keep,includedescriptorclasses class retrofit.** { *; }
 -keep,includedescriptorclasses class android.support.** { *; }
--keep,includedescriptorclasses class com.felipecsl.elifut.widget.**
--keep,includedescriptorclasses class com.felipecsl.elifut.models.**
+-keep,includedescriptorclasses class com.felipecsl.**
 -keep,includedescriptorclasses class com.squareup.moshi.** { *; }
 -keepattributes *Annotation*
 -keepclassmembers class ** { ** base; }

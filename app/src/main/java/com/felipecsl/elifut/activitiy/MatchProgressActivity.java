@@ -35,9 +35,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
 import butterknife.BindDimen;
 import butterknife.BindString;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.State;
@@ -51,17 +51,17 @@ public class MatchProgressActivity extends ElifutActivity {
   private static final String TAG = MatchProgressActivity.class.getSimpleName();
   private static final String EXTRA_ROUND = "EXTRA_ROUND";
 
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.img_team_home) ImageView imgTeamHome;
-  @Bind(R.id.img_team_away) ImageView imgTeamAway;
-  @Bind(R.id.txt_team_home) TextView txtTeamHome;
-  @Bind(R.id.txt_team_away) TextView txtTeamAway;
-  @Bind(R.id.txt_team_home_goals) TextView txtTeamHomeGoals;
-  @Bind(R.id.events_layout) LinearLayout eventsLayout;
-  @Bind(R.id.txt_team_away_goals) TextView txtTeamAwayGoals;
-  @Bind(R.id.fractionView) FractionView fractionView;
-  @Bind(R.id.fab_play_pause) FloatingActionButton playPauseButton;
-  @Bind(R.id.fab_done) FloatingActionButton doneButton;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.img_team_home) ImageView imgTeamHome;
+  @BindView(R.id.img_team_away) ImageView imgTeamAway;
+  @BindView(R.id.txt_team_home) TextView txtTeamHome;
+  @BindView(R.id.txt_team_away) TextView txtTeamAway;
+  @BindView(R.id.txt_team_home_goals) TextView txtTeamHomeGoals;
+  @BindView(R.id.events_layout) LinearLayout eventsLayout;
+  @BindView(R.id.txt_team_away_goals) TextView txtTeamAwayGoals;
+  @BindView(R.id.fractionView) FractionView fractionView;
+  @BindView(R.id.fab_play_pause) FloatingActionButton playPauseButton;
+  @BindView(R.id.fab_done) FloatingActionButton doneButton;
   @BindString(R.string.end_first_half) String strEndOfFirstHalf;
   @BindString(R.string.end_match) String strEndOfMatch;
   @BindDimen(R.dimen.match_event_icon_size) int iconSize;
@@ -165,7 +165,7 @@ public class MatchProgressActivity extends ElifutActivity {
         .load(club.large_image())
         .into(imgView);
 
-    txtView.setText(club.tinyName().toUpperCase());
+    txtView.setText(club.abbrev_name());
   }
 
   private void stopTimer() {

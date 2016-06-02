@@ -20,8 +20,8 @@ import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.util.FragmentBundler;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.State;
 
@@ -37,12 +37,12 @@ public final class TeamDetailsFragment extends ElifutFragment {
     }
   };
 
-  @Bind(R.id.img_club_logo) ImageView imgClubLogo;
-  @Bind(R.id.img_league_logo) ImageView imgLeagueLogo;
-  @Bind(R.id.txt_club) TextView txtClub;
-  @Bind(R.id.txt_nation) TextView txtNation;
-  @Bind(R.id.txt_manager) TextView txtManager;
-  @Bind(R.id.txt_league) TextView txtLeague;
+  @BindView(R.id.img_club_logo) ImageView imgClubLogo;
+  @BindView(R.id.img_league_logo) ImageView imgLeagueLogo;
+  @BindView(R.id.txt_club) TextView txtClub;
+  @BindView(R.id.txt_nation) TextView txtNation;
+  @BindView(R.id.txt_manager) TextView txtManager;
+  @BindView(R.id.txt_league) TextView txtLeague;
   @BindColor(R.color.color_primary) int colorPrimary;
   @BindColor(R.color.color_secondary) int colorSecondary;
 

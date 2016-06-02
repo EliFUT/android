@@ -6,8 +6,8 @@ buildscript {
 
   dependencies {
     classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
@@ -41,4 +41,9 @@ ext {
   retrofitVersion = "2.0.2"
   playServicesVersion = '8.3.0'
   kotlinVersion = '1.0.2'
+  butterknifeVersion = '8.0.1'
+  okhttpVersion = '3.3.1'
+  icepickVersion = '3.1.0'
+  guavaVersion = '19.0'
+  daggerVersion = '2.4'
 }

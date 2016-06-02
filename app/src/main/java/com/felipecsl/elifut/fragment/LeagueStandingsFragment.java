@@ -1,5 +1,7 @@
 package com.felipecsl.elifut.fragment;
 
+import com.google.common.base.Preconditions;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,13 +18,12 @@ import com.felipecsl.elifut.activitiy.SimpleTarget;
 import com.felipecsl.elifut.adapter.ClubsAdapter;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.widget.DividerItemDecoration;
-import com.google.common.base.Preconditions;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -38,7 +39,7 @@ public class LeagueStandingsFragment extends ElifutFragment {
     }
   };
 
-  @Bind(R.id.recycler_clubs) RecyclerView recyclerView;
+  @BindView(R.id.recycler_clubs) RecyclerView recyclerView;
   @BindColor(R.color.color_primary) int colorPrimary;
   @BindColor(R.color.color_secondary) int colorSecondary;
 

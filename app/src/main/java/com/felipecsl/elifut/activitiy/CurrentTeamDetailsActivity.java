@@ -16,7 +16,7 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.State;
 
@@ -27,9 +27,9 @@ public class CurrentTeamDetailsActivity extends NavigationActivity implements Ta
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
   private static final String TAG = "CurrentTeamDetailsActv";
 
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.viewpager) ViewPager viewPager;
-  @Bind(R.id.tabs) TabLayout tabLayout;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.viewpager) ViewPager viewPager;
+  @BindView(R.id.tabs) TabLayout tabLayout;
 
   @State Club club;
   @State String coachName;

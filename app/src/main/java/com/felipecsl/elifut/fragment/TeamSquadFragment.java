@@ -33,7 +33,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.State;
 import rx.Observer;
@@ -48,19 +48,19 @@ public class TeamSquadFragment extends ElifutFragment {
   @State Club club;
   @State ArrayList<Player> players;
 
-  @Bind(R.id.player_gk) FrameLayout gk;
-  @Bind(R.id.player_lb) FrameLayout lb;
-  @Bind(R.id.player_cb1) FrameLayout cb1;
-  @Bind(R.id.player_cb2) FrameLayout cb2;
-  @Bind(R.id.player_rb) FrameLayout rb;
-  @Bind(R.id.player_cm1) FrameLayout cm1;
-  @Bind(R.id.player_cm2) FrameLayout cm2;
-  @Bind(R.id.player_cm3) FrameLayout cm3;
-  @Bind(R.id.player_cm4) FrameLayout cm4;
-  @Bind(R.id.player_at1) FrameLayout at1;
-  @Bind(R.id.player_at2) FrameLayout at2;
-  @Bind(R.id.player_at3) FrameLayout at3;
-  @Bind(R.id.player_at4) FrameLayout at4;
+  @BindView(R.id.player_gk) FrameLayout gk;
+  @BindView(R.id.player_lb) FrameLayout lb;
+  @BindView(R.id.player_cb1) FrameLayout cb1;
+  @BindView(R.id.player_cb2) FrameLayout cb2;
+  @BindView(R.id.player_rb) FrameLayout rb;
+  @BindView(R.id.player_cm1) FrameLayout cm1;
+  @BindView(R.id.player_cm2) FrameLayout cm2;
+  @BindView(R.id.player_cm3) FrameLayout cm3;
+  @BindView(R.id.player_cm4) FrameLayout cm4;
+  @BindView(R.id.player_at1) FrameLayout at1;
+  @BindView(R.id.player_at2) FrameLayout at2;
+  @BindView(R.id.player_at3) FrameLayout at3;
+  @BindView(R.id.player_at4) FrameLayout at4;
 
   private boolean hasSavedState;
   private final Observer<ClubSquad> playersObserver = new Observer<ClubSquad>() {

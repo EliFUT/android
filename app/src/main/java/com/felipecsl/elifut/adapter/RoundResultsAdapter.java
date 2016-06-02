@@ -16,8 +16,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class RoundResultsAdapter extends RecyclerViewListAdapter<Match, ViewHolder> {
@@ -33,15 +33,15 @@ public final class RoundResultsAdapter extends RecyclerViewListAdapter<Match, Vi
   }
 
   class ViewHolder extends BaseViewHolder<Match> {
-    @Bind(R.id.outer_layout) FrameLayout layoutOuter;
-    @Bind(R.id.layout_team_home) LinearLayout layoutTeamHome;
-    @Bind(R.id.layout_team_away) LinearLayout layoutTeamAway;
-    @Bind(R.id.img_team_home) ImageView imgTeamHome;
-    @Bind(R.id.img_team_away) ImageView imgTeamAway;
-    @Bind(R.id.txt_team_home) TextView txtTeamHome;
-    @Bind(R.id.txt_team_away) TextView txtTeamAway;
-    @Bind(R.id.txt_team_home_score) TextView txtTeamHomeScore;
-    @Bind(R.id.txt_team_away_score) TextView txtTeamAwayScore;
+    @BindView(R.id.outer_layout) FrameLayout layoutOuter;
+    @BindView(R.id.layout_team_home) LinearLayout layoutTeamHome;
+    @BindView(R.id.layout_team_away) LinearLayout layoutTeamAway;
+    @BindView(R.id.img_team_home) ImageView imgTeamHome;
+    @BindView(R.id.img_team_away) ImageView imgTeamAway;
+    @BindView(R.id.txt_team_home) TextView txtTeamHome;
+    @BindView(R.id.txt_team_away) TextView txtTeamAway;
+    @BindView(R.id.txt_team_home_score) TextView txtTeamHomeScore;
+    @BindView(R.id.txt_team_away_score) TextView txtTeamAwayScore;
 
     @BindColor(R.color.light_gray) int colorLightGray;
     @BindColor(android.R.color.transparent) int colorTransparent;

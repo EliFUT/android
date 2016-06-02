@@ -19,7 +19,7 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.State;
 
@@ -29,9 +29,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class TeamDetailsActivity extends ElifutActivity implements TabbedActivity {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
 
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.viewpager) ViewPager viewPager;
-  @Bind(R.id.tabs) TabLayout tabLayout;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.viewpager) ViewPager viewPager;
+  @BindView(R.id.tabs) TabLayout tabLayout;
 
   @State Club club;
   @State Nation nation;

@@ -16,8 +16,8 @@ import com.felipecsl.elifut.animations.AnimationUtil;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Player;
 
-import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.State;
 
@@ -32,8 +32,8 @@ public class PlayerDetailsActivity extends ElifutActivity {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
   private static final int REQUEST_REPLACE = 9090;
 
-  @Bind(R.id.layout_root) CoordinatorLayout rootLayout;
-  @Bind(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.layout_root) CoordinatorLayout rootLayout;
+  @BindView(R.id.toolbar) Toolbar toolbar;
   @BindColor(R.color.color_primary) int colorPrimary;
 
   @State Player player;

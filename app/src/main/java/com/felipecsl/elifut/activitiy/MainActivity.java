@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
@@ -36,11 +36,11 @@ public class MainActivity extends ElifutActivity {
 
   @Inject AppInitializer initializer;
 
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.input_name) EditText inputName;
-  @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
-  @Bind(R.id.countries_spinner) Spinner countriesSpinner;
-  @Bind(R.id.fab) FloatingActionButton okButton;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.input_name) EditText inputName;
+  @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+  @BindView(R.id.countries_spinner) Spinner countriesSpinner;
+  @BindView(R.id.fab) FloatingActionButton okButton;
 
   private CountriesSpinnerAdapter nationsAdapter;
   private final CompositeSubscription subscriptions = new CompositeSubscription();

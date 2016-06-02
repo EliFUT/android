@@ -48,8 +48,8 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
 import butterknife.BindDimen;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -64,11 +64,11 @@ public abstract class NavigationActivity extends ElifutActivity
   @Inject LeagueRoundExecutor roundExecutor;
   @Inject AppInitializer appInitializer;
 
-  @Bind(R.id.circular_reveal_overlay) View circularRevealOverlay;
-  @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
-  @Bind(R.id.nav_view) NavigationView navigationView;
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.fab) FloatingActionButton fab;
+  @BindView(R.id.circular_reveal_overlay) View circularRevealOverlay;
+  @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+  @BindView(R.id.nav_view) NavigationView navigationView;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.fab) FloatingActionButton fab;
   @BindDimen(R.dimen.fab_margin) int fabMargin;
 
   private Subscription coinsSubscription;
@@ -80,11 +80,11 @@ public abstract class NavigationActivity extends ElifutActivity
   };
 
   static class NavigationHeaderViewHolder {
-    @Bind(R.id.text_coach_name) TextView txtCoachName;
-    @Bind(R.id.text_team_name) TextView txtTeamName;
-    @Bind(R.id.img_club_logo) ImageView imgClubLogo;
-    @Bind(R.id.text_coins) TextView txtCoins;
-    @Bind(R.id.nav_header_layout) LinearLayout navHeaderLayout;
+    @BindView(R.id.text_coach_name) TextView txtCoachName;
+    @BindView(R.id.text_team_name) TextView txtTeamName;
+    @BindView(R.id.img_club_logo) ImageView imgClubLogo;
+    @BindView(R.id.text_coins) TextView txtCoins;
+    @BindView(R.id.nav_header_layout) LinearLayout navHeaderLayout;
   }
 
   private final SimpleTarget clubLogoTarget = new SimpleTarget() {

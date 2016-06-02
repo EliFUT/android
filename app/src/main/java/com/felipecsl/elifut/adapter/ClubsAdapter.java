@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -47,14 +47,14 @@ public final class ClubsAdapter
   }
 
   class ViewHolderImpl {
-    @Bind(R.id.layout) ViewGroup layout;
-    @Bind(R.id.txt_position) TextView position;
-    @Bind(R.id.txt_club_name) TextView clubName;
-    @Bind(R.id.txt_points) TextView points;
-    @Bind(R.id.txt_wins) TextView wins;
-    @Bind(R.id.txt_draws) TextView draws;
-    @Bind(R.id.txt_losses) TextView losses;
-    @Bind(R.id.txt_goals_difference) TextView goalsDifference;
+    @BindView(R.id.layout) ViewGroup layout;
+    @BindView(R.id.txt_position) TextView position;
+    @BindView(R.id.txt_club_name) TextView clubName;
+    @BindView(R.id.txt_points) TextView points;
+    @BindView(R.id.txt_wins) TextView wins;
+    @BindView(R.id.txt_draws) TextView draws;
+    @BindView(R.id.txt_losses) TextView losses;
+    @BindView(R.id.txt_goals_difference) TextView goalsDifference;
   }
 
   class ViewHolder extends BaseViewHolder<Club> {

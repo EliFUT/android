@@ -14,13 +14,13 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class LeagueProgressFragment extends ElifutFragment {
-  @Bind(R.id.recycler_next_matches) RecyclerView recyclerView;
+  @BindView(R.id.recycler_next_matches) RecyclerView recyclerView;
 
   private final CompositeSubscription subscription = new CompositeSubscription();
   private LeagueMatchesAdapter adapter;

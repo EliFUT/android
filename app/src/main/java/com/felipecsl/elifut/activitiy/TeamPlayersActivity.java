@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.State;
 
@@ -36,8 +36,8 @@ public class TeamPlayersActivity extends ElifutActivity implements PlayersAdapte
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
   private static final String EXTRA_PREVIOUS_PLAYER = "EXTRA_PREVIOUS_PLAYER";
 
-  @Bind(R.id.recycler_players) RecyclerView playersList;
-  @Bind(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.recycler_players) RecyclerView playersList;
+  @BindView(R.id.toolbar) Toolbar toolbar;
   @BindColor(R.color.color_primary) int colorPrimary;
 
   @Inject ClubDataStore dataStore;

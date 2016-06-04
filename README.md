@@ -2,14 +2,11 @@
 
 [![Build Status](https://travis-ci.org/EliFUT/android.svg)](https://travis-ci.org/EliFUT/android)
 
-## Screenshots
+## Demo
 
-![players](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-players.png)
-![league](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-league.png)
-![team](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-team.png)
-![match](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-match.png)
-![schedule](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-schedule.png)
-![menu](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/screenshot-menu.png)
+![demo](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/demo.gif)
+
+You can also watch the [Youtube video](https://www.youtube.com/watch?v=_aqgQbdzd0U).
 
 ## Introduction
 

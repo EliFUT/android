@@ -5,120 +5,157 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
-  android:paddingBottom="@dimen/activity_vertical_margin"
-  android:paddingLeft="@dimen/activity_horizontal_margin"
-  android:paddingRight="@dimen/activity_horizontal_margin"
-  android:paddingTop="@dimen/activity_vertical_margin"
   app:layout_behavior="@string/appbar_scrolling_view_behavior"
   tools:context="com.felipecsl.elifut.activitiy.MatchProgressActivity"
   tools:showIn="@layout/activity_match_progress"
   >
 
-  <com.felipecsl.elifut.widget.FractionView
-    android:id="@+id/fractionView"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:layout_gravity="end"
-    android:layout_marginBottom="20dp"
-    />
-
-  <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="horizontal"
-    >
-
-    <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginRight="30dp"
-      android:orientation="vertical"
-      >
-
-      <ImageView
-        android:id="@+id/img_team_home"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        />
-
-      <TextView
-        android:id="@+id/txt_team_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        tools:text="Gremio"
-        />
-
-    </LinearLayout>
-
-    <TextView
-      android:id="@+id/txt_team_home_goals"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical"
-      android:layout_marginRight="10dp"
-      android:text="0"
-      android:textColor="@color/team_score"
-      android:textSize="28sp"
-      android:textStyle="bold"
-      tools:text="3"
-      />
-
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical"
-      android:layout_marginRight="10dp"
-      android:text="✕"
-      />
-
-    <TextView
-      android:id="@+id/txt_team_away_goals"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical"
-      android:layout_marginRight="30dp"
-      android:text="0"
-      android:textColor="@color/team_score"
-      android:textSize="28sp"
-      android:textStyle="bold"
-      tools:text="0"
-      />
-
-    <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      >
-
-      <ImageView
-        android:id="@+id/img_team_away"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        />
-
-      <TextView
-        android:id="@+id/txt_team_away"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        tools:text="Internacional"
-        />
-    </LinearLayout>
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:id="@+id/events_layout"
+  <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="30dp"
-    android:orientation="vertical"
-    />
+    android:layout_marginBottom="3dp"
+    android:background="@color/white"
+    android:elevation="3dp"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    >
+
+    <com.felipecsl.elifut.widget.FractionView
+      android:id="@+id/fractionView"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_gravity="end"
+      android:layout_marginBottom="20dp"
+      />
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="horizontal"
+      >
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+          android:id="@+id/img_team_home"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:layout_gravity="center_horizontal"
+          android:layout_marginBottom="10dp"
+          />
+
+        <TextView
+          android:id="@+id/txt_team_home"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          tools:text="Gremio"
+          />
+      </LinearLayout>
+
+      <TextView
+        android:id="@+id/txt_team_home_goals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="10dp"
+        android:text="0"
+        android:textColor="@color/team_score"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        tools:text="3"
+        />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"
+        android:text="✕"
+        />
+
+      <TextView
+        android:id="@+id/txt_team_away_goals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="30dp"
+        android:text="0"
+        android:textColor="@color/team_score"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        tools:text="0"
+        />
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+          android:id="@+id/img_team_away"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:layout_gravity="center_horizontal"
+          android:layout_marginBottom="10dp"
+          />
+
+        <TextView
+          android:id="@+id/txt_team_away"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          tools:text="Internacional"
+          />
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </FrameLayout>
+
+  <ScrollView
+    android:id="@+id/events_scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f1f1"
+    >
+
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      >
+
+      <View
+        android:id="@+id/events_timeline"
+        android:layout_width="3dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:background="#ccc"
+        android:visibility="gone"
+        />
+
+      <LinearLayout
+        android:id="@+id/events_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        />
+
+    </FrameLayout>
+  </ScrollView>
 
 </LinearLayout>

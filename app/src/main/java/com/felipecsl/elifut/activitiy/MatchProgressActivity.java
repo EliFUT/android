@@ -9,12 +9,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.BuildConfig;
@@ -58,6 +62,8 @@ public class MatchProgressActivity extends ElifutActivity {
   @BindView(R.id.txt_team_away) TextView txtTeamAway;
   @BindView(R.id.txt_team_home_goals) TextView txtTeamHomeGoals;
   @BindView(R.id.events_layout) LinearLayout eventsLayout;
+  @BindView(R.id.events_timeline) View eventsTimeline;
+  @BindView(R.id.events_scrollview) ScrollView eventsScrollView;
   @BindView(R.id.txt_team_away_goals) TextView txtTeamAwayGoals;
   @BindView(R.id.fractionView) FractionView fractionView;
   @BindView(R.id.fab_play_pause) FloatingActionButton playPauseButton;
@@ -80,34 +86,48 @@ public class MatchProgressActivity extends ElifutActivity {
   private Match match;
   private Club userClub;
   private MatchResult matchResult;
-  private final Observer<Club> observer = new ResponseObserver<Club>(this, TAG, "Failed to load club") {
-    @Override public void onNext(Club response) {
-      fillClubInfos(response);
-    }
+  private final Observer<Club> clubObserver =
+      new ResponseObserver<Club>(this, TAG, "Failed to load club") {
+        @Override public void onNext(Club response) {
+          ImageView imgView;
+          TextView txtView;
+          if (response.nameEquals(match.home())) {
+            imgView = imgTeamHome;
+            txtView = txtTeamHome;
+          } else {
+            imgView = imgTeamAway;
+            txtView = txtTeamAway;
+          }
+          Picasso.with(MatchProgressActivity.this)
+              .load(response.large_image())
+              .into(imgView);
 
-    @Override public void onCompleted() {
-      if (!matchResult.isDraw()) {
-        Club winner = matchResult.winner();
-        //noinspection ConstantConditions
-        boolean isWinner = winner.nameEquals(userClub);
-        finalScoreIcon = isWinner ? R.drawable.ic_mood_black_48px
-            : R.drawable.ic_sentiment_very_dissatisfied_black_48px;
-        if (isWinner) {
-          finalScoreMessage = "Winner!";
-        } else {
-          finalScoreMessage = "Defeated.";
+          txtView.setText(response.shortName());
         }
-      } else {
-        finalScoreIcon = R.drawable.ic_sentiment_neutral_black_48px;
-        finalScoreMessage = "Draw.";
-      }
-      if (BuildConfig.DEBUG) {
-        Log.d(TAG, finalScoreMessage);
-      }
 
-      startTimer();
-    }
-  };
+        @Override public void onCompleted() {
+          if (!matchResult.isDraw()) {
+            Club winner = matchResult.winner();
+            //noinspection ConstantConditions
+            boolean isWinner = winner.nameEquals(userClub);
+            finalScoreIcon = isWinner ? R.drawable.ic_mood_black_48px
+                : R.drawable.ic_sentiment_very_dissatisfied_black_48px;
+            if (isWinner) {
+              finalScoreMessage = getString(R.string.winner);
+            } else {
+              finalScoreMessage = getString(R.string.defeated);
+            }
+          } else {
+            finalScoreIcon = R.drawable.ic_sentiment_neutral_black_48px;
+            finalScoreMessage = getString(R.string.draw);
+          }
+          if (BuildConfig.DEBUG) {
+            Log.d(TAG, finalScoreMessage);
+          }
+
+          startTimer();
+        }
+      };
 
   public static Intent newIntent(Context context, LeagueRound round) {
     return new Intent(context, MatchProgressActivity.class)
@@ -142,30 +162,13 @@ public class MatchProgressActivity extends ElifutActivity {
   private void loadClubs(int homeId, int awayId) {
     Subscription subscription = clubObservable(homeId)
         .mergeWith(clubObservable(awayId))
-        .subscribe(observer);
+        .subscribe(clubObserver);
 
     subscriptions.add(subscription);
   }
 
   private Observable<Club> clubObservable(int id) {
     return service.club(id).compose(this.<Club>applyTransformations());
-  }
-
-  private void fillClubInfos(Club club) {
-    ImageView imgView;
-    TextView txtView;
-    if (club.nameEquals(match.home())) {
-      imgView = imgTeamHome;
-      txtView = txtTeamHome;
-    } else {
-      imgView = imgTeamAway;
-      txtView = txtTeamAway;
-    }
-    Picasso.with(MatchProgressActivity.this)
-        .load(club.large_image())
-        .into(imgView);
-
-    txtView.setText(club.abbrev_name());
   }
 
   private void stopTimer() {
@@ -178,12 +181,12 @@ public class MatchProgressActivity extends ElifutActivity {
         .map(matchEvent -> (Goal) matchEvent)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(goal -> {
-          TextView txtScore = goal.club().nameEquals(match.home())
-              ? txtTeamHomeGoals : txtTeamAwayGoals;
+          boolean isHomeGoal = goal.club().nameEquals(match.home());
+          TextView txtScore = isHomeGoal ? txtTeamHomeGoals : txtTeamAwayGoals;
           int currGoals = Integer.parseInt(txtScore.getText().toString());
           txtScore.setText(String.valueOf(++currGoals));
-          appendEvent(R.drawable.ball, goal.time() + "' " + goal.club().abbrev_name() + ' '
-              + goal.player().name());
+          int gravity = isHomeGoal ? GravityCompat.START : GravityCompat.END;
+          appendEvent(R.drawable.ball, goal.time() + "' " + goal.player().name(), gravity);
         }));
 
     subscriptions.add(timerObservable()
@@ -192,17 +195,18 @@ public class MatchProgressActivity extends ElifutActivity {
           elapsedMinutes++;
           fractionView.setFraction(elapsedMinutes % 45, 60);
           if (elapsedMinutes == 45) {
-            appendEvent(R.drawable.ic_schedule_black_48px, strEndOfFirstHalf);
+            appendEvent(R.drawable.ic_schedule_black_48px, strEndOfFirstHalf, Gravity.CENTER);
           } else if (elapsedMinutes == 90) {
             stopTimer();
-            appendEvent(R.drawable.ic_schedule_black_48px, strEndOfMatch);
-            appendEvent(finalScoreIcon, finalScoreMessage);
+            appendEvent(R.drawable.ic_schedule_black_48px, strEndOfMatch, Gravity.CENTER);
+            appendEvent(finalScoreIcon, finalScoreMessage, Gravity.CENTER);
             Club winner = matchResult.winner();
             boolean isDraw = matchResult.isDraw();
             boolean isWinner = !isDraw && userClub.nameEquals(winner);
             if (isDraw || isWinner) {
               appendEvent(R.drawable.ic_attach_money_black_24dp, "+" +
-                  (isWinner ? UserPreferences.COINS_PRIZE_WIN : UserPreferences.COINS_PRIZE_DRAW));
+                      (isWinner ? UserPreferences.COINS_PRIZE_WIN : UserPreferences.COINS_PRIZE_DRAW),
+                  Gravity.CENTER_HORIZONTAL);
             }
             playPauseButton.setVisibility(View.GONE);
             doneButton.setVisibility(View.VISIBLE);
@@ -217,15 +221,26 @@ public class MatchProgressActivity extends ElifutActivity {
         : Observable.interval(0, 1, TimeUnit.SECONDS);
   }
 
-  private void appendEvent(@DrawableRes int icon, String text) {
-    TextView view = (TextView) LayoutInflater.from(this)
+  private void appendEvent(@DrawableRes int icon, String text, int gravity) {
+    FrameLayout view = (FrameLayout) LayoutInflater.from(this)
         .inflate(R.layout.match_event, eventsLayout, false);
-    view.setText(text);
+    TextView textView = (TextView) view.findViewById(R.id.txt_match_events);
+    textView.setText(text);
     Drawable drawable = ContextCompat.getDrawable(this, icon);
     drawable.setBounds(0, 0, iconSize, iconSize);
-    view.setCompoundDrawablePadding(iconPadding);
-    view.setCompoundDrawables(drawable, null, null, null);
+    textView.setCompoundDrawablePadding(iconPadding);
+    if (gravity == GravityCompat.START) {
+      textView.setCompoundDrawables(null, null, drawable, null);
+    } else {
+      textView.setCompoundDrawables(drawable, null, null, null);
+    }
+    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+    layoutParams.gravity = gravity;
+    view.setLayoutParams(layoutParams);
+    textView.setGravity(gravity);
     eventsLayout.addView(view, 0);
+    eventsTimeline.setVisibility(View.VISIBLE);
+    eventsScrollView.smoothScrollTo(0, 0);
   }
 
   @OnClick(R.id.fab_play_pause) void onClickPause() {

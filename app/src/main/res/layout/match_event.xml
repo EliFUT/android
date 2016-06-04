@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/txt_match_events"
-  android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="185dp"
   android:layout_height="wrap_content"
-  android:layout_marginTop="15dp"
-  android:lineSpacingMultiplier="1.5"
-  android:textSize="18sp"
-  />
+  android:background="@drawable/match_event_background"
+  android:padding="10dp"
+  android:layout_marginTop="10dp"
+  android:layout_marginBottom="10dp"
+  >
+
+  <TextView
+    android:id="@+id/txt_match_events"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="16sp"
+    tools:text="19' Felipe"
+    />
+</FrameLayout>

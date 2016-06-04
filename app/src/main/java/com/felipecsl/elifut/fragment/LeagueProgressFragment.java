@@ -45,7 +45,7 @@ public class LeagueProgressFragment extends ElifutFragment {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(rounds -> {
           int roundsLeft = leagueDetails.rounds().size();
-          if (roundsLeft == 0) {
+          if (roundsLeft < 0) {
             throw new IllegalStateException("No rounds left");
           }
           LeagueRound round = rounds.get(0);

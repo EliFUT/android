@@ -39,11 +39,14 @@ ext {
   devApiEndpoint = "http://10.0.3.2:3000/"
   prodApiEndpoint = "http://104.131.134.208/"
   retrofitVersion = "2.0.2"
-  playServicesVersion = '8.3.0'
+  playServicesVersion = '8.4.0'
+  autoValueCursorVersion = '0.5.0'
   kotlinVersion = '1.0.2'
+  moshiVersion = '1.2.0'
+  sqlbriteVersion = '0.6.3'
   butterknifeVersion = '8.0.1'
   okhttpVersion = '3.3.1'
-  icepickVersion = '3.1.0'
+  icepickVersion = '3.2.0'
   guavaVersion = '19.0'
   daggerVersion = '2.4'
 }

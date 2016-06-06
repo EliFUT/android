@@ -3,12 +3,13 @@ package com.felipecsl.elifut.models;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.FluentIterable;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.felipecsl.elifut.services.ClubDataStore;
-import com.gabrielittner.auto.value.cursor.CursorAdapter;
+import com.gabrielittner.auto.value.cursor.ColumnAdapter;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
@@ -26,12 +27,14 @@ public abstract class Club extends Model implements Persistable {
   public abstract String large_image();
   public abstract int league_id();
   @Nullable public abstract String abbrev_name();
-  @CursorAdapter(ClubStats.class) @Nullable public abstract ClubStats stats();
+  @ColumnAdapter(ClubStats.Adapter.class) @Nullable public abstract ClubStats stats();
   // @formatter:on
 
   public static Club create(Cursor cursor) {
     return AutoValue_Club.createFromCursor(cursor);
   }
+
+  public abstract ContentValues toContentValues();
 
   @Override public String toString() {
     return shortName();

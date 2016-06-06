@@ -63,7 +63,8 @@ public class ElifutDataStoreTest {
     List<Club> clubs = Arrays.asList(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
     service.create(clubs);
     TestSubscriber<List<? extends Club>> subscriber = new TestSubscriber<>();
-    service.observe(AutoValueClasses.CLUB).subscribe(subscriber);
+    service.observe(AutoValueClasses.CLUB)
+        .subscribe(subscriber);
     subscriber.assertNoErrors();
     subscriber.assertValue(clubs);
   }

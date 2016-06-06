@@ -2,9 +2,11 @@ package com.felipecsl.elifut.models;
 
 import com.google.auto.value.AutoValue;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcelable;
 
+import com.gabrielittner.auto.value.cursor.ColumnTypeAdapter;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
@@ -19,6 +21,8 @@ public abstract class ClubStats implements Parcelable {
   public static ClubStats create(Cursor cursor) {
     return AutoValue_ClubStats.createFromCursor(cursor);
   }
+
+  public abstract ContentValues toContentValues();
 
   public int games() {
     return wins() + draws() + losses();
@@ -78,5 +82,16 @@ public abstract class ClubStats implements Parcelable {
 
   @Override public int describeContents() {
     return 0;
+  }
+
+  public static class Adapter implements ColumnTypeAdapter<ClubStats> {
+    @Override public ClubStats fromCursor(Cursor cursor, String columnName) {
+      return ClubStats.create(cursor);
+    }
+
+    @Override
+    public void toContentValues(ContentValues values, String columnName, ClubStats value) {
+      values.putAll(value.toContentValues());
+    }
   }
 }

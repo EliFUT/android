@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 
 import static com.felipecsl.elifut.Util.closeQuietly;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -32,7 +33,8 @@ public class ElifutDataStore extends SQLiteOpenHelper {
   public ElifutDataStore(Context context, SqlBrite sqlBrite,
       List<Persistable.Converter<?>> converters) {
     super(context, "ElifutDB", null, 1);
-    db = sqlBrite.wrapDatabaseHelper(this);
+    // TODO: Change to io() or computation() scheduler but needs to fix failing test
+    db = sqlBrite.wrapDatabaseHelper(this, AndroidSchedulers.mainThread());
     for (Persistable.Converter<?> converter : converters) {
       converterMap.put(converter.targetType(), converter);
     }

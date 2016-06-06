@@ -2,6 +2,7 @@ package com.felipecsl.elifut.models;
 
 import com.google.auto.value.AutoValue;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 
@@ -87,6 +88,8 @@ public abstract class Player extends Model implements Persistable {
   public static Player create(Cursor cursor) {
     return AutoValue_Player.createFromCursor(cursor);
   }
+
+  public abstract ContentValues toContentValues();
 
   public boolean isValidColor() {
     return VALID_COLORS.indexOf(color()) != -1;

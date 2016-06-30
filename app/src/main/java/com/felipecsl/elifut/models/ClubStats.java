@@ -41,10 +41,11 @@ public abstract class ClubStats implements Parcelable {
         .goals(0);
   }
 
-  public ClubStats newWithWin() {
+  public ClubStats newWithWin(int goalsDifferential) {
     return toBuilder()
         .points(points() + 3)
         .wins(wins() + 1)
+        .goals(goals() + goalsDifferential)
         .build();
   }
 
@@ -55,9 +56,10 @@ public abstract class ClubStats implements Parcelable {
         .build();
   }
 
-  public ClubStats newWithLoss() {
+  public ClubStats newWithLoss(int goalsDifferential) {
     return toBuilder()
         .losses(losses() + 1)
+        .goals(goals() + goalsDifferential)
         .build();
   }
 
@@ -84,14 +86,16 @@ public abstract class ClubStats implements Parcelable {
     return 0;
   }
 
-  public static class Adapter implements ColumnTypeAdapter<ClubStats> {
+  static class Adapter implements ColumnTypeAdapter<ClubStats> {
     @Override public ClubStats fromCursor(Cursor cursor, String columnName) {
       return ClubStats.create(cursor);
     }
 
     @Override
     public void toContentValues(ContentValues values, String columnName, ClubStats value) {
-      values.putAll(value.toContentValues());
+      if (value != null) {
+        values.putAll(value.toContentValues());
+      }
     }
   }
 }

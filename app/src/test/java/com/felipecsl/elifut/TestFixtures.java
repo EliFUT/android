@@ -24,6 +24,22 @@ public final class TestFixtures {
       .id(2)
       .base_id(3)
       .build();
+  public static final Club FLAMENGO = Club.builder()
+      .name("Flamengo")
+      .small_image("xxx")
+      .large_image("xyz")
+      .league_id(5)
+      .id(3)
+      .base_id(4)
+      .build();
+  public static final Club FLUMINENSE = Club.builder()
+      .name("Fluminense")
+      .small_image("xxx")
+      .large_image("xyz")
+      .league_id(6)
+      .id(4)
+      .base_id(5)
+      .build();
 
   public static final Player PELE = Player.builder()
       .id(1)

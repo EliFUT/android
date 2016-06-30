@@ -42,7 +42,8 @@ public class LeagueRoundResultsActivity extends ElifutActivity {
     }
 
     //noinspection ConstantConditions
-    getSupportActionBar().setTitle(getString(R.string.round_results, round.roundNumber()));
+    getSupportActionBar().setTitle(getString(R.string.round_results,
+        String.valueOf(round.roundNumber())));
 
     Club currentClub = userPreferences.club();
     LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

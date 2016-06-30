@@ -33,8 +33,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
     manifest = ElifutTestRunner.MANIFEST_PATH)
 public class LeagueRoundExecutorTest {
-  private final Club clubA = Club.create(1, "Club A").newWithWin();
-  private final Club clubB = Club.create(2, "Club B").newWithLoss();
+  private final Club clubA = Club.create(1, "Club A").newWithWin(1);
+  private final Club clubB = Club.create(2, "Club B").newWithLoss(-1);
   private final Club clubC = Club.create(3, "Club C");
   private final Club clubD = Club.create(4, "Club D");
   private final List<Club> leagueClubs = Arrays.asList(clubA, clubB, clubC, clubD);
@@ -70,8 +70,8 @@ public class LeagueRoundExecutorTest {
 
     List<? extends Club> clubs = persistenceService.query(AutoValueClasses.CLUB);
     List<Club> query = Util.listSupertype(clubs);
-    assertThat(query).containsOnly(clubA.newWithWin(), clubB.newWithLoss(), clubC.newWithLoss(),
-        clubD.newWithWin());
+    assertThat(query).containsOnly(clubA.newWithWin(1), clubB.newWithLoss(-1),
+        clubC.newWithLoss(-2), clubD.newWithWin(2));
   }
 
   @Test public void testExecuteDraw() {

@@ -1,12 +1,13 @@
 package com.felipecsl.elifut;
 
+import com.google.common.collect.Lists;
+import com.google.common.io.Closeables;
+
 import android.content.Context;
 import android.os.AsyncTask;
 
 import com.felipecsl.elifut.services.ResponseBodyMapper;
 import com.felipecsl.elifut.services.ResponseMapper;
-import com.google.common.collect.Lists;
-import com.google.common.io.Closeables;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -28,12 +29,12 @@ public final class Util {
     }
   }
 
-  public static <T> Class<? extends T> autoValueTypeFor(Class<T> type) {
+  public static <T> Class<T> autoValueTypeFor(Class<T> type) {
     try {
       String name = type.getName();
       String packageName = name.substring(0, name.lastIndexOf('.'));
       //noinspection unchecked
-      return (Class<? extends T>) Class.forName(packageName + ".AutoValue_" + type.getSimpleName());
+      return (Class<T>) Class.forName(packageName + ".AutoValue_" + type.getSimpleName());
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);
     }

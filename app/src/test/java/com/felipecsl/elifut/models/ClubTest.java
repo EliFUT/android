@@ -47,9 +47,9 @@ public class ClubTest {
 
   @Test public void testNewWithWin() {
     Club club = Club.builder().id(0).name("Sample").build();
-    ClubStats stats = club.newWithWin().stats();
+    ClubStats stats = club.newWithWin(2).stats();
     assertThat(stats.points()).isEqualTo(3);
-    assertThat(stats.goals()).isEqualTo(0);
+    assertThat(stats.goals()).isEqualTo(2);
     assertThat(stats.losses()).isEqualTo(0);
     assertThat(stats.draws()).isEqualTo(0);
     assertThat(stats.wins()).isEqualTo(1);
@@ -67,9 +67,9 @@ public class ClubTest {
 
   @Test public void testNewWithLoss() {
     Club club = Club.builder().id(0).name("Sample").build();
-    ClubStats stats = club.newWithLoss().stats();
+    ClubStats stats = club.newWithLoss(-3).stats();
     assertThat(stats.points()).isEqualTo(0);
-    assertThat(stats.goals()).isEqualTo(0);
+    assertThat(stats.goals()).isEqualTo(-3);
     assertThat(stats.losses()).isEqualTo(1);
     assertThat(stats.draws()).isEqualTo(0);
     assertThat(stats.wins()).isEqualTo(0);

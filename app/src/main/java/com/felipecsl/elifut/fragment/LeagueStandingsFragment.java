@@ -66,7 +66,7 @@ public class LeagueStandingsFragment extends ElifutFragment {
     subscription.add(leagueDetails
         .clubsObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(adapter::setItems));
+        .subscribe(adapter::setData));
 
     Picasso.with(getContext())
         .load(league.image())

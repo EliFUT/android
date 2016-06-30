@@ -101,9 +101,13 @@ public abstract class Club extends Model implements Persistable {
     return new AutoValue_Club.Builder(this);
   }
 
-  public Club newWithWin() {
+  public Club newWithWin(int goalsDifferential) {
+    if (goalsDifferential <= 0) {
+      throw new IllegalArgumentException("Goals difference must be bigger than zero for wins.");
+    }
     return toBuilder()
-        .stats(nonNullStats().newWithWin())
+        .stats(nonNullStats()
+            .newWithWin(goalsDifferential))
         .build();
   }
 
@@ -112,11 +116,19 @@ public abstract class Club extends Model implements Persistable {
   }
 
   public Club newWithDraw() {
-    return toBuilder().stats(nonNullStats().newWithDraw()).build();
+    return toBuilder()
+        .stats(nonNullStats().newWithDraw())
+        .build();
   }
 
-  public Club newWithLoss() {
-    return toBuilder().stats(nonNullStats().newWithLoss()).build();
+  public Club newWithLoss(int goalsDifferential) {
+    if (goalsDifferential >= 0) {
+      throw new IllegalArgumentException("Goals difference must be less than zero for losses.");
+    }
+    return toBuilder()
+        .stats(nonNullStats()
+            .newWithLoss(goalsDifferential))
+        .build();
   }
 
   @NonNull public ClubStats nonNullStats() {

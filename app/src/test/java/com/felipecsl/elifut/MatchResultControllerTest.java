@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.felipecsl.elifut.match.MatchResultController;
 import com.felipecsl.elifut.models.Club;
+import com.felipecsl.elifut.models.Goal;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.ElifutDataStore;
@@ -15,11 +16,16 @@ import org.junit.runner.RunWith;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import rx.Observable;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(ElifutTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
@@ -51,13 +57,21 @@ public class MatchResultControllerTest {
         return nonUserClub;
       }
 
+      @Override public List<Goal> homeGoals() {
+        return Collections.singletonList(mock(Goal.class));
+      }
+
+      @Override public List<Goal> awayGoals() {
+        return Collections.emptyList();
+      }
+
       @Override public boolean isDraw() {
         return false;
       }
     };
     controller.updateWithResult(matchResult);
 
-    Club newUserClub = userClub.newWithWin();
+    Club newUserClub = userClub.newWithWin(1);
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
   }
 
@@ -72,6 +86,14 @@ public class MatchResultControllerTest {
         return userClub;
       }
 
+      @Override public List<Goal> homeGoals() {
+        return Collections.singletonList(mock(Goal.class));
+      }
+
+      @Override public List<Goal> awayGoals() {
+        return Collections.emptyList();
+      }
+
       @Override public boolean isDraw() {
         return false;
       }
@@ -79,17 +101,16 @@ public class MatchResultControllerTest {
 
     controller.updateWithResult(matchResult);
 
-    Club newUserClub = userClub.newWithLoss();
+    Club newUserClub = userClub.newWithLoss(-1);
     assertThat(userPreferences.clubPreference().get()).isEqualTo(newUserClub);
   }
 
   @Test public void testDraw() {
     MatchResultController controller = new MatchResultController(userPreferences);
-    MatchResult matchResult = new TestMatchResult() {
-      @Override public boolean isDraw() {
-        return true;
-      }
-    };
+    MatchResult matchResult = mock(TestMatchResult.class);
+    when(matchResult.isDraw()).thenReturn(true);
+    when(matchResult.homeGoals()).thenReturn(Collections.emptyList());
+    when(matchResult.awayGoals()).thenReturn(Collections.emptyList());
 
     controller.updateWithResult(matchResult);
 
@@ -106,6 +127,14 @@ public class MatchResultControllerTest {
 
       @Nullable @Override public Club loser() {
         return nonUserClub;
+      }
+
+      @Override public List<Goal> homeGoals() {
+        return Collections.singletonList(mock(Goal.class));
+      }
+
+      @Override public List<Goal> awayGoals() {
+        return Collections.emptyList();
       }
 
       @Override public boolean isDraw() {
@@ -128,6 +157,14 @@ public class MatchResultControllerTest {
         return userClub;
       }
 
+      @Override public List<Goal> homeGoals() {
+        return Collections.singletonList(mock(Goal.class));
+      }
+
+      @Override public List<Goal> awayGoals() {
+        return Collections.emptyList();
+      }
+
       @Override public boolean isDraw() {
         return false;
       }
@@ -142,6 +179,14 @@ public class MatchResultControllerTest {
     MatchResult matchResult = new TestMatchResult() {
       @Override public boolean isDraw() {
         return true;
+      }
+
+      @Override public List<Goal> homeGoals() {
+        return Collections.emptyList();
+      }
+
+      @Override public List<Goal> awayGoals() {
+        return Collections.emptyList();
       }
     };
     Long coinsBefore = userPreferences.coins();

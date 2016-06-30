@@ -2,6 +2,7 @@ package com.felipecsl.elifut.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.felipecsl.elifut.adapter.LeagueMatchesAdapter;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +49,8 @@ public class LeagueProgressFragment extends ElifutFragment {
         .subscribe(rounds -> {
           int roundsLeft = leagueDetails.rounds().size();
           if (roundsLeft < 0) {
-            throw new IllegalStateException("No rounds left");
+            showLeagueEndResults();
+            return;
           }
           LeagueRound round = rounds.get(0);
           String title = getActivity().getString(
@@ -55,6 +59,15 @@ public class LeagueProgressFragment extends ElifutFragment {
         }));
 
     return view;
+  }
+
+  private void showLeagueEndResults() {
+    Club club = userPreferences.clubPreference().get();
+    List<? extends Club> allClubs = leagueDetails.clubs();
+    new AlertDialog.Builder(getContext())
+        .setTitle("League ended")
+        .setMessage("You've finished in ")
+        .show();
   }
 
   private void initAdapter() {

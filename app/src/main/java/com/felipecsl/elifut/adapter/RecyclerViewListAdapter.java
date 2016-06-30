@@ -1,15 +1,15 @@
 package com.felipecsl.elifut.adapter;
 
+import com.google.common.collect.ImmutableList;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
-
-import com.google.common.collect.FluentIterable;
 
 import java.util.List;
 
 public abstract class RecyclerViewListAdapter<R, T extends BaseViewHolder<R>>
     extends RecyclerView.Adapter<T> {
-  protected List<R> data;
+  protected List<? extends R> data;
 
   protected RecyclerViewListAdapter(List<R> data) {
     this.data = data;
@@ -33,8 +33,8 @@ public abstract class RecyclerViewListAdapter<R, T extends BaseViewHolder<R>>
     return data.size();
   }
 
-  protected void setData(List<R> newData) {
-    data = FluentIterable.from(newData).toList();
+  public void setData(List<? extends R> newData) {
+    data = ImmutableList.copyOf(newData);
     notifyDataSetChanged();
   }
 }

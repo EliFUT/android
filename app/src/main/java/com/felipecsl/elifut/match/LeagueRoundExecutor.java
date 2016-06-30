@@ -1,15 +1,18 @@
 package com.felipecsl.elifut.match;
 
+import com.google.common.collect.FluentIterable;
+
 import android.util.Log;
 
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.Match;
 import com.felipecsl.elifut.models.MatchResult;
 import com.felipecsl.elifut.services.ElifutDataStore;
-import com.google.common.collect.FluentIterable;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /** Executes a league round by updating each club stats with their respective win, draw or loss. */
 public final class LeagueRoundExecutor {
@@ -28,20 +31,23 @@ public final class LeagueRoundExecutor {
   }
 
   private Iterable<? extends Club> filterClubsByResult(Match match) {
-    MatchResult matchResult = match.result();
+    MatchResult matchResult = checkNotNull(match.result(), "Match result can't be null");
+    int goalsDiff = Math.abs(matchResult.homeGoals().size() - matchResult.awayGoals().size());
+    Club home = match.home();
+    Club away = match.away();
+
     if (matchResult.isDraw()) {
-      return Arrays.asList(match.home().newWithDraw(), match.away().newWithDraw());
-    }
-    //noinspection ConstantConditions
-    if (matchResult.loser().nameEquals(match.home())) {
+      return Arrays.asList(home.newWithDraw(), away.newWithDraw());
+    } else if (checkNotNull(matchResult.loser()).nameEquals(home)) {
       // GOTCHA: We can't directly use matchResult.loser() and winner() here to update the stats
       // because those object don't really have the most up-to-date stats for each club. That
       // happens because we serialize MatchResult as a JSON to the database and that doesn't get to
       // reflect the changes to clubs on the end of each round. We should consider fixing that by
       // not storing MatchResult as a JSON but, instead, normalizing it as a regular object on the
       // database.
-      return Arrays.asList(match.home().newWithLoss(), match.away().newWithWin());
+      return Arrays.asList(home.newWithLoss(-goalsDiff), away.newWithWin(goalsDiff));
+    } else {
+      return Arrays.asList(away.newWithLoss(-goalsDiff), home.newWithWin(goalsDiff));
     }
-    return Arrays.asList(match.away().newWithLoss(), match.home().newWithWin());
   }
 }

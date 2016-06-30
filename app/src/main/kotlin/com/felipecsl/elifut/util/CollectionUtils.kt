@@ -1,5 +1,6 @@
 package com.felipecsl.elifut.util
 
+import com.google.common.collect.FluentIterable
 import org.apache.commons.math3.random.RandomGenerator
 import rx.Observable
 import java.util.*
@@ -8,7 +9,8 @@ import java.util.*
 fun <T> List<T>.shuffle() = apply { Collections.shuffle(this) }
 
 /** Sorts this list using the provided comparator */
-fun <T> List<T>.sort(comparator: Comparator<in T>) = apply { Collections.sort(this, comparator) }
+fun <T> List<T>.sort(comparator: Comparator<in T>) =
+    FluentIterable.from(this).toSortedList(comparator)
 
 fun <T> Observable<T>.toList() = toList().toBlocking().first()
 

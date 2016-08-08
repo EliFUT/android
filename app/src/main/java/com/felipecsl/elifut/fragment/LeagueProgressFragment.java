@@ -15,8 +15,6 @@ import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
@@ -63,10 +61,11 @@ public class LeagueProgressFragment extends ElifutFragment {
 
   private void showLeagueEndResults() {
     Club club = userPreferences.clubPreference().get();
-    List<? extends Club> allClubs = leagueDetails.clubs();
+    int position = leagueDetails.clubPosition(club);
     new AlertDialog.Builder(getContext())
         .setTitle("League ended")
-        .setMessage("You've finished in ")
+        .setMessage(getString(R.string.you_finished_position, String.valueOf(position)))
+        .setOnDismissListener(dialog -> getActivity().finish())
         .show();
   }
 

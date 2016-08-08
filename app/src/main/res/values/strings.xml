@@ -42,4 +42,5 @@
   <string name="winner">Winner!</string>
   <string name="defeated">Defeated.</string>
   <string name="draw">Draw.</string>
+  <string name="you_finished_position">You\'ve finished in position %1$s.</string>
 </resources>

@@ -2,7 +2,6 @@ package com.felipecsl.elifut;
 
 import com.felipecsl.elifut.adapter.ModelListAdapterFactory;
 import com.felipecsl.elifut.models.Nation;
-import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonReader;
 import com.squareup.moshi.JsonWriter;
@@ -22,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ModelListAdapterTest {
   private final Moshi moshi = new Moshi.Builder()
       .add(new ModelListAdapterFactory<>(Nation.class))
-      .add(new AutoValueMoshiAdapterFactory())
+      .add(AutoValueMoshiAdapterFactory.create())
       .build();
 
   @Test public void testModelListAdapter() throws IOException {

@@ -35,6 +35,7 @@ allprojects {
 }
 
 ext {
+  autoValueMoshiVersion = '0.4.0-rc2'
   supportLibVersion = '24.1.1'
   devApiEndpoint = "http://10.0.3.2:3000/"
   prodApiEndpoint = "http://104.131.134.208/"
@@ -43,11 +44,12 @@ ext {
   autoValueCursorVersion = '1.0.0-rc1'
   kotlinVersion = '1.0.3'
   moshiVersion = '1.2.0'
-  sqlbriteVersion = '0.6.3'
-  butterknifeVersion = '8.0.1'
-  okhttpVersion = '3.3.1'
+  sqlbriteVersion = '0.7.0'
+  butterknifeVersion = '8.2.1'
+  okhttpVersion = '3.4.1'
   icepickVersion = '3.2.0'
   guavaVersion = '19.0'
-  daggerVersion = '2.4'
+  daggerVersion = '2.6'
   stethoVersion = '1.3.1'
+  robolectricVersion = '3.1.2'
 }

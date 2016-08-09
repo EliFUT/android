@@ -22,7 +22,6 @@ import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.ClubDataStore;
 import com.felipecsl.elifut.services.ElifutDataStore;
 import com.felipecsl.elifut.services.LeagueRoundGenerator;
-import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.Moshi;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -53,7 +52,7 @@ public class DataModule {
         .add(new ModelListAdapterFactory<>(Nation.class))
         .add(new ModelListAdapterFactory<>(Club.class))
         .add(new ModelListAdapterFactory<>(Player.class))
-        .add(new AutoValueMoshiAdapterFactory())
+        .add(AutoValueMoshiAdapterFactory.create())
         .build();
   }
 

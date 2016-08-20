@@ -1,12 +1,12 @@
 package com.felipecsl.elifut;
 
 import org.junit.runners.model.InitializationError;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.manifest.AndroidManifest;
 import org.robolectric.res.Fs;
 
-public class ElifutTestRunner extends RobolectricGradleTestRunner {
+public class ElifutTestRunner extends RobolectricTestRunner {
   public static final String MANIFEST_PATH = "../app/src/main/AndroidManifest.xml";
 
   public ElifutTestRunner(Class<?> klass) throws InitializationError {

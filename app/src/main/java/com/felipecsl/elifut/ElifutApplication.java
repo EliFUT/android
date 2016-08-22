@@ -1,11 +1,19 @@
 package com.felipecsl.elifut;
 
-import android.support.multidex.MultiDexApplication;
+import android.app.Application;
+import android.content.Context;
+
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 
-public class ElifutApplication extends MultiDexApplication {
+public class ElifutApplication extends Application {
   protected ElifutComponent component;
+
+  @Override protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MultiDex.installMultiDex(this);
+  }
 
   @Override public void onCreate() {
     super.onCreate();

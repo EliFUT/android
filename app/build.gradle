@@ -26,7 +26,6 @@ android {
     targetSdkVersion 24
     versionCode 1
     versionName "1.0"
-    multiDexEnabled true
     manifestPlaceholders = [fabricApiKey: getFabricApiKey()]
   }
   sourceSets {
@@ -51,11 +50,13 @@ android {
 
   buildTypes {
     debug {
+      multiDexEnabled true
       buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
     }
     release {
       buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
       minifyEnabled true
+      multiDexEnabled false // Assume that Proguard will strip out a huge bunch of classes and methods.
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
       signingConfig signingConfigs.release
     }
@@ -112,10 +113,10 @@ dependencies {
   compile "frankiesardo:icepick:$icepickVersion"
   debugCompile "com.facebook.stetho:stetho-okhttp3:$stethoVersion"
   debugCompile "com.facebook.stetho:stetho-js-rhino:$stethoVersion"
+  debugCompile 'com.android.support:multidex:1.0.1'
   compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
   compile "com.google.guava:guava:$guavaVersion"
   compile 'org.apache.commons:commons-math3:3.6.1'
-  compile 'com.android.support:multidex:1.0.1'
   compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.2'
   compile "com.squareup.sqlbrite:sqlbrite:$sqlbriteVersion"
   compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.3"

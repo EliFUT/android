@@ -14,13 +14,13 @@ def getFabricApiKey() {
 }
 
 android {
-  compileSdkVersion 24
-  buildToolsVersion '24.0.2'
+  compileSdkVersion 25
+  buildToolsVersion '25.0.0'
 
   defaultConfig {
     applicationId "com.felipecsl.elifut"
     minSdkVersion minSdk()
-    targetSdkVersion 24
+    targetSdkVersion 25
     versionCode 1
     versionName "1.0"
     multiDexEnabled true
@@ -48,10 +48,10 @@ android {
 
   buildTypes {
     debug {
-      buildConfigField "String", "API_ENDPOINT", "\"$devApiEndpoint\""
+      buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
     }
     release {
-      buildConfigField "String", "API_ENDPOINT", "\"$devApiEndpoint\""
+      buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
       signingConfig signingConfigs.release

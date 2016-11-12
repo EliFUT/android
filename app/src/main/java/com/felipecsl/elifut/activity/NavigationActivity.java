@@ -1,10 +1,8 @@
-package com.felipecsl.elifut.activitiy;
+package com.felipecsl.elifut.activity;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -16,6 +14,7 @@ import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -52,6 +51,7 @@ import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -64,11 +64,11 @@ public abstract class NavigationActivity extends ElifutActivity
   @Inject LeagueRoundExecutor roundExecutor;
   @Inject AppInitializer appInitializer;
 
-  @BindView(R.id.circular_reveal_overlay) View circularRevealOverlay;
+  @Nullable @BindView(R.id.circular_reveal_overlay) View circularRevealOverlay;
   @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
   @BindView(R.id.nav_view) NavigationView navigationView;
   @BindView(R.id.toolbar) Toolbar toolbar;
-  @BindView(R.id.fab) FloatingActionButton fab;
+  @Nullable @BindView(R.id.fab) FloatingActionButton fab;
   @BindDimen(R.dimen.fab_margin) int fabMargin;
 
   private Subscription coinsSubscription;
@@ -109,10 +109,6 @@ public abstract class NavigationActivity extends ElifutActivity
   };
 
   private final NavigationHeaderViewHolder headerViewHolder = new NavigationHeaderViewHolder();
-
-  public static Intent newIntent(Context context) {
-    return new Intent(context, LeagueDetailsActivity.class);
-  }
 
   @LayoutRes protected abstract int layoutId();
 
@@ -197,21 +193,29 @@ public abstract class NavigationActivity extends ElifutActivity
   @Override public boolean onNavigationItemSelected(MenuItem item) {
     int id = item.getItemId();
 
-    if (id == R.id.nav_team) {
-      Club club = userPreferences.club();
-      startActivity(CurrentTeamDetailsActivity.newIntent(this, club));
-      finish();
-    } else if (id == R.id.nav_league) {
-      startActivity(LeagueDetailsActivity.newIntent(this));
-      finish();
+    switch (id) {
+      case R.id.nav_team:
+        Club club = userPreferences.club();
+        startActivity(CurrentTeamDetailsActivity.newIntent(this, club));
+        finish();
+        break;
+      case R.id.nav_league:
+        startActivity(LeagueDetailsActivity.newIntent(this));
+        finish();
+        break;
+      case R.id.nav_online_friendly:
+        startActivity(OnlineFriendlyActivity.Factory.newIntent(this));
+        finish();
+        break;
     }
 
     drawerLayout.closeDrawer(GravityCompat.START);
     return true;
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP) @OnClick(R.id.fab) public void onClickFab() {
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP) @Optional @OnClick(R.id.fab) public void onClickFab() {
     LeagueRound round = leagueDetails.executeRound(leagueDetails.nextRound());
+    //noinspection ConstantConditions
     circularRevealOverlay.setVisibility(View.VISIBLE);
     int distFromEdge = fabMargin + (fab.getWidth() / 2);
     int cx = drawerLayout.getWidth() - distFromEdge;
@@ -234,6 +238,7 @@ public abstract class NavigationActivity extends ElifutActivity
 
   private void startMatchProgressActivity(LeagueRound round) {
     startActivity(MatchProgressActivity.newIntent(NavigationActivity.this, round));
+    //noinspection ConstantConditions
     circularRevealOverlay.postDelayed(() -> circularRevealOverlay.setVisibility(View.GONE), 1000);
     Util.defer(() -> roundExecutor.execute(round.matches()));
   }

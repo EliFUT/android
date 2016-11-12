@@ -1,4 +1,4 @@
-package com.felipecsl.elifut.activitiy;
+package com.felipecsl.elifut.activity;
 
 import android.content.Context;
 import android.content.Intent;

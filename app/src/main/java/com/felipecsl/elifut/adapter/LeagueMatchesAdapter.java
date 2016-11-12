@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
-import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
+import com.felipecsl.elifut.activity.TeamDetailsActivity;
 import com.felipecsl.elifut.adapter.LeagueMatchesAdapter.ItemViewHolder;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.LeagueRound;

@@ -1,4 +1,4 @@
-package com.felipecsl.elifut.activitiy;
+package com.felipecsl.elifut.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -85,8 +85,8 @@ public class PlayerDetailsActivity extends ElifutActivity {
     return true;
   }
 
-  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
+  @Override protected void onActivityResult(int requestCode, int responseCode, Intent data) {
+    super.onActivityResult(requestCode, responseCode, data);
     if (requestCode == REQUEST_REPLACE) {
       finish();
     }

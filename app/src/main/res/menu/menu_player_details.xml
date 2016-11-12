@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".activitiy.CurrentTeamDetailsActivity">
+      tools:context=".activity.CurrentTeamDetailsActivity">
   <item
     android:id="@+id/action_replace"
     android:orderInCategory="100"

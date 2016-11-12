@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
-import com.felipecsl.elifut.activitiy.SimpleTarget;
-import com.felipecsl.elifut.activitiy.TabbedActivity;
+import com.felipecsl.elifut.activity.SimpleTarget;
+import com.felipecsl.elifut.activity.TabbedActivity;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.models.Nation;

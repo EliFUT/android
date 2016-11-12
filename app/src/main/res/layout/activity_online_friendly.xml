@@ -8,7 +8,7 @@
   >
 
   <include
-    layout="@layout/app_bar_team_details"
+    layout="@layout/app_bar_online_friendly"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     />

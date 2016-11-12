@@ -1,4 +1,4 @@
-package com.felipecsl.elifut.activitiy;
+package com.felipecsl.elifut.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +25,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class CurrentTeamDetailsActivity extends NavigationActivity implements TabbedActivity {
   private static final String EXTRA_CLUB = "EXTRA_CLUB";
-  private static final String TAG = "CurrentTeamDetailsActv";
 
   @BindView(R.id.toolbar) Toolbar toolbar;
   @BindView(R.id.viewpager) ViewPager viewPager;

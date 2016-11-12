@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.felipecsl.elifut.R;
-import com.felipecsl.elifut.activitiy.LeagueDetailsActivity;
-import com.felipecsl.elifut.activitiy.SimpleTarget;
+import com.felipecsl.elifut.activity.LeagueDetailsActivity;
+import com.felipecsl.elifut.activity.SimpleTarget;
 import com.felipecsl.elifut.adapter.ClubsAdapter;
 import com.felipecsl.elifut.models.League;
 import com.felipecsl.elifut.widget.DividerItemDecoration;

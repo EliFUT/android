@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.felipecsl.elifut.R;
-import com.felipecsl.elifut.activitiy.PlayerDetailsActivity;
+import com.felipecsl.elifut.activity.PlayerDetailsActivity;
 import com.felipecsl.elifut.adapter.SmallPlayerViewHolder;
 import com.felipecsl.elifut.models.Club;
 import com.felipecsl.elifut.models.ClubSquad;

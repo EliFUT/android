@@ -6,7 +6,7 @@
   android:layout_height="match_parent"
   android:background="@drawable/player_card_background"
   android:fitsSystemWindows="true"
-  tools:context="com.felipecsl.elifut.activitiy.TeamPlayersActivity">
+  tools:context="com.felipecsl.elifut.activity.TeamPlayersActivity">
 
   <include
     layout="@layout/app_bar_team_players_activity"

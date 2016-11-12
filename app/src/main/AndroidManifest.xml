@@ -12,36 +12,46 @@
     android:label="@string/app_name"
     android:theme="@style/AppTheme">
     <activity
-      android:name=".activitiy.MainActivity"
+      android:name=".activity.MainActivity"
       android:label="@string/title_activity_main">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
+
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
     <activity
-      android:name=".activitiy.CurrentTeamDetailsActivity"
+      android:name=".activity.CurrentTeamDetailsActivity"
       android:theme="@style/AppTheme.WithTransition" />
     <activity
-      android:name=".activitiy.LeagueDetailsActivity"
+      android:name=".activity.LeagueDetailsActivity"
       android:theme="@style/AppTheme.WithTransition" />
     <activity
-      android:name=".activitiy.MatchProgressActivity"
+      android:name=".activity.MatchProgressActivity"
       android:label="@string/match_progress" />
     <activity
-      android:name=".activitiy.TeamPlayersActivity"
+      android:name=".activity.TeamPlayersActivity"
       android:label="@string/select_a_player" />
     <activity
-      android:name=".activitiy.TeamDetailsActivity"
+      android:name=".activity.TeamDetailsActivity"
       android:theme="@style/AppTheme.WithTransition" />
-    <activity android:name=".activitiy.LeagueRoundResultsActivity" />
+    <activity android:name=".activity.LeagueRoundResultsActivity" />
     <activity
-      android:name=".activitiy.PlayerDetailsActivity"
+      android:name=".activity.PlayerDetailsActivity"
       android:label="@string/player_details"
       android:theme="@style/AppTheme.WithTransition" />
+
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="${fabricApiKey}" />
+    <meta-data
+      android:name="com.google.android.gms.games.APP_ID"
+      android:value="@string/app_id" />
+    <meta-data
+      android:name="com.google.android.gms.version"
+      android:value="@integer/google_play_services_version" />
+
+    <activity android:name=".activity.OnlineFriendlyActivity"></activity>
   </application>
 
 </manifest>

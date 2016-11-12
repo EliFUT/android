@@ -1,5 +1,7 @@
-package com.felipecsl.elifut.activitiy;
+package com.felipecsl.elifut.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -27,6 +29,10 @@ public class LeagueDetailsActivity extends NavigationActivity {
   @BindView(R.id.fab) FloatingActionButton fab;
 
   @State League league;
+
+  public static Intent newIntent(Context context) {
+    return new Intent(context, LeagueDetailsActivity.class);
+  }
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

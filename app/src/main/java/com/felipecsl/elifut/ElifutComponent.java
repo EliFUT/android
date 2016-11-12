@@ -2,12 +2,12 @@ package com.felipecsl.elifut;
 
 import android.content.Context;
 
-import com.felipecsl.elifut.activitiy.CurrentTeamDetailsActivity;
-import com.felipecsl.elifut.activitiy.ElifutActivity;
-import com.felipecsl.elifut.activitiy.MainActivity;
-import com.felipecsl.elifut.activitiy.MatchProgressActivity;
-import com.felipecsl.elifut.activitiy.NavigationActivity;
-import com.felipecsl.elifut.activitiy.TeamPlayersActivity;
+import com.felipecsl.elifut.activity.CurrentTeamDetailsActivity;
+import com.felipecsl.elifut.activity.ElifutActivity;
+import com.felipecsl.elifut.activity.MainActivity;
+import com.felipecsl.elifut.activity.MatchProgressActivity;
+import com.felipecsl.elifut.activity.NavigationActivity;
+import com.felipecsl.elifut.activity.TeamPlayersActivity;
 import com.felipecsl.elifut.fragment.ElifutFragment;
 import com.felipecsl.elifut.fragment.LeagueProgressFragment;
 import com.felipecsl.elifut.fragment.LeagueStandingsFragment;

@@ -1,4 +1,4 @@
-package com.felipecsl.elifut.activitiy;
+package com.felipecsl.elifut.activity;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -26,7 +26,7 @@ import icepick.Icepick;
 import retrofit2.Response;
 import rx.Observable;
 
-public abstract class ElifutActivity extends AppCompatActivity {
+public abstract class ElifutActivity extends AppCompatActivity  {
   @Inject ElifutService service;
   @Inject UserPreferences userPreferences;
   @Inject LeagueDetails leagueDetails;

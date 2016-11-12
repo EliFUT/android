@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.felipecsl.elifut.R;
-import com.felipecsl.elifut.activitiy.TeamDetailsActivity;
+import com.felipecsl.elifut.activity.TeamDetailsActivity;
 import com.felipecsl.elifut.adapter.ClubsAdapter.HeaderViewHolder;
 import com.felipecsl.elifut.adapter.ClubsAdapter.ViewHolder;
 import com.felipecsl.elifut.models.Club;

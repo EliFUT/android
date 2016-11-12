@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_id">651857163703</string>
+
+  <string name="achievement_newbie">CgkIt-vbrfwSEAIQAg</string>
+  <string name="achievement_head_start">CgkIt-vbrfwSEAIQAw</string>
+  <string name="achievement_going_pro">CgkIt-vbrfwSEAIQBA</string>
+  <string name="achievement_i_got_this">CgkIt-vbrfwSEAIQBQ</string>
+  <string name="achievement_legacy_in_the_making">CgkIt-vbrfwSEAIQBg</string>
+</resources>

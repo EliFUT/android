@@ -1,8 +1,6 @@
 <resources>
   <string name="app_name">EliFUT Android</string>
   <string name="title_activity_main">EliFUT</string>
-
-  <string name="action_settings">Settings</string>
   <string name="fourth_division">4th Division</string>
   <string name="team_info">Team Info</string>
   <string name="manager_name">Manager: %1$s</string>
@@ -16,8 +14,6 @@
   <string name="end_first_half">End of first half.</string>
   <string name="end_match">End of match.</string>
   <string name="match_progress">Match progress</string>
-  <string name="title_activity_home">HomeActivity</string>
-
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
   <string name="my_team">My team</string>
@@ -43,4 +39,14 @@
   <string name="defeated">Defeated.</string>
   <string name="draw">Draw.</string>
   <string name="you_finished_position">You\'ve finished in position %1$s.</string>
+  <string name="signin_other_error">There was an issue with sign in. Please try again later.</string>
+  <string name="signed_out_greeting">Hello, anonymous user (not signed in)!</string>
+  <string name="your_progress_will_be_uploaded">Your existing achievements and score will be uploaded shortly.</string>
+  <string name="sign_in_failed">Failed to sign in. Please check your network connection and try again.</string>
+  <string name="app_misconfigured">The application is incorrectly configured. Check that the package name and signing certificate match the client ID created in Developer Console. Also, if the application is not yet published, check that the account you are trying to sign in with is listed as a tester account. See logs for more information.</string>
+  <string name="license_failed">License check failed.</string>
+  <string name="unknown_error">Unknown error.</string>
+  <string name="online_friendly">Online friendly match</string>
+  <string name="game_problem">An error occurred while starting the game. Please try again.</string>
+  <string name="is_inviting_you">is challenging you to a game!</string>
 </resources>

@@ -5,7 +5,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.5"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.3"
     classpath 'com.android.tools.build:gradle:2.2.2'
     classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
     classpath 'me.tatarka:gradle-retrolambda:3.2.5'
@@ -41,7 +41,7 @@ ext {
   retrofitVersion = "2.1.0"
   playServicesVersion = '9.8.0'
   autoValueCursorVersion = '1.0.0-rc1'
-  kotlinVersion = '1.0.5'
+  kotlinVersion = '1.0.3'
   moshiVersion = '1.2.0'
   sqlbriteVersion = '0.7.0'
   butterknifeVersion = '8.2.1'

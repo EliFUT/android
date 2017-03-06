@@ -73,10 +73,7 @@ public abstract class ClubStats implements Parcelable {
     public abstract ClubStats build();
   }
 
-  public Builder toBuilder() {
-    // https://github.com/google/auto/issues/281
-    return new AutoValue_ClubStats.Builder(this);
-  }
+  public abstract Builder toBuilder();
 
   public static JsonAdapter<ClubStats> jsonAdapter(Moshi moshi) {
     return new AutoValue_ClubStats.MoshiJsonAdapter(moshi);

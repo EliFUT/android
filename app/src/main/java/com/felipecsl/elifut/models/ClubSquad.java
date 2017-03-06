@@ -85,8 +85,5 @@ public abstract class ClubSquad implements Persistable {
     return new AutoValue_ClubSquad.Builder();
   }
 
-  public Builder toBuilder() {
-    // https://github.com/google/auto/issues/281
-    return new AutoValue_ClubSquad.Builder(this);
-  }
+  public abstract Builder toBuilder();
 }

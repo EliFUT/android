@@ -96,10 +96,7 @@ public abstract class Club extends Model implements Persistable {
   }
   // @formatter:on
 
-  public Builder toBuilder() {
-    // https://github.com/google/auto/issues/281
-    return new AutoValue_Club.Builder(this);
-  }
+  public abstract Builder toBuilder();
 
   public Club newWithWin(int goalsDifferential) {
     if (goalsDifferential <= 0) {

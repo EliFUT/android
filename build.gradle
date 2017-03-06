@@ -5,10 +5,10 @@ buildscript {
   }
 
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.3"
-    classpath 'com.android.tools.build:gradle:2.2.2'
-    classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
-    classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.0"
+    classpath 'com.android.tools.build:gradle:2.3.0'
+    classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.2'
+    classpath 'me.tatarka:gradle-retrolambda:3.6.0'
     classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
     classpath 'com.google.gms:google-services:3.0.0'
@@ -34,21 +34,25 @@ allprojects {
 }
 
 ext {
-  autoValueMoshiVersion = '0.4.0-rc2'
-  supportLibVersion = '25.0.0'
+  autoValueMoshiVersion = '0.4.3'
+  supportLibVersion = '25.2.0'
   devApiEndpoint = "http://10.0.3.2:3000/"
   prodApiEndpoint = "http://elifut.com/"
   retrofitVersion = "2.1.0"
-  playServicesVersion = '9.8.0'
-  autoValueCursorVersion = '1.0.0-rc1'
-  kotlinVersion = '1.0.3'
-  moshiVersion = '1.2.0'
+  playServicesVersion = '10.2.0'
+  autoValueCursorVersion = '1.0.0'
+  kotlinVersion = '1.1.0'
+  moshiVersion = '1.4.0'
   sqlbriteVersion = '0.7.0'
-  butterknifeVersion = '8.2.1'
+  butterknifeVersion = '8.5.1'
   okhttpVersion = '3.4.1'
   icepickVersion = '3.2.0'
-  guavaVersion = '19.0'
-  daggerVersion = '2.6'
-  stethoVersion = '1.3.1'
-  robolectricVersion = '3.1.4'
+  autoValueParcelVersion = '0.2.5'
+  rxJavaVersion = '1.2.7'
+  guavaVersion = '20.0'
+  daggerVersion = '2.8'
+  stethoVersion = '1.4.2'
+  robolectricVersion = '3.3'
+  autoValueVersion = '1.4-rc2'
+  crashlyticsVersion = '2.6.6'
 }

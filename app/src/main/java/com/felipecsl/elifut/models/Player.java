@@ -80,10 +80,7 @@ public abstract class Player extends Model implements Persistable {
     return new AutoValue_Player.Builder();
   }
 
-  public Builder toBuilder() {
-    // https://github.com/google/auto/issues/281
-    return new AutoValue_Player.Builder(this);
-  }
+  public abstract Builder toBuilder();
 
   public static Player create(Cursor cursor) {
     return AutoValue_Player.createFromCursor(cursor);

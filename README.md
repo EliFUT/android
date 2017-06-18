@@ -56,7 +56,6 @@ development API by setting the `API_ENPOINT` constant in the build.gradle to `$d
 `google-services.json` file for Google Analytics and replace the placeholder in the `app/src/release` directory.
 
 In order to build a signed release app, you'll also need to define a few environment variables:
-* `ELIFUT_CERT_PATH`: path to your release signing certificate
 * `ELIFUT_CERT_PASSWORD`: path to your certificate password
 * `ELIFUT_FABRIC_API_KEY`: fabric.io API key
 

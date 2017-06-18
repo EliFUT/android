@@ -49,9 +49,9 @@ public class DataModule {
 
   @Provides @Singleton Moshi provideMoshi() {
     return new Moshi.Builder()
-        .add(new ModelListAdapterFactory<>(Nation.class))
-        .add(new ModelListAdapterFactory<>(Club.class))
-        .add(new ModelListAdapterFactory<>(Player.class))
+//        .add(new ModelListAdapterFactory<>(Nation.class))
+//        .add(new ModelListAdapterFactory<>(Club.class))
+//        .add(new ModelListAdapterFactory<>(Player.class))
         .add(AutoValueMoshiAdapterFactory.create())
         .build();
   }

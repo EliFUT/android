@@ -5,8 +5,8 @@ buildscript {
   }
 
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.0"
-    classpath 'com.android.tools.build:gradle:2.3.0'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.2-4"
+    classpath 'com.android.tools.build:gradle:2.3.2'
     classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.2'
     classpath 'me.tatarka:gradle-retrolambda:3.6.0'
     classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
@@ -36,12 +36,12 @@ allprojects {
 ext {
   autoValueMoshiVersion = '0.4.3'
   supportLibVersion = '25.2.0'
-  devApiEndpoint = "http://10.0.3.2:3000/"
+  devApiEndpoint = "http://10.0.2.2:3000/"
   prodApiEndpoint = "http://elifut.com/"
   retrofitVersion = "2.1.0"
-  playServicesVersion = '10.2.0'
+  playServicesVersion = '11.0.1'
   autoValueCursorVersion = '1.0.0'
-  kotlinVersion = '1.1.0'
+  kotlinVersion = '1.1.2-4'
   moshiVersion = '1.4.0'
   sqlbriteVersion = '0.7.0'
   butterknifeVersion = '8.5.1'
@@ -52,7 +52,7 @@ ext {
   guavaVersion = '20.0'
   daggerVersion = '2.8'
   stethoVersion = '1.4.2'
-  robolectricVersion = '3.3'
-  autoValueVersion = '1.4-rc2'
+  robolectricVersion = '3.3.2'
+  autoValueVersion = '1.4'
   crashlyticsVersion = '2.6.6'
 }

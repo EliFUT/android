@@ -21,7 +21,8 @@ public final class ModelListAdapterFactory<T extends Model> implements JsonAdapt
   public JsonAdapter<?> create(Type type, Set<? extends Annotation> annotations, Moshi moshi) {
     if (type.equals(Types.newParameterizedType(List.class, this.type))) {
       return new ModelListAdapter<>(this.type, moshi);
+    } else {
+      return null;
     }
-    return null;
   }
 }

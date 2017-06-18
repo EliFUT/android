@@ -8,13 +8,13 @@ apply from: './coverage.gradle'
 apply from: './minSdk.gradle'
 
 def getFabricApiKey() {
-  String env = System.getenv('ELIFUT_FABRIC_API_KEY');
+  String env = System.getenv('ELIFUT_FABRIC_API_KEY')
   return env != null ? env : ELIFUT_FABRIC_API_KEY
 }
 
 android {
   compileSdkVersion 25
-  buildToolsVersion '25.0.0'
+  buildToolsVersion '25.0.3'
 
   defaultConfig {
     applicationId "com.felipecsl.elifut"
@@ -30,8 +30,7 @@ android {
   signingConfigs {
     release {
       if (!System.getenv('CI')) {
-        storeFile file("elifut.keystore")
-        storeFile file(ELIFUT_CERT_PATH)
+        storeFile file("../elifut.jks")
         storePassword ELIFUT_CERT_PASSWORD
         keyAlias "elifut"
         keyPassword ELIFUT_CERT_PASSWORD
@@ -47,10 +46,10 @@ android {
   buildTypes {
     debug {
       multiDexEnabled true
-      buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
+      buildConfigField "String", "API_ENDPOINT", "\"$devApiEndpoint\""
     }
     release {
-      buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
+      buildConfigField "String", "API_ENDPOINT", "\"$devApiEndpoint\""
       minifyEnabled true
       multiDexEnabled false // Assume that Proguard will strip out a huge bunch of classes and methods.
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

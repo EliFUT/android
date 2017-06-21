@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.getkeepsafe.dexcount'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-android'
 apply from: './coverage.gradle'
 apply from: './minSdk.gradle'
 
-def getFabricApiKey() {
+String getFabricApiKey() {
   String env = System.getenv('ELIFUT_FABRIC_API_KEY')
   return env != null ? env : ELIFUT_FABRIC_API_KEY
 }
@@ -96,7 +95,7 @@ dependencies {
   compile 'org.apache.commons:commons-io:1.3.2'
   compile 'com.squareup.picasso:picasso:2.6.0-SNAPSHOT'
   compile "io.reactivex:rxjava:$rxJavaVersion"
-  compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+  compile "com.jakewharton.rxbinding:rxbinding:$rxBindingVersion"
   compile 'io.reactivex:rxandroid:1.2.1'
   compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
   compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -121,13 +120,13 @@ dependencies {
     transitive = true;
   }
 
-  provided "frankiesardo:icepick-processor:$icepickVersion"
+  annotationProcessor "frankiesardo:icepick-processor:$icepickVersion"
   provided 'org.glassfish:javax.annotation:10.0-b28'
   provided "com.google.auto.value:auto-value:$autoValueVersion"
   provided "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
 
   annotationProcessor "com.google.auto.value:auto-value:$autoValueVersion"
-  annotationProcessor 'com.squareup:javapoet:1.7.0'
+  annotationProcessor "com.squareup:javapoet:$javapoetVersion"
   annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
   annotationProcessor "com.ryanharter.auto.value:auto-value-parcel:$autoValueParcelVersion"
   annotationProcessor "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
@@ -160,6 +159,8 @@ dependencies {
     exclude module: 'wagon-http-lightweight'
     exclude module: 'wagon-provider-api'
   }
+
+  androidTestCompile 'com.google.code.findbugs:jsr305:2.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

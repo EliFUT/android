@@ -7,8 +7,15 @@ apply from: './coverage.gradle'
 apply from: './minSdk.gradle'
 
 String getFabricApiKey() {
-  String env = System.getenv('ELIFUT_FABRIC_API_KEY')
-  return env != null ? env : ELIFUT_FABRIC_API_KEY
+  String keyName = 'ELIFUT_FABRIC_API_KEY'
+  String env = System.getenv(keyName)
+  if (env != null) {
+    return env
+  } else if (project.hasProperty(keyName)) {
+    return project.property(keyName)
+  } else {
+    return "fabric-api-key-not-set"
+  }
 }
 
 android {

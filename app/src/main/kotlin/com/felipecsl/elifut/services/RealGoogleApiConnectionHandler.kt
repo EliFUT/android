@@ -1,7 +1,6 @@
 package com.felipecsl.elifut.services
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.felipecsl.elifut.R
@@ -14,24 +13,22 @@ import com.google.android.gms.games.Player
 import rx.Single
 import rx.subjects.PublishSubject
 
-class GoogleApiConnectionHandler(private val activity: Activity) :
-    GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-  private val googleApiClient: GoogleApiClient
+class RealGoogleApiConnectionHandler(private val activity: Activity) :
+    GoogleApiConnectionHandler,
+    GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener {
+  // Create the Google API Client with access to Games
+  private val googleApiClient: GoogleApiClient = GoogleApiClient.Builder(activity)
+      .addConnectionCallbacks(this)
+      .addOnConnectionFailedListener(this)
+      .addApi(Games.API)
+      .addScope(Games.SCOPE_GAMES)
+      .build()
   private var resolvingConnectionFailure = false
   private var signInClicked: Boolean = false
   private var autoStartSignInFlow = true
   private val resultSubject: PublishSubject<GoogleApiConnectionResult> =
       PublishSubject.create<GoogleApiConnectionResult>()
-
-  init {
-    // Create the Google API Client with access to Games
-    googleApiClient = GoogleApiClient.Builder(activity)
-        .addConnectionCallbacks(this)
-        .addOnConnectionFailedListener(this)
-        .addApi(Games.API)
-        .addScope(Games.SCOPE_GAMES)
-        .build()
-  }
 
   override fun onConnected(connectionHint: Bundle?) {
     Log.d(TAG, "onConnected(): connected to Google APIs")
@@ -45,19 +42,19 @@ class GoogleApiConnectionHandler(private val activity: Activity) :
     googleApiClient.connect()
   }
 
-  fun onStart() {
+  override fun onStart() {
     Log.d(TAG, "onStart(): connecting")
     googleApiClient.connect()
   }
 
-  fun onStop() {
+  override fun onStop() {
     Log.d(TAG, "onStop(): disconnecting")
     if (googleApiClient.isConnected) {
       googleApiClient.disconnect()
     }
   }
 
-  fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+  override fun onActivityResult(requestCode: Int, resultCode: Int) {
     if (requestCode == RC_SIGN_IN) {
       signInClicked = false
       resolvingConnectionFailure = false
@@ -70,11 +67,11 @@ class GoogleApiConnectionHandler(private val activity: Activity) :
     }
   }
 
-  fun result(): Single<GoogleApiConnectionResult> {
+  override fun result(): Single<GoogleApiConnectionResult> {
     return resultSubject.toSingle()
   }
 
-  fun connect() {
+  override fun connect() {
     signInClicked = true
     googleApiClient.connect()
   }

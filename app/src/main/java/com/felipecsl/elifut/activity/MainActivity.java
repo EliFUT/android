@@ -1,8 +1,5 @@
 package com.felipecsl.elifut.activity;
 
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.games.Player;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +23,9 @@ import com.felipecsl.elifut.models.GoogleApiConnectionResult;
 import com.felipecsl.elifut.models.Nation;
 import com.felipecsl.elifut.preferences.UserPreferences;
 import com.felipecsl.elifut.services.GoogleApiConnectionHandler;
+import com.felipecsl.elifut.services.GoogleApiConnectionHandlerFactory;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.games.Player;
 
 import java.util.List;
 
@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import kotlin.NotImplementedError;
 import rx.Observer;
 import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -69,7 +70,7 @@ public class MainActivity extends ElifutActivity {
           signInButton.setVisibility(View.GONE);
           Player player = connectionResult.getPlayer();
           if (player == null) {
-            Log.w(TAG, "mGamesClient.getCurrentPlayer() is NULL!");
+            Log.w(TAG, "gamesClient.getCurrentPlayer() is NULL!");
             displayName = "???";
           } else {
             displayName = player.getDisplayName();
@@ -78,7 +79,9 @@ public class MainActivity extends ElifutActivity {
         }
 
         @Override public void onError(Throwable error) {
-          Snackbar.make(mainContent, error.getMessage(), Snackbar.LENGTH_LONG).show();
+          if (!(error instanceof NotImplementedError)) {
+            Snackbar.make(mainContent, error.getMessage(), Snackbar.LENGTH_LONG).show();
+          }
         }
       };
 
@@ -88,10 +91,8 @@ public class MainActivity extends ElifutActivity {
     ButterKnife.bind(this);
     daggerComponent().inject(this);
     setSupportActionBar(toolbar);
-
-    googleApiConnectionHandler = new GoogleApiConnectionHandler(this);
+    googleApiConnectionHandler = GoogleApiConnectionHandlerFactory.Companion.newInstance(this);
     subscriptions.add(googleApiConnectionHandler.result().subscribe(playerSubscriber));
-
     Nation nation = userPreferences.nationPreference().get();
 
     if (nation != null) {
@@ -119,7 +120,7 @@ public class MainActivity extends ElifutActivity {
 
   @Override protected void onActivityResult(int requestCode, int responseCode, Intent data) {
     super.onActivityResult(requestCode, responseCode, data);
-    googleApiConnectionHandler.onActivityResult(requestCode, responseCode, data);
+    googleApiConnectionHandler.onActivityResult(requestCode, responseCode);
   }
 
   @Override protected void onDestroy() {

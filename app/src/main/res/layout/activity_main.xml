@@ -1,7 +1,6 @@
-<android.support.design.widget.CoordinatorLayout
-  android:id="@+id/main_content"
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/main_content"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fitsSystemWindows="true">
@@ -28,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_collapseMode="pin"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -47,6 +46,7 @@
 
       <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -57,12 +57,12 @@
         android:layout_marginTop="30dp"
         android:text="@string/select_country"
         android:textColor="#333333"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
       <Spinner
         android:id="@+id/countries_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -74,6 +74,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="end|bottom"
     android:layout_margin="@dimen/fab_margin"
-    android:src="@drawable/ic_done"/>
+    android:src="@drawable/ic_done" />
 
 </android.support.design.widget.CoordinatorLayout>

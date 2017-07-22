@@ -94,14 +94,14 @@ public abstract class NavigationActivity extends ElifutActivity
         ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
           @Override public Shader resize(int width, int height) {
             return new LinearGradient(0, 0, width, height,
-                new int[] { palette.getDarkVibrantColor(0xFF81C784),
-                    palette.getLightVibrantColor(0xFF2E7D32) }, null, Shader.TileMode.CLAMP);
+                new int[]{palette.getDarkVibrantColor(0xFF81C784),
+                    palette.getLightVibrantColor(0xFF2E7D32)}, null, Shader.TileMode.CLAMP);
           }
         };
         PaintDrawable paintDrawable = new PaintDrawable();
         paintDrawable.setShape(new RectShape());
         paintDrawable.setShaderFactory(shaderFactory);
-        LayerDrawable background = new LayerDrawable(new Drawable[] { paintDrawable });
+        LayerDrawable background = new LayerDrawable(new Drawable[]{paintDrawable});
         //noinspection deprecation
         headerViewHolder.navHeaderLayout.setBackgroundDrawable(background);
       });
@@ -118,23 +118,17 @@ public abstract class NavigationActivity extends ElifutActivity
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);
     daggerComponent().inject(this);
-
     Club club = checkNotNull(userPreferences.clubPreference().get());
-
     ActionBarDrawerToggle toggle =
         new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close);
     drawerLayout.addDrawerListener(toggle);
     toggle.syncState();
-
     navigationView.setNavigationItemSelectedListener(this);
-
     ButterKnife.bind(headerViewHolder, navigationView.getHeaderView(0));
-
     headerViewHolder.txtCoachName.setText(userPreferences.coach());
     headerViewHolder.txtTeamName.setText(club.name());
     coinsSubscription = userPreferences.coinsPreference().asObservable().subscribe(coinsObserver);
-
     Picasso.with(this)
         .load(club.large_image())
         .into(clubLogoTarget);

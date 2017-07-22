@@ -38,13 +38,10 @@ public class LeagueDetailsActivity extends NavigationActivity {
     super.onCreate(savedInstanceState);
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);
-
     if (savedInstanceState == null) {
       league = userPreferences.league();
     }
-
     navigationView.setCheckedItem(R.id.nav_league);
-
     ActionBar actionBar = checkNotNull(getSupportActionBar());
     actionBar.setTitle(league.name());
     setupViewPager();

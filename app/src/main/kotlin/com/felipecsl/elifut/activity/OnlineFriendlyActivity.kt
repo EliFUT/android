@@ -10,6 +10,7 @@ import butterknife.ButterKnife
 import com.felipecsl.elifut.R
 import com.felipecsl.elifut.models.GoogleApiConnectionResult
 import com.felipecsl.elifut.services.GoogleApiConnectionHandler
+import com.felipecsl.elifut.services.GoogleApiConnectionHandlerFactory
 import com.felipecsl.elifut.services.GoogleApiGameRoomHandler
 import rx.SingleSubscriber
 import rx.subscriptions.CompositeSubscription
@@ -35,7 +36,7 @@ class OnlineFriendlyActivity : NavigationActivity() {
     ButterKnife.bind(this)
     val actionBar = checkNotNull(supportActionBar)
     actionBar.setTitle(R.string.online_friendly)
-    googleApiConnectionHandler = GoogleApiConnectionHandler(this)
+    googleApiConnectionHandler = GoogleApiConnectionHandlerFactory.newInstance(this)
     subscriptions.add(googleApiConnectionHandler.result().subscribe(playerSubscriber))
     googleApiConnectionHandler.connect()
   }
@@ -61,7 +62,7 @@ class OnlineFriendlyActivity : NavigationActivity() {
 
   override fun onActivityResult(requestCode: Int, responseCode: Int, intent: Intent) {
     super.onActivityResult(requestCode, responseCode, intent)
-    googleApiConnectionHandler.onActivityResult(requestCode, responseCode, intent)
+    googleApiConnectionHandler.onActivityResult(requestCode, responseCode)
     googleApiGameRoomHandler.onActivityResult(requestCode, responseCode, intent)
   }
 

@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/EliFUT/android.svg)](https://travis-ci.org/EliFUT/android)
 
+## Download the app
+
+[![Google Play](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=com.elifut)
+
 ## Demo
 
 ![demo](https://raw.githubusercontent.com/EliFUT/android/master/screenshots/demo.gif)

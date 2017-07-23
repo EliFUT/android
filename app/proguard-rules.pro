@@ -123,4 +123,4 @@
 
 # Kotlin
 -dontwarn kotlin.**
--keep class com.felipecsl.elifut.services.ClubDataStore
+-keep class com.elifut.services.ClubDataStore

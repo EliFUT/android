@@ -6,7 +6,7 @@
   android:layout_height="match_parent"
   android:orientation="vertical"
   app:layout_behavior="@string/appbar_scrolling_view_behavior"
-  tools:context="com.felipecsl.elifut.activity.MatchProgressActivity"
+  tools:context="com.elifut.activity.MatchProgressActivity"
   tools:showIn="@layout/activity_match_progress"
   >
 
@@ -22,7 +22,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     >
 
-    <com.felipecsl.elifut.widget.FractionView
+    <com.elifut.widget.FractionView
       android:id="@+id/fractionView"
       android:layout_width="30dp"
       android:layout_height="30dp"

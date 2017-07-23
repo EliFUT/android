@@ -1,27 +1,40 @@
 {
   "project_info": {
-    "project_number": "000000000000",
-    "project_id": "elifut-a78d2"
+    "project_number": "473154787097",
+    "project_id": "com-elifut"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:fc7ea8d6cf1856ab",
+        "mobilesdk_app_id": "1:473154787097:android:03497bb1133a84df",
         "android_client_info": {
-          "package_name": "com.felipecsl.elifut"
+          "package_name": "com.elifut"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "473154787097-dbgh46qlqntgh61vcj4ie58701763fnv.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "473154787097-7ctv2fdcnrqbtubndirpabvcsikaohbl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elifut",
+            "certificate_hash": "fc6cb816c48a73f892b0538e339ea5630130a049"
+          }
+        }
+      ],
       "api_key": [
         {
-          "current_key": ""
+          "current_key": "AIzaSyD6LNW_nEbQul-uxldLTfhMrcbsgYoaZUI"
         }
       ],
       "services": {
         "analytics_service": {
           "status": 2,
           "analytics_property": {
-            "tracking_id": "UA-00000000-1"
+            "tracking_id": "UA-73800005-2"
           }
         },
         "appinvite_service": {

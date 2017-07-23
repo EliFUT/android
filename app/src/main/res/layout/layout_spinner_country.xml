@@ -1,4 +1,4 @@
-<com.felipecsl.elifut.widget.NationTextView
+<com.elifut.widget.NationTextView
   android:id="@+id/text_country"
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"

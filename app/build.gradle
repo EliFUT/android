@@ -4,7 +4,6 @@ apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-android'
 apply from: './coverage.gradle'
-apply from: './minSdk.gradle'
 
 String getFabricApiKey() {
   String keyName = 'ELIFUT_FABRIC_API_KEY'
@@ -23,11 +22,11 @@ android {
   buildToolsVersion '25.0.3'
 
   defaultConfig {
-    applicationId "com.felipecsl.elifut"
-    minSdkVersion minSdk()
+    applicationId "com.elifut"
+    minSdkVersion 21
     targetSdkVersion 25
-    versionCode 1
-    versionName "1.0"
+    versionCode 2
+    versionName "1.0.1"
     manifestPlaceholders = [fabricApiKey: getFabricApiKey()]
   }
   sourceSets {

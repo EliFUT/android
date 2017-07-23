@@ -113,7 +113,7 @@ public class ElifutDataStore extends SQLiteOpenHelper {
     return items;
   }
 
-  @Nullable public <T extends Persistable> T queryOne(Class<T> type, String whereClause,
+  @Nullable <T extends Persistable> T queryOne(Class<T> type, String whereClause,
       String... args) {
     Persistable.Converter<T> converter = converterForType(type);
     List<T> list = rawQuery(
@@ -143,7 +143,7 @@ public class ElifutDataStore extends SQLiteOpenHelper {
         .mapToList(cursor -> cursorToObject(converter, cursor));
   }
 
-  public <T extends Persistable> Observable<T> observeOne(
+  <T extends Persistable> Observable<T> observeOne(
       Class<T> type, String whereClause, String... args) {
     Persistable.Converter<T> converter = converterForType(type);
     String tableName = converter.tableName();
@@ -151,7 +151,7 @@ public class ElifutDataStore extends SQLiteOpenHelper {
         .mapToOne(cursor -> cursorToObject(converter, cursor));
   }
 
-  public <T extends Persistable> Persistable.Converter<T> converterFor(Persistable persistable) {
+  private <T extends Persistable> Persistable.Converter<T> converterFor(Persistable persistable) {
     return converterForType(persistable.getClass());
   }
 

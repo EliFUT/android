@@ -3,14 +3,10 @@ package com.elifut;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.elifut.adapter.ModelListAdapterFactory;
 import com.elifut.match.LeagueRoundExecutor;
 import com.elifut.match.MatchResultGenerator;
-import com.elifut.models.Club;
 import com.elifut.models.GoalGenerator;
-import com.elifut.models.Nation;
 import com.elifut.models.Persistable;
-import com.elifut.models.Player;
 import com.elifut.models.converter.ClubConverter;
 import com.elifut.models.converter.ClubSquadConverter;
 import com.elifut.models.converter.LeagueRoundConverter;
@@ -49,9 +45,6 @@ public class DataModule {
 
   @Provides @Singleton Moshi provideMoshi() {
     return new Moshi.Builder()
-//        .add(new ModelListAdapterFactory<>(Nation.class))
-//        .add(new ModelListAdapterFactory<>(Club.class))
-//        .add(new ModelListAdapterFactory<>(Player.class))
         .add(AutoValueMoshiAdapterFactory.create())
         .build();
   }

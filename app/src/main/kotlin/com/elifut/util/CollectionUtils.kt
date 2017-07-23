@@ -9,10 +9,8 @@ import java.util.*
 fun <T> List<T>.shuffle() = apply { Collections.shuffle(this) }
 
 /** Sorts this list using the provided comparator */
-fun <T> List<T>.sort(comparator: Comparator<in T>) =
+fun <T> List<T>.sort(comparator: Comparator<in T>): List<T> =
     FluentIterable.from(this).toSortedList(comparator)
-
-fun <T> Observable<T>.toList() = toList().toBlocking().first()
 
 /** Multiplies this list t times, eg.: [1, 2] times 2 = [1, 2, 1, 2] */
 fun <T> List<T>.times(t: Int) = 0.rangeTo(t - 1).flatMap { this }

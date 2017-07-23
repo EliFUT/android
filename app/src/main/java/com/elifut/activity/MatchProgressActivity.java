@@ -218,7 +218,7 @@ public class MatchProgressActivity extends ElifutActivity {
 
   @NonNull private Observable<Long> timerObservable() {
     return BuildConfig.DEBUG ? Observable.interval(0, 100, TimeUnit.MILLISECONDS)
-        : Observable.interval(0, 1, TimeUnit.SECONDS);
+        : Observable.interval(0, 500, TimeUnit.MILLISECONDS);
   }
 
   private void appendEvent(@DrawableRes int icon, String text, int gravity) {

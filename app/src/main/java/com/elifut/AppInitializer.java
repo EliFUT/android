@@ -1,7 +1,5 @@
 package com.elifut;
 
-import com.google.common.collect.FluentIterable;
-
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -9,6 +7,7 @@ import android.util.Log;
 import com.elifut.models.Club;
 import com.elifut.models.League;
 import com.elifut.models.Player;
+import com.elifut.models.PlayersKt;
 import com.elifut.preferences.JsonPreference;
 import com.elifut.preferences.LeagueDetails;
 import com.elifut.preferences.UserPreferences;
@@ -17,6 +16,7 @@ import com.elifut.services.ElifutDataStore;
 import com.elifut.services.ElifutService;
 import com.elifut.services.ResponseBodyMapper;
 import com.elifut.services.ResponseMapper;
+import com.google.common.collect.FluentIterable;
 
 import java.util.List;
 
@@ -58,6 +58,7 @@ public class AppInitializer {
         .flatMap(Observable::from)
         .flatMap(this::loadPlayers)
         .filter(this::checkMinimumPlayers)
+        .filter(this::checkGoalKeepers)
         .doOnNext(i -> progressDialog.setProgress(progressDialog.getProgress() + 2))
         .toList()
         .map(this::persistClubs)
@@ -68,9 +69,17 @@ public class AppInitializer {
         .map(nothing -> (Void) null);
   }
 
+  private boolean checkGoalKeepers(ClubAndPlayers clubAndPlayers) {
+    boolean hasNoGKs = PlayersKt.goalkeepers(clubAndPlayers.players).isEmpty();
+    if (hasNoGKs) {
+      Log.w(TAG, String.format("Dropping club %s due to not having at least 1 goalkeeper",
+          clubAndPlayers.club));
+    }
+    return !hasNoGKs;
+  }
+
   private List<ClubAndPlayers> persistClubs(List<ClubAndPlayers> clubAndPlayers) {
-    leagueDetails.initialize(FluentIterable
-        .from(clubAndPlayers)
+    leagueDetails.initialize(FluentIterable.from(clubAndPlayers)
         .transform(cp -> cp.club)
         .toList());
     return clubAndPlayers;

@@ -138,14 +138,24 @@ public class MainActivity extends ElifutActivity {
     userPreferences.coachPreference().set(displayName);
     userPreferences.coinsPreference().set(UserPreferences.INITIAL_COINS_AMOUNT);
 
+    String errorMessage =
+        "Sorry, we still don't have enough data to populate the league data for this country." +
+            "Please select a different one and try again!";
     subscriptions.add(initializer
         .initialize(nation.id(), progressDialog)
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new CompletionObserver<Object>(this, TAG, "Failed to load game data.") {
+        .subscribe(new CompletionObserver<Object>(this, TAG, errorMessage) {
           @Override public void onCompleted() {
             progressDialog.setProgress(100);
             progressDialog.dismiss();
             launchHomeScreen();
+          }
+
+          @Override public void onError(Throwable e) {
+            super.onError(e);
+            progressDialog.setProgress(100);
+            progressDialog.dismiss();
+            okButton.setVisibility(View.VISIBLE);
           }
         }));
   }

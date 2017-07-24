@@ -78,7 +78,9 @@ public abstract class Club extends Model implements Persistable {
 
   public String tinyName() {
     //noinspection ConstantConditions
-    return abbrev_name() != null ? abbrev_name().substring(0, 3) : name().substring(0, 3);
+    return abbrev_name() != null
+        ? abbrev_name().length() > 3 ? abbrev_name().substring(0, 3) : abbrev_name()
+        : name().length() > 3 ? name().substring(0, 3) : name();
   }
 
   // @formatter:off

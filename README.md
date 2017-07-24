@@ -45,7 +45,6 @@ Below is a non-comprehensive list of the libraries/plugins/patterns used:
  * Code-generation based Cursor adapters using [auto-value-cursor](https://github.com/gabrielittner/auto-value-cursor)
  * Additional Java utility classes provided by [Guava](https://github.com/google/guava)
  * Debugging using [Stetho](https://github.com/facebook/stetho)
- * Java 8 lambdas using [Retrolambda](https://github.com/evant/gradle-retrolambda)
  * Material design widgets using AppCompat and the Support Design Library
 
 ## Building and running

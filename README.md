@@ -50,7 +50,7 @@ Below is a non-comprehensive list of the libraries/plugins/patterns used:
 ## Building and running
 
 Run `./gradlew check` to compile and run the unit tests. If everything passes, you can run the
-app on any emulator or device with API > 16 with `./gradlew assembleFastLDebug installFastLDebug`.
+app on any emulator or device with API > 21 with `./gradlew assembleDebug installDebug`.
 By default, the app will be pointing to the production API. You can change that to use your local
 development API by setting the `API_ENPOINT` constant in the build.gradle to `$devApiEndpoint`:
 `buildConfigField "String", "API_ENDPOINT", "\"$devApiEndpoint\""`.

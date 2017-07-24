@@ -17,7 +17,9 @@ public class ElifutApplication extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
-    Fabric.with(this, new Crashlytics());
+    if (!BuildConfig.DEBUG) {
+      Fabric.with(this, new Crashlytics());
+    }
     component = ElifutComponent.Initializer.init(this);
     StethoInitializer.initialize(this);
   }

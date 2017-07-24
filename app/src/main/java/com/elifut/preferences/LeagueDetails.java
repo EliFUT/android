@@ -1,8 +1,5 @@
 package com.elifut.preferences;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.FluentIterable;
-
 import com.elifut.AutoValueClasses;
 import com.elifut.match.MatchResultGenerator;
 import com.elifut.models.Club;
@@ -14,6 +11,8 @@ import com.elifut.services.ClubDataStore;
 import com.elifut.services.ElifutDataStore;
 import com.elifut.services.LeagueRoundGenerator;
 import com.elifut.util.CollectionUtilsKt;
+import com.google.common.base.Optional;
+import com.google.common.collect.FluentIterable;
 
 import java.util.List;
 
@@ -44,14 +43,19 @@ public final class LeagueDetails {
 
   /** Removes the next round from the list of upcoming rounds and returns it. */
   public LeagueRound nextRound() {
-    List<? extends LeagueRound> nextRounds = rounds();
-    if (nextRounds == null || nextRounds.isEmpty()) {
+    if (!haveRoundsLeft()) {
       throw new IllegalStateException("No more rounds left");
     }
+    List<? extends LeagueRound> nextRounds = rounds();
     LeagueRound nextRound = nextRounds.remove(0);
     //noinspection ConstantConditions
     service.delete(nextRound, nextRound.id());
     return nextRound;
+  }
+
+  public boolean haveRoundsLeft() {
+    List<? extends LeagueRound> nextRounds = rounds();
+    return nextRounds != null && !nextRounds.isEmpty();
   }
 
   /** Returns the position of the provided Club in the League current standings */
@@ -66,7 +70,7 @@ public final class LeagueDetails {
    * Returns the list of Clubs in this League in the correct order according to the current
    * stadings.
    */
-  public List<? extends Club> clubsStandings() {
+  List<? extends Club> clubsStandings() {
     return clubsStandings(clubs());
   }
 

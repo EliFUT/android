@@ -19,10 +19,6 @@ buildscript {
   configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
-plugins {
-  id 'net.saliman.cobertura' version '2.5.0'
-}
-
 allprojects {
   repositories {
     jcenter()

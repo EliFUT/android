@@ -21,12 +21,18 @@ branches:
 notifications:
   email: false
 
-script: ./gradlew check --stacktrace
+script:
+  - ./gradlew check --stacktrace
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 
 sudo: false
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
 
 cache:
   directories:
@@ -35,4 +41,6 @@ cache:
 
 env:
   global:
+    - CC_TEST_REPORTER_ID: 725964458d58dc4f2ad07041be99916c647627b20659efaa3d20e8da2e186a70
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
     - secure: "xBlqjMZ1ROv12GaYdgM/urjVHB54qeh1tKJGGrYrQUGvioZlOwr+7EJU7WQnYnmTCSifWEFh0ah1j1KdQ0567u+4fxHcbYbEooYTKHAin8GXkK1EX8ZHRrR4b5Svf7Ioq7c3GGjriOoL55br5ZYUboUCIqhU8Pdf90vBTo2Bvy780TEWxheWF75HmDqVwhQK1xteA+05iGNjU9cWDqJUN8z1CNbPUo3JpSXwDZ2nPm2gIx22OxlltQH/gMOs6Tixj0X9JzlYoK3s7epKfStu8icZwnEsRXNr8oaesC0cR641kedMRUuH3lIwVyndptiLjG/DdGW3zt2JMg28LFMvUka6KAZjr1YAsvR3vSBZyncbIfwIpskyfY55yb8kgzDtkQ6JxIc62T4IYD/wrLEBzErJEVXXVBs3C6hyOcyHTkC+pCBmNQf1q1tQSI8CrUhfevXI8UWsYiFJo0bEUMYTLuDx1wVfSDx2rBbRpMMqzNDtjUo8fSGvSI8d2TpVt/6G/ssmR3EeEG5Uq8Vxn7SV6IxRYsOelMqJrVnoyBrlXCppY7EhZE/qEV/Gb/JluY6bkIAyxEVrEGiXMz+cFJiMeBGWNAmva6Mek95f0RxpRRj7Cq7ujOmMsixHKVOSBjcg8Scz82k4fvJ7Cg0psnND+cpY97EKVB1q8T5QY+MyYVQ="

@@ -1,10 +1,15 @@
 package com.elifut;
 
+import com.elifut.models.Club;
+import com.elifut.preferences.LeagueDetails;
+import com.elifut.preferences.UserPreferences;
 import com.google.common.collect.Lists;
 import com.google.common.io.Closeables;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 
 import com.elifut.services.ResponseBodyMapper;
 import com.elifut.services.ResponseMapper;
@@ -59,6 +64,17 @@ public final class Util {
         return null;
       }
     }.execute();
+  }
+
+  public static void showLeagueEndResults(UserPreferences userPreferences,
+      LeagueDetails leagueDetails, Activity activity) {
+    Club club = userPreferences.clubPreference().get();
+    int position = leagueDetails.clubPosition(club);
+    new AlertDialog.Builder(activity)
+        .setTitle(R.string.league_ended)
+        .setMessage(activity.getString(R.string.you_finished_position, String.valueOf(position)))
+        .setOnDismissListener(dialog -> activity.finish())
+        .show();
   }
 
   public static int dpToPx(Context context, int dp) {

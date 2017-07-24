@@ -2,9 +2,9 @@ package com.elifut.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class LeagueProgressFragment extends ElifutFragment {
+  private static final String TAG = "LeagueProgressFragment";
   @BindView(R.id.recycler_next_matches) RecyclerView recyclerView;
 
   private final CompositeSubscription subscription = new CompositeSubscription();
@@ -45,28 +46,19 @@ public class LeagueProgressFragment extends ElifutFragment {
         .roundsObservable()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(rounds -> {
-          int roundsLeft = leagueDetails.rounds().size();
-          if (roundsLeft < 0) {
-            showLeagueEndResults();
-            return;
+          if (!rounds.isEmpty()) {
+            LeagueRound round = rounds.get(0);
+            int roundsLeft = leagueDetails.rounds().size();
+            String title = getActivity().getString(
+                R.string.next_round_n_of_n, round.roundNumber(), roundsLeft + round.roundNumber());
+            adapter.setRound(round, title);
+          } else {
+            // TODO: Display a message on screen indicating the league has ended.
+            Log.w(TAG, "League has already ended. Nothing to do here.");
           }
-          LeagueRound round = rounds.get(0);
-          String title = getActivity().getString(
-              R.string.next_round_n_of_n, round.roundNumber(), roundsLeft + round.roundNumber());
-          adapter.setRound(round, title);
         }));
 
     return view;
-  }
-
-  private void showLeagueEndResults() {
-    Club club = userPreferences.clubPreference().get();
-    int position = leagueDetails.clubPosition(club);
-    new AlertDialog.Builder(getContext())
-        .setTitle("League ended")
-        .setMessage(getString(R.string.you_finished_position, String.valueOf(position)))
-        .setOnDismissListener(dialog -> getActivity().finish())
-        .show();
   }
 
   private void initAdapter() {

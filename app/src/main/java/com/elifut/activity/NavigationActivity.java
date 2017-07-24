@@ -4,13 +4,7 @@ import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.PaintDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -23,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +36,7 @@ import com.elifut.models.LeagueRound;
 import com.elifut.preferences.LeagueDetails;
 import com.elifut.preferences.UserPreferences;
 import com.elifut.util.AndroidVersion;
+import com.elifut.util.ColorUtilsKt;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -59,6 +55,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class NavigationActivity extends ElifutActivity
     implements NavigationView.OnNavigationItemSelectedListener {
+  private static final String TAG = "NavigationActivity";
+  private static final int DEFAULT_DARK_VIBRANT_COLOR = 0xFF81C784;
+  private static final int DEFAULT_LIGHT_VIBRANT_COLOR = 0xFF2E7D32;
+
   @Inject UserPreferences userPreferences;
   @Inject LeagueDetails leagueDetails;
   @Inject LeagueRoundExecutor roundExecutor;
@@ -91,20 +91,20 @@ public abstract class NavigationActivity extends ElifutActivity
     @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
       headerViewHolder.imgClubLogo.setImageBitmap(bitmap);
       Palette.from(bitmap).generate(palette -> {
-        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
-          @Override public Shader resize(int width, int height) {
-            return new LinearGradient(0, 0, width, height,
-                new int[]{palette.getDarkVibrantColor(0xFF81C784),
-                    palette.getLightVibrantColor(0xFF2E7D32)}, null, Shader.TileMode.CLAMP);
-          }
+        int[] colors = {
+            palette.getDarkVibrantColor(DEFAULT_DARK_VIBRANT_COLOR),
+            palette.getLightVibrantColor(DEFAULT_LIGHT_VIBRANT_COLOR)
         };
-        PaintDrawable paintDrawable = new PaintDrawable();
-        paintDrawable.setShape(new RectShape());
-        paintDrawable.setShaderFactory(shaderFactory);
-        LayerDrawable background = new LayerDrawable(new Drawable[]{paintDrawable});
-        //noinspection deprecation
-        headerViewHolder.navHeaderLayout.setBackgroundDrawable(background);
+        ColorUtilsKt.setLinearBackgroundGradient(colors, headerViewHolder.navHeaderLayout);
       });
+    }
+
+    @Override public void onBitmapFailed(Drawable errorDrawable) {
+      Log.e(TAG, "Failed to load club image. It's likely missing the image. " +
+          "Falling back to default colors.");
+      ColorUtilsKt.setLinearBackgroundGradient(new int[]{
+              DEFAULT_DARK_VIBRANT_COLOR, DEFAULT_LIGHT_VIBRANT_COLOR},
+          headerViewHolder.navHeaderLayout);
     }
   };
 
@@ -207,7 +207,14 @@ public abstract class NavigationActivity extends ElifutActivity
     return true;
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP) @Optional @OnClick(R.id.fab) public void onClickFab() {
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  @Optional
+  @OnClick(R.id.fab)
+  public void onClickFab() {
+    if (!leagueDetails.haveRoundsLeft()) {
+      Util.showLeagueEndResults(userPreferences, leagueDetails, this);
+      return;
+    }
     LeagueRound round = leagueDetails.executeRound(leagueDetails.nextRound());
     //noinspection ConstantConditions
     circularRevealOverlay.setVisibility(View.VISIBLE);

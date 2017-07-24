@@ -1,9 +1,7 @@
 package com.elifut.util;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
 
@@ -11,7 +9,6 @@ public final class ColorUtils {
   private ColorUtils() {
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public static void colorizeTabsAndHeader(Activity activity, Toolbar toolbar, TabLayout tabs,
       int primaryColor, int secondaryColor) {
     tabs.setBackgroundColor(primaryColor);
@@ -19,7 +16,6 @@ public final class ColorUtils {
     colorizeHeader(activity, toolbar, primaryColor);
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public static void colorizeHeader(Activity activity, Toolbar toolbar, int primaryColor) {
     toolbar.setBackgroundColor(primaryColor);
     if (AndroidVersion.isAtLeastLollipop()) {
@@ -28,7 +24,7 @@ public final class ColorUtils {
   }
 
   /** Returns darker version of specified color */
-  public static int darken(int color, float factor) {
+  private static int darken(int color, float factor) {
     int a = Color.alpha(color);
     int r = Color.red(color);
     int g = Color.green(color);

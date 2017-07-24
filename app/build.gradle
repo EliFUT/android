@@ -18,15 +18,15 @@ String getFabricApiKey() {
 }
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion '25.0.3'
+  compileSdkVersion project.ext.compileSdkVersion
+  buildToolsVersion project.ext.buildToolsVersion
 
   defaultConfig {
     applicationId "com.elifut"
-    minSdkVersion 21
-    targetSdkVersion 25
-    versionCode 3
-    versionName "1.0.2"
+    minSdkVersion project.ext.minSdkVersion
+    targetSdkVersion project.ext.targetSdkVersion
+    versionCode project.ext.versionCode
+    versionName project.ext.versionName
     manifestPlaceholders = [fabricApiKey: getFabricApiKey()]
   }
   sourceSets {

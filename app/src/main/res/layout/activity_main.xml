@@ -41,26 +41,25 @@
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:orientation="vertical"
-      android:padding="24dp">
+      android:orientation="vertical">
 
       <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        android:visibility="gone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
         android:text="@string/select_country"
-        android:textColor="#333333"
-        android:textSize="12sp" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-      <Spinner
-        android:id="@+id/countries_spinner"
+      <android.support.v7.widget.RecyclerView
+        android:id="@+id/countries_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -72,7 +71,7 @@
     android:id="@+id/fab"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="end|bottom"
+    android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
     android:src="@drawable/ic_done" />
 

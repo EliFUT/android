@@ -8,16 +8,17 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Spinner;
 
 import com.elifut.AppInitializer;
 import com.elifut.CompletionObserver;
 import com.elifut.R;
 import com.elifut.ResponseObserver;
-import com.elifut.adapter.CountriesSpinnerAdapter;
+import com.elifut.adapter.CountriesRecyclerViewAdapter;
 import com.elifut.models.Club;
 import com.elifut.models.GoogleApiConnectionResult;
 import com.elifut.models.Nation;
@@ -40,28 +41,30 @@ import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static dagger.internal.Preconditions.checkNotNull;
+
 public class MainActivity extends ElifutActivity {
   private static final String TAG = "MainActivity";
 
   @Inject AppInitializer initializer;
 
   @BindView(R.id.toolbar) Toolbar toolbar;
-  @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
-  @BindView(R.id.countries_spinner) Spinner countriesSpinner;
-  @BindView(R.id.fab) FloatingActionButton okButton;
+  @BindView(R.id.countries_recyclerview) RecyclerView countriesRecyclerView;
   @BindView(R.id.sign_in_button) SignInButton signInButton;
   @BindView(R.id.main_content) CoordinatorLayout mainContent;
 
   private GoogleApiConnectionHandler googleApiConnectionHandler;
   private String displayName;
-  private CountriesSpinnerAdapter nationsAdapter;
+  private CountriesRecyclerViewAdapter nationsAdapter;
 
   private final CompositeSubscription subscriptions = new CompositeSubscription();
   private final Observer<List<Nation>> nationObserver =
       new ResponseObserver<List<Nation>>(this, TAG, "Failed to load list of countries.") {
         @Override public void onNext(List<Nation> response) {
-          nationsAdapter = new CountriesSpinnerAdapter(MainActivity.this, response);
-          countriesSpinner.setAdapter(nationsAdapter);
+          nationsAdapter = new CountriesRecyclerViewAdapter(response);
+          nationsAdapter.setHasStableIds(true);
+          countriesRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+          countriesRecyclerView.setAdapter(nationsAdapter);
         }
       };
   private final SingleSubscriber<GoogleApiConnectionResult> playerSubscriber =
@@ -116,6 +119,7 @@ public class MainActivity extends ElifutActivity {
   @Override protected void onStop() {
     super.onStop();
     googleApiConnectionHandler.onStop();
+    nationsAdapter.unbind();
   }
 
   @Override protected void onActivityResult(int requestCode, int responseCode, Intent data) {
@@ -129,11 +133,12 @@ public class MainActivity extends ElifutActivity {
   }
 
   @OnClick(R.id.fab) public void onClickNext() {
+    Nation nation = nationsAdapter.getSelectedNation();
+    if (nation == null) {
+      return;
+    }
     ProgressDialog progressDialog = buildProgressDialog();
     progressDialog.show();
-
-    okButton.setVisibility(View.GONE);
-    Nation nation = (Nation) nationsAdapter.getItem(countriesSpinner.getSelectedItemPosition());
     userPreferences.nationPreference().set(nation);
     userPreferences.coachPreference().set(displayName);
     userPreferences.coinsPreference().set(UserPreferences.INITIAL_COINS_AMOUNT);
@@ -155,7 +160,6 @@ public class MainActivity extends ElifutActivity {
             super.onError(e);
             progressDialog.setProgress(100);
             progressDialog.dismiss();
-            okButton.setVisibility(View.VISIBLE);
           }
         }));
   }

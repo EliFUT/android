@@ -1,11 +1,13 @@
 package com.elifut.models;
 
+import android.support.annotation.NonNull;
+
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
 @AutoValue
-public abstract class Nation extends Model {
+public abstract class Nation extends Model implements Comparable<Nation> {
   public abstract String name();
   public abstract String large_image();
   public abstract String small_image();
@@ -25,5 +27,9 @@ public abstract class Nation extends Model {
 
   @Override public int describeContents() {
     return 0;
+  }
+
+  @Override public int compareTo(@NonNull Nation n) {
+    return name().compareTo(n.name());
   }
 }

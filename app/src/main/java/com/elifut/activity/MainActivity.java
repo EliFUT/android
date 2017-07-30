@@ -26,6 +26,7 @@ import com.elifut.services.GoogleApiConnectionHandlerFactory;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.games.Player;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -57,6 +58,7 @@ public class MainActivity extends ElifutActivity {
   private final Observer<List<Nation>> nationObserver =
       new ResponseObserver<List<Nation>>(this, TAG, "Failed to load list of countries.") {
         @Override public void onNext(List<Nation> response) {
+          Collections.sort(response);
           nationsAdapter = new CountriesRecyclerViewAdapter(response);
           nationsAdapter.setHasStableIds(true);
           countriesRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));

@@ -54,6 +54,10 @@ import rx.subscriptions.CompositeSubscription;
 public class MatchProgressActivity extends ElifutActivity {
   private static final String TAG = MatchProgressActivity.class.getSimpleName();
   private static final String EXTRA_ROUND = "EXTRA_ROUND";
+  // Game speed multiplier:
+  //  1 means 1 game minute equals to 1 second in wall clock.
+  //  2 means 1 game minute equals to 0.5 seconds in wall clock.
+  private static final int SPEED = BuildConfig.DEBUG ? 5 : 1;
 
   @BindView(R.id.toolbar) Toolbar toolbar;
   @BindView(R.id.img_team_home) ImageView imgTeamHome;
@@ -122,7 +126,7 @@ public class MatchProgressActivity extends ElifutActivity {
             finalScoreMessage = getString(R.string.draw);
           }
           if (BuildConfig.DEBUG) {
-            Log.d(TAG, finalScoreMessage);
+            Log.d(TAG, finalScoreMessage + " Final score is " + matchResult.finalScore());
           }
 
           startTimer();
@@ -177,7 +181,7 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   private void startTimer() {
-    subscriptions.add(matchResult.eventsObservable(elapsedMinutes)
+    subscriptions.add(matchResult.eventsObservable(elapsedMinutes, SPEED)
         .map(matchEvent -> (Goal) matchEvent)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(goal -> {
@@ -217,14 +221,13 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   @NonNull private Observable<Long> timerObservable() {
-    return BuildConfig.DEBUG ? Observable.interval(0, 100, TimeUnit.MILLISECONDS)
-        : Observable.interval(0, 500, TimeUnit.MILLISECONDS);
+    return Observable.interval(0, 1000 / SPEED, TimeUnit.MILLISECONDS);
   }
 
   private void appendEvent(@DrawableRes int icon, String text, int gravity) {
     FrameLayout view = (FrameLayout) LayoutInflater.from(this)
         .inflate(R.layout.match_event, eventsLayout, false);
-    TextView textView = (TextView) view.findViewById(R.id.txt_match_events);
+    TextView textView = view.findViewById(R.id.txt_match_events);
     textView.setText(text);
     Drawable drawable = ContextCompat.getDrawable(this, icon);
     drawable.setBounds(0, 0, iconSize, iconSize);

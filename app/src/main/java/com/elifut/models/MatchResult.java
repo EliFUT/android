@@ -4,6 +4,7 @@ import com.google.auto.value.AutoValue;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.elifut.BuildConfig;
 import com.squareup.moshi.JsonAdapter;
@@ -94,18 +95,14 @@ public abstract class MatchResult implements Parcelable, Persistable {
    * Returns an {@link Observable} that emits the all the {@link MatchEvent} of this result in this
    * match at the correct time that they happened.
    */
-  public Observable<MatchEvent> eventsObservable(final int elapsedTime) {
+  public Observable<MatchEvent> eventsObservable(final int elapsedTime, int gameSpeed) {
     Observable<Goal> homeGoalsObservable = Observable.from(homeGoals());
     Observable<Goal> awayGoalsObservable = Observable.from(awayGoals());
-
     return Observable.merge(homeGoalsObservable, awayGoalsObservable)
         .observeOn(Schedulers.io())
         .flatMap((goal) -> {
           int delay = goal.time() - elapsedTime;
-          if (BuildConfig.DEBUG) {
-            delay /= 10;
-          }
-          return Observable.<MatchEvent>just(goal).delay(delay, TimeUnit.SECONDS);
+          return Observable.<MatchEvent>just(goal).delay((1000 * delay) / gameSpeed, TimeUnit.MILLISECONDS);
         }).skip(elapsedTime, TimeUnit.SECONDS);
   }
 }

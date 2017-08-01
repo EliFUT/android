@@ -2,6 +2,7 @@ package com.elifut.services
 
 import android.support.annotation.VisibleForTesting
 import android.util.Log
+import android.util.SparseArray
 import com.elifut.models.Club
 import com.elifut.models.LeagueRound
 import com.elifut.models.Match
@@ -29,7 +30,7 @@ open class LeagueRoundGenerator {
     for (k in rounds.indices) {
       rounds[k] = LeagueRound.create(k + 1)
     }
-    val clubMap = HashMap<Int, Club>()
+    val clubMap = mutableMapOf<Int, Club>()
     for (i in 1..totalClubs) {
       clubMap.put(i, clubsCopy[i - 1])
     }
@@ -70,6 +71,6 @@ open class LeagueRoundGenerator {
   }
 
   companion object {
-    private val TAG = "com.elifut.services.LeagueRoundGenerator"
+    private val TAG = "LeagueRoundGenerator"
   }
 }

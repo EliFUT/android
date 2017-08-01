@@ -75,7 +75,6 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs.json?league_id=38
-    headers: &id003 {}
   response:
     status: 200
     headers:
@@ -123,7 +122,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=536
-    headers: *id001
+    headers: &id002 {}
   response:
     status: 200
     headers:
@@ -148,6 +147,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=535
+    headers: *id001
   response:
     status: 200
     headers:
@@ -170,7 +170,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=658
-    headers: &id002 {}
+    headers: &id004 {}
   response:
     status: 200
     headers:
@@ -217,7 +217,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=377
-    headers: *id002
+    headers: *id001
   response:
     status: 200
     headers:
@@ -241,7 +241,6 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=657
-    headers: *id002
   response:
     status: 200
     headers:
@@ -264,7 +263,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=540
-    headers: *id002
+    headers: &id003 {}
   response:
     status: 200
     headers:
@@ -288,7 +287,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=660
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -312,7 +311,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=537
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -336,7 +335,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=765
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -361,7 +360,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=760
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -385,7 +384,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=775
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -408,7 +407,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=539
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -432,7 +431,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=541
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -456,7 +455,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=659
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -479,7 +478,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=489
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -506,7 +505,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=490
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -530,7 +529,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=656
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -554,7 +553,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=515
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -579,7 +578,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=492
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -603,7 +602,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=538
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -629,7 +628,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=551
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -652,7 +651,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=545
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -677,7 +676,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=491
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -703,7 +702,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=376
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -726,7 +725,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=550
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -751,7 +750,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=252
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -774,7 +773,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=661
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -797,7 +796,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=663
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -821,7 +820,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=662
-    headers: *id002
+    headers: *id003
   response:
     status: 200
     headers:
@@ -867,7 +866,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/589.json
-    headers: *id003
+    headers: *id002
   response:
     status: 200
     headers:
@@ -913,7 +912,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/550.json
-    headers: {}
+    headers: *id004
   response:
     status: 200
     headers:
@@ -936,7 +935,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/252.json
-    headers: *id003
+    headers: *id001
   response:
     status: 200
     headers:
@@ -959,7 +958,6 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/491.json
-    headers: *id001
   response:
     status: 200
     headers:
@@ -982,6 +980,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/657.json
+    headers: {}
   response:
     status: 200
     headers:
@@ -1000,3 +999,255 @@ interactions:
       X-Runtime: '0.007957'
       X-XSS-Protection: 1; mode=block
     body: '{"id":657,"base_id":111707,"abbrev_name":"Aldosivi","name":"Club Atlético Aldosivi","small_image":"http://elifut.com/assets/images/clubs/normal/club_111707-e2c29823bf44092ec7be5d847da071ae8995f8b5d3c654ac32e16c2ac870b782.png","large_image":"http://elifut.com/assets/images/clubs/large/club_111707-2186515ac4ab28ca9427a2eaeeb2a91715e96f4c1d771ed7cd45779f2bf1c71f.png","league_id":38}'
+- recorded: 2017-08-01T03:01:03.393Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/765.json
+    headers: *id004
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:01:30 GMT
+      ETag: W/"b6cb06ed46d339a7810865e1bb5b7ea1"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: b3ddaa3f-5b0c-4fd8-b84c-ce7b3b4a0192
+      X-Runtime: '0.003761'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":765,"base_id":112713,"abbrev_name":"Sarmiento","name":"Club Atlético Sarmiento","small_image":"http://elifut.com/assets/images/clubs/normal/club_112713-49f63c024066cd1d697a632cf5459aed1e2c2dca1edb7a7a91413ba21ab8f213.png","large_image":"http://elifut.com/assets/images/clubs/large/club_112713-7f34192da26f59aa946acb08dade49b00326d2e8e66ee79fe887f257e5598774.png","league_id":38}'
+- recorded: 2017-08-01T03:02:21.053Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/540.json
+    headers: *id002
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:02:48 GMT
+      ETag: W/"97a12fde11d2fc334f98c9706b8afe29"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: c4481bcf-3032-4fab-bb44-b65e013b8b5d
+      X-Runtime: '0.003577'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":540,"base_id":110404,"abbrev_name":"Banfield","name":"Club Atlético Banfield","small_image":"http://elifut.com/assets/images/clubs/normal/club_110404-6d86289d2ee7e19e6d8d18b53b969f27c5edbb032d6a9b7b8907606966b49d8b.png","large_image":"http://elifut.com/assets/images/clubs/large/club_110404-30541c6d9ac101a94e2216d11627aada1a666b075bbb99b2e7e4c355070df77c.png","league_id":38}'
+- recorded: 2017-08-01T03:22:06.264Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/377.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:22:33 GMT
+      ETag: W/"12da77f025f3c14a1932b9699c643c00"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 56d3c4e4-d5b9-43c7-bd64-1e653e8599d2
+      X-Runtime: '0.007629'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":377,"base_id":1877,"abbrev_name":"Boca Jrs.","name":"Boca Juniors","small_image":"http://elifut.com/assets/images/clubs/normal/club_1877-3853728b13cd58c5017f40ea2fcc92de435eabfe36c776c659e5af2c6de5654d.png","large_image":"http://elifut.com/assets/images/clubs/large/club_1877-dfcc34cbadc5d15ea688ad9f4e3445da9e0c2a752d2c615929590772589c3e4d.png","league_id":38}'
+- recorded: 2017-08-01T03:22:17.285Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/492.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:22:44 GMT
+      ETag: W/"58b663658c5befbda609f07a11d97d3b"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 64d25832-633b-4aa8-9e08-28c167f46c06
+      X-Runtime: '0.003920'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":492,"base_id":101088,"abbrev_name":"Liniers","name":"Liniers","small_image":"http://elifut.com/assets/images/clubs/normal/club_101088-59243698317557a7ebafeef84a1dce9a389416eff6e31ba7696a69684bf090ac.png","large_image":"http://elifut.com/assets/images/clubs/large/club_101088-61bf653cf3a2c2e91cb74fd987de1e86941c93d1c21d1a1586f199fd03a504c9.png","league_id":38}'
+- recorded: 2017-08-01T03:22:28.251Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/659.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:22:55 GMT
+      ETag: W/"934411a2941d0d78de73f07cdf69a212"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: c0474489-6d39-462f-8f93-07e857242a5e
+      X-Runtime: '0.006546'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":659,"base_id":111710,"abbrev_name":"Defensa","name":"Defensa y Justicia","small_image":"http://elifut.com/assets/images/clubs/normal/club_111710-bff9208d89925d26ec67386168072febdf3634ecce3ad7de946c9804b618cc17.png","large_image":"http://elifut.com/assets/images/clubs/large/club_111710-1bc8ca5bca75c31951f7405c76cafa61a12fdb66d4352fda3b55b8a6bde0328a.png","league_id":38}'
+- recorded: 2017-08-01T03:22:39.625Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/541.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:23:06 GMT
+      ETag: W/"ceed381e8d895dd9a4b2086de2c0fb6f"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 3305cb2d-e839-4c9c-9759-4120f8d0e460
+      X-Runtime: '0.006620'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":541,"base_id":110406,"abbrev_name":"Colón","name":"Colón de Santa Fe","small_image":"http://elifut.com/assets/images/clubs/normal/club_110406-0516788a5b8eb81160b715404ebd56d9fbc418a3cf05f7746580bdbda8c6e90d.png","large_image":"http://elifut.com/assets/images/clubs/large/club_110406-9ff9cd488f6bfc3b46fee0d05856cd5b28860a83c6716ac9cf13ce4da0aa8274.png","league_id":38}'
+- recorded: 2017-08-01T03:22:50.523Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/537.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:23:17 GMT
+      ETag: W/"b52c03aa87322fe445547ef0147e8d72"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 30207118-73d0-46e2-8552-506e34120dda
+      X-Runtime: '0.009124'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":537,"base_id":110395,"abbrev_name":"Lanús","name":"Club Atlético Lanús","small_image":"http://elifut.com/assets/images/clubs/normal/club_110395-c88d103bfadd130d3466a89352008aa8983ce389ff62bcb743a3aab53b83a3f0.png","large_image":"http://elifut.com/assets/images/clubs/large/club_110395-ab4e394ce195e2fddc905c1e6aa47bb56b1f4f15be3088564a7d853d54024437.png","league_id":38}'
+- recorded: 2017-08-01T03:23:01.337Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/775.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:23:28 GMT
+      ETag: W/"0acc904565d507743ca2691e6f203c01"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 8aa8432d-f83d-4553-abb4-cccbd61e5bf0
+      X-Runtime: '0.011814'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":775,"base_id":112904,"abbrev_name":"Temperley","name":"Club Atlético Temperley","small_image":"http://elifut.com/assets/images/clubs/normal/club_112904-64bf43d861f50abaecc9613810a767ce2216a44eba59c7928c5995bd9a8f6e2f.png","large_image":"http://elifut.com/assets/images/clubs/large/club_112904-bef655b9d242f27c087d8ef0cd1bc28b46e679c6dad7ba5c8d264c7883d10f0d.png","league_id":38}'
+- recorded: 2017-08-01T03:23:12.138Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/662.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:23:39 GMT
+      ETag: W/"b800fbf15d1c6e2ebc7b37801a70df81"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: c7cf29c0-9ce5-4c26-8a36-4101e69f9a61
+      X-Runtime: '0.007905'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":662,"base_id":111715,"abbrev_name":"Victoria","name":"Victoria","small_image":"http://elifut.com/assets/images/clubs/normal/club_111715-abd0e8a63ee3ab1e8c02a56336453aa849528151c6062206d381d3e3e04664dc.png","large_image":"http://elifut.com/assets/images/clubs/large/club_111715-7ccd356e78cacb5579dfef37a45df1a67b272f5fe63a208d2ff21014c9994415.png","league_id":38}'
+- recorded: 2017-08-01T03:23:22.966Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/490.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:23:49 GMT
+      ETag: W/"fd1df958d3a852160f7c4b063587ea85"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 5d255bd8-695d-4a92-a969-f01fb2da79bc
+      X-Runtime: '0.007385'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":490,"base_id":101084,"abbrev_name":"Gimnasia","name":"Gimnasia y Esgrima La Plata","small_image":"http://elifut.com/assets/images/clubs/normal/club_101084-3f43b30af0a712f0b44ef2529e373efa3822e7cb1c7499598104233bbeb96210.png","large_image":"http://elifut.com/assets/images/clubs/large/club_101084-8e7d743d3e77f5f6d345d78ee67291d743dba0761c24499ce4ba20e98bb896fc.png","league_id":38}'
+- recorded: 2017-08-01T03:44:30.931Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/538.json
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 03:44:57 GMT
+      ETag: W/"253ddad961f6a54e03fe4cebd357a275"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 0cef27a6-6820-4a3d-9c3b-c8e7f9df0f4b
+      X-Runtime: '0.011016'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":538,"base_id":110396,"abbrev_name":"Newell''s","name":"Newell''s Old Boys","small_image":"http://elifut.com/assets/images/clubs/normal/club_110396-fb30741858591e553f352557fede2335dfc6491812185bd3473297648034622e.png","large_image":"http://elifut.com/assets/images/clubs/large/club_110396-04a192743b98747b5372168c91f455c748a8c223dc86d2eac78a40822a84b2a5.png","league_id":38}'

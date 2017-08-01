@@ -13,6 +13,7 @@ import com.elifut.fragment.LeagueProgressFragment;
 import com.elifut.fragment.LeagueStandingsFragment;
 import com.elifut.fragment.TeamDetailsFragment;
 import com.elifut.fragment.TeamSquadFragment;
+import com.elifut.preferences.UserPreferences;
 
 import javax.inject.Singleton;
 
@@ -30,6 +31,7 @@ import okreplay.OkReplayInterceptor;
 public interface ElifutComponent {
   OkHttpClient okHttpClient();
   AppInitializer appInitializer();
+  UserPreferences userPreferences();
 
   void inject(MainActivity mainActivity);
   void inject(CurrentTeamDetailsActivity currentTeamDetailsActivity);

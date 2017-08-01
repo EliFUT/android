@@ -39,9 +39,9 @@ class LeagueTest {
 
   @Before fun setUp() {
     Intents.init()
-    val application = activityTestRule.activity.applicationContext as ElifutApplication
-    val okHttpClient = application.component.okHttpClient()
-    application.component.appInitializer().clearData()
+    val component = application().component
+    val okHttpClient = component.okHttpClient()
+    component.appInitializer().clearData()
     okHttp3IdlingResource = OkHttp3IdlingResource.create("OkHttp", okHttpClient)
     IdlingRegistry.getInstance().register(okHttp3IdlingResource)
   }
@@ -65,13 +65,25 @@ class LeagueTest {
     onView(withText(R.string.current_league)).perform(click())
     onView(withText(R.string.schedule)).check(matches(isDisplayed()))
     onView(withText(R.string.standings)).check(matches(isDisplayed()))
-    onView(withId(R.id.fab)).perform(click())
-    Thread.sleep((90L / MatchProgressActivity.SPEED) * 1000L)
-    onView(withText(R.string.end_first_half)).check(matches(isDisplayed()))
-    onView(withText(R.string.end_match)).check(matches(isDisplayed()))
-    onView(anyOf(
-        withText(R.string.defeated),
-        withText(R.string.winner),
-        withText(R.string.draw))).check(matches(isDisplayed()))
+    val totalRounds = 35
+    val gameSpeed = 20
+    application().component.userPreferences().gameSpeedPreference().set(gameSpeed)
+    1.until(totalRounds).forEach {
+      onView(withId(R.id.fab)).perform(click())
+      Thread.sleep(((45 + 45) / gameSpeed) * 1000L)
+      // Wait for observables to catch up
+      Thread.sleep(1000)
+      onView(withText(R.string.end_first_half)).check(matches(isDisplayed()))
+      onView(withText(R.string.end_match)).check(matches(isDisplayed()))
+      onView(anyOf(
+          withText(R.string.defeated),
+          withText(R.string.winner),
+          withText(R.string.draw))).check(matches(isDisplayed()))
+      onView(withId(R.id.fab_done)).perform(click())
+      onView(withId(R.id.fab)).perform(click())
+    }
   }
+
+  private fun application() =
+      activityTestRule.activity.applicationContext as ElifutApplication
 }

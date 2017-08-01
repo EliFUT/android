@@ -54,10 +54,6 @@ import rx.subscriptions.CompositeSubscription;
 public class MatchProgressActivity extends ElifutActivity {
   private static final String TAG = MatchProgressActivity.class.getSimpleName();
   private static final String EXTRA_ROUND = "EXTRA_ROUND";
-  // Game speed multiplier:
-  //  1 means 1 game minute equals to 1 second in wall clock.
-  //  2 means 1 game minute equals to 0.5 seconds in wall clock.
-  private static final int SPEED = BuildConfig.DEBUG ? 5 : 1;
 
   @BindView(R.id.toolbar) Toolbar toolbar;
   @BindView(R.id.img_team_home) ImageView imgTeamHome;
@@ -181,7 +177,7 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   private void startTimer() {
-    subscriptions.add(matchResult.eventsObservable(elapsedMinutes, SPEED)
+    subscriptions.add(matchResult.eventsObservable(elapsedMinutes, userPreferences.gameSpeed())
         .map(matchEvent -> (Goal) matchEvent)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(goal -> {
@@ -221,7 +217,7 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   @NonNull private Observable<Long> timerObservable() {
-    return Observable.interval(0, 1000 / SPEED, TimeUnit.MILLISECONDS);
+    return Observable.interval(0, 1000 / userPreferences.gameSpeed(), TimeUnit.MILLISECONDS);
   }
 
   private void appendEvent(@DrawableRes int icon, String text, int gravity) {

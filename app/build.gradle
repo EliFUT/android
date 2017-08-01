@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'com.getkeepsafe.dexcount'
+// Enable this manually only to avoid slowing down the build
+//apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-android'
+apply plugin: 'okreplay'
 
 String getFabricApiKey() {
   String keyName = 'ELIFUT_FABRIC_API_KEY'
@@ -27,10 +29,21 @@ android {
     versionCode project.ext.versionCode
     versionName project.ext.versionName
     manifestPlaceholders = [fabricApiKey: getFabricApiKey()]
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
+
   sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
+    androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    debug {
+      manifest.srcFile 'src/debug/AndroidManifest.xml'
+    }
   }
+
+  adbOptions {
+    installOptions "-g"
+  }
+
   signingConfigs {
     release {
       if (!System.getenv('CI')) {
@@ -55,7 +68,8 @@ android {
     release {
       buildConfigField "String", "API_ENDPOINT", "\"$prodApiEndpoint\""
       minifyEnabled true
-      multiDexEnabled false // Assume that Proguard will strip out a huge bunch of classes and methods.
+      multiDexEnabled false
+      // Assume that Proguard will strip out a huge bunch of classes and methods.
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
       signingConfig signingConfigs.release
     }
@@ -112,6 +126,7 @@ dependencies {
   debugImplementation "com.facebook.stetho:stetho-okhttp3:$stethoVersion"
   debugImplementation "com.facebook.stetho:stetho-js-rhino:$stethoVersion"
   debugImplementation 'com.android.support:multidex:1.0.2'
+  debugImplementation "com.airbnb.okreplay:okreplay:$okReplayVersion"
   implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
   implementation "com.google.guava:guava:$guavaVersion"
   implementation 'org.apache.commons:commons-math3:3.6.1'
@@ -123,6 +138,8 @@ dependencies {
   implementation("com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion@aar") {
     transitive = true
   }
+
+  releaseImplementation "com.airbnb.okreplay:noop:$okReplayVersion"
 
   annotationProcessor "frankiesardo:icepick-processor:$icepickVersion"
   compileOnly 'org.glassfish:javax.annotation:10.0-b28'
@@ -167,6 +184,13 @@ dependencies {
 
   androidTestImplementation 'com.google.code.findbugs:jsr305:2.0.1'
   androidTestImplementation 'com.android.support:multidex:1.0.2'
+  androidTestImplementation "com.airbnb.okreplay:espresso:$okReplayVersion"
+  androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espressoVersion"
+  androidTestImplementation "com.android.support.test:runner:$supportTestVersion"
+  androidTestImplementation "com.android.support.test:rules:$supportTestVersion"
+  androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+  androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -15,6 +15,7 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import okreplay.OkReplayInterceptor;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -47,6 +48,10 @@ public class NetworkModule {
     return new ConcurrentUtil.MainThreadExecutor();
   }
 
+  @Provides @Singleton OkReplayInterceptor provideOkReplayInterceptor() {
+    return OkReplayInterceptorProvider.Companion.getInstance();
+  }
+
   @Provides @Singleton CallAdapter.Factory provideCallAdapterFactory() {
     return RxJavaCallAdapterFactory.create();
   }
@@ -61,11 +66,14 @@ public class NetworkModule {
     return new Cache(cacheDir, maxSize);
   }
 
-  @Provides @Singleton OkHttpClient provideOkHttpClient(Cache cache) {
-    return new OkHttpClient.Builder()
+  @Provides @Singleton static OkHttpClient provideOkHttpClient(Cache cache,
+      OkReplayInterceptor okReplayInterceptor) {
+    OkHttpClient.Builder builder = new OkHttpClient.Builder()
         .readTimeout(15, TimeUnit.SECONDS)
         .connectTimeout(15, TimeUnit.SECONDS)
         .cache(cache)
-        .build();
+        .addInterceptor(okReplayInterceptor);
+    StethoInitializer.addInterceptor(builder.networkInterceptors());
+    return builder.build();
   }
 }

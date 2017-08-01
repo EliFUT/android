@@ -15,7 +15,12 @@ public final class UserPreferences {
   private static final String KEY_USER_NATION = "UserNation";
   private static final String KEY_USER_LEAGUE = "UserLeague";
   private static final String KEY_COACH_NAME = "COACH_NAME";
+  private static final String KEY_GAME_SPEED = "KEY_GAME_SPEED";
   private static final String KEY_COINS = "COINS";
+  // Game speed multiplier:
+  //  1 means 1 game minute equals to 1 second in wall clock.
+  //  2 means 1 game minute equals to 0.5 seconds in wall clock.
+  private static final int DEFAULT_GAME_SPEED = 1;
 
   public static final long INITIAL_COINS_AMOUNT = 200L;
   public static final long COINS_PRIZE_WIN = 75L;
@@ -26,6 +31,7 @@ public final class UserPreferences {
   private final JsonPreference<Club> clubPreference;
   private final JsonPreference<League> leaguePreference;
   private final Preference<String> coachPreference;
+  private final Preference<Integer> gameSpeedPreference;
   private final Preference<Long> coinsPreference;
 
   public UserPreferences(SharedPreferences preferences, Moshi moshi) {
@@ -38,6 +44,7 @@ public final class UserPreferences {
     leaguePreference = new JsonPreference<>(rxSharedPreferences, leagueAdapter, KEY_USER_LEAGUE);
     coachPreference = rxSharedPreferences.getString(KEY_COACH_NAME);
     coinsPreference = rxSharedPreferences.getLong(KEY_COINS);
+    gameSpeedPreference = rxSharedPreferences.getInteger(KEY_GAME_SPEED, DEFAULT_GAME_SPEED);
   }
 
   public Club club() {
@@ -58,6 +65,10 @@ public final class UserPreferences {
 
   public Long coins() {
     return coinsPreference.get();
+  }
+
+  public Integer gameSpeed() {
+    return gameSpeedPreference.get();
   }
 
   public boolean isCurrentUserClub(Club club) {
@@ -82,5 +93,9 @@ public final class UserPreferences {
 
   public Preference<Long> coinsPreference() {
     return coinsPreference;
+  }
+
+  public Preference<Integer> gameSpeedPreference() {
+    return gameSpeedPreference;
   }
 }

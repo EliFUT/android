@@ -68,11 +68,12 @@ public class NetworkModule {
 
   @Provides @Singleton static OkHttpClient provideOkHttpClient(Cache cache,
       OkReplayInterceptor okReplayInterceptor) {
-    return new OkHttpClient.Builder()
+    OkHttpClient.Builder builder = new OkHttpClient.Builder()
         .readTimeout(15, TimeUnit.SECONDS)
         .connectTimeout(15, TimeUnit.SECONDS)
         .cache(cache)
-        .addInterceptor(okReplayInterceptor)
-        .build();
+        .addInterceptor(okReplayInterceptor);
+    StethoInitializer.addInterceptor(builder.networkInterceptors());
+    return builder.build();
   }
 }

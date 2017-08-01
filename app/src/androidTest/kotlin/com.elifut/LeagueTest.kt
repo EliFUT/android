@@ -14,8 +14,10 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.elifut.activity.CurrentTeamDetailsActivity
 import com.elifut.activity.MainActivity
+import com.elifut.activity.MatchProgressActivity
 import com.jakewharton.espresso.OkHttp3IdlingResource
 import okreplay.*
+import org.hamcrest.Matchers.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -50,14 +52,26 @@ class LeagueTest {
   }
 
   @Test
-  @OkReplay
+  @OkReplay(mode = TapeMode.READ_WRITE)
   fun testLeague() {
     onView(withText("Argentina")).perform(click())
     onView(withId(R.id.fab)).perform(click())
-    onView(withText("Loading")).check(matches(isDisplayed()))
+    onView(withText(R.string.loading)).check(matches(isDisplayed()))
     Thread.sleep(3000)
     intended(hasComponent(CurrentTeamDetailsActivity::class.java.name))
-    onView(withText("Team Info")).check(matches(isDisplayed()))
-    onView(withText("League")).check(matches(isDisplayed()))
+    onView(withText(R.string.team_info)).check(matches(isDisplayed()))
+    onView(withText(R.string.league)).check(matches(isDisplayed()))
+    onView(withContentDescription("Open navigation drawer")).perform(click())
+    onView(withText(R.string.current_league)).perform(click())
+    onView(withText(R.string.schedule)).check(matches(isDisplayed()))
+    onView(withText(R.string.standings)).check(matches(isDisplayed()))
+    onView(withId(R.id.fab)).perform(click())
+    Thread.sleep((90L / MatchProgressActivity.SPEED) * 1000L)
+    onView(withText(R.string.end_first_half)).check(matches(isDisplayed()))
+    onView(withText(R.string.end_match)).check(matches(isDisplayed()))
+    onView(anyOf(
+        withText(R.string.defeated),
+        withText(R.string.winner),
+        withText(R.string.draw))).check(matches(isDisplayed()))
   }
 }

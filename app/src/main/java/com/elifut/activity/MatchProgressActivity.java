@@ -57,7 +57,7 @@ public class MatchProgressActivity extends ElifutActivity {
   // Game speed multiplier:
   //  1 means 1 game minute equals to 1 second in wall clock.
   //  2 means 1 game minute equals to 0.5 seconds in wall clock.
-  private static final int SPEED = BuildConfig.DEBUG ? 5 : 1;
+  public static final int SPEED = BuildConfig.DEBUG ? 5 : 1;
 
   @BindView(R.id.toolbar) Toolbar toolbar;
   @BindView(R.id.img_team_home) ImageView imgTeamHome;

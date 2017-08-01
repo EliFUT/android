@@ -52,6 +52,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/leagues/38.json
+    headers: &id001 {}
   response:
     status: 200
     headers:
@@ -74,6 +75,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs.json?league_id=38
+    headers: &id003 {}
   response:
     status: 200
     headers:
@@ -121,6 +123,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=536
+    headers: *id001
   response:
     status: 200
     headers:
@@ -167,6 +170,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=658
+    headers: &id002 {}
   response:
     status: 200
     headers:
@@ -189,6 +193,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=589
+    headers: *id002
   response:
     status: 200
     headers:
@@ -212,6 +217,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=377
+    headers: *id002
   response:
     status: 200
     headers:
@@ -235,6 +241,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=657
+    headers: *id002
   response:
     status: 200
     headers:
@@ -257,6 +264,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=540
+    headers: *id002
   response:
     status: 200
     headers:
@@ -280,6 +288,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=660
+    headers: *id002
   response:
     status: 200
     headers:
@@ -303,6 +312,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=537
+    headers: *id002
   response:
     status: 200
     headers:
@@ -326,6 +336,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=765
+    headers: *id002
   response:
     status: 200
     headers:
@@ -350,6 +361,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=760
+    headers: *id002
   response:
     status: 200
     headers:
@@ -373,6 +385,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=775
+    headers: *id002
   response:
     status: 200
     headers:
@@ -395,6 +408,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=539
+    headers: *id002
   response:
     status: 200
     headers:
@@ -418,6 +432,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=541
+    headers: *id002
   response:
     status: 200
     headers:
@@ -441,6 +456,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=659
+    headers: *id002
   response:
     status: 200
     headers:
@@ -463,6 +479,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=489
+    headers: *id002
   response:
     status: 200
     headers:
@@ -489,6 +506,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=490
+    headers: *id002
   response:
     status: 200
     headers:
@@ -512,6 +530,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=656
+    headers: *id002
   response:
     status: 200
     headers:
@@ -535,6 +554,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=515
+    headers: *id002
   response:
     status: 200
     headers:
@@ -559,6 +579,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=492
+    headers: *id002
   response:
     status: 200
     headers:
@@ -582,6 +603,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=538
+    headers: *id002
   response:
     status: 200
     headers:
@@ -607,6 +629,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=551
+    headers: *id002
   response:
     status: 200
     headers:
@@ -629,6 +652,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=545
+    headers: *id002
   response:
     status: 200
     headers:
@@ -653,6 +677,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=491
+    headers: *id002
   response:
     status: 200
     headers:
@@ -678,6 +703,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=376
+    headers: *id002
   response:
     status: 200
     headers:
@@ -700,6 +726,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=550
+    headers: *id002
   response:
     status: 200
     headers:
@@ -724,6 +751,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=252
+    headers: *id002
   response:
     status: 200
     headers:
@@ -746,6 +774,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=661
+    headers: *id002
   response:
     status: 200
     headers:
@@ -768,6 +797,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=663
+    headers: *id002
   response:
     status: 200
     headers:
@@ -791,6 +821,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=662
+    headers: *id002
   response:
     status: 200
     headers:
@@ -810,3 +841,162 @@ interactions:
       X-XSS-Protection: 1; mode=block
     body: '[{"id":9345,"base_id":178566,"first_name":"Javier","last_name":"García","common_name":"","name":"García","position":"GK","image":"http://elifut.com/assets/images/players/player_178566-f36d5947683553c688c93f11e66a408a47776462f26e886f925736fdc14e59a6.png","rating":75,"player_type":"standard","attribute_1":81,"attribute_2":75,"attribute_3":76,"attribute_4":81,"attribute_5":35,"attribute_6":65,"quality":"gold","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"gold"},{"id":2224,"base_id":215196,"first_name":"Martín","last_name":"Galmarini","common_name":"","name":"Galmarini","position":"RB","image":"http://elifut.com/assets/images/players/player_215196-dd310397b8bd8d692f082eedf308f8d602757ef3a1967cd5d39debad3280151a.png","rating":65,"player_type":"standard","attribute_1":64,"attribute_2":59,"attribute_3":66,"attribute_4":67,"attribute_5":62,"attribute_6":72,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"silver"},{"id":7884,"base_id":215178,"first_name":"Erik","last_name":"Godoy","common_name":"","name":"Godoy","position":"CB","image":"http://elifut.com/assets/images/players/player_215178-06c115fecb4bab5dfba7f7ca3195c901616f97b0f94ca7a47564c2fc41104c23.png","rating":68,"player_type":"standard","attribute_1":67,"attribute_2":32,"attribute_3":52,"attribute_4":50,"attribute_5":66,"attribute_6":77,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"silver"},{"id":8617,"base_id":185270,"first_name":"Juan
       Carlos","last_name":"Blengio","common_name":"","name":"Blengio","position":"CB","image":"http://elifut.com/assets/images/players/player_185270-71636bccbc8d6df183486d87b977c904587a576e2aea660f1e627224c81d7935.png","rating":68,"player_type":"standard","attribute_1":35,"attribute_2":39,"attribute_3":49,"attribute_4":41,"attribute_5":69,"attribute_6":66,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"silver"},{"id":8445,"base_id":215990,"first_name":"Óliver","last_name":"Benítez","common_name":"","name":"Benítez","position":"CB","image":"http://elifut.com/assets/images/players/player_215990-28cb14b4df5c6a9797193638e73ec0f3b05b15ad34d735ff7353441f43a1d38e.png","rating":65,"player_type":"standard","attribute_1":54,"attribute_2":30,"attribute_3":34,"attribute_4":34,"attribute_5":66,"attribute_6":72,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"silver"},{"id":5913,"base_id":215180,"first_name":"Mariano","last_name":"Echeverría","common_name":"","name":"Echeverría","position":"CB","image":"http://elifut.com/assets/images/players/player_215180-7e969b1d2aba9d215ad98bf5f1a888d14539ab408dd9dbdb3a91a75429ec3420.png","rating":70,"player_type":"standard","attribute_1":33,"attribute_2":36,"attribute_3":39,"attribute_4":46,"attribute_5":72,"attribute_6":69,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"silver"},{"id":8251,"base_id":178565,"first_name":"Bruno","last_name":"Urribarri","common_name":"","name":"Urribarri","position":"LB","image":"http://elifut.com/assets/images/players/player_178565-cbb75dcdd89fe8c2932b6fb123b8fd5374514eb55779583f0081a7599b6980b6.png","rating":68,"player_type":"standard","attribute_1":82,"attribute_2":42,"attribute_3":65,"attribute_4":64,"attribute_5":60,"attribute_6":59,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"silver"},{"id":8301,"base_id":143025,"first_name":"Emiliano","last_name":"Papa","common_name":"","name":"Papa","position":"LB","image":"http://elifut.com/assets/images/players/player_143025-f33df911f31fb35fb99cd0d2a02257c251017c7259d093c146a561e31ef85a2a.png","rating":72,"player_type":"standard","attribute_1":80,"attribute_2":46,"attribute_3":69,"attribute_4":71,"attribute_5":66,"attribute_6":61,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"silver"},{"id":9893,"base_id":193293,"first_name":"Jorge","last_name":"Rodríguez","common_name":"","name":"Rodríguez","position":"CM","image":"http://elifut.com/assets/images/players/player_193293-fec148f4e776e0d353ec164851adcd011685ca10662a5cfb1b2de48ed6628679.png","rating":73,"player_type":"rare","attribute_1":80,"attribute_2":69,"attribute_3":77,"attribute_4":72,"attribute_5":48,"attribute_6":64,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_60-1f212affe970324a68404c919ada7b012230b3ac51c0b932f8228edf56ea383a.png","color":"rare_silver"},{"id":899,"base_id":214661,"first_name":"Gaspar","last_name":"Iñíguez","common_name":"","name":"Iñíguez","position":"CM","image":"http://elifut.com/assets/images/players/player_214661-8d10df207bf023960b4636ae4d598c160f6bc443a78db1e7d9448c45be5b7b08.png","rating":67,"player_type":"standard","attribute_1":68,"attribute_2":54,"attribute_3":64,"attribute_4":68,"attribute_5":63,"attribute_6":72,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"silver"},{"id":3674,"base_id":219618,"first_name":"Emiliano","last_name":"Ellacópulos","common_name":"","name":"Ellacópulos","position":"LM","image":"http://elifut.com/assets/images/players/player_219618-86f4eaa29460336862d653d2f7b2816967914612b88b5163492270932d8db828.png","rating":64,"player_type":"rare","attribute_1":75,"attribute_2":58,"attribute_3":57,"attribute_4":64,"attribute_5":56,"attribute_6":66,"quality":"bronze","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"rare_bronze"},{"id":5543,"base_id":210363,"first_name":"Lucas","last_name":"Wílchez","common_name":"","name":"Wílchez","position":"LM","image":"http://elifut.com/assets/images/players/player_210363-95425b537d95761f6d487d06e87f126a60fffc13848e7cc51c7acff56fd04079.png","rating":73,"player_type":"rare","attribute_1":83,"attribute_2":66,"attribute_3":73,"attribute_4":77,"attribute_5":33,"attribute_6":57,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"rare_silver"},{"id":3208,"base_id":212156,"first_name":"Sebastián","last_name":"Rincón","common_name":"","name":"Rincón","position":"ST","image":"http://elifut.com/assets/images/players/player_212156-0117830626eb772bdb15fca4ddf0b70c56ca4761ba3af0ebfa35b2299d38d42c.png","rating":71,"player_type":"rare","attribute_1":84,"attribute_2":68,"attribute_3":61,"attribute_4":70,"attribute_5":27,"attribute_6":73,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_56-dd9fb318993d44d9ae45a8cd854502b7ee0ad6ed47c2bec781700313e02b8523.png","color":"rare_silver"},{"id":9419,"base_id":169815,"first_name":"Carlos","last_name":"Luna","common_name":"","name":"Luna","position":"ST","image":"http://elifut.com/assets/images/players/player_169815-bcd17cb9ac4c9fba7620e003d42e0b88210b101c80a04e25b9512cd5d37cf5dd.png","rating":71,"player_type":"standard","attribute_1":60,"attribute_2":71,"attribute_3":65,"attribute_4":67,"attribute_5":27,"attribute_6":66,"quality":"silver","nation_image":"http://elifut.com/assets/images/nations/normal/nation_52-23403106b7fb51eb281b277de94c1bf719a6dd5d2d1befafe469e16a2445181e.png","color":"silver"}]'
+- recorded: 2017-08-01T02:40:55.749Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/545.json
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 02:41:22 GMT
+      ETag: W/"f15915809dd5afd8f86901c3b95254d3"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: f8c406b9-57ad-4cc7-8681-50c1f614463a
+      X-Runtime: '0.004595'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":545,"base_id":110554,"abbrev_name":"Quilmes","name":"Quilmes Atlético Club","small_image":"http://elifut.com/assets/images/clubs/normal/club_110554-017a886780fd0f9c680bcb15535dd844cdd058b0c708d9dea64fc1ea390cdabb.png","large_image":"http://elifut.com/assets/images/clubs/large/club_110554-afd295f08e24b6d43ef9e3c2f7be76f140b635f33e685f9ab9c25132aa9205f5.png","league_id":38}'
+- recorded: 2017-08-01T02:40:55.844Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/589.json
+    headers: *id003
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 02:41:22 GMT
+      ETag: W/"05734cb2f2eeb7b6aa04563841b80a1e"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: eeb54672-4edd-4786-90b9-0911a18d058d
+      X-Runtime: '0.008817'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":589,"base_id":111022,"abbrev_name":"Belgrano","name":"Belgrano de Córdoba","small_image":"http://elifut.com/assets/images/clubs/normal/club_111022-746064e834f1ced531ff9d6cb42d405c69cde2b7bbf2c0e6bba8ab9ea1458527.png","large_image":"http://elifut.com/assets/images/clubs/large/club_111022-967beef1d2d48ee18055bbd30ca1ffdffaf65ddb43c59b6e22f55fc09e8a5379.png","league_id":38}'
+- recorded: 2017-08-01T02:45:47.620Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/660.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 02:46:14 GMT
+      ETag: W/"7a23e83a784e3ac5b683cfb352b8efb4"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 841fa58d-3880-41bf-97e7-c10562949162
+      X-Runtime: '0.004140'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":660,"base_id":111711,"abbrev_name":"Huracán","name":"Club Atlético Huracán","small_image":"http://elifut.com/assets/images/clubs/normal/club_111711-93a4042c0c08a62e2144d351d8dedef0bb26d856c111157f14f30285c516365c.png","large_image":"http://elifut.com/assets/images/clubs/large/club_111711-c2531b5689f1853faeedf6929dd23b9cf1116575e1606fce2a1185d5282a8f81.png","league_id":38}'
+- recorded: 2017-08-01T02:48:28.139Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/550.json
+    headers: {}
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 02:48:55 GMT
+      ETag: W/"efa4a7b4efd2ec01d192d205d5f2c87f"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 2726e808-ea42-4497-acab-97b18b9b4823
+      X-Runtime: '0.003689'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":550,"base_id":110580,"abbrev_name":"R. Central","name":"Rosario Central","small_image":"http://elifut.com/assets/images/clubs/normal/club_110580-3802d27c896aaeaad2a8f4dc0009dfb85bb78ed205acd47ffbadef9a774588a3.png","large_image":"http://elifut.com/assets/images/clubs/large/club_110580-a6231c02d1c85c5d2e738835d05331159d649c3bc60e7146d40b3aba451b67a5.png","league_id":38}'
+- recorded: 2017-08-01T02:49:57.303Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/252.json
+    headers: *id003
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 02:50:24 GMT
+      ETag: W/"210fabe089f256381991f8c014fec51a"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: 76200f34-4447-464e-9cd0-56def22b3b75
+      X-Runtime: '0.004231'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":252,"base_id":1013,"abbrev_name":"San Lorenzo","name":"San Lorenzo de Almagro","small_image":"http://elifut.com/assets/images/clubs/normal/club_1013-2041e60fdeb29201911a6e77bfac1fec8c1183dca42a840154ce097fc2082bf0.png","large_image":"http://elifut.com/assets/images/clubs/large/club_1013-5056aefd31e5fcf57fc7ed59fd01cbcf3aadb19124fd1869076761fd32e9503f.png","league_id":38}'
+- recorded: 2017-08-01T02:55:46.727Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/491.json
+    headers: *id001
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 02:56:13 GMT
+      ETag: W/"ea2c8d089204c4d29eea258719e431ec"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: d2df38f2-7d3c-4465-a643-24201f742971
+      X-Runtime: '0.009177'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":491,"base_id":101085,"abbrev_name":"Racing Club","name":"Racing Club","small_image":"http://elifut.com/assets/images/clubs/normal/club_101085-428cdce7ad896837912b41e0e134697357cb5184dc3ab2ace6d8bf763832e5b2.png","large_image":"http://elifut.com/assets/images/clubs/large/club_101085-8d03b5b05bc0e0727fd16be9bbd690d9cbfa9e191048c851922118e6d0bbcfa3.png","league_id":38}'
+- recorded: 2017-08-01T02:57:25.092Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/657.json
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 02:57:52 GMT
+      ETag: W/"ef988b938fdbb8a89041107cfec561b1"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: e782eaab-f70c-4a62-959c-cfe182335e9b
+      X-Runtime: '0.007957'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":657,"base_id":111707,"abbrev_name":"Aldosivi","name":"Club Atlético Aldosivi","small_image":"http://elifut.com/assets/images/clubs/normal/club_111707-e2c29823bf44092ec7be5d847da071ae8995f8b5d3c654ac32e16c2ac870b782.png","large_image":"http://elifut.com/assets/images/clubs/large/club_111707-2186515ac4ab28ca9427a2eaeeb2a91715e96f4c1d771ed7cd45779f2bf1c71f.png","league_id":38}'

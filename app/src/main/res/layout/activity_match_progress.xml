@@ -24,13 +24,38 @@
 
   <include layout="@layout/content_match_progress"/>
 
-  <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_play_pause"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="@dimen/fab_margin"
-    android:src="@drawable/ic_pause_white_48dp"/>
+  <LinearLayout
+      android:gravity="bottom|end"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:orientation="horizontal"
+      android:weightSum="0.9">
+
+    <android.support.design.widget.FloatingActionButton
+      android:id="@+id/fab_backward"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.3"
+      android:layout_margin="@dimen/fab_margin"
+      android:src="@drawable/ic_backward_white_48dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+      android:id="@+id/fab_fast_forward"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.3"
+      android:layout_margin="@dimen/fab_margin"
+      android:src="@drawable/ic_fast_forward_white_48dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+      android:id="@+id/fab_play_pause"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.3"
+      android:layout_margin="@dimen/fab_margin"
+      android:src="@drawable/ic_pause_white_48dp"/>
+
+  </LinearLayout>
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/fab_done"

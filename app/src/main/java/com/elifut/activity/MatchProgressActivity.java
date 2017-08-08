@@ -253,9 +253,11 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   private void setGameSpeed(int gameSpeed) {
-    userPreferences.gameSpeedPreference().set(gameSpeed);
-    stopTimer();
-    startTimer();
+    if (userPreferences.gameSpeed() != gameSpeed) {
+      userPreferences.gameSpeedPreference().set(gameSpeed);
+      stopTimer();
+      startTimer();
+    }
     Drawable slowerBtnBg = backwardButton.getBackground();
     Drawable fasterBtnBg = fastForwardButton.getBackground();
     slowerBtnBg.setColorFilter(null);

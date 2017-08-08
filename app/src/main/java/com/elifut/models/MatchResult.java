@@ -1,12 +1,9 @@
 package com.elifut.models;
 
-import com.google.auto.value.AutoValue;
-
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.elifut.BuildConfig;
+import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
@@ -57,7 +54,7 @@ public abstract class MatchResult implements Parcelable, Persistable {
       int awayGoals = awayGoals().size();
       int homeGoals = homeGoals().size();
       if (homeGoals != awayGoals) {
-        winner = homeGoals > awayGoals ? home: away;
+        winner = homeGoals > awayGoals ? home : away;
         loser = homeGoals > awayGoals ? away : home;
         isHomeWin = homeGoals > awayGoals;
         isAwayWin = !isHomeWin;
@@ -100,9 +97,8 @@ public abstract class MatchResult implements Parcelable, Persistable {
     Observable<Goal> awayGoalsObservable = Observable.from(awayGoals());
     return Observable.merge(homeGoalsObservable, awayGoalsObservable)
         .observeOn(Schedulers.io())
-        .flatMap((goal) -> {
-          int delay = goal.time() - elapsedTime;
-          return Observable.<MatchEvent>just(goal).delay((1000 * delay) / gameSpeed, TimeUnit.MILLISECONDS);
-        }).skip(elapsedTime, TimeUnit.SECONDS);
+        .flatMap((goal) -> Observable.<MatchEvent>just(goal)
+            .delay((1000 * goal.time()) / gameSpeed, TimeUnit.MILLISECONDS)
+            .skip((1000 * elapsedTime) / gameSpeed, TimeUnit.MILLISECONDS));
   }
 }

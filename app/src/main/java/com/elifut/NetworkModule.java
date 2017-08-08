@@ -1,6 +1,7 @@
 package com.elifut;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.elifut.services.ElifutService;
 
@@ -15,6 +16,7 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import okreplay.OkReplayInterceptor;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
@@ -73,6 +75,10 @@ public class NetworkModule {
         .connectTimeout(15, TimeUnit.SECONDS)
         .cache(cache)
         .addInterceptor(okReplayInterceptor);
+    HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+    logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BASIC :
+        HttpLoggingInterceptor.Level.NONE);
+    builder.addInterceptor(logging);
     StethoInitializer.addInterceptor(builder.networkInterceptors());
     return builder.build();
   }

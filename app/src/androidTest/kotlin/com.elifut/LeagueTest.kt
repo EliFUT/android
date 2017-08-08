@@ -52,7 +52,7 @@ class LeagueTest {
   }
 
   @Test
-  @OkReplay(mode = TapeMode.READ_WRITE)
+  @OkReplay
   fun testLeague() {
     onView(withText("Argentina")).perform(click())
     onView(withId(R.id.fab)).perform(click())

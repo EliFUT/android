@@ -116,6 +116,7 @@ dependencies {
   implementation "com.jakewharton.rxbinding:rxbinding:$rxBindingVersion"
   implementation 'io.reactivex:rxandroid:1.2.1'
   implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
   implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
   implementation "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
   implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"

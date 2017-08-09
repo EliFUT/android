@@ -30,6 +30,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/random.json?nation_id=52
+    headers: &id001 {}
   response:
     status: 200
     headers:
@@ -52,7 +53,6 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/leagues/38.json
-    headers: &id001 {}
   response:
     status: 200
     headers:
@@ -75,6 +75,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs.json?league_id=38
+    headers: *id001
   response:
     status: 200
     headers:
@@ -122,7 +123,6 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=536
-    headers: &id002 {}
   response:
     status: 200
     headers:
@@ -147,7 +147,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=535
-    headers: *id001
+    headers: &id002 {}
   response:
     status: 200
     headers:
@@ -170,7 +170,6 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=658
-    headers: &id004 {}
   response:
     status: 200
     headers:
@@ -193,7 +192,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=589
-    headers: *id002
+    headers: &id004 {}
   response:
     status: 200
     headers:
@@ -217,7 +216,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=377
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -241,6 +240,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=657
+    headers: *id001
   response:
     status: 200
     headers:
@@ -263,7 +263,6 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=540
-    headers: &id003 {}
   response:
     status: 200
     headers:
@@ -287,7 +286,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/players/squad.json?club_id=660
-    headers: *id003
+    headers: &id003 {}
   response:
     status: 200
     headers:
@@ -844,6 +843,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/545.json
+    headers: *id001
   response:
     status: 200
     headers:
@@ -866,7 +866,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/589.json
-    headers: *id002
+    headers: *id004
   response:
     status: 200
     headers:
@@ -889,7 +889,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/660.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -912,7 +912,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/550.json
-    headers: *id004
+    headers: &id005 {}
   response:
     status: 200
     headers:
@@ -935,7 +935,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/252.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -958,6 +958,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/491.json
+    headers: *id001
   response:
     status: 200
     headers:
@@ -980,7 +981,6 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/657.json
-    headers: {}
   response:
     status: 200
     headers:
@@ -1003,7 +1003,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/765.json
-    headers: *id004
+    headers: *id005
   response:
     status: 200
     headers:
@@ -1026,7 +1026,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/540.json
-    headers: *id002
+    headers: *id004
   response:
     status: 200
     headers:
@@ -1049,7 +1049,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/377.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -1072,7 +1072,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/492.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -1095,7 +1095,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/659.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -1118,7 +1118,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/541.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -1141,7 +1141,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/537.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -1164,7 +1164,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/775.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -1187,7 +1187,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/662.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -1210,7 +1210,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/490.json
-    headers: *id001
+    headers: *id002
   response:
     status: 200
     headers:
@@ -1233,6 +1233,7 @@ interactions:
   request:
     method: GET
     uri: http://elifut.com/clubs/538.json
+    headers: *id001
   response:
     status: 200
     headers:
@@ -1251,3 +1252,25 @@ interactions:
       X-Runtime: '0.011016'
       X-XSS-Protection: 1; mode=block
     body: '{"id":538,"base_id":110396,"abbrev_name":"Newell''s","name":"Newell''s Old Boys","small_image":"http://elifut.com/assets/images/clubs/normal/club_110396-fb30741858591e553f352557fede2335dfc6491812185bd3473297648034622e.png","large_image":"http://elifut.com/assets/images/clubs/large/club_110396-04a192743b98747b5372168c91f455c748a8c223dc86d2eac78a40822a84b2a5.png","league_id":38}'
+- recorded: 2017-08-01T05:05:32.709Z
+  request:
+    method: GET
+    uri: http://elifut.com/clubs/376.json
+  response:
+    status: 200
+    headers:
+      Cache-Control: max-age=0, private, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json; charset=utf-8
+      Date: Tue, 01 Aug 2017 05:05:56 GMT
+      ETag: W/"210ddb2c80dcdbc641b3fae2d144072a"
+      Server: nginx/1.10.3 + Phusion Passenger 5.1.5
+      Status: 200 OK
+      Transfer-Encoding: chunked
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: Phusion Passenger 5.1.5
+      X-Request-Id: d6dfcd04-d348-41ab-a4ce-7111f5d028bd
+      X-Runtime: '0.007179'
+      X-XSS-Protection: 1; mode=block
+    body: '{"id":376,"base_id":1876,"abbrev_name":"River Plate","name":"River Plate","small_image":"http://elifut.com/assets/images/clubs/normal/club_1876-d6b0db307d293033e60bbb66897baf9900b02fea9ea4caaa6b74fe9375ffa76b.png","large_image":"http://elifut.com/assets/images/clubs/large/club_1876-bc889e7b0f47495fc9787dac096352367765b3193321072eef909cb396735c5d.png","league_id":38}'

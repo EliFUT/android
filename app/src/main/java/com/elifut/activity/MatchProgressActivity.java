@@ -74,6 +74,7 @@ public class MatchProgressActivity extends ElifutActivity {
   @BindView(R.id.fab_fast_forward) FloatingActionButton fastForwardButton;
   @BindView(R.id.fab_backward) FloatingActionButton backwardButton;
   @BindView(R.id.fab_done) FloatingActionButton doneButton;
+  @BindView(R.id.fab_container) LinearLayout fabContainer;
   @BindString(R.string.end_first_half) String strEndOfFirstHalf;
   @BindString(R.string.end_match) String strEndOfMatch;
   @BindDimen(R.dimen.match_event_icon_size) int iconSize;
@@ -147,7 +148,6 @@ public class MatchProgressActivity extends ElifutActivity {
     ButterKnife.bind(this);
     daggerComponent().inject(this);
     setSupportActionBar(toolbar);
-
     if (savedInstanceState == null) {
       Intent intent = getIntent();
       round = intent.getParcelableExtra(EXTRA_ROUND);
@@ -155,8 +155,8 @@ public class MatchProgressActivity extends ElifutActivity {
     userClub = userPreferences.club();
     match = round.findMatchByClub(userClub);
     matchResult = match.result();
-    loadClubs(match.home().id(), match.away().id());
     setGameSpeed(userPreferences.gameSpeed());
+    loadClubs(match.home().id(), match.away().id());
   }
 
   @Override protected void onDestroy() {
@@ -212,7 +212,8 @@ public class MatchProgressActivity extends ElifutActivity {
             boolean isWinner = !isDraw && userClub.nameEquals(winner);
             if (isDraw || isWinner) {
               appendEvent(R.drawable.ic_attach_money_black_24dp, "+" +
-                      (isWinner ? UserPreferences.COINS_PRIZE_WIN : UserPreferences.COINS_PRIZE_DRAW),
+                      (isWinner ? UserPreferences.COINS_PRIZE_WIN : UserPreferences
+                          .COINS_PRIZE_DRAW),
                   Gravity.CENTER_HORIZONTAL);
             }
             playPauseButton.setVisibility(View.GONE);
@@ -252,42 +253,46 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   private void setGameSpeed(int gameSpeed) {
-    userPreferences.gameSpeedPreference().set(gameSpeed);
-    stopTimer();
-    startTimer();
-    backwardButton.getBackground().setColorFilter(null);
+    if (userPreferences.gameSpeed() != gameSpeed) {
+      userPreferences.gameSpeedPreference().set(gameSpeed);
+      stopTimer();
+      startTimer();
+    }
+    Drawable slowerBtnBg = backwardButton.getBackground();
+    Drawable fasterBtnBg = fastForwardButton.getBackground();
+    slowerBtnBg.setColorFilter(null);
     backwardButton.setClickable(true);
-    fastForwardButton.getBackground().setColorFilter(null);
+    fasterBtnBg.setColorFilter(null);
     fastForwardButton.setClickable(true);
     if (gameSpeed == MIN_GAME_SPEED) {
-      backwardButton.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+      slowerBtnBg.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
       backwardButton.setClickable(false);
     } else if (gameSpeed == MAX_GAME_SPEED) {
-      fastForwardButton.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+      fasterBtnBg.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
       fastForwardButton.setClickable(false);
     }
   }
 
   @OnClick(R.id.fab_backward) void onBackward() {
     int currSpeed = userPreferences.gameSpeed();
-    currSpeed/=2;
+    currSpeed /= 2;
     setGameSpeed(Math.max(MIN_GAME_SPEED, currSpeed));
   }
 
   @OnClick(R.id.fab_fast_forward) void onFastForward() {
     int currSpeed = userPreferences.gameSpeed();
-    currSpeed*=2;
+    currSpeed *= 2;
     setGameSpeed(Math.min(MAX_GAME_SPEED, currSpeed));
   }
 
   @OnClick(R.id.fab_play_pause) void onClickPause() {
     if (isRunning) {
       stopTimer();
-      Snackbar.make(playPauseButton, R.string.match_paused, Snackbar.LENGTH_SHORT).show();
+      Snackbar.make(fabContainer, R.string.match_paused, Snackbar.LENGTH_SHORT).show();
       playPauseButton.setImageResource(R.drawable.ic_play_arrow_white_48dp);
     } else {
       startTimer();
-      Snackbar.make(playPauseButton, R.string.match_resumed, Snackbar.LENGTH_SHORT).show();
+      Snackbar.make(fabContainer, R.string.match_resumed, Snackbar.LENGTH_SHORT).show();
       playPauseButton.setImageResource(R.drawable.ic_pause_white_48dp);
     }
   }

@@ -155,6 +155,7 @@ public class MatchProgressActivity extends ElifutActivity {
     userClub = userPreferences.club();
     match = round.findMatchByClub(userClub);
     matchResult = match.result();
+    //noinspection ConstantConditions
     getSupportActionBar().setTitle(getString(R.string.round_x_match, round.roundNumber()));
     setGameSpeed(userPreferences.gameSpeed());
     loadClubs(match.home().id(), match.away().id());

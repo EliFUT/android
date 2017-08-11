@@ -1,11 +1,9 @@
 package com.elifut.activity;
 
 import android.animation.Animator;
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -35,7 +33,6 @@ import com.elifut.models.Club;
 import com.elifut.models.LeagueRound;
 import com.elifut.preferences.LeagueDetails;
 import com.elifut.preferences.UserPreferences;
-import com.elifut.util.AndroidVersion;
 import com.elifut.util.ColorUtilsKt;
 import com.squareup.picasso.Picasso;
 
@@ -207,7 +204,6 @@ public abstract class NavigationActivity extends ElifutActivity
     return true;
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   @Optional
   @OnClick(R.id.fab)
   public void onClickFab() {
@@ -222,19 +218,15 @@ public abstract class NavigationActivity extends ElifutActivity
     int cx = drawerLayout.getWidth() - distFromEdge;
     int cy = drawerLayout.getHeight() - distFromEdge;
     float finalRadius = Math.max(drawerLayout.getWidth(), drawerLayout.getHeight());
-    if (AndroidVersion.isAtLeastLollipop()) {
-      Animator circularReveal =
-          ViewAnimationUtils.createCircularReveal(circularRevealOverlay, cx, cy, 0, finalRadius)
-              .setDuration(400);
-      circularReveal.addListener(new SimpleAnimatorListener() {
-        @Override public void onAnimationEnd(Animator animation) {
-          startMatchProgressActivity(round);
-        }
-      });
-      circularReveal.start();
-    } else {
-      startMatchProgressActivity(round);
-    }
+    Animator circularReveal =
+        ViewAnimationUtils.createCircularReveal(circularRevealOverlay, cx, cy, 0, finalRadius)
+            .setDuration(400);
+    circularReveal.addListener(new SimpleAnimatorListener() {
+      @Override public void onAnimationEnd(Animator animation) {
+        startMatchProgressActivity(round);
+      }
+    });
+    circularReveal.start();
   }
 
   private void startMatchProgressActivity(LeagueRound round) {

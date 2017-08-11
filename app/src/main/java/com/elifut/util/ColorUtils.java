@@ -18,9 +18,7 @@ public final class ColorUtils {
 
   public static void colorizeHeader(Activity activity, Toolbar toolbar, int primaryColor) {
     toolbar.setBackgroundColor(primaryColor);
-    if (AndroidVersion.isAtLeastLollipop()) {
-      activity.getWindow().setStatusBarColor(darken(primaryColor, 0.9f));
-    }
+    activity.getWindow().setStatusBarColor(darken(primaryColor, 0.9f));
   }
 
   /** Returns darker version of specified color */

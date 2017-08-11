@@ -22,13 +22,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     >
 
-    <com.elifut.widget.FractionView
-      android:id="@+id/fractionView"
-      android:layout_width="30dp"
-      android:layout_height="30dp"
+    <com.github.rahatarmanahmed.cpv.CircularProgressView
+      android:id="@+id/progress_view"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      app:cpv_indeterminate="false"
       android:layout_gravity="end"
-      android:layout_marginBottom="20dp"
-      />
+      android:layout_marginBottom="20dp"/>
 
     <LinearLayout
       android:layout_width="wrap_content"

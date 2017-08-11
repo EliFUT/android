@@ -20,18 +20,15 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     fragmentTitles.add(title);
   }
 
-  @Override
-  public Fragment getItem(int position) {
+  @Override public Fragment getItem(int position) {
     return fragments.get(position);
   }
 
-  @Override
-  public int getCount() {
+  @Override public int getCount() {
     return fragments.size();
   }
 
-  @Override
-  public CharSequence getPageTitle(int position) {
+  @Override public CharSequence getPageTitle(int position) {
     return fragmentTitles.get(position);
   }
 }

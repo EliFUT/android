@@ -34,7 +34,7 @@ import com.elifut.models.Match;
 import com.elifut.models.MatchResult;
 import com.elifut.preferences.LeagueDetails;
 import com.elifut.preferences.UserPreferences;
-import com.elifut.widget.FractionView;
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.TimeUnit;
@@ -49,7 +49,6 @@ import butterknife.OnClick;
 import icepick.State;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -69,7 +68,7 @@ public class MatchProgressActivity extends ElifutActivity {
   @BindView(R.id.events_timeline) View eventsTimeline;
   @BindView(R.id.events_scrollview) ScrollView eventsScrollView;
   @BindView(R.id.txt_team_away_goals) TextView txtTeamAwayGoals;
-  @BindView(R.id.fractionView) FractionView fractionView;
+  @BindView(R.id.progress_view) CircularProgressView fractionView;
   @BindView(R.id.fab_play_pause) FloatingActionButton playPauseButton;
   @BindView(R.id.fab_fast_forward) FloatingActionButton fastForwardButton;
   @BindView(R.id.fab_backward) FloatingActionButton backwardButton;
@@ -158,6 +157,7 @@ public class MatchProgressActivity extends ElifutActivity {
     //noinspection ConstantConditions
     getSupportActionBar().setTitle(getString(R.string.round_x_match, round.roundNumber()));
     setGameSpeed(userPreferences.gameSpeed());
+    fractionView.setMaxProgress(45);
     loadClubs(match.home().id(), match.away().id());
   }
 
@@ -200,7 +200,7 @@ public class MatchProgressActivity extends ElifutActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(l -> {
           elapsedMinutes++;
-          fractionView.setFraction(elapsedMinutes % 45, 60);
+          fractionView.setProgress(elapsedMinutes % 45);
           if (elapsedMinutes == 45) {
             appendEvent(R.drawable.ic_schedule_black_48px, strEndOfFirstHalf, Gravity.CENTER);
           } else if (elapsedMinutes == 90) {
@@ -220,7 +220,7 @@ public class MatchProgressActivity extends ElifutActivity {
             backwardButton.setVisibility(View.GONE);
             fastForwardButton.setVisibility(View.GONE);
             doneButton.setVisibility(View.VISIBLE);
-            fractionView.setFraction(45, 60);
+            fractionView.setProgress(45);
           }
         }));
     isRunning = true;

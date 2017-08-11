@@ -124,6 +124,7 @@ dependencies {
   implementation "com.google.dagger:dagger:$daggerVersion"
   implementation "com.squareup.moshi:moshi:$moshiVersion"
   implementation "frankiesardo:icepick:$icepickVersion"
+  implementation "com.github.rahatarmanahmed:circularprogressview:$circularProgressViewVersion"
   debugImplementation "com.facebook.stetho:stetho-okhttp3:$stethoVersion"
   debugImplementation "com.facebook.stetho:stetho-js-rhino:$stethoVersion"
   debugImplementation 'com.android.support:multidex:1.0.2'

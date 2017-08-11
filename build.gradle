@@ -66,6 +66,7 @@ allprojects {
     robolectricVersion = '3.3.2'
     autoValueVersion = '1.4.1'
     crashlyticsVersion = '2.6.8'
+    circularProgressViewVersion = '2.5.0'
     javapoetVersion = '1.9.0'
   }
 }

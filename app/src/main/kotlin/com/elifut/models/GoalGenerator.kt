@@ -6,8 +6,9 @@ import com.elifut.util.times
 import org.apache.commons.math3.random.RandomGenerator
 import org.apache.commons.math3.random.Well19937c
 
-open class GoalGenerator @JvmOverloads constructor(private val dataStore: ClubDataStore,
-                                              private val random: RandomGenerator = Well19937c()) {
+open class GoalGenerator @JvmOverloads constructor(
+    private val dataStore: ClubDataStore,
+    private val random: RandomGenerator = Well19937c()) {
   /**
    * Returns {@param qty} goals for the provided {@link Club} where the goal scorer is a random
    * player selected by using the provided {@link RandomGenerator}. By default, attackers have 8x

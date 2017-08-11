@@ -50,4 +50,5 @@
   <string name="game_problem">An error occurred while starting the game. Please try again.</string>
   <string name="is_inviting_you">is challenging you to a game!</string>
   <string name="league_ended">League ended</string>
+  <string name="round_x_match">Round %1$d match</string>
 </resources>

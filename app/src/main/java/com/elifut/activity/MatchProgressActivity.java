@@ -155,6 +155,7 @@ public class MatchProgressActivity extends ElifutActivity {
     userClub = userPreferences.club();
     match = round.findMatchByClub(userClub);
     matchResult = match.result();
+    getSupportActionBar().setTitle(getString(R.string.round_x_match, round.roundNumber()));
     setGameSpeed(userPreferences.gameSpeed());
     loadClubs(match.home().id(), match.away().id());
   }
@@ -167,11 +168,9 @@ public class MatchProgressActivity extends ElifutActivity {
   }
 
   private void loadClubs(int homeId, int awayId) {
-    Subscription subscription = clubObservable(homeId)
+    subscriptions.add(clubObservable(homeId)
         .mergeWith(clubObservable(awayId))
-        .subscribe(clubObserver);
-
-    subscriptions.add(subscription);
+        .subscribe(clubObserver));
   }
 
   private Observable<Club> clubObservable(int id) {

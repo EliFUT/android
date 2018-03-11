@@ -72,7 +72,7 @@ class OnlineFriendlyActivity : NavigationActivity() {
   }
 
   companion object Factory {
-    private val TAG = "OnlineFriendlyActivity"
+    private const val TAG = "OnlineFriendlyActivity"
     fun newIntent(context: Context) = Intent(context, OnlineFriendlyActivity::class.java)
   }
 }

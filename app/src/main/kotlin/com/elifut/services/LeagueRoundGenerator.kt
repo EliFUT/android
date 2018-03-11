@@ -2,7 +2,6 @@ package com.elifut.services
 
 import android.support.annotation.VisibleForTesting
 import android.util.Log
-import android.util.SparseArray
 import com.elifut.models.Club
 import com.elifut.models.LeagueRound
 import com.elifut.models.Match
@@ -35,8 +34,8 @@ open class LeagueRoundGenerator {
       clubMap.put(i, clubsCopy[i - 1])
     }
 
-    for (round in 0..totalRounds - 1) {
-      for (match in 0..matchesPerRound - 1) {
+    for (round in 0 until totalRounds) {
+      for (match in 0 until matchesPerRound) {
         val home = (round + match) % (totalClubs - 1)
         var away = (totalClubs - 1 - match + round) % (totalClubs - 1)
 

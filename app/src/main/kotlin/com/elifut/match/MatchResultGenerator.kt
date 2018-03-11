@@ -24,12 +24,10 @@ open class MatchResultGenerator @JvmOverloads constructor(
     val homeWinProbability = MatchResult.HOME_WIN_PROBABILITY + ratingDiffModifier
     val drawProbability = homeWinProbability + MatchResult.DRAW_PROBABILITY
 
-    val winner = if (result <= homeWinProbability) {
-      home
-    } else if (result <= drawProbability) {
-      null
-    } else {
-      away
+    val winner = when {
+      result <= homeWinProbability -> home
+      result <= drawProbability -> null
+      else -> away
     }
 
     Log.d(TAG, String.format(Locale.getDefault(),
@@ -45,7 +43,7 @@ open class MatchResultGenerator @JvmOverloads constructor(
       if (totalGoals <= 2) {
         // 1x0 or 2x0
         winnerGoals = goalGenerator.create(Math.max(totalGoals, 1), winner)
-        loserGoals = emptyList<Goal>()
+        loserGoals = emptyList()
       } else {
         // 3+ goals (eg.: 3x1, 3x0, 4x0, etc)
         loserGoals = goalGenerator.create(random.nextInt(Math.max(1, totalGoals / 2 + 1)), loser)

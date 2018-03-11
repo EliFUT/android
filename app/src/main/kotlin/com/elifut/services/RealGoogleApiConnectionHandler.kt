@@ -97,8 +97,8 @@ class RealGoogleApiConnectionHandler(private val activity: Activity) :
   }
 
   companion object {
-    private val TAG = "GoogleApiClientCallback"
+    private const val TAG = "GoogleApiClientCallback"
     // request codes we use when invoking an external activity
-    private val RC_SIGN_IN = 9001
+    private const val RC_SIGN_IN = 9001
   }
 }

@@ -1,6 +1,5 @@
 package com.elifut;
 
-import android.os.Build;
 import android.support.annotation.Nullable;
 
 import com.elifut.match.MatchResultController;
@@ -13,6 +12,7 @@ import com.elifut.services.ElifutDataStore;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
@@ -27,9 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(ElifutTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
-    manifest = ElifutTestRunner.MANIFEST_PATH)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class MatchResultControllerTest {
   private final Club userClub = Club.create(1, "Club A");
   private final Club nonUserClub = Club.create(2, "Club B");
@@ -46,7 +45,7 @@ public class MatchResultControllerTest {
     persistenceService.create(leagueClubs.toList().toBlocking().first());
   }
 
-  @Test public void testUserWinner() throws Exception {
+  @Test public void testUserWinner() {
     MatchResultController controller = new MatchResultController(userPreferences);
     MatchResult matchResult = new TestMatchResult() {
       @Nullable @Override public Club winner() {

@@ -6,14 +6,14 @@ buildscript {
   }
 
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.3-2"
-    classpath 'com.android.tools.build:gradle:3.0.0-beta1'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.30"
+    classpath 'com.android.tools.build:gradle:3.1.0-rc01'
     classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.3'
     classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
     classpath 'com.google.gms:google-services:3.1.0'
     classpath 'io.fabric.tools:gradle:1.+'
-    classpath 'com.airbnb.okreplay:gradle-plugin:1.3.0'
+    classpath 'com.airbnb.okreplay:gradle-plugin:1.4.0'
   }
 
   // Exclude the Lombok version that the android plugin depends on (fix for Retrolambda).
@@ -38,32 +38,32 @@ allprojects {
     versionCode = 6
     versionName = '1.0.5'
     minSdkVersion = 21
-    compileSdkVersion = 26
-    targetSdkVersion = 26
-    buildToolsVersion = '26.0.1'
+    compileSdkVersion = 27
+    targetSdkVersion = 27
+    buildToolsVersion = '27.0.3'
     autoValueMoshiVersion = '0.4.3'
-    supportLibVersion = '26.0.0'
+    supportLibVersion = '27.1.0'
     devApiEndpoint = "http://10.0.2.2:3000/"
     prodApiEndpoint = "http://elifut.com/"
     retrofitVersion = "2.3.0"
-    playServicesVersion = '11.0.4'
+    playServicesVersion = '11.8.0'
     autoValueCursorVersion = '1.1.0'
-    kotlinVersion = '1.1.3-2'
+    kotlinVersion = '1.2.30'
     moshiVersion = '1.5.0'
     sqlbriteVersion = '1.1.2'
     butterknifeVersion = '8.7.0'
     okhttpVersion = '3.8.1'
-    okReplayVersion = '1.3.0'
+    okReplayVersion = '1.4.0'
     espressoVersion = '3.0.0'
     supportTestVersion = '1.0.0'
     icepickVersion = '3.2.0'
     autoValueParcelVersion = '0.2.5'
     rxJavaVersion = '1.3.0'
     rxBindingVersion = '1.0.1'
-    guavaVersion = '22.0-android'
-    daggerVersion = '2.11'
+    guavaVersion = '23.3-android'
+    daggerVersion = '2.15'
     stethoVersion = '1.5.0'
-    robolectricVersion = '3.3.2'
+    robolectricVersion = '3.7.1'
     autoValueVersion = '1.4.1'
     crashlyticsVersion = '2.6.8'
     circularProgressViewVersion = '2.5.0'

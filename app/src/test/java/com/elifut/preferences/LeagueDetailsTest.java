@@ -1,10 +1,7 @@
 package com.elifut.preferences;
 
-import android.os.Build;
-
 import com.elifut.AutoValueClasses;
 import com.elifut.BuildConfig;
-import com.elifut.ElifutTestRunner;
 import com.elifut.TestElifutApplication;
 import com.elifut.TestFixtures;
 import com.elifut.match.MatchResultGenerator;
@@ -22,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
@@ -40,9 +38,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(ElifutTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
-    manifest = ElifutTestRunner.MANIFEST_PATH)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class LeagueDetailsTest {
   private final List<Club> clubs = Arrays.asList(TestFixtures.GREMIO, TestFixtures.INTERNACIONAL);
   private final Goal goal = newGoal(1, TestFixtures.GREMIO);

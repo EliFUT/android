@@ -251,7 +251,7 @@ class GoogleApiGameRoomHandler(private val activity: Activity,
   }
 
   companion object Factory {
-    private val TAG = "GoogleApiGameRoomHandler"
+    private val TAG = "GoogleApiGameRoomHandle"
     val RC_WAITING_ROOM = 10002
   }
 }

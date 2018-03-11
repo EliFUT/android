@@ -1,10 +1,7 @@
 package com.elifut.models.converter;
 
-import android.os.Build;
-
 import com.elifut.AutoValueClasses;
 import com.elifut.BuildConfig;
-import com.elifut.ElifutTestRunner;
 import com.elifut.TestElifutApplication;
 import com.elifut.TestFixtures;
 import com.elifut.models.Club;
@@ -16,6 +13,7 @@ import com.elifut.services.ElifutDataStore;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
@@ -27,9 +25,8 @@ import javax.inject.Inject;
 import static com.elifut.TestFixtures.newGoal;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(ElifutTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
-    manifest = ElifutTestRunner.MANIFEST_PATH)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class MatchConverterTest {
   @Inject ElifutDataStore service;
 

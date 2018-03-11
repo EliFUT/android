@@ -1,10 +1,7 @@
 package com.elifut.match;
 
-import android.os.Build;
-
 import com.elifut.AutoValueClasses;
 import com.elifut.BuildConfig;
-import com.elifut.ElifutTestRunner;
 import com.elifut.TestElifutApplication;
 import com.elifut.Util;
 import com.elifut.models.Club;
@@ -17,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
@@ -29,9 +27,8 @@ import javax.inject.Inject;
 import static com.elifut.TestFixtures.newGoal;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(ElifutTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP,
-    manifest = ElifutTestRunner.MANIFEST_PATH)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class LeagueRoundExecutorTest {
   private final Club clubA = Club.create(1, "Club A").newWithWin(1);
   private final Club clubB = Club.create(2, "Club B").newWithLoss(-1);
@@ -52,7 +49,7 @@ public class LeagueRoundExecutorTest {
     executor = new LeagueRoundExecutor(persistenceService);
   }
 
-  @Test public void testExecute() throws Exception {
+  @Test public void testExecute() {
     MatchResult result1 = MatchResult.builder()
         .awayGoals(Collections.emptyList())
         .homeGoals(Collections.singletonList(newGoal(10, clubA)))

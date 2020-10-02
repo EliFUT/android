@@ -19,7 +19,7 @@ Windows game [Elifoot 98](elifoot.net) based on the FIFA 15 Ultimate Team data.
 Check out the original [Medium post](https://medium.com/@felipecsl/creating-an-android-app-for-beginners-part-i-410a7a64d9b1)
 for a more detailed introduction and motivation.
 
-Besides being a fun soccer manager game, this app also aims follow the best practices
+Besides being a fun soccer manager game, this app also aims to follow the best practices
 on Android development and be some kind of reference implementation, both in terms of engineering
 (code) and design (follow platform UI/UX standards). We're trying to showcase and promote here
 some core concepts of Android development and advanced usage of some libraries.
